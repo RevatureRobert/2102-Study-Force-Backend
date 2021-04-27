@@ -1,4 +1,4 @@
-# 2102-Study-Force-Frontend
+# 2102-Study-Force-Backend
 
 ## Project Description
 
