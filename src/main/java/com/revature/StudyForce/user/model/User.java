@@ -15,12 +15,15 @@ import java.sql.Timestamp;
 /**
  * Model for User
  * @author Lok Kan Kung
+ * @author Daniel Bernier
  */
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue()
     @Column(name = "user_id")
@@ -54,8 +57,7 @@ public class User {
     @Column(name = "is_subscribed_stacktrace")
     private boolean isSubscribedStacktrace;
 
-    @Enumerated
-    @ManyToOne
+    @Enumerated(EnumType.ORDINAL)
     @ColumnDefault ("0")
     @JoinColumn(name = "authority_id", referencedColumnName = "authority_id")
     private Authority authority;
@@ -66,8 +68,6 @@ public class User {
 
     @Column(name = "last_login")
     private Timestamp lastLogin;
-
-
 }
 
 
