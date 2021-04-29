@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 /**
  * Model for User
  * @author Lok Kan Kung
+ * @author Daniel Bernier
  */
 @Entity
 @Data
