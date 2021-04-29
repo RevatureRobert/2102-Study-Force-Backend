@@ -1,4 +1,4 @@
-package com.revature.StudyForce.model;
+package com.revature.StudyForce.stacktrace.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +7,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
+
+import com.revature.StudyForce.user.model.User;
+import com.revature.StudyForce.stacktrace.model.Stacktrace;
 
 @Entity
 @Table(name = "solution")
@@ -26,14 +29,14 @@ public class Solution {
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "stacktrace_id")
     @NotNull
-    private Stractrace stackTraceId;
+    private Stacktrace stackTraceId;
 
     @ManyToOne(
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "creator_id")
     @NotNull
-    private User usersId;
+    private User userId;
 
     @Column
     @NotNull

@@ -1,4 +1,4 @@
-package com.revature.StudyForce.model;
+package com.revature.StudyForce.stacktrace.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -7,8 +7,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import com.revature.StudyForce.model.User;
-import com.revature.StudyForce.model.Solution;
+import com.revature.StudyForce.stacktrace.model.User;
 
 @Entity
 @Getter
@@ -19,6 +18,7 @@ import com.revature.StudyForce.model.Solution;
 public class SolutionVote {
     @Id
     @GeneratedValue
+    @Column(name = "solution_vote_id")
     private int id;
 
     @ManyToOne
