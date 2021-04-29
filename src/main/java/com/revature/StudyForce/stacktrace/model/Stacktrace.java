@@ -1,10 +1,7 @@
-package com.revature.StudyForce.model;
+package com.revature.StudyForce.stacktrace.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -18,7 +15,7 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @Builder
-public class Stacktraces {
+public class Stacktrace {
 
     @Id
     @GeneratedValue
