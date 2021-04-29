@@ -12,19 +12,21 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
-@Data
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Getter
+@Setter
 @Builder
 public class Stacktraces {
 
     @Id
     @GeneratedValue
-    private int stackstrace_id;
+    private int stackstraceId;
 
+    //TODO: change ints to Objects
     @NotNull
-    private int creator_id;
+    private int creatorId;
 
     @NotBlank
     private String title;
@@ -32,10 +34,11 @@ public class Stacktraces {
     @NotBlank
     private String body;
 
+    //TODO: change ints to Objects
     @NotNull
-    private int technology_id;
+    private int technologyId;
 
     @UpdateTimestamp
-    Timestamp creation_time;
+    private Timestamp creationTime;
 
 }
