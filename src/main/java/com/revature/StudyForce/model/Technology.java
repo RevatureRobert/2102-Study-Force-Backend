@@ -1,4 +1,4 @@
-package model;
+package com.revature.StudyForce.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
