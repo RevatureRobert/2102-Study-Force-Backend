@@ -1,7 +1,7 @@
-package com.revature.StudyForce.services;
+package com.revature.StudyForce.flashcard.service;
 
-import com.revature.StudyForce.models.Topic;
-import com.revature.StudyForce.repositories.TopicRepository;
+import com.revature.StudyForce.flashcard.model.Topic;
+import com.revature.StudyForce.flashcard.repository.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +21,9 @@ public class TopicService {
         return getTopicById(id);
     }
 
-    public
+    public Topic addTopic(String topicName) {
+        Topic topic = new Topic();
+        topic.setTopicName(topicName);
+        return topicRepository.save(topic);
+    }
 }

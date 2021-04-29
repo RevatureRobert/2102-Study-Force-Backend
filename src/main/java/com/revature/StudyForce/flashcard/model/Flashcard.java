@@ -1,4 +1,4 @@
-package com.revature.StudyForce.models;
+package com.revature.StudyForce.flashcard.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
