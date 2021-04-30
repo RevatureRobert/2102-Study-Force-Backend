@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * Spring repository for Flashcards
+ *
+ * @author Luke
  */
 @Repository
 public interface FlashcardRepo extends JpaRepository<Flashcard, Integer> {

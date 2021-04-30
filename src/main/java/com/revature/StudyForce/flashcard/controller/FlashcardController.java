@@ -12,9 +12,9 @@ import javax.websocket.server.PathParam;
 import java.util.List;
 
 /**
- * Flashcard controller
+ * Controller for handling Flashcards
+ * @author Luke
  */
-
 @Controller
 @CrossOrigin
 @RequestMapping("/flashcards")
