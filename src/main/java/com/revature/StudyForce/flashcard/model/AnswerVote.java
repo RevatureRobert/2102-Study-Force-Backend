@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class AnswerVote {
 
+    // primary key
     @Id
     @GeneratedValue
     private int voteId;
