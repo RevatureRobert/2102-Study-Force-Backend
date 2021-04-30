@@ -1,5 +1,6 @@
 package com.revature.StudyForce.user.controller;
 
+import com.revature.StudyForce.user.dto.UserDTO;
 import com.revature.StudyForce.user.model.User;
 import com.revature.StudyForce.user.repository.UserRepository;
 import com.revature.StudyForce.user.service.UserService;
@@ -26,7 +27,7 @@ public class UserController {
      * @author Joshua Swanson
      */
     @PutMapping
-    public User updateUserDetails(@RequestBody User user){
+    public UserDTO updateUserDetails(@RequestBody UserDTO user){
        return userService.updateUserDetails(user);
     }
 }

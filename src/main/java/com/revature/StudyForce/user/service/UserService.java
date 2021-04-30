@@ -1,5 +1,6 @@
 package com.revature.StudyForce.user.service;
 
+import com.revature.StudyForce.user.dto.UserDTO;
 import com.revature.StudyForce.user.exception.MalformedUserDetailsException;
 import com.revature.StudyForce.user.exception.NoUserFoundByIdException;
 import com.revature.StudyForce.user.model.User;
@@ -22,7 +23,8 @@ public class UserService {
      * @author Joshua Swanson
      */
     // TODO: replace this implementation with DTO
-    public User updateUserDetails(User updatedUser){
+    public UserDTO updateUserDetails(UserDTO updatedUser){
+
         User repoUser = userRepository.getOne(updatedUser.getUserId());
 
         if(repoUser == null){
@@ -34,7 +36,8 @@ public class UserService {
         repoUser.setPassword(updatedUser.getPassword());
 
         try{
-            return userRepository.save(repoUser);
+            userRepository.save(repoUser);
+            return updatedUser;
         }catch(IllegalArgumentException e){
             throw new MalformedUserDetailsException("User details malformed");
         }
