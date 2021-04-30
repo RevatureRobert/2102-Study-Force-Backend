@@ -4,7 +4,7 @@ import com.revature.StudyForce.stacktrace.model.Technology;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * @Author John Stone
+ * @author John Stone
  * Represents the Repository for Technology Model
  */
 
