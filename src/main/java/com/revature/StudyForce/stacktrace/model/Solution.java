@@ -11,6 +11,11 @@ import java.sql.Date;
 import com.revature.StudyForce.user.model.User;
 import com.revature.StudyForce.stacktrace.model.Stacktrace;
 
+/**
+ * This model represents the solutions users will supply the Stacktrace owner.
+ * The Stacktrace owner will choose one of these solutions that solves his problem.
+ */
+
 @Entity
 @Table(name = "solution")
 @Getter
@@ -19,11 +24,17 @@ import com.revature.StudyForce.stacktrace.model.Stacktrace;
 @AllArgsConstructor
 public class Solution {
 
+    /**
+     * This is the serial primary key for the solution table
+     */
     @Id
     @Column(name = "solution_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int solutionId;
 
+    /**
+     * This is the foreign key which will be connect to the Stacktrace a user has picked as their solution.
+     */
     @ManyToOne(
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
@@ -31,6 +42,9 @@ public class Solution {
     @NotNull
     private Stacktrace stackTraceId;
 
+    /**
+     * This is the foreign key which connects the user table with the solution they have created.
+     */
     @ManyToOne(
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
@@ -38,13 +52,22 @@ public class Solution {
     @NotNull
     private User userId;
 
+    /**
+     * This is the body of text the user will explain a possible solution for the Stacktrace.
+     */
     @Column
     @NotNull
     private String body;
 
+    /**
+     * This is the boolean used to give the admin the ability to pick a solution over the Stacktrace creator.
+     */
     @Column(name = "admin_selected")
     private Boolean adminSelected;
 
+    /**
+     * This is a timestamp of the time a solution was supplied.
+     */
     @Column(name = "creation_time")
     private Date createtionTime;
 
