@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 import com.revature.StudyForce.user.model.User;
-import com.revature.StudyForce.stacktrace.model.Stacktrace;
 
 @Entity
 @Table(name = "solution")
