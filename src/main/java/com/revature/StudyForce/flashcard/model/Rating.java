@@ -1,8 +1,7 @@
 package com.revature.StudyForce.flashcard.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.revature.StudyForce.user.model.User;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,7 +12,7 @@ import javax.validation.constraints.NotNull;
  *@author Edson Rodriguez
  */
 @Entity
-@Table(name = "timesheets")
+@Table(name = "rating")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,45 +22,13 @@ public class Rating {
     @Column(name = "rating_id")
     private int ratingId;
     @NotNull
-    @Column(name = "flashcard_id")
-    private int flashcardId;
+    @ManyToOne
+    private Flashcard flashcard;
     @NotNull
-    @Column(name = "user_id")
-    private int userId;
+    @ManyToOne
+    private User user;
     @NotNull
     @Column(name = "rating")
     private Difficulty ratingValue;
 
-
-    public int getRatingId() {
-        return ratingId;
-    }
-
-    public void setRatingId(int ratingId) {
-        this.ratingId = ratingId;
-    }
-
-    public int getFlashcardId() {
-        return flashcardId;
-    }
-
-    public void setFlashcardId(int flashcardId) {
-        this.flashcardId = flashcardId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public Difficulty getRatingValue() {
-        return ratingValue;
-    }
-
-    public void setRatingValue(Difficulty ratingValue) {
-        this.ratingValue = ratingValue;
-    }
 }
