@@ -22,7 +22,7 @@ public class Stacktrace {
      */
     @Id
     @GeneratedValue
-    private int stackstraceId;
+    private int stacktraceId;
 
     /**
      * TODO: change ints to Objects once user models are created
