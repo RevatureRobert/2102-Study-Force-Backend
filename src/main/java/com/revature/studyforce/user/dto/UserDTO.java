@@ -1,7 +1,7 @@
-package com.revature.StudyForce.user.dto;
+package com.revature.studyforce.user.dto;
 
-import com.revature.StudyForce.user.model.Authority;
-import com.revature.StudyForce.user.model.User;
+import com.revature.studyforce.user.model.Authority;
+import com.revature.studyforce.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

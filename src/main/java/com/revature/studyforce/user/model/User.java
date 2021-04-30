@@ -1,10 +1,9 @@
-package com.revature.StudyForce.user.model;
+package com.revature.studyforce.user.model;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -49,16 +48,16 @@ public class User {
     @Column(name = "is_active")
     private boolean isActive;
 
-    @ColumnDefault ("true")
+//    @ColumnDefault ("true")
     @Column(name = "is_subscribed_flashcard")
     private boolean isSubscribedFlashcard;
 
-    @ColumnDefault ("true")
+//    @ColumnDefault ("true")
     @Column(name = "is_subscribed_stacktrace")
     private boolean isSubscribedStacktrace;
 
     @Enumerated(EnumType.ORDINAL)
-    @ColumnDefault ("0")
+//    @ColumnDefault ("0")
     @JoinColumn(name = "authority_id", referencedColumnName = "authority_id")
     private Authority authority;
 
