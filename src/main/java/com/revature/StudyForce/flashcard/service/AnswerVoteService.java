@@ -16,7 +16,7 @@ public class AnswerVoteService {
         this.voteRepo = voteRepo;
     }
 
-    public AnswerVote addAnswerVote(AnswerVote vote) {
+    public AnswerVoteDTO addAnswerVote(AnswerVote vote) {
 
         User user = userRepo.findById(vote.getUser().getUserId()).orElse(null);
         Answer answer = answerRepo.findById(vote.getAnswer().getAnswerId()).orElse(null);
@@ -24,6 +24,10 @@ public class AnswerVoteService {
             System.out.println("Invalid request.");
             return null;
         }
-        return voteRepo.save(vote);
+        AnswerVote v = voteRepo.save(vote);
+        AnswerVoteDTO voteDTO = new AnswerVoteDTO();
+        voteDTO.setVoteId(v.getVoteId());
+        voteDTO.setVoteValue(v.getVoteValue());
+        return voteDTO;
     }
 }
