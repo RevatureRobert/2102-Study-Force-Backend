@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.sql.Timestamp;
+import java.util.function.Function;
 
 /**
  * UserDTO testing to confirm the functionality for the conversion {@link UserDTO}
@@ -17,7 +18,7 @@ import java.sql.Timestamp;
 class UserDTOTest {
 
     @Test
-    void convertUserToUserDTO(){
+    void whenConvertingUserToUserDTO_FieldsMatchOriginalObject(){
 
         Timestamp registrationTime = Timestamp.valueOf ("2021-04-30 10:58:01");
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
@@ -25,12 +26,8 @@ class UserDTOTest {
         User user = new User(0,"testing@gmail.com","password","test","ing",
                 true,true,true,
                 authority,registrationTime,lastLoginTime);
-        User nullUser = null;
 
-        UserDTO nullUserDTO = UserDTO.userToDTO ().apply(nullUser);
         UserDTO userDTO = UserDTO.userToDTO ().apply (user);
-
-        Exception e = new IllegalArgumentException("Parameter userDTO cannot be null");
 
         Assertions.assertEquals (0,userDTO.getUserId ());
         Assertions.assertEquals ("testing@gmail.com",userDTO.getEmail ());
@@ -44,11 +41,10 @@ class UserDTOTest {
         Assertions.assertEquals (registrationTime,userDTO.getRegistrationTime ());
         Assertions.assertEquals (lastLoginTime,userDTO.getLastLogin ());
 
-        Assertions.assertEquals (e,nullUserDTO);
     }
 
     @Test
-    void convertUserDTOToUser(){
+    void whenConvertingUserDTOToUser_FieldsMatchOriginalObject(){
         Timestamp registrationTime = Timestamp.valueOf ("2021-04-30 10:58:01");
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
         Authority authority = Authority.USER;
@@ -68,5 +64,22 @@ class UserDTOTest {
         Assertions.assertEquals (authority,user.getAuthority ());
         Assertions.assertEquals (registrationTime,user.getRegistrationTime ());
         Assertions.assertEquals (lastLoginTime,user.getLastLogin ());
+
+    }
+
+    @Test
+    void attemptToConvertNullObjectToUserDTO_ThrowsIllegalArgumentException(){
+        Function<User,UserDTO> function = UserDTO.userToDTO();
+        Assertions.assertThrows (IllegalArgumentException.class,() ->{
+            function.apply (null);
+        });
+    }
+
+    @Test
+    void attemptToConvertNullObjectToUser_ThrowsIllegalArgumentException(){
+        Function<UserDTO,User> function = UserDTO.dtoToUser ();
+        Assertions.assertThrows (IllegalArgumentException.class,() ->{
+            function.apply (null);
+        });
     }
 }
