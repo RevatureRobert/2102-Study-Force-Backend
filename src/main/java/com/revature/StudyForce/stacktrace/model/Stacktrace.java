@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @Builder
-public class Stacktraces {
+public class Stacktrace {
     /**
      * @Author : Noel Shaji
      * Primary key
