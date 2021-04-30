@@ -9,8 +9,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 /**
+ * @Author John Stone
  * Model for technology
- * Author: John Stone
  */
 
 @Entity
