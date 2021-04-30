@@ -8,6 +8,11 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
+/**
+ * Model for technology
+ * Author: John Stone
+ */
+
 @Entity
 @Table(name = "technologies")
 @Getter
@@ -18,7 +23,6 @@ public class Technology {
     /**
      * Primary Key for each entry
      */
-    Primary Key for table
     @Id
     @GeneratedValue
     @Column(name = "technology_id")
