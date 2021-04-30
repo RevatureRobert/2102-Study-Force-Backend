@@ -1,4 +1,4 @@
-package com.revature.StudyForce.user.model;
+package com.revature.studyforce.user.model;
 
 /**
  * Model for Authority enum
