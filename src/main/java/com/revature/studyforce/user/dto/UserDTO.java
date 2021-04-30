@@ -52,7 +52,7 @@ public class UserDTO {
                     user.getEmail (),
                     "",
                     user.getName(),
-                    user.isActive (),
+                    user.isActive(),
                     user.isSubscribedFlashcard (),
                     user.isSubscribedStacktrace (),
                     user.getAuthority (),

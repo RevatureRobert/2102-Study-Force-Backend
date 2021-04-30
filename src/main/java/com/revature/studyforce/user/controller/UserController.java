@@ -23,7 +23,6 @@ public class UserController {
     public UserController(UserService userService) { this.USER_SERVICE = userService;}
 
 
-
     /**
      * Adds a new user object
      * @param userDTO The user to be added as a data transfer object
