@@ -1,6 +1,7 @@
 package com.revature.StudyForce.stacktrace.model;
 
 
+import com.revature.StudyForce.user.model.User;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -25,10 +26,9 @@ public class Stacktrace {
     private int stacktraceId;
 
     /**
-     * TODO: change ints to Objects once user models are created
      * ID of user who created stacktrace
      */
-    @NotNull private int creatorId;
+    @NotNull private User user;
 
     /**
      * the title a user gives to a stacktrace
@@ -43,10 +43,9 @@ public class Stacktrace {
     private String body;
 
     /**
-     * TODO: change ints to Objects once technology model is added
      * The technology that the stacktrace is using.ex JAVA
      */
-    @NotNull private int technologyId;
+    @NotNull private Technology technology;
 
     /**
      *The timestamp of when the stacktrace was created
