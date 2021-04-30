@@ -11,4 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StacktraceRepository extends JpaRepository<Stacktrace, Integer> {
 
+    Stacktrace findbyId(int id);
+
 }

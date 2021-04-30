@@ -28,7 +28,8 @@ public class Stacktrace {
     /**
      * ID of user who created stacktrace
      */
-    @NotNull private User user;
+    @NotNull
+    private User user;
 
     /**
      * the title a user gives to a stacktrace
@@ -45,7 +46,8 @@ public class Stacktrace {
     /**
      * The technology that the stacktrace is using.ex JAVA
      */
-    @NotNull private Technology technology;
+    @NotNull
+    private Technology technology;
 
     /**
      *The timestamp of when the stacktrace was created
