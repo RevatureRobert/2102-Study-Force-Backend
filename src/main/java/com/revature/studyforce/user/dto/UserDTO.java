@@ -14,7 +14,6 @@ import java.util.function.Function;
  * UserDTO to transfer User data
  * @author Lok Kan Kung
  */
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
