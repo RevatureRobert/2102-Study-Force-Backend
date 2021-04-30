@@ -22,36 +22,47 @@ public class Stacktrace {
      * Primary key
      */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "stacktrace_id")
     private int stacktraceId;
 
     /**
      * ID of user who created stacktrace
      */
     @NotNull
-    private User user;
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "creator_id", referencedColumnName = "user_id")
+    private User userId;
 
     /**
      * the title a user gives to a stacktrace
      */
-    @NotBlank
+    @NotNull
+    @Column(name = "title")
     private String title;
 
     /**
      * the body text of a stacktrace
      */
-    @NotBlank
+    @NotNull
+    @Column(name = "body")
     private String body;
 
     /**
      * The technology that the stacktrace is using.ex JAVA
      */
-    @NotNull
-    private Technology technology;
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "technology_id", referencedColumnName = "technology_id")
+    private Technology technologyId;
 
     /**
      *The timestamp of when the stacktrace was created
      */
+    @Column(name = "creation_time")
     @UpdateTimestamp
     private Timestamp creationTime;
 
