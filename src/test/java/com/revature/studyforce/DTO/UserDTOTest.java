@@ -1,15 +1,15 @@
-package com.revature.StudyForce.DTO;
+package com.revature.studyforce.DTO;
 
-import com.revature.StudyForce.user.dto.UserDTO;
-import com.revature.StudyForce.user.model.Authority;
-import com.revature.StudyForce.user.model.User;
+import com.revature.studyforce.user.dto.UserDTO;
+import com.revature.studyforce.user.model.Authority;
+import com.revature.studyforce.user.model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.sql.Timestamp;
 
 /**
- * UserDTO testing to confirm the functionality for the conversion
+ * UserDTO testing to confirm the functionality for the conversion {@link UserDTO}
  * @author Lok Kan Kung
  */
 
@@ -25,7 +25,12 @@ class UserDTOTest {
         User user = new User(0,"testing@gmail.com","password","test","ing",
                 true,true,true,
                 authority,registrationTime,lastLoginTime);
+        User nullUser = null;
+
+        UserDTO nullUserDTO = UserDTO.userToDTO ().apply(nullUser);
         UserDTO userDTO = UserDTO.userToDTO ().apply (user);
+
+        Exception e = new IllegalArgumentException("Parameter userDTO cannot be null");
 
         Assertions.assertEquals (0,userDTO.getUserId ());
         Assertions.assertEquals ("testing@gmail.com",userDTO.getEmail ());
@@ -38,6 +43,8 @@ class UserDTOTest {
         Assertions.assertEquals (authority,userDTO.getAuthority ());
         Assertions.assertEquals (registrationTime,userDTO.getRegistrationTime ());
         Assertions.assertEquals (lastLoginTime,userDTO.getLastLogin ());
+
+        Assertions.assertEquals (e,nullUserDTO);
     }
 
     @Test

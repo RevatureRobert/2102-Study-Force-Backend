@@ -1,7 +1,7 @@
-package com.revature.StudyForce.user.dto;
+package com.revature.studyforce.user.dto;
 
-import com.revature.StudyForce.user.model.Authority;
-import com.revature.StudyForce.user.model.User;
+import com.revature.studyforce.user.model.Authority;
+import com.revature.studyforce.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,6 +44,11 @@ public class UserDTO {
 
     private Timestamp lastLogin;
 
+    /**
+     * This function converts User object to UserDTO object
+     * If user is null, it throws IlleagalArgumentException
+     * @return
+     */
     public static Function<User, UserDTO> userToDTO(){
         return user -> {
             if(user == null){
@@ -65,6 +70,11 @@ public class UserDTO {
         };
     }
 
+    /**
+     * This function converts UserDTO object back to User object
+     * If userDTO is null, it throws IlleagalArgumentException
+     * @return
+     */
     public static Function<UserDTO, User> dtoToUser(){
         return userDTO -> {
             if(userDTO == null){
