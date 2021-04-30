@@ -38,13 +38,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Size(max = 255)
+    @Size(max = 511)
     @Column(name = "first_name")
-    private String firstName;
-
-    @Size(max = 255)
-    @Column(name = "last_name")
-    private String lastName;
+    private String name;
 
     @Column(name = "is_active")
     private boolean isActive;
