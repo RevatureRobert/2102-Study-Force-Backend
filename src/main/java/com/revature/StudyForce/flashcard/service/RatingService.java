@@ -1,5 +1,7 @@
 package com.revature.StudyForce.flashcard.service;
 
+import com.revature.StudyForce.flashcard.dto.RatingDTO;
+import com.revature.StudyForce.flashcard.dto.RatingResponseDTO;
 import com.revature.StudyForce.flashcard.model.Rating;
 import com.revature.StudyForce.flashcard.repository.RatingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +28,9 @@ public class RatingService {
      * Method to save a new rating
      */
     //TODO: change the return type
-    public Rating createRating(Rating rating){
-        return RATING_REPO.save(rating);
+    public RatingResponseDTO createRating(RatingDTO ratingDTO){
+        return null;
+        //return RATING_REPO.save();
     }
 
 

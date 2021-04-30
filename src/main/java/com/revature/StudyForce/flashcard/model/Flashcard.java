@@ -1,5 +1,6 @@
 package com.revature.StudyForce.flashcard.model;
 
+<<<<<<< HEAD
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,5 +1,7 @@
 package com.revature.StudyForce.flashcard.controller;
 
+import com.revature.StudyForce.flashcard.dto.RatingDTO;
+import com.revature.StudyForce.flashcard.dto.RatingResponseDTO;
 import com.revature.StudyForce.flashcard.model.Rating;
 import com.revature.StudyForce.flashcard.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,7 @@ public class RatingController {
      */
     //TODO: change the return type for a DTO
     @PostMapping("/")
-    public Rating createRating(@RequestBody Rating rating ){
+    public RatingResponseDTO createRating(@RequestBody RatingDTO rating ){
         return RATING_SERVICE.createRating(rating);
     }
 }
