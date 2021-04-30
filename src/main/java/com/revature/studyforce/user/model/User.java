@@ -69,5 +69,3 @@ public class User {
     @Column(name = "last_login")
     private Timestamp lastLogin;
 }
-
-

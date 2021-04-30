@@ -14,7 +14,6 @@ import java.util.function.Function;
  * UserDTO to transfer User data
  * @author Lok Kan Kung
  */
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -44,11 +43,17 @@ public class UserDTO {
 
     private Timestamp lastLogin;
 
+    /**
+     * This function converts User object to UserDTO object
+     * If user is null, it throws IlleagalArgumentException
+     * @return a Function which convert User to UserDTO Object
+     */
     public static Function<User, UserDTO> userToDTO(){
         return user -> {
             if(user == null){
                 throw new IllegalArgumentException("Parameter user cannot be null");
-            }            return new UserDTO (
+            }
+            return new UserDTO (
                     user.getUserId (),
                     user.getEmail (),
                     "",
@@ -64,6 +69,11 @@ public class UserDTO {
         };
     }
 
+    /**
+     * This function converts UserDTO object back to User object
+     * If userDTO is null, it throws IlleagalArgumentException
+     * @return a Function which convert UserDTO to User Object
+     */
     public static Function<UserDTO, User> dtoToUser(){
         return userDTO -> {
             if(userDTO == null){
