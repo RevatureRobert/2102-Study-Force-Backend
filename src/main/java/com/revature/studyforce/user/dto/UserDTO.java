@@ -47,7 +47,7 @@ public class UserDTO {
     /**
      * This function converts User object to UserDTO object
      * If user is null, it throws IlleagalArgumentException
-     * @return a UserDTO Object
+     * @return a Function which convert User to UserDTO Object
      */
     public static Function<User, UserDTO> userToDTO(){
         return user -> {
@@ -73,7 +73,7 @@ public class UserDTO {
     /**
      * This function converts UserDTO object back to User object
      * If userDTO is null, it throws IlleagalArgumentException
-     * @return a User Object
+     * @return a Function which convert UserDTO to User Object
      */
     public static Function<UserDTO, User> dtoToUser(){
         return userDTO -> {
