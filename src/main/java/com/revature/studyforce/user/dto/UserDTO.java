@@ -1,7 +1,7 @@
-package com.revature.StudyForce.user.dto;
+package com.revature.studyforce.user.dto;
 
-import com.revature.StudyForce.user.model.Authority;
-import com.revature.StudyForce.user.model.User;
+import com.revature.studyforce.user.model.Authority;
+import com.revature.studyforce.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -48,8 +48,7 @@ public class UserDTO {
         return user -> {
             if(user == null){
                 throw new IllegalArgumentException("Parameter user cannot be null");
-            }
-            return new UserDTO (
+            }            return new UserDTO (
                     user.getUserId (),
                     user.getEmail (),
                     "",
