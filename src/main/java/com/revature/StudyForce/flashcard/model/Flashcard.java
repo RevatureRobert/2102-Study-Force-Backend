@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import com.revature.StudyForce.model.Topic;
-import com.revature.StudyForce.model.User;
+import com.revature.StudyForce.user.model.User;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -28,7 +27,7 @@ public class Flashcard {
     private int id;
     @NotNull
     @ManyToOne
-    private User creatorId;
+    private User creator;
     @NotNull
     @ManyToOne
     private Topic topic;

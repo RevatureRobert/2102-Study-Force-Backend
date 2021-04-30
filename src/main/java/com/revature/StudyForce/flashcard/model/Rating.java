@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import com.revature.StudyForce.user.model.User;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -20,48 +22,13 @@ import javax.validation.constraints.NotNull;
 public class Rating {
     @Id
     @GeneratedValue
-    @Column(name = "rating_id")
-    private int ratingId;
+    private int id;
     @NotNull
-    @Column(name = "flashcard_id")
-    private int flashcardId;
+    private Flashcard flashcardId;
     @NotNull
-    @Column(name = "user_id")
-    private int userId;
+    private User user;
     @NotNull
     @Column(name = "rating")
     private Difficulty ratingValue;
 
-
-    public int getRatingId() {
-        return ratingId;
-    }
-
-    public void setRatingId(int ratingId) {
-        this.ratingId = ratingId;
-    }
-
-    public int getFlashcardId() {
-        return flashcardId;
-    }
-
-    public void setFlashcardId(int flashcardId) {
-        this.flashcardId = flashcardId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public Difficulty getRatingValue() {
-        return ratingValue;
-    }
-
-    public void setRatingValue(Difficulty ratingValue) {
-        this.ratingValue = ratingValue;
-    }
 }
