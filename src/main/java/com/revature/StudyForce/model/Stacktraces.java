@@ -16,30 +16,41 @@ import java.sql.Timestamp;
 @Setter
 @Builder
 public class Stacktraces {
-    //PRIMARY KEY
+    /**
+     * @Author : Noel Shaji
+     * Primary key
+     */
     @Id
     @GeneratedValue
     private int stackstraceId;
 
-    //TODO: change ints to Objects once user models are created
-    //ID of user who created stacktrace
-    @NotNull
-    private int creatorId;
+  /**
+   * TODO: change ints to Objects once user models are created
+   * ID of user who created stacktrace
+   */
+  @NotNull private int creatorId;
 
-    //the title a user gives to a stacktrace
+    /**
+     * the title a user gives to a stacktrace
+     */
     @NotBlank
     private String title;
 
-    //the body text of a stacktrace
+    /**
+     * the body text of a stacktrace
+     */
     @NotBlank
     private String body;
 
-    //TODO: change ints to Objects once technology model is added
-    //The technology that the stacktrace is using.ex JAVA
-    @NotNull
-    private int technologyId;
+  /**
+   * TODO: change ints to Objects once technology model is added
+   * The technology that the stacktrace is using.ex JAVA
+   */
+  @NotNull private int technologyId;
 
-    //time of creation of the stacktrace
+    /**
+     *The timestamp of when the stacktrace was created
+     */
     @UpdateTimestamp
     private Timestamp creationTime;
 
