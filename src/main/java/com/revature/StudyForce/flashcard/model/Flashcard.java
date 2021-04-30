@@ -13,6 +13,10 @@ import com.revature.StudyForce.model.User;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+/**
+ * Flashcard model
+ */
+
 @Entity
 @Data
 @NoArgsConstructor

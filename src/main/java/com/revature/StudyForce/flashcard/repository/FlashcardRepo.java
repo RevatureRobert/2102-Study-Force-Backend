@@ -7,8 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Spring repository for Flashcards
+ */
 @Repository
 public interface FlashcardRepo extends JpaRepository<Flashcard, Integer> {
 
+    // Find questions by difficulty
     List<Flashcard> findALlByQuestionDifficultyTotal(int questionDifficultyTotal, Pageable pageable);
 }
