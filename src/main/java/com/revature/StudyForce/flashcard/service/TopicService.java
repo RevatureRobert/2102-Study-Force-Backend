@@ -26,4 +26,10 @@ public class TopicService {
         topic.setTopicName(topicName);
         return topicRepository.save(topic);
     }
+
+    public Topic deleteTopic(int id) {
+        Topic topic = topicRepository.findById(id).get();
+        topicRepository.delete(topic);
+        return topic;
+    }
 }
