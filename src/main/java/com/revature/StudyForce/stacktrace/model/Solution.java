@@ -9,11 +9,11 @@ import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 import com.revature.StudyForce.user.model.User;
-import com.revature.StudyForce.stacktrace.model.Stacktrace;
 
 /**
  * This model represents the solutions users will supply the Stacktrace owner.
  * The Stacktrace owner will choose one of these solutions that solves his problem.
+ * @author Joey Elmblad
  */
 
 @Entity
