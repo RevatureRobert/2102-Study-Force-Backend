@@ -1,4 +1,4 @@
-package com.revature.StudyForce.notification.config;
+package com.revature.studyforce.notification.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
