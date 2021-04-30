@@ -27,9 +27,7 @@ public class UserDTO {
     @NotNull
     private String password;
 
-    private String firstName;
-
-    private String lastName;
+    private String name;
 
     private boolean isActive;
 
@@ -45,7 +43,7 @@ public class UserDTO {
 
     /**
      * This function converts User object to UserDTO object
-     * If user is null, it throws IlleagalArgumentException
+     * If user is null, it throws IllegalArgumentException
      * @return a Function which convert User to UserDTO Object
      */
     public static Function<User, UserDTO> userToDTO(){
@@ -54,24 +52,23 @@ public class UserDTO {
                 throw new IllegalArgumentException("Parameter user cannot be null");
             }
             return new UserDTO (
-                    user.getUserId (),
-                    user.getEmail (),
+                    user.getUserId(),
+                    user.getEmail(),
                     "",
-                    user.getFirstName (),
-                    user.getLastName (),
-                    user.isActive (),
-                    user.isSubscribedFlashcard (),
-                    user.isSubscribedStacktrace (),
-                    user.getAuthority (),
-                    user.getRegistrationTime (),
-                    user.getLastLogin ()
+                    user.getName(),
+                    user.isActive(),
+                    user.isSubscribedFlashcard(),
+                    user.isSubscribedStacktrace(),
+                    user.getAuthority(),
+                    user.getRegistrationTime(),
+                    user.getLastLogin()
             );
         };
     }
 
     /**
      * This function converts UserDTO object back to User object
-     * If userDTO is null, it throws IlleagalArgumentException
+     * If userDTO is null, it throws IllegalArgumentException
      * @return a Function which convert UserDTO to User Object
      */
     public static Function<UserDTO, User> dtoToUser(){
@@ -80,17 +77,16 @@ public class UserDTO {
                 throw new IllegalArgumentException("Parameter userDTO cannot be null");
             }
             return new User (
-                    userDTO.getUserId (),
-                    userDTO.getEmail (),
-                    userDTO.getPassword (),
-                    userDTO.getFirstName (),
-                    userDTO.getLastName (),
-                    userDTO.isActive (),
-                    userDTO.isSubscribedFlashcard (),
-                    userDTO.isSubscribedStacktrace (),
-                    userDTO.getAuthority (),
-                    userDTO.getRegistrationTime (),
-                    userDTO.getLastLogin ()
+                    userDTO.getUserId(),
+                    userDTO.getEmail(),
+                    userDTO.getPassword(),
+                    userDTO.getName(),
+                    userDTO.isActive(),
+                    userDTO.isSubscribedFlashcard(),
+                    userDTO.isSubscribedStacktrace(),
+                    userDTO.getAuthority(),
+                    userDTO.getRegistrationTime(),
+                    userDTO.getLastLogin()
             );
         };
     }
