@@ -28,12 +28,14 @@ public class TopicController {
         return topicService.getTopicById(id);
     }
 
+    //probaly admin only
     @PostMapping
     @ResponseBody
     public Topic createTopic(@RequestBody TopicDTO topicDTO) {
         return topicService.addTopic(topicDTO.getTopic());
     }
 
+    //Probaly admin only
     @DeleteMapping("/{id}")
     @ResponseBody
     public Topic deleteTopic(@PathVariable int id) {
