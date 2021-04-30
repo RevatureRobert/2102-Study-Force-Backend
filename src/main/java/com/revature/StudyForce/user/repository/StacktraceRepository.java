@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * Basic repo for  {@link com.revature.StudyForce.stacktrace.model.Stacktrace}
- * Author: Noel Shaji
+ * author: Noel Shaji
  */
 
 public interface StacktraceRepository extends JpaRepository<Stacktrace, Integer> {
