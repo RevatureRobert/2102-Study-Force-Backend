@@ -31,9 +31,9 @@ public class TopicService {
     }
 
     /**
-     *
-     * @param topicName
-     * @return
+     *Add a topic to the database
+     * @param topicName The name of the topic to be stored
+     * @return The topic object that was stored
      */
     public Topic addTopic(String topicName) {
         Topic topic = new Topic();
@@ -41,6 +41,11 @@ public class TopicService {
         return topicRepository.save(topic);
     }
 
+    /**
+     * Remove a topic object from database
+     * @param id The id of the topic you want to be removed
+     * @return the topic object that was removed
+     */
     public Topic deleteTopic(int id) {
         Topic topic = topicRepository.findById(id).get();
         topicRepository.delete(topic);
