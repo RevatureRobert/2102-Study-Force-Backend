@@ -15,10 +15,17 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Technology {
+    /**
+     * Primary Key for each entry
+     */
+    Primary Key for table
     @Id
     @GeneratedValue
     @Column(name = "technology_id")
     private int technologyId;
+    /**
+     * Name of Technology
+     */
     @Size(max = 32)
     @Column(name = "technology_name", nullable = false)
     private String technologyName;
