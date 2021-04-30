@@ -1,10 +1,7 @@
 package com.revature.StudyForce.flashcard.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import com.revature.StudyForce.user.model.User;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,17 +12,20 @@ import javax.validation.constraints.NotNull;
  *@author Edson Rodriguez
  */
 @Entity
-@Table(name = "timesheets")
+@Table(name = "rating")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Rating {
     @Id
     @GeneratedValue
-    private int id;
+    @Column(name = "rating_id")
+    private int ratingId;
     @NotNull
-    private Flashcard flashcardId;
+    @ManyToOne
+    private Flashcard flashcard;
     @NotNull
+    @ManyToOne
     private User user;
     @NotNull
     @Column(name = "rating")
