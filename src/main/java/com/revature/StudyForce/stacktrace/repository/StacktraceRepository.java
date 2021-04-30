@@ -1,4 +1,4 @@
-package com.revature.StudyForce.user.repository;
+package com.revature.StudyForce.stacktrace.repository;
 
 import com.revature.StudyForce.stacktrace.model.Stacktrace;
 import com.revature.StudyForce.user.model.Batch;
