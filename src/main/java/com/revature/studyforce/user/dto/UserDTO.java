@@ -28,9 +28,7 @@ public class UserDTO {
     @NotNull
     private String password;
 
-    private String firstName;
-
-    private String lastName;
+    private String name;
 
     private boolean isActive;
 
@@ -53,8 +51,7 @@ public class UserDTO {
                     user.getUserId (),
                     user.getEmail (),
                     "",
-                    user.getFirstName (),
-                    user.getLastName (),
+                    user.getName(),
                     user.isActive (),
                     user.isSubscribedFlashcard (),
                     user.isSubscribedStacktrace (),
@@ -74,8 +71,7 @@ public class UserDTO {
                     userDTO.getUserId (),
                     userDTO.getEmail (),
                     userDTO.getPassword (),
-                    userDTO.getFirstName (),
-                    userDTO.getLastName (),
+                    userDTO.getName(),
                     userDTO.isActive (),
                     userDTO.isSubscribedFlashcard (),
                     userDTO.isSubscribedStacktrace (),
