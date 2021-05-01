@@ -30,7 +30,8 @@ public class Notification {
     private Timestamp timeToLive;
 
     @Enumerated
-    FeatureArea featureArea;
+    private FeatureArea featureArea;
+
 
     @Column(name = "application_user_id")
     private int applicationUserId;
