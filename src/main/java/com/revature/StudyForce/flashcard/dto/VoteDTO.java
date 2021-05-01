@@ -8,4 +8,6 @@ public class VoteDTO {
 
     private int voteId;
     private int voteValue;
+    private int answerId;
+    private int userId;
 }
