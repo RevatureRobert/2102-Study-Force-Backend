@@ -19,7 +19,7 @@ import java.util.Locale;
 @Service
 public class FlashcardService extends AbstractService {
 
-    private FlashcardRepository FLASHCARD_REPO;
+    private final FlashcardRepository FLASHCARD_REPO;
 
     @Autowired
     public FlashcardService(FlashcardRepository flashcardRepository){
@@ -81,7 +81,7 @@ public class FlashcardService extends AbstractService {
      * @return - returns Flashcard with the given id
      */
     public FlashcardDTO getById(int id) {
-        return FlashcardDTO.convertToDTO().apply(FLASHCARD_REPO.findById(id).get());
+        return FlashcardDTO.convertToDTO().apply(FLASHCARD_REPO.findById(id).orElse(null));
     }
 
     /**
@@ -99,9 +99,11 @@ public class FlashcardService extends AbstractService {
      * @return - returns updated Flashcard
      */
     public FlashcardDTO update(Flashcard flashcard) {
-        Flashcard original = FLASHCARD_REPO.findById(flashcard.getId()).get();
+        Flashcard original = FLASHCARD_REPO.findById(flashcard.getId()).orElse(null);
 
-        int id = original.getId();
+        if (original != null) {
+            int id = original.getId();
+        }
         original = flashcard;
         original.setId(id);
 
