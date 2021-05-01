@@ -113,4 +113,6 @@ public class Answer {
     public void setResolutionTime(Timestamp resolutionTime) {
         this.resolutionTime = resolutionTime;
     }
+
 }
+
