@@ -3,6 +3,8 @@ package com.revature.StudyForce.flashcard.model;
 import com.revature.StudyForce.user.model.User;
 import lombok.*;
 
+import com.revature.StudyForce.user.model.User;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -19,8 +21,7 @@ import javax.validation.constraints.NotNull;
 public class Rating {
     @Id
     @GeneratedValue
-    @Column(name = "rating_id")
-    private int ratingId;
+    private int id;
     @NotNull
     @ManyToOne
     private Flashcard flashcard;
