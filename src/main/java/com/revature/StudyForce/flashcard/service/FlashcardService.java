@@ -103,10 +103,10 @@ public class FlashcardService extends AbstractService {
 
         if (original != null) {
             int id = original.getId();
+            original = flashcard;
+            original.setId(id);
         }
-        original = flashcard;
-        original.setId(id);
-
+        assert original != null;
         return FlashcardDTO.convertToDTO().apply(FLASHCARD_REPO.save(original));
     }
 
