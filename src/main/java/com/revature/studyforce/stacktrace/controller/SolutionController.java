@@ -3,6 +3,7 @@ package com.revature.studyforce.stacktrace.controller;
 import com.revature.studyforce.stacktrace.dto.SolutionDTO;
 import com.revature.studyforce.stacktrace.service.SolutionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,11 +24,14 @@ public class SolutionController {
 
     /**
      * Given a stacktrace id, returns all solutions posted on that stacktrace
+     *  TODO: implement pagination
      * @param stackTraceId Stacktrace primary id
      * @return  List of solutions for the given stacktrace id
      */
     @GetMapping("/{stackTraceId}")
-    public List<SolutionDTO> getAllSolutionsForStacktrace(@PathVariable int stackTraceId){
+    public List<SolutionDTO> getAllSolutionsForStacktrace(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                          @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+                                                          @PathVariable int stackTraceId){
         return solutionService.getAllSolutionsForStacktrace(stackTraceId);
     }
 
