@@ -2,6 +2,8 @@ package com.revature.StudyForce.stacktrace.repository;
 
 import com.revature.StudyForce.stacktrace.model.Stacktrace;
 import com.revature.StudyForce.user.model.Batch;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -10,5 +12,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 
 public interface StacktraceRepository extends JpaRepository<Stacktrace, Integer> {
-
+    Page<Stacktrace> findByTechnologyId_technologyId(int technologyId, Pageable pageable);
 }
