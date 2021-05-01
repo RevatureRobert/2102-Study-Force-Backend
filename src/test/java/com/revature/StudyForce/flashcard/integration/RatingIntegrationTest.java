@@ -1,12 +1,8 @@
 package com.revature.StudyForce.flashcard.integration;
 
 import com.revature.StudyForce.flashcard.controller.RatingController;
-import com.revature.StudyForce.flashcard.dto.RatingResponseDTO;
-import com.revature.StudyForce.flashcard.model.Difficulty;
 import com.revature.StudyForce.flashcard.model.Flashcard;
-import com.revature.StudyForce.flashcard.model.Rating;
 import com.revature.StudyForce.flashcard.repository.FlashcardRepo;
-import com.revature.StudyForce.flashcard.repository.RatingRepository;
 import com.revature.StudyForce.user.model.Authority;
 import com.revature.StudyForce.user.model.User;
 import com.revature.StudyForce.user.repository.UserRepository;
@@ -22,10 +18,12 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+/**
+ * @author Edson Rodriguez
+ */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -47,15 +45,14 @@ class RatingIntegrationTest {
     void givenRating_whenCreateRating() throws Exception {
         User user = new User(0,"edson@revature.com","password","Edson","Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
-        Rating rating = new Rating(0,flashcard,user, Difficulty.EASY);
 
-        userRepository.save(user);
-        flashcardRepo.save(flashcard);
+        System.out.println(userRepository.save(user));
+        System.out.println(flashcardRepo.save(flashcard));
 
         mockMvc = MockMvcBuilders.standaloneSetup(ratingController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/rate")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/rate/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"flashcardId\":\"2\",\"userId\":\"2\",\"rating\":\"1\"}"))
+                .content("{\"flashcardId\":\"2\",\"userId\":\"1\",\"ratingScore\":\"2\"}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())

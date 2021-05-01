@@ -2,6 +2,7 @@ package com.revature.StudyForce.flashcard.service;
 
 import com.revature.StudyForce.flashcard.dto.RatingDTO;
 import com.revature.StudyForce.flashcard.dto.RatingResponseDTO;
+import com.revature.StudyForce.flashcard.model.Difficulty;
 import com.revature.StudyForce.flashcard.model.Flashcard;
 import com.revature.StudyForce.flashcard.model.Rating;
 import com.revature.StudyForce.flashcard.repository.FlashcardRepo;
@@ -46,18 +47,21 @@ public class RatingService {
     public RatingResponseDTO createRating(RatingDTO ratingDTO){
         Optional<Flashcard> optFlashcard = FLASHCARD_REPO.findById(ratingDTO.getFlashcardId());
         Optional<User> optUser = USER_REPO.findById(ratingDTO.getUserId());
+        Difficulty difficulty = Difficulty.fromInteger(ratingDTO.getRatingScore());
 
         if(!optFlashcard.isPresent())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Flashcard not found exception");
         if(!optUser.isPresent())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User not found exception");
+        if(difficulty==null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Difficulty must be a number from 1 to 3");
 
-        RATING_REPO.save(new Rating(0,optFlashcard.get(),optUser.get(),ratingDTO.getRatingScore()));
-
+        RATING_REPO.save(new Rating(0,optFlashcard.get(),optUser.get(), difficulty));
         List<Rating> ratings = RATING_REPO.findByFlashcard_id(ratingDTO.getFlashcardId());
+
         int sum = 0;
         for(Rating rating : ratings){
-            sum += rating.getRatingValue().difficultyValue;
+            sum += rating.getRatingValue().ordinal();
         }
         return new RatingResponseDTO(ratings.size(),(sum/ratings.size()));
     }

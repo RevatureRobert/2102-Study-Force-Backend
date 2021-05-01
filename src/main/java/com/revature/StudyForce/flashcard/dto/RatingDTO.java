@@ -24,7 +24,7 @@ public class RatingDTO {
     @Positive
     private int userId;
     @Positive
-    private Difficulty ratingScore;
+    private int ratingScore;
 
     /**
      * Method used to create a RatingDTO from a Rating object
@@ -38,7 +38,7 @@ public class RatingDTO {
             return new RatingDTO(
                     rating.getFlashcard().getId(),
                     rating.getUser().getUserId(),
-                    rating.getRatingValue()
+                    rating.getRatingValue().difficultyValue
             );
         };
     }
