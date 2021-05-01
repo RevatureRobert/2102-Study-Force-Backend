@@ -1,5 +1,6 @@
 package com.revature.StudyForce.stacktrace.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import com.revature.StudyForce.user.model.User;
  * This model represents the solutions users will supply the Stacktrace owner.
  * The Stacktrace owner will choose one of these solutions that solves his problem.
  * @author Joey Elmblad
+ * @author Joshua Swanson
  */
 
 @Entity
@@ -22,6 +24,7 @@ import com.revature.StudyForce.user.model.User;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Solution {
 
     /**
@@ -69,6 +72,5 @@ public class Solution {
      * This is a timestamp of the time a solution was supplied.
      */
     @Column(name = "creation_time")
-    private Date createtionTime;
-
+    private Date creationTime;
 }
