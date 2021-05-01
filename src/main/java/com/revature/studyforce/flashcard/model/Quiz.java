@@ -35,9 +35,6 @@ public class Quiz {
     @ManyToMany(mappedBy = "id")
     @Column
     private Set<Flashcard> flashcards;
-    //TODO:here goes the flashcard model
-    //TODO:generate getters and setters for the flashcard property
-    //TODO: create the relationship with other models
 
 
 
