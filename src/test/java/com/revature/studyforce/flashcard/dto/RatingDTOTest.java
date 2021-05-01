@@ -22,7 +22,7 @@ class RatingDTOTest {
     @Test
     void whenConvertingToDTO_DTOFieldsMatchOriginalObject(){
         User edson = new User(0,"edson@revature.com","password","Edson","Rodriguez",true,false,false, Authority.USER,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
-        Flashcard flashcard = new Flashcard(0,edson,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
+        Flashcard flashcard = new Flashcard(0,edson,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
         Rating rating = new Rating(0,flashcard,edson, Difficulty.EASY);
         RatingDTO r = RatingDTO.ratingToDTO().apply(rating);
 

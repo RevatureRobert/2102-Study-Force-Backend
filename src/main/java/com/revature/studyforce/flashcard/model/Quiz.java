@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+//import com.revature.studyforce.flashcard.model.Flashcard;
+
+import java.util.Set;
+
 /**
  * Quiz model
  *
@@ -28,6 +32,9 @@ public class Quiz {
     @NotNull
     @Column(name = "quiz_name")
     private String quizName;
+    @OneToMany(mappedBy = "id")
+    @Column
+    private Set<Flashcard> flashcards;
     //TODO:here goes the flashcard model
     //TODO:generate getters and setters for the flashcard property
     //TODO: create the relationship with other models
