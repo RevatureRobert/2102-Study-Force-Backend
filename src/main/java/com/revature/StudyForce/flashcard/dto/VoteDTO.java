@@ -4,7 +4,7 @@ import lombok.*;
 
 @Getter
 @Setter
-public class AnswerVoteDTO {
+public class VoteDTO {
 
     private int voteId;
     private int voteValue;

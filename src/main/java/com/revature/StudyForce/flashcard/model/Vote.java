@@ -1,5 +1,6 @@
 package com.revature.StudyForce.flashcard.model;
 
+import com.revature.StudyForce.user.model.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class AnswerVote {
+public class Vote {
 
     // primary key
     @Id
