@@ -19,7 +19,7 @@ import java.util.Optional;
 @Service
 public class BatchService {
 
-    private final BatchRepository batchRepository;
+    BatchRepository batchRepository;
 
     @Autowired
     public BatchService(BatchRepository batchRepository){
