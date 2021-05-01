@@ -41,14 +41,4 @@ public class Flashcard {
     private Timestamp createdTime = Timestamp.valueOf(LocalDateTime.now());
     private Timestamp resolutionTime = Timestamp.valueOf(LocalDateTime.now());
 
-    public Flashcard(User creator, Topic topic, String question, int questionDifficultyTotal, int questionDifficultyAverage, Timestamp createdTime, Timestamp resolutionTime) {
-        this.creator = creator;
-        this.topic = topic;
-        this.question = question;
-        this.questionDifficultyTotal = questionDifficultyTotal;
-        this.questionDifficultyAverage = questionDifficultyAverage;
-        this.createdTime = createdTime;
-        this.resolutionTime = resolutionTime;
-    }
-
 }

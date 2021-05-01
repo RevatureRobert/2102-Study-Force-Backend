@@ -12,6 +12,11 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.function.Function;
 
+/**
+ * Flashcard Data Transfer Object
+ *
+ * @author Luke
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,6 +29,10 @@ public class FlashcardDTO {
     private Timestamp createdTime;
     private Timestamp resolutionTime;
 
+    /**
+     * Converts Flashcard to FlashcardDTO
+     * @return - FlashcardDTO
+     */
     public static Function<Flashcard, FlashcardDTO> convertToDTO() {
         return (flashcard) -> {
 
@@ -41,12 +50,17 @@ public class FlashcardDTO {
         };
     }
 
+    /**
+     * Converts FlashcardDTO to Flashcard
+     * @return - Flashcard
+     */
     public static Function<FlashcardDTO, Flashcard> convertFromDTO() {
         return (flashcardDTO) -> {
 
             Assert.notNull(flashcardDTO, "Flashcard DTO is null");
 
             return new Flashcard(
+                    0,
                     flashcardDTO.getCreator(),
                     flashcardDTO.getTopic(),
                     flashcardDTO.getQuestion(),
