@@ -2,6 +2,7 @@ package com.revature.studyforce.flashcard.service;
 
 import com.revature.studyforce.flashcard.model.Quiz;
 import com.revature.studyforce.flashcard.repository.QuizRepository;
+import com.revature.studyforce.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -49,8 +50,8 @@ public class QuizService {
     }
 
 
-    public Page<Quiz> getQuizzesByUserId(int user_id, Pageable pageable){
-       return QUIZ_REPO.getQuizzesByUserId(user_id, pageable);
+    public Page<Quiz> getQuizzesByUserId(User user, Pageable pageable){
+       return QUIZ_REPO.getQuizzesByUserId(user.getUserId(), pageable);
     }
 
 

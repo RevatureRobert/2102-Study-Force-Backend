@@ -15,6 +15,7 @@ import java.util.Set;
  * Quiz model
  *
  * @author Edson Rodriguez
+ * @author Nick Zimmerman
  */
 @Entity
 @Table(name = "quizzes")
@@ -32,8 +33,7 @@ public class Quiz {
     @NotNull
     @Column(name = "quiz_name")
     private String quizName;
-    @ManyToMany(mappedBy = "id")
-    @Column
+    @ManyToMany
     private Set<Flashcard> flashcards;
 
 
