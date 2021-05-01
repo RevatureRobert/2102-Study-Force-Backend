@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Data
 @Builder
@@ -27,7 +27,7 @@ public class Notification {
     private boolean isRead;
 
     @Column(name = "time_to_live")
-    private Date timeToLive;
+    private Timestamp timeToLive;
 
     @Enumerated
     private FeatureArea featureArea;
