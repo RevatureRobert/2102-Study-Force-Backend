@@ -30,7 +30,7 @@ public class QuizDTOTest {
         deck.add(flashcard1);
         deck.add(flashcard2);
 
-        Quiz quiz = new Quiz(0,nick.getUserId(),"testQuiz",deck);
+        Quiz quiz = new Quiz(0,nick,"testQuiz",deck);
         QuizDTO quizDTO = QuizDTO.quizToDTO().apply(quiz);
 
         Assertions.assertEquals(0,quizDTO.getQuizId());

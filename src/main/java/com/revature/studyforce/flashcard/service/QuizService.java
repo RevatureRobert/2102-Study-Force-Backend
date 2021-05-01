@@ -5,6 +5,7 @@ import com.revature.studyforce.flashcard.repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +48,12 @@ public class QuizService {
         return QUIZ_REPO.findById(quiz.getQuizId());
     }
 
+
+    public Page<Quiz> getQuizzesByUserId(int user_id, Pageable pageable){
+       return QUIZ_REPO.getQuizzesByUserId(user_id, pageable);
+    }
+
+
     /**
      * Ensures permitted offset format
      * @param offset The offset value being validated
@@ -75,12 +82,11 @@ public class QuizService {
      * @return A valid sortby value
      */
     private String validateSortBy(String sortBy){
-        switch (sortBy.toLowerCase(Locale.ROOT)){
-            case "clockin":
-                return "clockIn";
-
-        }
-
+//        switch (sortBy.toLowerCase(Locale.ROOT)){
+//            case "clockin":
+//                return "clockIn";
+//
+//        }
         return null;
     }
 }

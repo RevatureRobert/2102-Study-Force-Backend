@@ -2,6 +2,7 @@ package com.revature.studyforce.flashcard.dto;
 
 import com.revature.studyforce.flashcard.model.Flashcard;
 import com.revature.studyforce.flashcard.model.Quiz;
+import com.revature.studyforce.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,8 +24,7 @@ public class QuizDTO {
 
     @PositiveOrZero
     private int quizId;
-    @Positive
-    private int userId;
+    private User quizUser;
     private String quizName;
     private Set<Flashcard> flashcardSet;
 
@@ -32,12 +32,12 @@ public class QuizDTO {
     public static Function<Quiz,QuizDTO> quizToDTO(){
         return (quiz) -> {
             Assert.notNull(quiz.getQuizId(), "Quiz id is null...");
-            Assert.notNull(quiz.getUserId(), "Quiz has no user Id...");
+            Assert.notNull(quiz.getQuizUser(), "Quiz has no user Id...");
             Assert.notNull(quiz.getQuizName(), "Quiz has no name...");
 
             return new QuizDTO(
                     quiz.getQuizId(),
-                    quiz.getUserId(),
+                    quiz.getQuizUser(),
                     quiz.getQuizName(),
                     quiz.getFlashcards()
             );
