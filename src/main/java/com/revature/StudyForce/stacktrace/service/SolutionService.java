@@ -44,7 +44,7 @@ public class SolutionService {
      * @return solution
      */
     public SolutionDTO submitFirstSolution(SolutionDTO solutionDTO){
-        return SolutionDTO.solutionToDTO().apply(SolutionDTO.dtoToSolution().apply(solutionDTO));
+        return SolutionDTO.solutionToDTO().apply(solutionRepository.save(SolutionDTO.dtoToSolution().apply(solutionDTO)));
     }
 
     /**
