@@ -1,24 +1,19 @@
-package com.revature.StudyForce;
+package com.revature.StudyForce.flashcard.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.StudyForce.flashcard.controller.VoteController;
 import com.revature.StudyForce.flashcard.model.Answer;
 import com.revature.StudyForce.flashcard.model.Vote;
-import com.revature.StudyForce.flashcard.repository.VoteRepo;
-import com.revature.StudyForce.flashcard.service.VoteService;
+import com.revature.StudyForce.flashcard.repository.VoteRepository;
 import com.revature.StudyForce.user.model.User;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -35,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class VoteControllerTest {
 
     @Autowired
-    private VoteRepo voteRepo;
+    private VoteRepository voteRepository;
 
     @Autowired
     private VoteController controller;
@@ -64,7 +59,7 @@ public class VoteControllerTest {
 
     @Test
     public void postVoteTest() throws Exception {
-        voteRepo.save(vote);
+        voteRepository.save(vote);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                 .post("/flashcards/vote")

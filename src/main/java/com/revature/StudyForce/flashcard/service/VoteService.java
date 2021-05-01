@@ -3,43 +3,42 @@ package com.revature.StudyForce.flashcard.service;
 import com.revature.StudyForce.flashcard.dto.VoteDTO;
 import com.revature.StudyForce.flashcard.model.Answer;
 import com.revature.StudyForce.flashcard.model.Vote;
-import com.revature.StudyForce.flashcard.repository.AnswerRepo;
-import com.revature.StudyForce.flashcard.repository.VoteRepo;
+import com.revature.StudyForce.flashcard.repository.AnswerRepository;
+import com.revature.StudyForce.flashcard.repository.VoteRepository;
 import com.revature.StudyForce.user.model.User;
 import com.revature.StudyForce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 public class VoteService {
 
-    private VoteRepo voteRepo;
-    private UserRepository userRepo;
-    private AnswerRepo answerRepo;
+    private VoteRepository voteRepository;
+    private UserRepository userRepository;
+    private AnswerRepository answerRepository;
 
     @Autowired
-    public VoteService(VoteRepo voteRepo, UserRepository userRepo, AnswerRepo answerRepo){
-        this.voteRepo = voteRepo;
-        this.userRepo = userRepo;
-        this.answerRepo = answerRepo;
+    public VoteService(VoteRepository voteRepository, UserRepository userRepo, AnswerRepository answerRepo){
+        this.voteRepository = voteRepository;
+        this.userRepository = userRepo;
+        this.answerRepository = answerRepo;
     }
 
     public VoteDTO addVote(Vote vote) {
+        Optional<Answer> answer = answerRepository.findById(vote.getAnswer().getAnswerId());
+        Optional<User> user = userRepository.findById(vote.getUser().getUserId());
 
-        User user = userRepo.findById(vote.getUser().getUserId()).orElse(null);
-        Answer answer = answerRepo.findById(vote.getAnswer().getAnswerId()).orElse(null);
-        if (user == null) {
-            User u = new User();
-            u.setUserId(vote.getUser().getUserId());
-            userRepo.save(u);
+        if(!user.isPresent())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User not found exception");
+        if(!answer.isPresent())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Answer not found exception");
+        if(vote.getVoteValue() < -1 || vote.getVoteValue() > 1) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Invalid vote value exception");
         }
-        if (answer == null) {
-            Answer a = new Answer();
-            a.setAnswerId(vote.getAnswer().getAnswerId());
-            answerRepo.save(a);
-        }
-        Vote v = voteRepo.save(vote);
-        VoteDTO voteDTO = new VoteDTO();
-        voteDTO.setVoteId(v.getVoteId());
-        voteDTO.setVoteValue(v.getVoteValue());
-        return voteDTO;
+
+        voteRepository.save(vote);
+        return new VoteDTO(vote.getVoteId(),vote.getVoteValue(),answer.get().getAnswerId(),user.get().getUserId());
     }
 }

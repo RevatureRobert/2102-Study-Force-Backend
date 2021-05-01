@@ -1,5 +1,6 @@
 package com.revature.StudyForce.flashcard.controller;
 
+import com.revature.StudyForce.flashcard.dto.VoteDTO;
 import com.revature.StudyForce.flashcard.model.Vote;
 import com.revature.StudyForce.flashcard.service.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class VoteController {
         this.VOTE_SERVICE = voteService;
     }
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<Vote> createAnswerVote(@RequestBody Vote vote) {
         if (VOTE_SERVICE.addVote(vote) == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
