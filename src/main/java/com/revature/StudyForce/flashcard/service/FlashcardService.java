@@ -99,12 +99,11 @@ public class FlashcardService extends AbstractService {
      * @return - returns updated Flashcard
      */
     public FlashcardDTO update(Flashcard flashcard) {
-        Flashcard original = FLASHCARD_REPO.getOne(flashcard.getId());
+        Flashcard original = FLASHCARD_REPO.findById(flashcard.getId()).get();
 
         int id = original.getId();
         original = flashcard;
         original.setId(id);
-    System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"+original.toString() + original.getId());
 
         return FlashcardDTO.convertToDTO().apply(FLASHCARD_REPO.save(original));
     }

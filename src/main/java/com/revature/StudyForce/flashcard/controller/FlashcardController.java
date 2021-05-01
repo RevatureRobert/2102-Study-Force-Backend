@@ -67,7 +67,7 @@ public class FlashcardController {
      * @return - returns Flashcard with the given id
      */
     @GetMapping("/id/{id}")
-    public @ResponseBody FlashcardDTO getById(@PathParam("id") int id) {
+    public @ResponseBody FlashcardDTO getById(@PathVariable("id") Integer id) {
         return flashcardService.getById(id);
     }
 

@@ -2,6 +2,7 @@ package com.revature.StudyForce.flashcard.service;
 
 import com.revature.StudyForce.flashcard.dto.FlashcardDTO;
 import com.revature.StudyForce.flashcard.model.Flashcard;
+import com.revature.StudyForce.flashcard.model.Rating;
 import com.revature.StudyForce.flashcard.repository.FlashcardRepository;
 import com.revature.StudyForce.user.model.User;
 import com.revature.StudyForce.flashcard.model.Topic;
@@ -116,8 +117,9 @@ class FlashcardServiceTest {
 
     @Test
     void updateTest() {
-        Mockito.doReturn(Optional.of(flashcard)).when(flashcardRepository).findById(flashcard.getId());
-        Mockito.doReturn(null).when(flashcardRepository).save(flashcard);
+        Mockito.when(flashcardRepository.findById(flashcard.getId())).thenReturn(Optional.of(flashcard));
+        Mockito.when(flashcardRepository.save(org.mockito.ArgumentMatchers.isA(Flashcard.class))).thenReturn(flashcard);
+
         FlashcardDTO DTO = flashcardService.update(flashcard);
         Assertions.assertNotNull(DTO);
         Assertions.assertEquals(1, DTO.getCreator().getUserId());
