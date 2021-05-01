@@ -26,11 +26,21 @@ import java.util.Optional;
 @Service
 public class UserService {
     private static final String ID_NOT_FOUND_MESSAGE = "User matching provided userId not found, is your JSON malformed?";
-    private final UserRepository USER_REPO;
+    private final UserRepository userRepo;
 
     @Autowired
     public UserService(UserRepository userRepository){
-        this.USER_REPO = userRepository;
+        this.userRepo = userRepository;
+    }
+
+    /**
+     * Persists a user object by calling {@link UserRepository#save(Object)} and returns the newly saved user object as its data transfer representation
+     * @param user The User object being persisted
+     * @return The newly persisted user object converted to its data transfer representation using {@link UserDTO#userToDTO()}
+     */
+    public UserDTO createNewUser(User user) {
+        User saved = userRepo.save(user);
+        return UserDTO.userToDTO().apply(saved);
     }
 
     /**
@@ -43,7 +53,7 @@ public class UserService {
      */
     public Page<UserDTO> getAllUsers(int page, int offset, String sortBy, String order){
         Page<User> users;
-        users = USER_REPO.findAll(PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+        users = userRepo.findAll(PageRequest.of(page, offset, Sort.by(sortBy).descending()));
         return users.map(UserDTO.userToDTO());
     }
 
@@ -52,7 +62,7 @@ public class UserService {
      * @return user with that userId
      */
     public UserDTO getUserById(int id){
-        Optional<User> user = USER_REPO.findById(id);
+        Optional<User> user = userRepo.findById(id);
         return user.map(userMap -> UserDTO.userToDTO().apply(userMap)).orElse(null);
     }
 
@@ -61,7 +71,7 @@ public class UserService {
      * @return user
      */
     public UserDTO getUserByEmail(String email){
-        Optional<User> user = USER_REPO.findByEmail(email);
+        Optional<User> user = userRepo.findByEmail(email);
         return user.map(userMap -> UserDTO.userToDTO().apply(userMap)).orElse(null);
     }
 
@@ -75,7 +85,7 @@ public class UserService {
      */
     public Page<UserDTO> getUserByName(String name, int page, int offset, String sortBy, String order){
         Page<User> users;
-        users = USER_REPO.findByNameIgnoreCase(name, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+        users = userRepo.findByNameIgnoreCase(name, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
         return users.map(UserDTO.userToDTO());
     }
 
@@ -89,7 +99,7 @@ public class UserService {
      */
     public Page<UserDTO> getUserByCreationTime(Timestamp creation, int page, int offset, String sortBy, String order){
         Page<User> users;
-        users = USER_REPO.findByRegistrationTimeAfter(creation, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+        users = userRepo.findByRegistrationTimeAfter(creation, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
         return users.map(UserDTO.userToDTO());
     }
 
@@ -103,13 +113,13 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Field name cannot be null, is your JSON malformed?");
         }
 
-        Optional<User> userOptional = USER_REPO.findById(userNameDTO.getUserId());
+        Optional<User> userOptional = userRepo.findById(userNameDTO.getUserId());
         User user;
 
         if(userOptional.isPresent()){
             user = userOptional.get();
             user.setName(userNameDTO.getName());
-            return UserDTO.userToDTO().apply(USER_REPO.save(user));
+            return UserDTO.userToDTO().apply(userRepo.save(user));
 
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ID_NOT_FOUND_MESSAGE);
@@ -126,13 +136,13 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Field authority cannot be null, is your JSON malformed?");
         }
 
-        Optional<User> userOptional = USER_REPO.findById(userAuthorityDTO.getUserId());
+        Optional<User> userOptional = userRepo.findById(userAuthorityDTO.getUserId());
         User user;
 
         if(userOptional.isPresent()){
             user = userOptional.get();
             user.setAuthority(userAuthorityDTO.getAuthority());
-            return UserDTO.userToDTO().apply(USER_REPO.save(user));
+            return UserDTO.userToDTO().apply(userRepo.save(user));
 
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ID_NOT_FOUND_MESSAGE);
@@ -146,13 +156,13 @@ public class UserService {
      */
     public UserDTO updateUserIsActive(@NotNull UserIsActiveDTO userIsActiveDTO){
 
-        Optional<User> userOptional = USER_REPO.findById(userIsActiveDTO.getUserId());
+        Optional<User> userOptional = userRepo.findById(userIsActiveDTO.getUserId());
         User user;
 
         if(userOptional.isPresent()){
             user = userOptional.get();
             user.setActive(userIsActiveDTO.isActive());
-            return UserDTO.userToDTO().apply(USER_REPO.save(user));
+            return UserDTO.userToDTO().apply(userRepo.save(user));
 
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ID_NOT_FOUND_MESSAGE);

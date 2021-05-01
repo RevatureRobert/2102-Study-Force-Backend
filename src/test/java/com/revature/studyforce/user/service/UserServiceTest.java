@@ -22,7 +22,7 @@ import org.springframework.test.context.TestPropertySource;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @TestPropertySource(locations = "classpath:test-application.properties")
-public class UserServiceTest {
+class UserServiceTest {
 
     @MockBean
     private UserRepository userRepository;
@@ -32,14 +32,13 @@ public class UserServiceTest {
 
     @Test
     void whenCreateUser_callRepository_returnsCorrectUser(){
-        User user = new User("LebronJames@revature.net", "Lebron James", "Pass");
+        User user = new User("LebronJames@revature.net", "Lebron James");
         Mockito.when(userRepository.save(user)).thenReturn(user);
 
         UserDTO response = userService.createNewUser(user);
         Assertions.assertNotNull(response);
         Assertions.assertEquals("LebronJames@revature.net", response.getEmail());
         Assertions.assertEquals("Lebron James", response.getName());
-        Assertions.assertEquals("", response.getPassword());
 
         System.out.println(response);
     }

@@ -20,11 +20,11 @@ import java.sql.Timestamp;
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserService USER_SERVICE;
+    private final UserService userService;
 
     @Autowired
     public UserController(UserService userService){
-        this.USER_SERVICE = userService;
+        this.userService = userService;
     }
 
     /**
@@ -40,7 +40,7 @@ public class UserController {
                                      @RequestParam(value = "offset", required = false, defaultValue = "10") int offset,
                                      @RequestParam(value = "sortby", required = false, defaultValue = "userId") String sortBy,
                                      @RequestParam(value = "order", required = false, defaultValue = "ASC") String order) {
-        return USER_SERVICE.getAllUsers(page, offset, sortBy, order);
+        return userService.getAllUsers(page, offset, sortBy, order);
     }
 
     /**
@@ -49,7 +49,7 @@ public class UserController {
      */
     @GetMapping("/{userId}")
     public UserDTO getUser(@PathVariable(name = "userId") int id){
-        return USER_SERVICE.getUserById(id);
+        return userService.getUserById(id);
     }
 
     /**
@@ -66,7 +66,7 @@ public class UserController {
                                             @RequestParam(value = "offset", required = false, defaultValue = "10") int offset,
                                             @RequestParam(value = "sortby", required = false, defaultValue = "userId") String sortBy,
                                             @RequestParam(value = "order", required = false, defaultValue = "ASC") String order){
-        return USER_SERVICE.getUserByName(name, page,offset,sortBy,order);
+        return userService.getUserByName(name, page,offset,sortBy,order);
     }
 
     /**
@@ -75,7 +75,7 @@ public class UserController {
      */
     @GetMapping("/{email}")
     public UserDTO getUserByEmail(@PathVariable(name = "email") String email){
-        return USER_SERVICE.getUserByEmail(email);
+        return userService.getUserByEmail(email);
     }
 
     /**
@@ -92,7 +92,7 @@ public class UserController {
                                         @RequestParam(value = "offset", required = false, defaultValue = "10") int offset,
                                         @RequestParam(value = "sortby", required = false, defaultValue = "userId") String sortBy,
                                         @RequestParam(value = "order", required = false, defaultValue = "ASC") String order){
-        return USER_SERVICE.getUserByCreationTime(timestamp, page,offset,sortBy,order);
+        return userService.getUserByCreationTime(timestamp, page,offset,sortBy,order);
     }
 
     /**
@@ -102,7 +102,7 @@ public class UserController {
      */
     @PutMapping("/name")
     public UserDTO updateUserName(@RequestBody UserNameDTO userNameDTO){
-        return USER_SERVICE.updateUserName(userNameDTO);
+        return userService.updateUserName(userNameDTO);
     }
 
     /**
@@ -112,7 +112,7 @@ public class UserController {
      */
     @PutMapping("/authority")
     public UserDTO updateUserAuthority(@RequestBody UserAuthorityDTO userAuthorityDTO){
-        return USER_SERVICE.updateUserAuthority(userAuthorityDTO);
+        return userService.updateUserAuthority(userAuthorityDTO);
     }
 
     /**
@@ -122,6 +122,6 @@ public class UserController {
      */
     @PutMapping("/active")
     public UserDTO updateUserIsActive(@RequestBody UserIsActiveDTO userIsActiveDTO){
-        return USER_SERVICE.updateUserIsActive(userIsActiveDTO);
+        return userService.updateUserIsActive(userIsActiveDTO);
     }
 }
