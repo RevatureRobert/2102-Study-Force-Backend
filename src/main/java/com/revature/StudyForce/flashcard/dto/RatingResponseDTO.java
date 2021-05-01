@@ -3,10 +3,13 @@ package com.revature.StudyForce.flashcard.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import javax.validation.constraints.Positive;
 
-
+/**
+ * Data transfer object used as response for the creation of a new rating
+ * It returns the new Rating information
+ * @author Edson Rodriguez
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
