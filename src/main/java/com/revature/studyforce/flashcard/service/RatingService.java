@@ -1,7 +1,7 @@
-package com.revature.StudyForce.flashcard.service;
+package com.revature.studyforce.flashcard.service;
 
-import com.revature.StudyForce.flashcard.model.Rating;
-import com.revature.StudyForce.flashcard.repository.RatingRepository;
+import com.revature.studyforce.flashcard.model.Rating;
+import com.revature.studyforce.flashcard.repository.RatingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

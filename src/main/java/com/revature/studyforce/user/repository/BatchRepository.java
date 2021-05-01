@@ -1,6 +1,6 @@
-package com.revature.StudyForce.user.repository;
+package com.revature.studyforce.user.repository;
 
-import com.revature.StudyForce.user.model.Batch;
+import com.revature.studyforce.user.model.Batch;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

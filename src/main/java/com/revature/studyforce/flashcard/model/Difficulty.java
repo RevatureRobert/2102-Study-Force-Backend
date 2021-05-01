@@ -1,4 +1,4 @@
-package com.revature.StudyForce.flashcard.model;
+package com.revature.studyforce.flashcard.model;
 
 /**
  * Enum used to represent the difficulty of a flashcard
