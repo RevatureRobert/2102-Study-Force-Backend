@@ -42,16 +42,13 @@ public class VoteServiceTest {
 
     @Test
     public void testAddVote() throws Exception{
-        List<Vote> votes = new ArrayList<>();
         User u = new User(0,"jesus.christ@revature.com","password","Jesus","Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Answer a = new Answer(0,0,0,"check stackoverflow",5,false,false,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Vote vote = new Vote(6,1,a,u);
-        votes.add(vote);
 
         userRepo = mock(UserRepository.class);
         answerRepo = mock(AnswerRepository.class);
         voteRepository = mock(VoteRepository.class);
-        voteService = mock(VoteService.class);
 
         Mockito.when(answerRepo.findById(0)).thenReturn(Optional.of(a));
         Mockito.when(userRepo.findById(0)).thenReturn(Optional.of(u));
