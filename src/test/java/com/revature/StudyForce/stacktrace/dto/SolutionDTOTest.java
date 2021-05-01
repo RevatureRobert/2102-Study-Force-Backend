@@ -4,6 +4,8 @@ import com.revature.StudyForce.stacktrace.model.Solution;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.function.Function;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -43,7 +45,8 @@ class SolutionDTOTest {
      */
     @Test
     void SolutionToDTONullSolutionTest(){
-        assertThrows(IllegalArgumentException.class, () -> SolutionDTO.solutionToDTO().apply(null));
+        Function<Solution, SolutionDTO> solutionToDTOFunction = SolutionDTO.solutionToDTO();
+        assertThrows(IllegalArgumentException.class, () -> solutionToDTOFunction.apply(null));
     }
 
     /**
@@ -66,6 +69,7 @@ class SolutionDTOTest {
      */
     @Test
     void DTOToSolutionNullSolutionDTOTest(){
-        assertThrows(IllegalArgumentException.class, () -> SolutionDTO.dtoToSolution().apply(null));
+        Function<SolutionDTO, Solution> dtoToSolutionFunction = SolutionDTO.dtoToSolution();
+        assertThrows(IllegalArgumentException.class, () -> dtoToSolutionFunction.apply(null));
     }
 }
