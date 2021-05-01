@@ -135,6 +135,17 @@ class FlashcardServiceTest {
     }
 
     @Test
+    void updateWithNullTest() {
+        Mockito.when(flashcardRepository.findById(flashcard.getId())).thenReturn(Optional.of(flashcard));
+        Mockito.when(flashcardRepository.save(org.mockito.ArgumentMatchers.isA(Flashcard.class))).thenReturn(flashcard);
+
+        Flashcard f2 = new Flashcard();
+        f2.setId(-1);
+
+        Assertions.assertThrows(AssertionError.class, () -> flashcardService.update(f2));
+    }
+
+    @Test
     void deleteTest() {
         Mockito.doReturn(Optional.of(flashcard)).when(flashcardRepository).findById(flashcard.getId());
         FlashcardDTO DTO = flashcardService.delete(flashcard);
