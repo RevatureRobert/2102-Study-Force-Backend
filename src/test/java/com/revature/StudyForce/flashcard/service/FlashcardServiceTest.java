@@ -64,7 +64,11 @@ class FlashcardServiceTest {
     @Test
     void getAllFlashcardsTest() {
         Mockito.doReturn(flashcardPage).when(flashcardRepository).findAll(any(PageRequest.class));
-        Page<FlashcardDTO> DTOs = flashcardService.getAll(0,3,"id","desc");
+        Page<FlashcardDTO> DTOs = flashcardService.getAll(0,3,"difficulty","asc");
+        DTOs = flashcardService.getAll(0,3,"topic","");
+        DTOs = flashcardService.getAll(0,3,"created","desc");
+        DTOs = flashcardService.getAll(0,3,"resolved","desc");
+        DTOs = flashcardService.getAll(0,3,"id","desc");
         FlashcardDTO DTO = DTOs.getContent().get(0);
         Assertions.assertNotNull(DTO);
         Assertions.assertEquals(1, DTO.getCreator().getUserId());
