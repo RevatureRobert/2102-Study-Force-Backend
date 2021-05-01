@@ -1,4 +1,4 @@
-package com.revature.StudyForce.flashcard.dto;
+package com.revature.studyforce.flashcard.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

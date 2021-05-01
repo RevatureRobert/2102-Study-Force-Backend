@@ -1,7 +1,7 @@
-package com.revature.StudyForce.flashcard.dto;
+package com.revature.studyforce.flashcard.dto;
 
-import com.revature.StudyForce.flashcard.model.Difficulty;
-import com.revature.StudyForce.flashcard.model.Rating;
+import com.revature.studyforce.flashcard.model.Difficulty;
+import com.revature.studyforce.flashcard.model.Rating;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

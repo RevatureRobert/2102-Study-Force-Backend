@@ -1,14 +1,14 @@
-package com.revature.StudyForce.flashcard.service;
+package com.revature.studyforce.flashcard.service;
 
-import com.revature.StudyForce.flashcard.dto.RatingDTO;
-import com.revature.StudyForce.flashcard.dto.RatingResponseDTO;
-import com.revature.StudyForce.flashcard.model.Difficulty;
-import com.revature.StudyForce.flashcard.model.Flashcard;
-import com.revature.StudyForce.flashcard.model.Rating;
-import com.revature.StudyForce.flashcard.repository.FlashcardRepo;
-import com.revature.StudyForce.flashcard.repository.RatingRepository;
-import com.revature.StudyForce.user.model.User;
-import com.revature.StudyForce.user.repository.UserRepository;
+import com.revature.studyforce.flashcard.dto.RatingDTO;
+import com.revature.studyforce.flashcard.dto.RatingResponseDTO;
+import com.revature.studyforce.flashcard.model.Difficulty;
+import com.revature.studyforce.flashcard.model.Flashcard;
+import com.revature.studyforce.flashcard.model.Rating;
+import com.revature.studyforce.flashcard.repository.FlashcardRepo;
+import com.revature.studyforce.flashcard.repository.RatingRepository;
+import com.revature.studyforce.user.model.User;
+import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

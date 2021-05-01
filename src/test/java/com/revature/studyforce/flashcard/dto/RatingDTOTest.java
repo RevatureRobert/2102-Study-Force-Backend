@@ -1,10 +1,10 @@
-package com.revature.StudyForce.flashcard.dto;
+package com.revature.studyforce.flashcard.dto;
 
-import com.revature.StudyForce.flashcard.model.Difficulty;
-import com.revature.StudyForce.flashcard.model.Flashcard;
-import com.revature.StudyForce.flashcard.model.Rating;
-import com.revature.StudyForce.user.model.Authority;
-import com.revature.StudyForce.user.model.User;
+import com.revature.studyforce.flashcard.model.Difficulty;
+import com.revature.studyforce.flashcard.model.Flashcard;
+import com.revature.studyforce.flashcard.model.Rating;
+import com.revature.studyforce.user.model.Authority;
+import com.revature.studyforce.user.model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

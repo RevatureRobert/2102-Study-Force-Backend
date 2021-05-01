@@ -1,7 +1,7 @@
-package com.revature.StudyForce.flashcard.service;
+package com.revature.studyforce.flashcard.service;
 
-import com.revature.StudyForce.flashcard.model.Answer;
-import com.revature.StudyForce.flashcard.repository.AnswerRepository;
+import com.revature.studyforce.flashcard.model.Answer;
+import com.revature.studyforce.flashcard.repository.AnswerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

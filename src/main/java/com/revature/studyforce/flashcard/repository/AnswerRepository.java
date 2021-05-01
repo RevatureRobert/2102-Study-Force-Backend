@@ -1,6 +1,6 @@
-package com.revature.StudyForce.flashcard.repository;
+package com.revature.studyforce.flashcard.repository;
 
-import com.revature.StudyForce.flashcard.model.Answer;
+import com.revature.studyforce.flashcard.model.Answer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;

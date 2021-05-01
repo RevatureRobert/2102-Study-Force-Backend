@@ -1,11 +1,11 @@
-package com.revature.StudyForce.flashcard.integration;
+package com.revature.studyforce.flashcard.integration;
 
-import com.revature.StudyForce.flashcard.controller.RatingController;
-import com.revature.StudyForce.flashcard.model.Flashcard;
-import com.revature.StudyForce.flashcard.repository.FlashcardRepo;
-import com.revature.StudyForce.user.model.Authority;
-import com.revature.StudyForce.user.model.User;
-import com.revature.StudyForce.user.repository.UserRepository;
+import com.revature.studyforce.flashcard.controller.RatingController;
+import com.revature.studyforce.flashcard.model.Flashcard;
+import com.revature.studyforce.flashcard.repository.FlashcardRepo;
+import com.revature.studyforce.user.model.Authority;
+import com.revature.studyforce.user.model.User;
+import com.revature.studyforce.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

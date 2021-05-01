@@ -1,8 +1,8 @@
-package com.revature.StudyForce.flashcard.controller;
+package com.revature.studyforce.flashcard.controller;
 
-import com.revature.StudyForce.flashcard.dto.RatingDTO;
-import com.revature.StudyForce.flashcard.dto.RatingResponseDTO;
-import com.revature.StudyForce.flashcard.service.RatingService;
+import com.revature.studyforce.flashcard.dto.RatingDTO;
+import com.revature.studyforce.flashcard.dto.RatingResponseDTO;
+import com.revature.studyforce.flashcard.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

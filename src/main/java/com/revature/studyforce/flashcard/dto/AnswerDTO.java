@@ -1,4 +1,4 @@
-package com.revature.StudyForce.flashcard.dto;
+package com.revature.studyforce.flashcard.dto;
 
 public class AnswerDTO {
     private int flashcardId;

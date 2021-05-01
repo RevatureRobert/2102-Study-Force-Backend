@@ -1,8 +1,8 @@
-package com.revature.StudyForce.flashcard.controller;
+package com.revature.studyforce.flashcard.controller;
 
-import com.revature.StudyForce.flashcard.dto.TopicDTO;
-import com.revature.StudyForce.flashcard.model.Topic;
-import com.revature.StudyForce.flashcard.service.TopicService;
+import com.revature.studyforce.flashcard.dto.TopicDTO;
+import com.revature.studyforce.flashcard.model.Topic;
+import com.revature.studyforce.flashcard.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
