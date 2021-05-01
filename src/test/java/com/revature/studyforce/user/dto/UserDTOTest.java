@@ -1,4 +1,4 @@
-package com.revature.studyforce.DTO;
+package com.revature.studyforce.user.dto;
 
 import com.revature.studyforce.user.dto.UserDTO;
 import com.revature.studyforce.user.model.Authority;
