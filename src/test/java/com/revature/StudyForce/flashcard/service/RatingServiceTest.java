@@ -11,7 +11,6 @@ import com.revature.StudyForce.user.model.Authority;
 import com.revature.StudyForce.user.model.User;
 import com.revature.StudyForce.user.repository.UserRepository;
 import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +18,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Edson Rodriguez
+ */
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @TestPropertySource(locations = "classpath:test-application.properties")
@@ -58,6 +59,7 @@ class RatingServiceTest {
         assertNotNull(res);
         assertTrue(res.getRating()>0);
         assertTrue(res.getTotalRatings()>0);
+
         System.out.println(res);
     }
 }
