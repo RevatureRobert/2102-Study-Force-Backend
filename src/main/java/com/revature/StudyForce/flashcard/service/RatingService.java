@@ -29,13 +29,14 @@ public class RatingService {
     /**
      * Constructor used to instantiate the necessary repository's
      * @param ratingRepository {@link RatingRepository}
-     * @param flashcardRepo {@link FlashcardRepository}
+     * @param flashcardRepository {@link FlashcardRepository}
      * @param userRepository {@link UserRepository}
      */
     @Autowired
-    public RatingService(RatingRepository ratingRepository,FlashcardRepository flashcardRepo,UserRepository userRepository){
+    public RatingService(RatingRepository ratingRepository,FlashcardRepository flashcardRepository,UserRepository userRepository){
+
         this.RATING_REPO = ratingRepository;
-        this.FLASHCARD_REPO = flashcardRepo;
+        this.FLASHCARD_REPO = flashcardRepository;
         this.USER_REPO =userRepository;
     }
 

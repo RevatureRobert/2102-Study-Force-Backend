@@ -17,5 +17,5 @@ import java.util.List;
 public interface FlashcardRepository extends JpaRepository<Flashcard, Integer> {
 
     // Find questions by difficulty
-    Page<Flashcard> findALlByDifficulty(int questionDifficultyTotal, Pageable pageable);
+    Page<Flashcard> findALlByQuestionDifficultyTotal(int questionDifficultyTotal, Pageable pageable);
 }

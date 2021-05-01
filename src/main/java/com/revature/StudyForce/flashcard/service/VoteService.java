@@ -9,10 +9,12 @@ import com.revature.StudyForce.user.model.User;
 import com.revature.StudyForce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
+@Service
 public class VoteService {
 
     private VoteRepository voteRepository;

@@ -1,17 +1,13 @@
 package com.revature.StudyForce.flashcard.service;
 
 import com.revature.StudyForce.flashcard.dto.FlashcardDTO;
-import com.revature.StudyForce.flashcard.model.Answer;
 import com.revature.StudyForce.flashcard.model.Flashcard;
-import com.revature.StudyForce.flashcard.repository.AnswerRepository;
 import com.revature.StudyForce.flashcard.repository.FlashcardRepository;
-import com.revature.StudyForce.flashcard.repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -71,9 +67,9 @@ public class FlashcardService extends AbstractService {
         Page<Flashcard> flashcards;
 
         if (order.equalsIgnoreCase("DESC")) {
-            flashcards = FLASHCARD_REPO.findALlByDifficulty(difficulty, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+            flashcards = FLASHCARD_REPO.findALlByQuestionDifficultyTotal(difficulty, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
         } else {
-            flashcards = FLASHCARD_REPO.findALlByDifficulty(difficulty, PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
+            flashcards = FLASHCARD_REPO.findALlByQuestionDifficultyTotal(difficulty, PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
         }
 
         return flashcards.map(FlashcardDTO.convertToDTO());
@@ -108,6 +104,7 @@ public class FlashcardService extends AbstractService {
         int id = original.getId();
         original = flashcard;
         original.setId(id);
+    System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"+original.toString() + original.getId());
 
         return FlashcardDTO.convertToDTO().apply(FLASHCARD_REPO.save(original));
     }

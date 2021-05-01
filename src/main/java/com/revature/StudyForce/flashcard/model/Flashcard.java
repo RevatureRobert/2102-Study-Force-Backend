@@ -32,6 +32,7 @@ public class Flashcard {
     @NotNull
     @ManyToOne
     private User creator;
+    @ManyToOne
     private Topic topic;
     @Column(nullable = false)
     private String question;
