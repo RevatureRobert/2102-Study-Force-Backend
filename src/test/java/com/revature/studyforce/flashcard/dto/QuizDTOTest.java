@@ -15,11 +15,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * Test class for the QuizDTO
  * @author Nick Zimmerman
  */
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test-application.properties")
-public class QuizDTOTest {
+class QuizDTOTest {
 
     @Test
     void whenConvertingToDTO_DTOFieldsMatchOriginalObject(){
@@ -34,6 +35,30 @@ public class QuizDTOTest {
         QuizDTO quizDTO = QuizDTO.quizToDTO().apply(quiz);
 
         Assertions.assertEquals(0,quizDTO.getQuizId());
+        Assertions.assertEquals("mscott@dunder.com",quizDTO.getQuizUser().getEmail());
+        Assertions.assertEquals("testQuiz",quizDTO.getQuizName());
+        Assertions.assertTrue (quizDTO.getFlashcardSet().contains(flashcard1));
+        Assertions.assertTrue (quizDTO.getFlashcardSet().contains(flashcard2));
+
+    }
+
+    @Test
+    void whenConvertingToQuiz_QuizFieldsMatchOriginalObject(){
+        User nick = new User(0, "mscott@dunder.com","password","Michael","Scott",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        Flashcard flashcard1 = new Flashcard(0,nick,"Whats my favorite color?",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
+        Flashcard flashcard2 = new Flashcard(0,nick,"Can I go to the bathroom?",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
+        Set<Flashcard> deck = new HashSet<>();
+        deck.add(flashcard1);
+        deck.add(flashcard2);
+
+        QuizDTO quizDTO = new QuizDTO(0,nick,"testQuiz",deck);
+        Quiz quiz = QuizDTO.DTOToQuiz().apply(quizDTO);
+
+        Assertions.assertEquals(0,quiz.getQuizId());
+        Assertions.assertEquals("mscott@dunder.com",quiz.getQuizUser().getEmail());
+        Assertions.assertEquals("testQuiz",quiz.getQuizName());
+        Assertions.assertTrue (quiz.getFlashcards().contains(flashcard1));
+        Assertions.assertTrue (quiz.getFlashcards().contains(flashcard2));
 
     }
 

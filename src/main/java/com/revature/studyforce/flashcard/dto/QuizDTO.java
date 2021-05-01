@@ -32,7 +32,7 @@ public class QuizDTO {
     public static Function<Quiz,QuizDTO> quizToDTO(){
         return (quiz) -> {
             Assert.notNull(quiz.getQuizId(), "Quiz id is null...");
-            Assert.notNull(quiz.getQuizUser(), "Quiz has no user Id...");
+            Assert.notNull(quiz.getQuizUser(), "Quiz has no associated user...");
             Assert.notNull(quiz.getQuizName(), "Quiz has no name...");
 
             return new QuizDTO(
@@ -41,6 +41,22 @@ public class QuizDTO {
                     quiz.getQuizName(),
                     quiz.getFlashcards()
             );
+        };
+    }
+
+    /**
+     * Supplies a function that converts a quizDTO to a Quiz object
+     * @return a function
+     */
+    public static Function<QuizDTO,Quiz> DTOToQuiz(){
+        return (quizDTO) -> {
+            Assert.notNull(quizDTO, "quizDTO is null");
+
+            return new Quiz(
+                    quizDTO.getQuizId(),
+                    quizDTO.getQuizUser(),
+                    quizDTO.getQuizName(),
+                    quizDTO.getFlashcardSet());
         };
     }
 
