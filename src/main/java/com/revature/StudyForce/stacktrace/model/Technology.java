@@ -24,7 +24,7 @@ public class Technology {
      * Primary Key for each entry
      */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "technology_id")
     private int technologyId;
     /**
