@@ -6,12 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/stacktrace")
 public class StackTraceController {
 
     @Autowired
     private StacktraceService stacktraceService;
+
+    /**
+     * Gets all Stacktraces
+     * @return A list of Stacktraces
+     */
+    @GetMapping()
+    public List<StacktraceDTO> getAllStackTraces() {
+        return stacktraceService.getAllStacktraces();
+    }
 
     /**
      * Gets all stack traces with pagination and sorting
@@ -21,15 +32,15 @@ public class StackTraceController {
      * @param order The order in which the list is displayed ["ASC"|"DESC"]
      * @return The page of data transfer representations of all stack trace objects with pagination and sorting applied
      */
-    @GetMapping()
-    public Page<StacktraceDTO> getAllStackTraces(
+    @GetMapping("/page")
+    public Page<StacktraceDTO> getPageStacktraces(
             @RequestParam(value="page", required = false, defaultValue = "0") int page,
             @RequestParam(value = "offset", required = false, defaultValue = "25") int offset,
             @RequestParam(value = "sort_by", required = false, defaultValue = "stacktraceId") String sortBy,
             @RequestParam(value = "order", required = false, defaultValue = "DESC") String order,
             @RequestParam(value = "technology_id", required = false, defaultValue = "Nothing") String technologyIdString){
         if (technologyIdString.equalsIgnoreCase("Nothing")) {
-            return stacktraceService.getAllStacktraces(page,offset,sortBy,order);
+            return stacktraceService.getPageStacktraces(page,offset,sortBy,order);
         } else {
             int technologyId;
             try {
@@ -47,7 +58,7 @@ public class StackTraceController {
      * @return The data transfer representation of the requested Stacktrace
      */
     @GetMapping("/{stacktraceId}")
-    public StacktraceDTO getCustomerById(@PathVariable(name = "stacktraceId") int id){
+    public StacktraceDTO getStacktraceById(@PathVariable(name = "stacktraceId") int id){
         return stacktraceService.getStacktraceById(id);
     }
 }

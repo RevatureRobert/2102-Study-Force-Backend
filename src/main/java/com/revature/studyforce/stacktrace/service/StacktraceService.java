@@ -9,8 +9,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * The StackService allows for communication with {@link StacktraceRepository} and enforces data constraints on requests to repository
@@ -23,6 +25,14 @@ public class StacktraceService {
     private  StacktraceRepository stacktraceRepo;
 
     /**
+     * Gets all Stacktraces
+     * @return A list of Stacktraces
+     */
+    public List<StacktraceDTO> getAllStacktraces() {
+        return stacktraceRepo.findAll().stream().map(StacktraceDTO.stacktraceToDTO()).collect(Collectors.toList());
+    }
+
+    /**
      * Gets all Stacktraces, applying pagination and sorting
      * @param page The page to be selected defaults to 0 if page could not be understood
      * @param offset The number of elements per page [5|10|25|50|100] defaults to 25 if offset could not be understood
@@ -30,7 +40,7 @@ public class StacktraceService {
      * @param order The order in which the list is displayed ["ASC"|"DESC"]
      * @return The page of data transfer representations of all stacktrace objects with pagination and sorting applied
      */
-    public Page<StacktraceDTO> getAllStacktraces(int page, int offset, String sortBy, String order){
+    public Page<StacktraceDTO> getPageStacktraces(int page, int offset, String sortBy, String order){
 
         page = validatePage(page);
         offset = validateOffset(offset);

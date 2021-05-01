@@ -27,7 +27,7 @@ import java.util.Optional;
  */
 
 @SpringBootTest
-public class StacktraceServiceTests {
+class StacktraceServiceTests {
 
     @MockBean
     private StacktraceRepository stacktraceRepository;
@@ -45,7 +45,7 @@ public class StacktraceServiceTests {
 
         Mockito.when(stacktraceRepository.findAll(org.mockito.ArgumentMatchers.isA(Pageable.class))).thenReturn(stacktraces);
 
-        Page<StacktraceDTO> response = stacktraceService.getAllStacktraces(0, 5, "title", "DESC");
+        Page<StacktraceDTO> response = stacktraceService.getPageStacktraces(0, 5, "title", "DESC");
         Assertions.assertNotNull(response);
         Assertions.assertEquals(0, response.getContent().get(0).getStacktraceId());
         Assertions.assertEquals(0, response.getContent().get(0).getUser().getUserId());
