@@ -32,6 +32,7 @@ public class Flashcard {
     @NotNull
     @ManyToOne
     private User creator;
+    @ManyToOne
     private Topic topic;
     @Column(nullable = false)
     private String question;
@@ -39,15 +40,5 @@ public class Flashcard {
     private int questionDifficultyAverage = 0;
     private Timestamp createdTime = Timestamp.valueOf(LocalDateTime.now());
     private Timestamp resolutionTime = Timestamp.valueOf(LocalDateTime.now());
-
-    public Flashcard(User creator, Topic topic, String question, int questionDifficultyTotal, int questionDifficultyAverage, Timestamp createdTime, Timestamp resolutionTime) {
-        this.creator = creator;
-        this.topic = topic;
-        this.question = question;
-        this.questionDifficultyTotal = questionDifficultyTotal;
-        this.questionDifficultyAverage = questionDifficultyAverage;
-        this.createdTime = createdTime;
-        this.resolutionTime = resolutionTime;
-    }
 
 }

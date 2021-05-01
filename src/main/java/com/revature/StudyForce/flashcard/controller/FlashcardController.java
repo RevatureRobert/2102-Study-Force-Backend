@@ -57,7 +57,7 @@ public class FlashcardController {
             @RequestParam(name = "offset", defaultValue = "10", required = false) int offset,
             @RequestParam(name = "sortby", defaultValue = "id", required = false) String sortBy,
             @RequestParam(name = "order", defaultValue = "desc", required = false) String order,
-            @RequestParam(name = "difficulty", required = true) int difficulty) {
+            @RequestParam(name = "difficulty", required = false) Integer difficulty) {
         return flashcardService.getAllByDifficulty(page, offset, sortBy, order, difficulty);
     }
 
@@ -67,7 +67,7 @@ public class FlashcardController {
      * @return - returns Flashcard with the given id
      */
     @GetMapping("/id/{id}")
-    public @ResponseBody FlashcardDTO getById(@PathParam("id") int id) {
+    public @ResponseBody FlashcardDTO getById(@PathVariable("id") Integer id) {
         return flashcardService.getById(id);
     }
 

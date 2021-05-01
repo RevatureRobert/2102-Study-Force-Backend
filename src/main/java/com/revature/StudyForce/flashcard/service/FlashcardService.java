@@ -1,17 +1,13 @@
 package com.revature.StudyForce.flashcard.service;
 
 import com.revature.StudyForce.flashcard.dto.FlashcardDTO;
-import com.revature.StudyForce.flashcard.model.Answer;
 import com.revature.StudyForce.flashcard.model.Flashcard;
-import com.revature.StudyForce.flashcard.repository.AnswerRepository;
 import com.revature.StudyForce.flashcard.repository.FlashcardRepository;
-import com.revature.StudyForce.flashcard.repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -23,7 +19,7 @@ import java.util.Locale;
 @Service
 public class FlashcardService extends AbstractService {
 
-    private FlashcardRepository FLASHCARD_REPO;
+    private final FlashcardRepository FLASHCARD_REPO;
 
     @Autowired
     public FlashcardService(FlashcardRepository flashcardRepository){
@@ -71,9 +67,9 @@ public class FlashcardService extends AbstractService {
         Page<Flashcard> flashcards;
 
         if (order.equalsIgnoreCase("DESC")) {
-            flashcards = FLASHCARD_REPO.findALlByDifficulty(difficulty, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+            flashcards = FLASHCARD_REPO.findALlByQuestionDifficultyTotal(difficulty, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
         } else {
-            flashcards = FLASHCARD_REPO.findALlByDifficulty(difficulty, PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
+            flashcards = FLASHCARD_REPO.findALlByQuestionDifficultyTotal(difficulty, PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
         }
 
         return flashcards.map(FlashcardDTO.convertToDTO());
@@ -85,7 +81,7 @@ public class FlashcardService extends AbstractService {
      * @return - returns Flashcard with the given id
      */
     public FlashcardDTO getById(int id) {
-        return FlashcardDTO.convertToDTO().apply(FLASHCARD_REPO.findById(id).get());
+        return FlashcardDTO.convertToDTO().apply(FLASHCARD_REPO.findById(id).orElse(null));
     }
 
     /**
@@ -103,12 +99,14 @@ public class FlashcardService extends AbstractService {
      * @return - returns updated Flashcard
      */
     public FlashcardDTO update(Flashcard flashcard) {
-        Flashcard original = FLASHCARD_REPO.getOne(flashcard.getId());
+        Flashcard original = FLASHCARD_REPO.findById(flashcard.getId()).orElse(null);
 
-        int id = original.getId();
-        original = flashcard;
-        original.setId(id);
-
+        if (original != null) {
+            int id = original.getId();
+            original = flashcard;
+            original.setId(id);
+        }
+        assert original != null;
         return FlashcardDTO.convertToDTO().apply(FLASHCARD_REPO.save(original));
     }
 
