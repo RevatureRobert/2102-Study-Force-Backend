@@ -1,6 +1,5 @@
 package com.revature.studyforce.user.model;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
