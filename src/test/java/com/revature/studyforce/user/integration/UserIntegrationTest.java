@@ -37,13 +37,11 @@ public class UserIntegrationTest {
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/user/create")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"email\" : \"LebronJames@revature.net\", \"password\" : \"Pass\", \"name\" : \"Lebron James\"," +
-                        "\"authority\" : \"USER\"}"))
+                .content("{\"email\" : \"LebronJames@revature.net\", \"password\" : \"Pass\", \"name\" : \"Lebron James\"}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("LebronJames@revature.net"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.password").value(""))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Lebron James"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.authority").value("USER"))
                 .andReturn();
         System.out.println(result.getResponse().getContentAsString());
     }
