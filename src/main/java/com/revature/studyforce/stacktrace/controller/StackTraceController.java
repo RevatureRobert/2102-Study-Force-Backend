@@ -9,12 +9,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/stacktrace")
 public class StackTraceController {
-    private final StacktraceService STACKTRACE_SERVICE;
 
     @Autowired
-    public StackTraceController(StacktraceService stacktraceService){
-        this.STACKTRACE_SERVICE = stacktraceService;
-    }
+    private StacktraceService stacktraceService;
+
     /**
      * Gets all stack traces with pagination and sorting
      * @param page The page to be selected
@@ -27,11 +25,11 @@ public class StackTraceController {
     public Page<StacktraceDTO> getAllStackTraces(
             @RequestParam(value="page", required = false, defaultValue = "0") int page,
             @RequestParam(value = "offset", required = false, defaultValue = "25") int offset,
-            @RequestParam(value = "sortby", required = false, defaultValue = "stacktraceId") String sortBy,
-            @RequestParam(value = "order", required = false, defaultValue = "ASC") String order,
-            @RequestParam(value = "technologyid", required = false, defaultValue = "Nothing") String technologyIdString){
+            @RequestParam(value = "sort_by", required = false, defaultValue = "stacktraceId") String sortBy,
+            @RequestParam(value = "order", required = false, defaultValue = "DESC") String order,
+            @RequestParam(value = "technology_id", required = false, defaultValue = "Nothing") String technologyIdString){
         if (technologyIdString.equalsIgnoreCase("Nothing")) {
-            return STACKTRACE_SERVICE.getAllStacktraces(page,offset,sortBy,order);
+            return stacktraceService.getAllStacktraces(page,offset,sortBy,order);
         } else {
             int technologyId;
             try {
@@ -39,9 +37,10 @@ public class StackTraceController {
             } catch (NumberFormatException e) {
                 return null;
             }
-            return STACKTRACE_SERVICE.getAllStacktracesByTechnologyId(technologyId,page,offset,sortBy,order);
+            return stacktraceService.getAllStacktracesByTechnologyId(technologyId,page,offset,sortBy,order);
         }
     }
+
     /**
      * Gets stacktrace who's id matches provided id
      * @param id The id of the customer
@@ -49,6 +48,6 @@ public class StackTraceController {
      */
     @GetMapping("/{stacktraceId}")
     public StacktraceDTO getCustomerById(@PathVariable(name = "stacktraceId") int id){
-        return STACKTRACE_SERVICE.getStacktraceById(id);
+        return stacktraceService.getStacktraceById(id);
     }
 }
