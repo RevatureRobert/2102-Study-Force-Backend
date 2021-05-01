@@ -5,7 +5,13 @@ package com.revature.StudyForce.flashcard.model;
  * @author Edson Rodriguez
  */
 public enum Difficulty {
-    EASY,
-    MEDIUM,
-    HARD
+    EASY(1),
+    MEDIUM(2),
+    HARD(3);
+
+    public final int difficultyValue;
+
+    Difficulty(int value){
+        this.difficultyValue = value;
+    }
 }

@@ -2,7 +2,6 @@ package com.revature.StudyForce.flashcard.controller;
 
 import com.revature.StudyForce.flashcard.dto.RatingDTO;
 import com.revature.StudyForce.flashcard.dto.RatingResponseDTO;
-import com.revature.StudyForce.flashcard.model.Rating;
 import com.revature.StudyForce.flashcard.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +29,6 @@ public class RatingController {
      * @param rating the data transfer object that contains the flashcardId, userId and difficulty rating to save the new rating record
      * @return A data transfer object that represents the newly created rating object
      */
-    //TODO: change the return type for a DTO
     @PostMapping("/")
     public RatingResponseDTO createRating(@RequestBody RatingDTO rating ){
         return RATING_SERVICE.createRating(rating);
