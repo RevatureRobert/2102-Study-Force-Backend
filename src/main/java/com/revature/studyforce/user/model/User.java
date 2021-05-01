@@ -45,7 +45,7 @@ public class User {
     @Column(name = "is_active")
     private boolean isActive;
 
-    @ColumnDefault ("true")
+    @ColumnDefault("true")
     @Column(name = "is_subscribed_flashcard")
     private boolean isSubscribedFlashcard;
 
@@ -64,4 +64,10 @@ public class User {
 
     @Column(name = "last_login")
     private Timestamp lastLogin;
+
+    public User(String email, String name, String password){
+        this.email = email;
+        this.name= name;
+        this.password = password;
+    }
 }
