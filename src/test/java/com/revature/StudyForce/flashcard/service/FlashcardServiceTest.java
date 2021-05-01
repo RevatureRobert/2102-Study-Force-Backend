@@ -10,19 +10,27 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@SpringBootTest
+@TestPropertySource(locations = "classpath:test-application.properties")
 class FlashcardServiceTest {
 
     @Autowired
@@ -68,7 +76,7 @@ class FlashcardServiceTest {
 
     @Test
     void getAllByDifficultyTest() {
-        Mockito.doReturn(flashcardPage).when(flashcardRepository).findALlByDifficulty(2, any(PageRequest.class));
+        Mockito.doReturn(flashcardPage).when(flashcardRepository).findALlByQuestionDifficultyTotal(eq(2), any(PageRequest.class));
         Page<FlashcardDTO> DTOs = flashcardService.getAllByDifficulty(0,3,"id","desc", 2);
         FlashcardDTO DTO = DTOs.getContent().get(0);
         Assertions.assertNotNull(DTO);
@@ -82,7 +90,7 @@ class FlashcardServiceTest {
 
     @Test
     void getByIdTest() {
-        Mockito.doReturn(flashcard).when(flashcardRepository).findById(1);
+        Mockito.doReturn(Optional.of(flashcard)).when(flashcardRepository).findById(flashcard.getId());
         FlashcardDTO DTO = flashcardService.getById(1);
         Assertions.assertNotNull(DTO);
         Assertions.assertEquals(1, DTO.getCreator().getUserId());
@@ -108,7 +116,7 @@ class FlashcardServiceTest {
 
     @Test
     void updateTest() {
-        Mockito.doReturn(flashcard).when(flashcardRepository).findById(1);
+        Mockito.doReturn(Optional.of(flashcard)).when(flashcardRepository).findById(flashcard.getId());
         Mockito.doReturn(null).when(flashcardRepository).save(flashcard);
         FlashcardDTO DTO = flashcardService.update(flashcard);
         Assertions.assertNotNull(DTO);
@@ -122,7 +130,7 @@ class FlashcardServiceTest {
 
     @Test
     void deleteTest() {
-        Mockito.doReturn(flashcard).when(flashcardRepository).findById(1);
+        Mockito.doReturn(Optional.of(flashcard)).when(flashcardRepository).findById(flashcard.getId());
         FlashcardDTO DTO = flashcardService.delete(flashcard);
         Assertions.assertNotNull(DTO);
         Assertions.assertEquals(1, DTO.getCreator().getUserId());

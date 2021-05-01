@@ -2,7 +2,7 @@ package com.revature.StudyForce.flashcard.integration;
 
 import com.revature.StudyForce.flashcard.controller.RatingController;
 import com.revature.StudyForce.flashcard.model.Flashcard;
-import com.revature.StudyForce.flashcard.repository.FlashcardRepo;
+import com.revature.StudyForce.flashcard.repository.FlashcardRepository;
 import com.revature.StudyForce.user.model.Authority;
 import com.revature.StudyForce.user.model.User;
 import com.revature.StudyForce.user.repository.UserRepository;
@@ -39,7 +39,7 @@ class RatingIntegrationTest {
     private UserRepository userRepository;
 
     @Autowired
-    private FlashcardRepo flashcardRepo;
+    private FlashcardRepository flashcardRepository;
 
     @Test
     void givenRating_whenCreateRating() throws Exception {
@@ -47,7 +47,7 @@ class RatingIntegrationTest {
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
 
         System.out.println(userRepository.save(user));
-        System.out.println(flashcardRepo.save(flashcard));
+        System.out.println(flashcardRepository.save(flashcard));
 
         mockMvc = MockMvcBuilders.standaloneSetup(ratingController).build();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/rate/")

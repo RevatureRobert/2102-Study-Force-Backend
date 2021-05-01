@@ -5,7 +5,7 @@ import com.revature.StudyForce.flashcard.dto.RatingResponseDTO;
 import com.revature.StudyForce.flashcard.model.Difficulty;
 import com.revature.StudyForce.flashcard.model.Flashcard;
 import com.revature.StudyForce.flashcard.model.Rating;
-import com.revature.StudyForce.flashcard.repository.FlashcardRepo;
+import com.revature.StudyForce.flashcard.repository.FlashcardRepository;
 import com.revature.StudyForce.flashcard.repository.RatingRepository;
 import com.revature.StudyForce.user.model.Authority;
 import com.revature.StudyForce.user.model.User;
@@ -35,7 +35,7 @@ class RatingServiceTest {
     @MockBean
     private RatingRepository ratingRepository;
     @MockBean
-    private FlashcardRepo flashcardRepo;
+    private FlashcardRepository flashcardRepo;
     @MockBean
     private UserRepository userRepository;
 
