@@ -2,15 +2,11 @@ package com.revature.StudyForce.flashcard.model;
 
 import com.revature.StudyForce.user.model.User;
 import lombok.*;
-
-import com.revature.StudyForce.user.model.User;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
- * Model used to store the difficulty ratings of a flashcards
- *
+ * Model used to store the difficulty ratings of a flashcards {@link Flashcard}, {@link User}, {@link Difficulty}
  *@author Edson Rodriguez
  */
 @Entity
