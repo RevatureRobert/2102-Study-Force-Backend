@@ -4,7 +4,7 @@ import com.revature.StudyForce.flashcard.dto.FlashcardDTO;
 import com.revature.StudyForce.flashcard.model.Flashcard;
 import com.revature.StudyForce.flashcard.repository.FlashcardRepository;
 import com.revature.StudyForce.user.model.User;
-import com.revature.StudyForce.user.model.Topic;
+import com.revature.StudyForce.flashcard.model.Topic;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ class FlashcardServiceTest {
         user = new User();
         user.setUserId(1);
         topic = new Topic();
-        topic.setTopicId(1);
+        topic.setId(1);
         now = Timestamp.valueOf(LocalDateTime.now());
         flashcard = new Flashcard(1, user, topic, "question", 2, 2, now, now);
         flashcardList.add(flashcard);
@@ -59,7 +59,7 @@ class FlashcardServiceTest {
         FlashcardDTO DTO = DTOs.getContent().get(0);
         Assertions.assertNotNull(DTO);
         Assertions.assertEquals(1, DTO.getCreator().getUserId());
-        Assertions.assertEquals(1, DTO.getTopic().getTopicId());
+        Assertions.assertEquals(1, DTO.getTopic().getId());
         Assertions.assertEquals(2, DTO.getQuestionDifficultyTotal());
         Assertions.assertEquals(2, DTO.getQuestionDifficultyAverage());
         Assertions.assertEquals(now, DTO.getCreatedTime());
@@ -73,7 +73,7 @@ class FlashcardServiceTest {
         FlashcardDTO DTO = DTOs.getContent().get(0);
         Assertions.assertNotNull(DTO);
         Assertions.assertEquals(1, DTO.getCreator().getUserId());
-        Assertions.assertEquals(1, DTO.getTopic().getTopicId());
+        Assertions.assertEquals(1, DTO.getTopic().getId());
         Assertions.assertEquals(2, DTO.getQuestionDifficultyTotal());
         Assertions.assertEquals(2, DTO.getQuestionDifficultyAverage());
         Assertions.assertEquals(now, DTO.getCreatedTime());
@@ -86,7 +86,7 @@ class FlashcardServiceTest {
         FlashcardDTO DTO = flashcardService.getById(1);
         Assertions.assertNotNull(DTO);
         Assertions.assertEquals(1, DTO.getCreator().getUserId());
-        Assertions.assertEquals(1, DTO.getTopic().getTopicId());
+        Assertions.assertEquals(1, DTO.getTopic().getId());
         Assertions.assertEquals(2, DTO.getQuestionDifficultyTotal());
         Assertions.assertEquals(2, DTO.getQuestionDifficultyAverage());
         Assertions.assertEquals(now, DTO.getCreatedTime());
@@ -99,7 +99,7 @@ class FlashcardServiceTest {
         FlashcardDTO DTO = flashcardService.save(flashcard);
         Assertions.assertNotNull(DTO);
         Assertions.assertEquals(1, DTO.getCreator().getUserId());
-        Assertions.assertEquals(1, DTO.getTopic().getTopicId());
+        Assertions.assertEquals(1, DTO.getTopic().getId());
         Assertions.assertEquals(2, DTO.getQuestionDifficultyTotal());
         Assertions.assertEquals(2, DTO.getQuestionDifficultyAverage());
         Assertions.assertEquals(now, DTO.getCreatedTime());
@@ -113,7 +113,7 @@ class FlashcardServiceTest {
         FlashcardDTO DTO = flashcardService.update(flashcard);
         Assertions.assertNotNull(DTO);
         Assertions.assertEquals(1, DTO.getCreator().getUserId());
-        Assertions.assertEquals(1, DTO.getTopic().getTopicId());
+        Assertions.assertEquals(1, DTO.getTopic().getId());
         Assertions.assertEquals(2, DTO.getQuestionDifficultyTotal());
         Assertions.assertEquals(2, DTO.getQuestionDifficultyAverage());
         Assertions.assertEquals(now, DTO.getCreatedTime());
@@ -126,7 +126,7 @@ class FlashcardServiceTest {
         FlashcardDTO DTO = flashcardService.delete(flashcard);
         Assertions.assertNotNull(DTO);
         Assertions.assertEquals(1, DTO.getCreator().getUserId());
-        Assertions.assertEquals(1, DTO.getTopic().getTopicId());
+        Assertions.assertEquals(1, DTO.getTopic().getId());
         Assertions.assertEquals(2, DTO.getQuestionDifficultyTotal());
         Assertions.assertEquals(2, DTO.getQuestionDifficultyAverage());
         Assertions.assertEquals(now, DTO.getCreatedTime());

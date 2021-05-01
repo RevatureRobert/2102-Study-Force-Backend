@@ -18,7 +18,7 @@ class FlashcardDTOTest {
         User user = new User();
         user.setUserId(1);
         Topic topic = new Topic();
-        topic.setTopicId(1);
+        topic.setId(1);
         Timestamp now = Timestamp.valueOf(LocalDateTime.now());
         Flashcard flashcard = new Flashcard(1, user, topic, "question", 2, 2, now, now);
         FlashcardDTO dto = FlashcardDTO.convertToDTO().apply(flashcard);
@@ -37,7 +37,7 @@ class FlashcardDTOTest {
         User user = new User();
         user.setUserId(1);
         Topic topic = new Topic();
-        topic.setTopicId(1);
+        topic.setId(1);
         Timestamp now = Timestamp.valueOf(LocalDateTime.now());
         FlashcardDTO flashcardDTO = new FlashcardDTO(user, topic, "question", 2, 2, now, now);
         Flashcard flashcard = FlashcardDTO.convertFromDTO().apply(flashcardDTO);
