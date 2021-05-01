@@ -1,4 +1,4 @@
-package com.revature.StudyForce.notification.model;
+package com.revature.studyforce.notification.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,8 +29,8 @@ public class Notification {
     @Column(name = "time_to_live")
     private Date timeToLive;
 
-    @Column(name = "feature_area_id")
-    private int featureAreaId;
+    @Enumerated
+    private FeatureArea featureArea;
 
     @Column(name = "application_user_id")
     private int applicationUserId;

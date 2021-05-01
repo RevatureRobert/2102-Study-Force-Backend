@@ -1,6 +1,6 @@
-package com.revature.StudyForce.notification;
+package com.revature.studyforce.notification;
 
-import com.revature.StudyForce.StudyForceApplication;
+import com.revature.studyforce.StudyForceApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
