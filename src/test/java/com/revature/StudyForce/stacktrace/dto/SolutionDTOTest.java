@@ -3,6 +3,7 @@ package com.revature.StudyForce.stacktrace.dto;
 import com.revature.StudyForce.stacktrace.model.Solution;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.function.Function;
 
@@ -14,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *  meaningful but we need code coverage
  * @author Joshua Swanson
  */
+@SpringBootTest
 class SolutionDTOTest {
 
     Solution testSolution;
