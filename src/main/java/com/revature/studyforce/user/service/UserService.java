@@ -1,12 +1,17 @@
 package com.revature.studyforce.user.service;
 
+import com.revature.studyforce.user.dto.UserDTO;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.security.Timestamp;
-import java.util.List;
+import java.sql.Timestamp;
+import java.util.Locale;
+import java.util.Optional;
 
 /**
  * Service Layer
@@ -24,27 +29,65 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
+    /**
+     * GET ALL USERS
+     * @param sortBy sort method
+     * @param order asc or desc
+     * @param page Page displayed
+     * @param offset # of object displayed
+     * @return All Users in database
+     */
+    public Page<UserDTO> getAllUsers(int page, int offset, String sortBy, String order){
+        Page<User> users;
+        users = userRepository.findAll(PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+        return users.map(UserDTO.userToDTO());
     }
 
-    public User getUserById(Integer id){
-        return userRepository.findById(id).orElse(null);
+    /**
+     * @param id belonging to user
+     * @return user with that userId
+     */
+    public UserDTO getUserById(int id){
+        Optional<User> user = userRepository.findById(id);
+        return user.map(userMap -> UserDTO.userToDTO().apply(userMap)).orElse(null);
     }
 
-    public User getUserByEmail(String email){
-        return userRepository.findByEmail(email);
+    /**
+     * @param email belonging to user
+     * @return user
+     */
+    public UserDTO getUserByEmail(String email){
+        Optional<User> user = userRepository.findByEmail(email);
+        return user.map(userMap -> UserDTO.userToDTO().apply(userMap)).orElse(null);
     }
 
-    public List<User> getUserByFirstName(String firstName){
-        return userRepository.findByFirstNameIgnoreCase(firstName);
-    }
-    public List<User> getUserByLastName(String lastName){
-        return userRepository.findByLastNameIgnoreCase(lastName);
+    /**
+     * GET ALL USERS Matching a name
+     * @param sortBy sort method
+     * @param order asc or desc
+     * @param page Page displayed
+     * @param offset # of object displayed
+     * @return All Users in database with a matching name
+     */
+    public Page<UserDTO> getUserByName(String name, int page, int offset, String sortBy, String order){
+        Page<User> users;
+        users = userRepository.findByNameIgnoreCase(name, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+        return users.map(UserDTO.userToDTO());
     }
 
-    public List<User> getUserByCreationTime(Timestamp creation){
-        return userRepository.findByRegistrationTime(creation);
+    /**
+     * GET ALL USERS by Registration Day
+     * @param sortBy sort method
+     * @param order asc or desc
+     * @param page Page displayed
+     * @param offset # of object displayed
+     * @return All Users in database who registered after a specific date
+     */
+    public Page<UserDTO> getUserByCreationTime(Timestamp creation, int page, int offset, String sortBy, String order){
+        Page<User> users;
+        users = userRepository.findByRegistrationTimeAfter(creation, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+        return users.map(UserDTO.userToDTO());
     }
+
 
 }

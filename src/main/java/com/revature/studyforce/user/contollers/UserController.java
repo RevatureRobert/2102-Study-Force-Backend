@@ -1,11 +1,12 @@
 package com.revature.studyforce.user.contollers;
+import com.revature.studyforce.user.dto.UserDTO;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 /**
  * User Controller
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
+@RequestMapping("/User")
 public class UserController {
 
     private final UserService userService;
@@ -23,35 +25,73 @@ public class UserController {
     public UserController(UserService userService){
         this.userService = userService;
     }
-//
-    @GetMapping("/all")
-    public List<User> getUsers() {
-        return userService.getAllUsers();
-    }
-//
-//    @GetMapping("/{id}")
-//    public User getUser(@PathVariable("id") String id){
-//        return userService.getUserById(Integer.parseInt(id));
-//    }
-//
-//    @GetMapping("/{firstName}")
-//    public  User getUserByFirstName(@PathVariable("firstName") String firstName){
-//        return userService.getUserByFirstName(firstName);
-//    }
-//
-//    @GetMapping("/{lastName}")
-//    public  User getUserByLastName(@PathVariable("lastName") String lastName){
-//        return userService.getUserByLastName(lastName);
-//    }
-//
-//    @GetMapping("/{email}")
-//    public  User getUserByEmail(@PathVariable("email") String email){
-//        return userService.getUserByEmail(email);
-//    }
 
-//    @GetMapping("/{timeStamp}")
-//    public  User getUserByEmail(@PathVariable("time") Timestamp timestamp){
-//        return userService.getUserByCreationTime(timestamp);
-//    }
+    /**
+     * GET ALL USERS
+     * @param sortBy sort method
+     * @param order asc or desc
+     * @param page Page displayed
+     * @param offset # of object displayed
+     * @return All Users in database
+     */
+    @GetMapping("/all")
+    public Page<UserDTO> getAllUsers(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
+                                     @RequestParam(value = "offset", required = false, defaultValue = "10") int offset,
+                                     @RequestParam(value = "sortby", required = false, defaultValue = "userId") String sortBy,
+                                     @RequestParam(value = "order", required = false, defaultValue = "ASC") String order) {
+        return userService.getAllUsers(page, offset, sortBy, order);
+    }
+
+    /**
+     * @param id belonging to user
+     * @return user with that userId
+     */
+    @GetMapping("/{userId}")
+    public UserDTO getUser(@PathVariable(name = "userId") int id){
+        return userService.getUserById(id);
+    }
+
+    /**
+     * GET ALL USERS Matching a name
+     * @param sortBy sort method
+     * @param order asc or desc
+     * @param page Page displayed
+     * @param offset # of object displayed
+     * @return All Users in database with a matching name
+     */
+    @GetMapping("/{name}")
+    public Page<UserDTO> getUserByFirstName(@PathVariable(name = "name") String name,
+                                            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+                                            @RequestParam(value = "offset", required = false, defaultValue = "10") int offset,
+                                            @RequestParam(value = "sortby", required = false, defaultValue = "userId") String sortBy,
+                                            @RequestParam(value = "order", required = false, defaultValue = "ASC") String order){
+        return userService.getUserByName(name, page,offset,sortBy,order);
+    }
+
+    /**
+     * @param email belonging to user
+     * @return user
+     */
+    @GetMapping("/{email}")
+    public UserDTO getUserByEmail(@PathVariable(name = "email") String email){
+        return userService.getUserByEmail(email);
+    }
+
+    /**
+     * GET ALL USERS by Registration Day
+     * @param sortBy sort method
+     * @param order asc or desc
+     * @param page Page displayed
+     * @param offset # of object displayed
+     * @return All Users in database who registered after a specific date
+     */
+    @GetMapping("/{timeStamp}")
+    public Page<UserDTO> getUserByEmail(@PathVariable("time") Timestamp timestamp,
+                                        @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+                                        @RequestParam(value = "offset", required = false, defaultValue = "10") int offset,
+                                        @RequestParam(value = "sortby", required = false, defaultValue = "userId") String sortBy,
+                                        @RequestParam(value = "order", required = false, defaultValue = "ASC") String order){
+        return userService.getUserByCreationTime(timestamp, page,offset,sortBy,order);
+    }
 
 }
