@@ -49,13 +49,13 @@ class RatingIntegrationTest {
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
         Rating rating = new Rating(0,flashcard,user, Difficulty.EASY);
 
-        userRepository.save(user);
-        flashcardRepo.save(flashcard);
+        System.out.println(userRepository.save(user));
+        System.out.println(flashcardRepo.save(flashcard));
 
         mockMvc = MockMvcBuilders.standaloneSetup(ratingController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/rate")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/rate/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"flashcardId\":\"2\",\"userId\":\"2\",\"rating\":\"1\"}"))
+                .content("{\"flashcardId\":\"2\",\"userId\":\"1\",\"ratingScore\":\"2\"}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
@@ -63,6 +63,7 @@ class RatingIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.rating").isNumber())
                 .andReturn();
 
+        System.out.println(result);
         System.out.println(result.getResponse().getContentAsString());
         System.out.println(result.getResponse().getStatus());
 

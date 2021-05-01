@@ -8,11 +8,13 @@ import com.revature.StudyForce.user.model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @SpringBootTest
+@TestPropertySource(locations = "classpath:test-application.properties")
 class RatingDTOTest {
 
     @Test
@@ -24,6 +26,6 @@ class RatingDTOTest {
 
         Assertions.assertEquals(0,r.getFlashcardId());
         Assertions.assertEquals(0,r.getUserId());
-        Assertions.assertEquals(Difficulty.EASY,r.getRatingScore());
+        Assertions.assertEquals(1,r.getRatingScore());
     }
 }

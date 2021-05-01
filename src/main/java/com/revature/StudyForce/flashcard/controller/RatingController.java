@@ -31,6 +31,8 @@ public class RatingController {
      */
     @PostMapping("/")
     public RatingResponseDTO createRating(@RequestBody RatingDTO rating ){
+        System.out.println("*******************************");
+        System.out.println(rating);
         return RATING_SERVICE.createRating(rating);
     }
 }

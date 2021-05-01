@@ -14,4 +14,13 @@ public enum Difficulty {
     Difficulty(int value){
         this.difficultyValue = value;
     }
+
+    public static Difficulty fromInteger(int x){
+        switch(x){
+            case 1: return EASY;
+            case 2: return MEDIUM;
+            case 3: return HARD;
+            default: return null;
+        }
+    }
 }

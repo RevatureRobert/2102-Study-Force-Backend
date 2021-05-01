@@ -22,6 +22,8 @@ import org.springframework.test.context.TestPropertySource;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -41,12 +43,15 @@ class RatingServiceTest {
 
     @Test
     void whenCreateRating_returnsRatingResponseDTO(){
+        List<Rating> rList = new ArrayList<>();
         User user = new User(0,"edson@revature.com","password","Edson","Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
         Rating rating = new Rating(0,flashcard,user, Difficulty.EASY);
+        rList.add(rating);
 
         Mockito.when(flashcardRepo.findById(0)).thenReturn(Optional.of(flashcard));
         Mockito.when(userRepository.findById(0)).thenReturn(Optional.of(user));
+        Mockito.when(ratingRepository.findByFlashcard_id(0)).thenReturn(rList);
         Mockito.when(ratingRepository.save(org.mockito.ArgumentMatchers.isA(Rating.class))).thenReturn(rating);
 
         RatingResponseDTO res = ratingService.createRating(RatingDTO.ratingToDTO().apply(rating));
