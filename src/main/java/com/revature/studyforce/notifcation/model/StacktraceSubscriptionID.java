@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.OneToOne;
+import javax.security.auth.Subject;
 import java.io.Serializable;
 
 /**
@@ -19,7 +20,8 @@ import java.io.Serializable;
 public class StacktraceSubscriptionID  implements Serializable {
 
 
-    private int subscription;
+    @OneToOne
+    private Subscription subscription;
 
     private int stackTrace;
 

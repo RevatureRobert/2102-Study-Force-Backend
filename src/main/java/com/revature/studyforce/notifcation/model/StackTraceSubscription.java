@@ -19,7 +19,7 @@ public class StackTraceSubscription {
   @EmbeddedId
     private StacktraceSubscriptionID stacktraceSubscriptionID;
 
-  public StackTraceSubscription(int stackId, int subId) {
+  public StackTraceSubscription(int stackId, Subscription subId) {
     this.stacktraceSubscriptionID.setStackTrace(stackId);
     this.stacktraceSubscriptionID.setSubscription(subId);
   }

@@ -23,7 +23,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  * Basically all the subscription destination
  */
 
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins = {"http://localhost:4200" , "**"})
 @RestController
 public class PushController {
 
@@ -40,7 +40,7 @@ public class PushController {
      * This endpoint is used to retrieve the public key
      * @return
      */
-    @CrossOrigin(origins = {"http://localhost:4200"})
+    @CrossOrigin(origins = {"http://localhost:4200" , "**"})
     @GetMapping(path = "/publicSigningKey" , produces = "application/octet-stream" )
     public @ResponseBody byte[] publicSigningKey(){
         return "BEH36g-ez23QfnT8OIbnZJMmj892dDYa_LKyGz_wM2tyZbSt1YK4Jy1sRz1OyAeilAOBDrg-TnCBLFtWdVIApK8".getBytes(StandardCharsets.UTF_8);    }
