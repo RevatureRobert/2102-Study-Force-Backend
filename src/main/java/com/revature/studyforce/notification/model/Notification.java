@@ -29,9 +29,9 @@ public class Notification {
     @Column(name = "time_to_live")
     private Timestamp timeToLive;
 
+    @Column(name = "feature_area_id")
     @Enumerated
     private FeatureArea featureArea;
-
 
     @Column(name = "application_user_id")
     private int applicationUserId;
