@@ -8,8 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
 
-import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -26,7 +26,7 @@ public class QuizDTO {
     private int quizId;
     private User quizUser;
     private String quizName;
-    private Set<Flashcard> flashcardSet;
+    private List<Flashcard> flashcards;
 
 
     public static Function<Quiz,QuizDTO> quizToDTO(){
@@ -56,7 +56,7 @@ public class QuizDTO {
                     quizDTO.getQuizId(),
                     quizDTO.getQuizUser(),
                     quizDTO.getQuizName(),
-                    quizDTO.getFlashcardSet());
+                    quizDTO.getFlashcards());
         };
     }
 

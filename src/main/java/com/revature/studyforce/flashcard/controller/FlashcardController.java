@@ -1,7 +1,7 @@
 package com.revature.studyforce.flashcard.controller;
 
 import com.revature.studyforce.flashcard.model.Flashcard;
-import com.revature.studyforce.flashcard.repository.FlashcardRepo;
+import com.revature.studyforce.flashcard.repository.FlashcardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +21,7 @@ import java.util.List;
 public class FlashcardController {
 
     @Autowired
-    FlashcardRepo repo;
+    FlashcardRepository repo;
 
     /**
      * getAll() method mapped to HTTP GET requests ("/all")

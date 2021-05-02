@@ -13,7 +13,7 @@ import java.util.List;
  * @author Luke
  */
 @Repository
-public interface FlashcardRepo extends JpaRepository<Flashcard, Integer> {
+public interface FlashcardRepository extends JpaRepository<Flashcard, Integer> {
 
     // Find questions by difficulty
     List<Flashcard> findALlByQuestionDifficultyTotal(int questionDifficultyTotal, Pageable pageable);

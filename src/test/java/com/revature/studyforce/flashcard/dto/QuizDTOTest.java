@@ -11,7 +11,9 @@ import org.springframework.test.context.TestPropertySource;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -27,7 +29,7 @@ class QuizDTOTest {
         User nick = new User(0, "mscott@dunder.com","password","Michael","Scott",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard1 = new Flashcard(0,nick,"Whats my favorite color?",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
         Flashcard flashcard2 = new Flashcard(0,nick,"Can I go to the bathroom?",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
-        Set<Flashcard> deck = new HashSet<>();
+        List<Flashcard> deck = new ArrayList<>();
         deck.add(flashcard1);
         deck.add(flashcard2);
 
@@ -37,8 +39,8 @@ class QuizDTOTest {
         Assertions.assertEquals(0,quizDTO.getQuizId());
         Assertions.assertEquals("mscott@dunder.com",quizDTO.getQuizUser().getEmail());
         Assertions.assertEquals("testQuiz",quizDTO.getQuizName());
-        Assertions.assertTrue (quizDTO.getFlashcardSet().contains(flashcard1));
-        Assertions.assertTrue (quizDTO.getFlashcardSet().contains(flashcard2));
+        Assertions.assertTrue (quizDTO.getFlashcards().contains(flashcard1));
+        Assertions.assertTrue (quizDTO.getFlashcards().contains(flashcard2));
 
     }
 
@@ -47,7 +49,7 @@ class QuizDTOTest {
         User nick = new User(0, "mscott@dunder.com","password","Michael","Scott",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard1 = new Flashcard(0,nick,"Whats my favorite color?",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
         Flashcard flashcard2 = new Flashcard(0,nick,"Can I go to the bathroom?",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
-        Set<Flashcard> deck = new HashSet<>();
+        List<Flashcard> deck = new ArrayList<>();
         deck.add(flashcard1);
         deck.add(flashcard2);
 

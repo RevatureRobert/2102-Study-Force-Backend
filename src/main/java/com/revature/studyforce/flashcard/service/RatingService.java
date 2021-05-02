@@ -5,7 +5,7 @@ import com.revature.studyforce.flashcard.dto.RatingResponseDTO;
 import com.revature.studyforce.flashcard.model.Difficulty;
 import com.revature.studyforce.flashcard.model.Flashcard;
 import com.revature.studyforce.flashcard.model.Rating;
-import com.revature.studyforce.flashcard.repository.FlashcardRepo;
+import com.revature.studyforce.flashcard.repository.FlashcardRepository;
 import com.revature.studyforce.flashcard.repository.RatingRepository;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
@@ -23,19 +23,19 @@ import java.util.Optional;
 @Service
 public class RatingService {
     private final RatingRepository RATING_REPO;
-    private final FlashcardRepo FLASHCARD_REPO;
+    private final FlashcardRepository FLASHCARD_REPO;
     private final UserRepository USER_REPO;
 
     /**
      * Constructor used to instantiate the necessary repository's
      * @param ratingRepository {@link RatingRepository}
-     * @param flashcardRepo {@link FlashcardRepo}
+     * @param flashcardRepository {@link FlashcardRepository}
      * @param userRepository {@link UserRepository}
      */
     @Autowired
-    public RatingService(RatingRepository ratingRepository,FlashcardRepo flashcardRepo,UserRepository userRepository){
+    public RatingService(RatingRepository ratingRepository, FlashcardRepository flashcardRepository, UserRepository userRepository){
         this.RATING_REPO = ratingRepository;
-        this.FLASHCARD_REPO = flashcardRepo;
+        this.FLASHCARD_REPO = flashcardRepository;
         this.USER_REPO =userRepository;
     }
 

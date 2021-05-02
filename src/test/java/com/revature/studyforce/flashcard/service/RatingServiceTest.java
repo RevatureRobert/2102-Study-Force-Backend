@@ -5,7 +5,7 @@ import com.revature.studyforce.flashcard.dto.RatingResponseDTO;
 import com.revature.studyforce.flashcard.model.Difficulty;
 import com.revature.studyforce.flashcard.model.Flashcard;
 import com.revature.studyforce.flashcard.model.Rating;
-import com.revature.studyforce.flashcard.repository.FlashcardRepo;
+import com.revature.studyforce.flashcard.repository.FlashcardRepository;
 import com.revature.studyforce.flashcard.repository.RatingRepository;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
@@ -35,7 +35,7 @@ class RatingServiceTest {
     @MockBean
     private RatingRepository ratingRepository;
     @MockBean
-    private FlashcardRepo flashcardRepo;
+    private FlashcardRepository flashcardRepository;
     @MockBean
     private UserRepository userRepository;
 
@@ -50,7 +50,7 @@ class RatingServiceTest {
         Rating rating = new Rating(0,flashcard,user, Difficulty.EASY);
         rList.add(rating);
 
-        Mockito.when(flashcardRepo.findById(0)).thenReturn(Optional.of(flashcard));
+        Mockito.when(flashcardRepository.findById(0)).thenReturn(Optional.of(flashcard));
         Mockito.when(userRepository.findById(0)).thenReturn(Optional.of(user));
         Mockito.when(ratingRepository.findByFlashcard_id(0)).thenReturn(rList);
         Mockito.when(ratingRepository.save(org.mockito.ArgumentMatchers.isA(Rating.class))).thenReturn(rating);

@@ -9,7 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * Quiz model
@@ -28,13 +28,13 @@ public class Quiz {
     @Column(name = "quiz_id")
     private int quizId;
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User quizUser;
     @NotNull
     @Column(name = "quiz_name")
     private String quizName;
-    @ManyToMany
-    private Set<Flashcard> flashcards;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Flashcard> flashcards;
 
 
 

@@ -20,24 +20,29 @@ public class QuizController {
     }
 
     @GetMapping("/all")
-    public Page<QuizDTO> getAllQuizzes(Pageable page){
-        return QUIZ_SERVICE.getAll(page);
+    public @ResponseBody Page<QuizDTO> getAll(
+            @RequestParam(name="page",defaultValue = "0", required = false) int page,
+            @RequestParam(name="offset", defaultValue = "10", required = false) int offset,
+            @RequestParam(name="sortby", defaultValue = "quizId", required = false) String sortBy,
+            @RequestParam(name = "order", defaultValue = "ASC", required = false) String order)
+    {
+        return QUIZ_SERVICE.getAll(page,offset,sortBy,order);
     }
 
     @PostMapping
-    public QuizDTO createQuiz(@RequestBody QuizDTO quizDTO){
+    public @ResponseBody QuizDTO createQuiz(@RequestBody QuizDTO quizDTO){
         quizDTO.setQuizId(0);
         Quiz q = QuizDTO.DTOToQuiz().apply(quizDTO);
         return QUIZ_SERVICE.createQuiz(q);
     }
 
     @PutMapping
-    public QuizDTO updateQuiz(@RequestBody QuizDTO quizDTO){
+    public @ResponseBody QuizDTO updateQuiz(@RequestBody QuizDTO quizDTO){
         return QUIZ_SERVICE.updateQuiz(quizDTO);
     }
 
     @DeleteMapping
-    public void deleteQuiz(@RequestBody QuizDTO quizDTO){
+    public @ResponseBody void deleteQuiz(@RequestBody QuizDTO quizDTO){
         QUIZ_SERVICE.deleteQuiz(quizDTO);
     }
 

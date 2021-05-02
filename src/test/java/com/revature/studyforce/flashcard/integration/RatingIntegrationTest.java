@@ -2,7 +2,7 @@ package com.revature.studyforce.flashcard.integration;
 
 import com.revature.studyforce.flashcard.controller.RatingController;
 import com.revature.studyforce.flashcard.model.Flashcard;
-import com.revature.studyforce.flashcard.repository.FlashcardRepo;
+import com.revature.studyforce.flashcard.repository.FlashcardRepository;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
@@ -39,15 +39,15 @@ class RatingIntegrationTest {
     private UserRepository userRepository;
 
     @Autowired
-    private FlashcardRepo flashcardRepo;
+    private FlashcardRepository flashcardRepository;
 
     @Test
     void givenRating_whenCreateRating() throws Exception {
         User user = new User(0,"edson@revature.com","password","Edson","Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
 
-        System.out.println(userRepository.save(user));
-        System.out.println(flashcardRepo.save(flashcard));
+        System.out.println("\b\b\b*******"+userRepository.save(user)+"*******\b\b\b");
+        System.out.println(flashcardRepository.save(flashcard));
 
         mockMvc = MockMvcBuilders.standaloneSetup(ratingController).build();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/rate/")
