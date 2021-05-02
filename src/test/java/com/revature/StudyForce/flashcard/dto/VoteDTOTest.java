@@ -14,11 +14,11 @@ import java.time.LocalDateTime;
 class VoteDTOTest {
 
     @Test
-    void functionVoteToDTOTest(){
+    void convertVoteToDTOTest(){
         User u = new User(0,"jesus.christ@revature.com","password","Jesus","Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Answer a = new Answer(0,0,0,"check stackoverflow",5,false,false,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Vote vote = new Vote(6,1,a,u);
-        VoteDTO v = VoteDTO.functionVoteToDto().apply(vote);
+        VoteDTO v = VoteDTO.convertVoteToDto().apply(vote);
 
         Assertions.assertEquals(v.getValue(),vote.getVoteValue());
         Assertions.assertEquals(v.getAnswerId(),vote.getAnswer().getAnswerId());

@@ -13,6 +13,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
+/**
+ * Service class for the VoteRepository {@link VoteRepository}
+ * @author Elizabeth Ye
+ */
 @Service
 public class VoteService {
 
@@ -27,6 +31,12 @@ public class VoteService {
         this.answerRepository = answerRepository;
     }
 
+    /**
+     * function to persist a vote to the database if there is a connected user and answer
+     * else, throws appropriate exception
+     * @param vote a DTO for the Vote model that transfers the query from the front end
+     * @return a Vote object that is saved to the database
+     */
     public Vote addVote(VoteDTO vote) {
         Optional<Answer> answer = answerRepository.findById(vote.getAnswerId());
         Optional<User> user = userRepository.findById(vote.getUserId());
@@ -40,7 +50,6 @@ public class VoteService {
         }
 
         Vote v = new Vote(0,vote.getValue(),answer.get(),user.get());
-        System.out.println(v.toString());
         return voteRepository.save(v);
     }
 }

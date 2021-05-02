@@ -35,7 +35,7 @@ class VoteServiceTest {
     private VoteService voteService;
 
     @Test
-    void testAddVote() {
+    void addVoteTest() {
         User u = new User(0,"jesus.christ@revature.com","password","Jesus","Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Answer a = new Answer(0,0,0,"check stackoverflow",5,false,false,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Vote vote = new Vote(6,1,a,u);
@@ -44,7 +44,7 @@ class VoteServiceTest {
         Mockito.when(userRepo.findById(0)).thenReturn(Optional.of(u));
         Mockito.when(voteRepository.save(org.mockito.ArgumentMatchers.isA(Vote.class))).thenReturn(vote);
 
-        Vote res = voteService.addVote(VoteDTO.functionVoteToDto().apply(vote));
+        Vote res = voteService.addVote(VoteDTO.convertVoteToDto().apply(vote));
         assertEquals(6, res.getVoteId());
         assertEquals(1, res.getVoteValue());
         assertEquals(a,res.getAnswer());

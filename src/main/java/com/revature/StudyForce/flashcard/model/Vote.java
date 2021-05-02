@@ -6,6 +6,10 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Model to store each vote on submitted flashcard answers
+ * @author Elizabeth Ye
+ */
 @Entity
 @Table(name = "answer_vote")
 @Getter
