@@ -54,7 +54,7 @@ public class TechnologyControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].technologyName").value("TestTech"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].technologyName").value("TestTechAdd"))
                 .andReturn();
         System.out.println(result.getResponse().getContentAsString());
     }
