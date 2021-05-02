@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.MvcResult;
@@ -31,6 +32,7 @@ import java.sql.Timestamp;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestPropertySource(locations = "classpath:test-application.properties")
 public class UserControllerTest {
 
 
@@ -86,7 +88,7 @@ public class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.subscribedStacktrace").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.authority").value("USER"))
                 .andReturn();
-        //System.out.println(result.getResponse().getContentAsString());
+        System.out.println(result.getResponse().getContentAsString());
     }
 
     @Test
