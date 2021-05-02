@@ -4,6 +4,7 @@ import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -46,7 +47,7 @@ public class UserController {
      * @param id belonging to user
      * @return user with that userId
      */
-    @GetMapping("/{userId}")
+    @GetMapping("/user/{userId}")
     public UserDTO getUser(@PathVariable(name = "userId") int id){
         return userService.getUserById(id);
     }
@@ -59,8 +60,8 @@ public class UserController {
      * @param offset # of object displayed
      * @return All Users in database with a matching name
      */
-    @GetMapping("/{name}")
-    public Page<UserDTO> getUserByFirstName(@PathVariable(name = "name") String name,
+    @GetMapping("/name")
+    public Page<UserDTO> getUserByFirstName(@RequestParam(name = "name") String name,
                                             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                             @RequestParam(value = "offset", required = false, defaultValue = "10") int offset,
                                             @RequestParam(value = "sortby", required = false, defaultValue = "userId") String sortBy,
@@ -72,8 +73,8 @@ public class UserController {
      * @param email belonging to user
      * @return user
      */
-    @GetMapping("/{email}")
-    public UserDTO getUserByEmail(@PathVariable(name = "email") String email){
+    @GetMapping("/email")
+    public UserDTO getUserByEmail(@RequestParam(name = "email") String email){
         return userService.getUserByEmail(email);
     }
 
@@ -85,8 +86,8 @@ public class UserController {
      * @param offset # of object displayed
      * @return All Users in database who registered after a specific date
      */
-    @GetMapping("/{timeStamp}")
-    public Page<UserDTO> getUserByEmail(@PathVariable("time") Timestamp timestamp,
+    @GetMapping("/timeStamp")
+    public Page<UserDTO> getUserByCreationTime(@RequestParam("time") Timestamp timestamp,
                                         @RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                         @RequestParam(value = "offset", required = false, defaultValue = "10") int offset,
                                         @RequestParam(value = "sortby", required = false, defaultValue = "userId") String sortBy,

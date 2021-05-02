@@ -142,7 +142,8 @@ class BatchServiceTest {
         BatchList.add(batch);
         Page<Batch> Batches = new PageImpl<>(BatchList);
 
-        Mockito.when(batchRepository.findByCreationTimeAfter(org.mockito.ArgumentMatchers.isA(Timestamp.class), org.mockito.ArgumentMatchers.isA(Pageable.class))).thenReturn(Batches);
+        Mockito.when(batchRepository.findByCreationTimeAfter(org.mockito.ArgumentMatchers.isA(Timestamp.class),
+                org.mockito.ArgumentMatchers.isA(Pageable.class))).thenReturn(Batches);
 
 
         Page<Batch> response = batchService.getBatchByCreationTime(lastLoginTime, 0, 5, "batchId", "DESC");

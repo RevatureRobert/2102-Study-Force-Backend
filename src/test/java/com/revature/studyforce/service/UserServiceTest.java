@@ -96,6 +96,7 @@ class UserServiceTest {
         //Assertions.assertEquals("pass", response.getContent().get(0).getPassword()); //DTO Returns Empty String by default
         Assertions.assertEquals("Daniel", response.getName());
         Assertions.assertEquals(lastLoginTime, response.getLastLogin());
+        Assertions.assertTrue(response.isActive());
 
     }
     @Test

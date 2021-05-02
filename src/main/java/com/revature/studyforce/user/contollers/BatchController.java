@@ -61,8 +61,8 @@ public class BatchController {
      * @param name batch name
      * @return batch
      */
-    @GetMapping("/{name}")
-    public Batch getUserByBatchName(@PathVariable(name = "name") String name){
+    @GetMapping("/batch/name")
+    public Batch getUserByBatchName(@RequestParam(name = "name") String name){
         return batchService.getBatchByName(name);
     }
 
@@ -70,7 +70,7 @@ public class BatchController {
      * @param batchId belonging to batch
      * @return batch
      */
-    @GetMapping("/{batchId}")
+    @GetMapping("/batch/{batchId}")
     public Optional<Batch> getUserByBatchId(@PathVariable(name = "batchId") int batchId){
         return batchService.getBatchById(batchId);
     }
