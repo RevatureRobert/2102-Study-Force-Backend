@@ -20,6 +20,8 @@ class VoteDTOTest {
         Vote vote = new Vote(6,1,a,u);
         VoteDTO v = VoteDTO.convertVoteToDto().apply(vote);
 
+    System.out.println(vote.toString());
+    System.out.println(v.toString());
         Assertions.assertEquals(v.getValue(),vote.getVoteValue());
         Assertions.assertEquals(v.getAnswerId(),vote.getAnswer().getAnswerId());
         Assertions.assertEquals(v.getUserId(),vote.getUser().getUserId());

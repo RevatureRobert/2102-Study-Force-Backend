@@ -15,14 +15,15 @@ import java.util.function.Function;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class VoteDTO {
 
     /**
      * Fields used in UI layer
      */
+    private int answerId;
     private int userId;
     private int value;
-    private int answerId;
 
     /**
      * function to take a Vote model and if not null return it as a data transfer object
