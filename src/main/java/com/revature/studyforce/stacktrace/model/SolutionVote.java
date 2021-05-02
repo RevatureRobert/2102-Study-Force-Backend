@@ -9,34 +9,34 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 /**
- * This model represents the solutions users will supply the Stacktrace owner.
- * The Stacktrace owner will choose one of these solutions that solves his problem.
+ * The solution_vote table will hold the number of votes a solution gets,
+ * and that a user can only vote on a solution once.
  * @author Joey Elmblad
  */
 
-@Entity
+@Entity()
+@Table(name = "solution_vote",uniqueConstraints= @UniqueConstraint(columnNames = {"user_id", "solution_id"}) )
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class SolutionVote {
 
     /**
-     * This is the primary key for the solution vote, to track if a user has voted once on a solution yet.
+     * The solution_vote_id is the primary key for the solutionVote table to show each vote from a user on a solution.
      */
     @Id
     @GeneratedValue
     @Column(name = "solution_vote_id")
-    private int id;
+    private int solutionVoteId;
 
     /**
-     *  This is a foreign key for the User table to track which user has posted this possible solution.
+     *  This is a foreign key for the User table to track if a solution has been voted on yet by this user.
      */
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "user_id")
-    private User user;
+    private User userId;
 
     /**
      * This is a foreign key for the Solution table which tracks which solution this vote will count towards.
@@ -44,7 +44,11 @@ public class SolutionVote {
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "solution_id")
-    private Solution solution;
+    private Solution solutionId;
+
+    /**
+     * This represents the like or dislike button value.
+     */
     @Min(-1)
     @Max(1)
     private int value;

@@ -1,9 +1,10 @@
-package com.revature.StudyForce.stacktrace.dto;
+package com.revature.studyforce.stacktrace.dto;
 
-import com.revature.StudyForce.stacktrace.model.Technology;
+import com.revature.studyforce.stacktrace.model.Technology;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.function.Function;
 
 @Data

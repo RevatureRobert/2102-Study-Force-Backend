@@ -1,6 +1,8 @@
 package com.revature.studyforce.stacktrace.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.studyforce.user.model.User;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -10,11 +12,13 @@ import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 @Entity
+@Table(name = "stacktrace")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Stacktrace {
     /**
      * @author : Noel Shaji
