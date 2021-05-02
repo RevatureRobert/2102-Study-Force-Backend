@@ -1,4 +1,4 @@
-2021-05-01 15:42:33 database: flush
+021-05-01 15:42:33 database: flush
 org.h2.message.DbException: General error: "java.lang.IllegalStateException: The file is locked: nio:C:/Users/eliza/Revature/gitrepos/2102-Study-Force-Backend/test.mv.db [1.4.200/7]" [50000-200]
 	at org.h2.message.DbException.get(DbException.java:194)
 	at org.h2.message.DbException.convert(DbException.java:347)
