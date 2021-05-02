@@ -12,7 +12,7 @@ import java.util.function.Function;
 /**
  * Solution DTO used to transfer solution data
  *
- * @author Joshua Swanson
+ * @author Joey Elmblad
  */
 @Data
 @NoArgsConstructor
@@ -52,8 +52,7 @@ public class SolutionVoteDTO {
                     solutionVote.getSolutionVoteId(),
                     solutionVote.getUserId(),
                     solutionVote.getSolutionId(),
-                    solutionVote.getValue()
-            );
+                    solutionVote.getValue());
         };
     }
 
@@ -70,8 +69,7 @@ public class SolutionVoteDTO {
                     solutionVoteDTO.getSolutionVoteId(),
                     solutionVoteDTO.getUserId(),
                     solutionVoteDTO.getSolutionId(),
-                    solutionVoteDTO.getValue()
-            );
+                    solutionVoteDTO.getValue());
         };
     }
 }

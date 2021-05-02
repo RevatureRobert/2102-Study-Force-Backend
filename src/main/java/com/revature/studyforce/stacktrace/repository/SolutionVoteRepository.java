@@ -16,8 +16,8 @@ import java.util.List;
  */
 public interface SolutionVoteRepository extends JpaRepository<SolutionVote, Integer> {
     @Modifying
-    @Query("from SolutionVote where solution_id = :solutionId")
-    List<SolutionVote> findBySolutionId(@Param("solutionId") int stacktraceId);
+    @Query(value = "select * from solution_vote where solution_id = :solutionId ;", nativeQuery = true)
+    List<SolutionVote> findBySolutionId(@Param("solutionId") int solutionId);
 
     @Transactional
     @Modifying

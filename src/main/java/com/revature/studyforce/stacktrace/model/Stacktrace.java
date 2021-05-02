@@ -37,6 +37,7 @@ public class Stacktrace {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "creator_id", referencedColumnName = "user_id")
+    @JsonIgnore
     private User userId;
 
     /**
@@ -60,6 +61,7 @@ public class Stacktrace {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "technology_id", referencedColumnName = "technology_id")
+    @JsonIgnore
     private Technology technologyId;
 
     /**

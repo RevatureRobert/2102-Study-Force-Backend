@@ -2,6 +2,7 @@ package com.revature.studyforce.stacktrace.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.studyforce.user.model.User;
 import lombok.*;
 
@@ -20,13 +21,14 @@ import javax.validation.constraints.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class SolutionVote {
 
     /**
      * The solution_vote_id is the primary key for the solutionVote table to show each vote from a user on a solution.
      */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "solution_vote_id")
     private int solutionVoteId;
 
