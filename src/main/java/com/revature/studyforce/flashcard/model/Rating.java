@@ -24,8 +24,10 @@ public class Rating {
     @GeneratedValue
     private int id;
     @NotNull
+    @OneToOne
     private Flashcard flashcardId;
     @NotNull
+    @OneToOne
     private User user;
     @NotNull
     @Column(name = "rating")

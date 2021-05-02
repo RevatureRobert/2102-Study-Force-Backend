@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author Lok Kan Kung
  */
 public interface UserRepository extends JpaRepository<User,Integer> {
+
 }
