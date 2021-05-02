@@ -1,13 +1,13 @@
 package com.revature.StudyForce.flashcard.controller;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.StudyForce.flashcard.controller.VoteController;
 import com.revature.StudyForce.flashcard.model.Answer;
-import com.revature.StudyForce.flashcard.model.Vote;
+import com.revature.StudyForce.flashcard.repository.AnswerRepository;
 import com.revature.StudyForce.flashcard.repository.VoteRepository;
+import com.revature.StudyForce.flashcard.service.VoteService;
+import com.revature.StudyForce.user.model.Authority;
 import com.revature.StudyForce.user.model.User;
-import org.junit.Assert;
-import org.junit.Test;
+import com.revature.StudyForce.user.repository.UserRepository;
+
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,10 +17,10 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import static org.assertj.core.api.Assertions.assertThat;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -31,44 +31,39 @@ public class VoteControllerTest {
 
     @Autowired
     private VoteRepository voteRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private AnswerRepository answerRepository;
+
+    @Autowired
+    private VoteService voteService;
 
     @Autowired
     private VoteController controller;
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    private Answer answer = new Answer();
-    private User user = new User();
-    private Vote vote = new Vote(1,1,answer,user);
-
-    ObjectMapper mapping = new ObjectMapper();
-
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-
     @Test
-    public void testingTest() {
-        Assert.assertTrue(2 == 1 + 1);
-    }
-
-    @Test
-    public void contextLoads() throws Exception {
-        assertThat(controller).isNotNull();
-    }
-
-    @Test
-    public void postVoteTest() throws Exception {
-        voteRepository.save(vote);
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders
-                .post("/flashcards/vote")
-                .content(mapping.writeValueAsString(vote))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.voteId").exists())
-                .andReturn();
+    void postVoteTest() throws Exception {
+        User u = new User(1,"jesus.christ@revature.com","password","Jesus","Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        Answer a = new Answer(2,1,0,"check stackoverflow",5,false,false,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        userRepository.save(u);
+        answerRepository.save(a);
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        String string = "{\"answerId\" : \"2\","
+                + "\"userId\" : \"1\","
+                + "\"value\" : \"1\""
+                + "}";
+    System.out.println(string);
+    MvcResult result =
+        mockMvc
+            .perform(
+                MockMvcRequestBuilders.post("/flashcards/vote/")
+                    .content(
+                        string)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andReturn();
         System.out.println(result.getResponse().getContentAsString());
         System.out.println(result.getResponse().getStatus());
     }

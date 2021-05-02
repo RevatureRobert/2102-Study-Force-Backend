@@ -1,5 +1,4 @@
 package com.revature.StudyForce.flashcard.service;
-
 import com.revature.StudyForce.flashcard.dto.VoteDTO;
 import com.revature.StudyForce.flashcard.model.Answer;
 import com.revature.StudyForce.flashcard.model.Vote;
@@ -17,30 +16,31 @@ import java.util.Optional;
 @Service
 public class VoteService {
 
-    private VoteRepository voteRepository;
-    private UserRepository userRepository;
-    private AnswerRepository answerRepository;
+    private final VoteRepository voteRepository;
+    private final UserRepository userRepository;
+    private final AnswerRepository answerRepository;
 
     @Autowired
-    public VoteService(VoteRepository voteRepository, UserRepository userRepo, AnswerRepository answerRepo){
+    public VoteService(VoteRepository voteRepository, UserRepository userRepository, AnswerRepository answerRepository){
         this.voteRepository = voteRepository;
-        this.userRepository = userRepo;
-        this.answerRepository = answerRepo;
+        this.userRepository = userRepository;
+        this.answerRepository = answerRepository;
     }
 
-    public VoteDTO addVote(Vote vote) {
-        Optional<Answer> answer = answerRepository.findById(vote.getAnswer().getAnswerId());
-        Optional<User> user = userRepository.findById(vote.getUser().getUserId());
+    public Vote addVote(VoteDTO vote) {
+        Optional<Answer> answer = answerRepository.findById(vote.getAnswerId());
+        Optional<User> user = userRepository.findById(vote.getUserId());
 
-        if(!user.isPresent())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User not found exception");
         if(!answer.isPresent())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Answer not found exception");
-        if(vote.getVoteValue() < -1 || vote.getVoteValue() > 1) {
+        if(!user.isPresent())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User not found exception");
+        if(vote.getValue() < -1 || vote.getValue() > 1) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Invalid vote value exception");
         }
 
-        voteRepository.save(vote);
-        return new VoteDTO(vote.getVoteId(),vote.getVoteValue(),answer.get().getAnswerId(),user.get().getUserId());
+        Vote v = new Vote(0,vote.getValue(),answer.get(),user.get());
+        System.out.println(v.toString());
+        return voteRepository.save(v);
     }
 }

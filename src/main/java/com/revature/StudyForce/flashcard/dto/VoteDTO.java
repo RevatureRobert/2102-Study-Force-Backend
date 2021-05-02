@@ -9,23 +9,22 @@ import java.util.function.Function;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class VoteDTO {
 
-    private int voteId;
-    private int voteValue;
-    private int answerId;
     private int userId;
+    private int value;
+    private int answerId;
 
-    public static Function<Vote,VoteDTO> voteDTOFunction(){
-        return (v) -> {
+    public static Function<Vote,VoteDTO> functionVoteToDto(){
+        return v -> {
             Assert.notNull(v.getAnswer(),"Answer object is null");
             Assert.notNull(v.getUser(),"User object is null");
 
             return new VoteDTO(
-                    v.getVoteId(),
-                    v.getVoteValue(),
                     v.getAnswer().getAnswerId(),
-                    v.getUser().getUserId()
+                    v.getUser().getUserId(),
+                    v.getVoteValue()
             );
         };
     }

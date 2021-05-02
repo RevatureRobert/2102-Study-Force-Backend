@@ -1,5 +1,4 @@
 package com.revature.StudyForce.flashcard.dto;
-
 import com.revature.StudyForce.flashcard.model.*;
 import com.revature.StudyForce.user.model.Authority;
 import com.revature.StudyForce.user.model.User;
@@ -15,15 +14,14 @@ import java.time.LocalDateTime;
 class VoteDTOTest {
 
     @Test
-    void DTOFunctionTest(){
+    void functionVoteToDTOTest(){
         User u = new User(0,"jesus.christ@revature.com","password","Jesus","Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Answer a = new Answer(0,0,0,"check stackoverflow",5,false,false,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Vote vote = new Vote(6,1,a,u);
-        VoteDTO v = VoteDTO.voteDTOFunction().apply(vote);
+        VoteDTO v = VoteDTO.functionVoteToDto().apply(vote);
 
-        Assertions.assertEquals(6,v.getVoteId());
-        Assertions.assertEquals(1,v.getVoteValue());
-        Assertions.assertEquals(0,v.getAnswerId());
-        Assertions.assertEquals(0,v.getUserId());
+        Assertions.assertEquals(v.getValue(),vote.getVoteValue());
+        Assertions.assertEquals(v.getAnswerId(),vote.getAnswer().getAnswerId());
+        Assertions.assertEquals(v.getUserId(),vote.getUser().getUserId());
     }
 }
