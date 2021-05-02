@@ -41,9 +41,9 @@ public class SolutionVoteController {
      * @param solutionVoteDTO
      * @return
      */
-    @PostMapping("/{solutionId}")
+    @PostMapping
     public SolutionVote submitVoteForSolutionId(@RequestBody SolutionVote solutionVote){
-        return solutionVoteService.sumbitVote(solutionVote);
+        return solutionVoteService.submitVote(solutionVote);
     }
 //    public SolutionVoteDTO submitVoteForSolutionId(@RequestBody SolutionVoteDTO solutionVoteDTO){
 //        return solutionVoteService.sumbitVote(solutionVoteDTO);

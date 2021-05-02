@@ -36,7 +36,6 @@ public class SolutionVote {
      *  This is a foreign key for the User table to track if a solution has been voted on yet by this user.
      */
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "user_id")
     private User userId;
 
@@ -44,7 +43,6 @@ public class SolutionVote {
      * This is a foreign key for the Solution table which tracks which solution this vote will count towards.
      */
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "solution_id")
     private Solution solutionId;
 

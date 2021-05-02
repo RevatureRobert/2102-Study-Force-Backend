@@ -56,7 +56,7 @@ public class SolutionVoteService {
      * @param solutionVoteDTO The solution object that will hold the users vote information.
      * @return will return a soltuionVote for a given user, with a given solution.
      */
-    public SolutionVote sumbitVote(SolutionVote solutionVote){
+    public SolutionVote submitVote(SolutionVote solutionVote){
         return solutionVoteRepository.save(solutionVote);
     }
 //    public SolutionVoteDTO sumbitVote(SolutionVoteDTO solutionVoteDTO){
