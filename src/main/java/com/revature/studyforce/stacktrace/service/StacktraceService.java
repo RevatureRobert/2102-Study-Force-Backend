@@ -9,8 +9,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * The StackService allows for communication with {@link StacktraceRepository} and enforces data constraints on requests to repository
@@ -19,11 +21,15 @@ import java.util.Optional;
 @Service
 public class StacktraceService {
 
-    private final StacktraceRepository STACKTRACE_REPO;
-
     @Autowired
-    public StacktraceService(StacktraceRepository stacktraceRepository){
-        this.STACKTRACE_REPO = stacktraceRepository;
+    private  StacktraceRepository stacktraceRepo;
+
+    /**
+     * Gets all Stacktraces
+     * @return A list of Stacktraces
+     */
+    public List<StacktraceDTO> getAllStacktraces() {
+        return stacktraceRepo.findAll().stream().map(StacktraceDTO.stacktraceToDTO()).collect(Collectors.toList());
     }
 
     /**
@@ -34,7 +40,7 @@ public class StacktraceService {
      * @param order The order in which the list is displayed ["ASC"|"DESC"]
      * @return The page of data transfer representations of all stacktrace objects with pagination and sorting applied
      */
-    public Page<StacktraceDTO> getAllStacktraces(int page, int offset, String sortBy, String order){
+    public Page<StacktraceDTO> getPageStacktraces(int page, int offset, String sortBy, String order){
 
         page = validatePage(page);
         offset = validateOffset(offset);
@@ -42,12 +48,13 @@ public class StacktraceService {
 
         Page<Stacktrace> stacktraces;
         if(order.equalsIgnoreCase("DESC"))
-            stacktraces = STACKTRACE_REPO.findAll(PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+            stacktraces = stacktraceRepo.findAll(PageRequest.of(page, offset, Sort.by(sortBy).descending()));
         else
-            stacktraces = STACKTRACE_REPO.findAll(PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
+            stacktraces = stacktraceRepo.findAll(PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
 
         return stacktraces.map(StacktraceDTO.stacktraceToDTO());
     }
+
     /**
      * Gets stacktraces with the given technology, applies pagination and sorting
      * @param id The technology id being searched from
@@ -64,21 +71,23 @@ public class StacktraceService {
 
         Page<Stacktrace> stacktraces;
         if(order.equalsIgnoreCase("DESC"))
-            stacktraces = STACKTRACE_REPO.findByTechnologyId_technologyId(id, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+            stacktraces = stacktraceRepo.findByTechnologyId_technologyId(id, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
         else
-            stacktraces = STACKTRACE_REPO.findByTechnologyId_technologyId(id, PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
+            stacktraces = stacktraceRepo.findByTechnologyId_technologyId(id, PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
 
         return stacktraces.map(StacktraceDTO.stacktraceToDTO());
     }
+
     /**
      * Gets a stacktrace by stacktrace id using {@link StacktraceRepository#findById(Object)}
      * @param stacktraceId The customer id of the stacktrace being requested
      * @return Data transfer object representation of Stacktrace object converted using {@link StacktraceDTO#stacktraceToDTO()}
      */
     public StacktraceDTO getStacktraceById(int stacktraceId){
-        Optional<Stacktrace> requested = STACKTRACE_REPO.findById(stacktraceId);
+        Optional<Stacktrace> requested = stacktraceRepo.findById(stacktraceId);
         return requested.map(stacktrace -> StacktraceDTO.stacktraceToDTO().apply(stacktrace)).orElse(null);
     }
+
     /**
      * Ensures permitted page format
      * @param page The page number value being validated
@@ -100,6 +109,7 @@ public class StacktraceService {
             offset = 25;
         return offset;
     }
+
     /**
      * Ensures permitted sortby format
      * @param sortBy The sortby value being validated
