@@ -20,8 +20,9 @@ public class StackTrace {
     @Column(name = "stackTraceId")
     private int stackTraceId;
 
-    @Column(name = "userId")
-    private int userId;
+
+    @OneToOne
+    private User user;
 
 
 

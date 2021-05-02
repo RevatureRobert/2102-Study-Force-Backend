@@ -2,11 +2,7 @@ package com.revature.studyforce.notifcation.service;
 
 import com.revature.studyforce.notifcation.model.StackTraceSubscription;
 import com.revature.studyforce.notifcation.repo.StackTracesubscriptionRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 @Service
@@ -25,12 +21,12 @@ public class StackTraceService {
     }
 
 
-    public List<StackTraceSubscription> findByUser(int id){
+    public List<Integer> findByUser(int id){
         return REPO.findByUserId(id);
     }
 
     public List<StackTraceSubscription> findByStackTrace(int id){
-        return REPO.findBystacktraceId(id);
+        return REPO.findByStacktraceId(id);
     }
 
     public StackTraceSubscription add(StackTraceSubscription stackTraceSubscription){
@@ -42,7 +38,7 @@ public class StackTraceService {
     }
 
     public void removeAllFromStackTrace(int stackId){
-        REPO.removeBySubscrption(stackId);
+        REPO.removeBySubscription(stackId);
     }
 
 
