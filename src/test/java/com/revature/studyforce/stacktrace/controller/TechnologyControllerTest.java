@@ -47,14 +47,14 @@ public class TechnologyControllerTest {
 
     @Test
     void getAllTechnologiesForTechnologyTest() throws Exception {
-        technologyRepository.save(new Technology(0,"TestTech"));
+        technologyRepository.save(new Technology(0,"TestTech2"));
         mockMvc = MockMvcBuilders.standaloneSetup(technologyController).build();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/stacktrace/technology")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].technologyName").value("TestTechAdd"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].technologyName").value("TestTech2"))
                 .andReturn();
         System.out.println(result.getResponse().getContentAsString());
     }

@@ -28,7 +28,8 @@ public class TechnologyService {
      * @return The newly persisted technology object converted to its data transfer representation using {@link TechnologyDTO#technologyToDTO()}
      */
     public TechnologyDTO createNewTechnology(Technology technology){
-        Technology saved = technologyRepo.save(technology);
-        return TechnologyDTO.technologyToDTO().apply(saved);
+        technologyRepo.save(technology);
+        //return TechnologyDTO.technologyToDTO().apply(saved);
+        return TechnologyDTO.technologyToDTO().apply(technology);
     }
 }

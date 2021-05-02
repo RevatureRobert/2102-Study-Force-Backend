@@ -28,7 +28,7 @@ public class TechnologyDTO {
                 technology.getTechnologyName());
     }
 
-    public static Function<TechnologyDTO, Technology> DTOTotechnology() {
+    public static Function<TechnologyDTO, Technology> DTOtoTechnology() {
         return technologyDTO -> new Technology(technologyDTO.getTechnologyId(),
                 technologyDTO.getTechnologyName());
     }

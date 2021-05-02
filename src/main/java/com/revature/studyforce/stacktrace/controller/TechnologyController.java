@@ -31,7 +31,7 @@ public class TechnologyController {
   @PostMapping()
   public TechnologyDTO addNewTechnology(@RequestBody TechnologyDTO technologyDTO){
     technologyDTO.setTechnologyId(0);
-    Technology t = TechnologyDTO.DTOTotechnology().apply(technologyDTO);
+    Technology t = TechnologyDTO.DTOtoTechnology().apply(technologyDTO);
     return technologyService.createNewTechnology(t);
   }
 }
