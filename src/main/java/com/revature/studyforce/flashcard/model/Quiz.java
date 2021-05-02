@@ -32,9 +32,7 @@ public class Quiz {
     @NotNull
     @Column(name = "quiz_name")
     private String quizName;
-//    @ManyToMany(mappedBy = "id")
-//    private Set<Flashcard> flashcards;
-    //TODO:here goes the flashcard model
-    //TODO:generate getters and setters for the flashcard property
-    //TODO: create the relationship with other models
+    @ManyToMany
+    private Set<Flashcard> flashcards;
+
 }
