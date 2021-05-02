@@ -1,19 +1,19 @@
-package com.revature.StudyForce.flashcard.integration;
+package com.revature.studyforce.flashcard.integration;
+
 
 import com.google.gson.Gson;
-import com.jayway.jsonpath.JsonPath;
-import com.revature.StudyForce.flashcard.controller.FlashcardController;
-import com.revature.StudyForce.flashcard.dto.FlashcardDTO;
-import com.revature.StudyForce.flashcard.model.Flashcard;
-import com.revature.StudyForce.flashcard.model.Topic;
-import com.revature.StudyForce.flashcard.repository.FlashcardRepository;
-import com.revature.StudyForce.user.model.Authority;
-import com.revature.StudyForce.user.model.User;
-import com.revature.StudyForce.user.repository.UserRepository;
-import net.minidev.json.JSONArray;
+
+import com.revature.studyforce.flashcard.controller.FlashcardController;
+import com.revature.studyforce.flashcard.dto.FlashcardDTO;
+import com.revature.studyforce.flashcard.model.Flashcard;
+import com.revature.studyforce.flashcard.repository.FlashcardRepository;
+import com.revature.studyforce.user.model.Authority;
+import com.revature.studyforce.user.model.User;
+import com.revature.studyforce.user.repository.UserRepository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -28,19 +28,13 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest

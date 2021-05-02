@@ -1,12 +1,11 @@
-package com.revature.StudyForce.stacktrace.model;
+package com.revature.studyforce.stacktrace.model;
 
 
-import com.revature.StudyForce.user.model.User;
+
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
@@ -34,7 +33,7 @@ public class Stacktrace {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "creator_id", referencedColumnName = "user_id")
-    private User userId;
+    private com.revature.studyforce.user.model.User userId;
 
     /**
      * the title a user gives to a stacktrace

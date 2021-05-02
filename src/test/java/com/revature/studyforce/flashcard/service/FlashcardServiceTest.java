@@ -1,11 +1,11 @@
-package com.revature.StudyForce.flashcard.service;
+package com.revature.studyforce.flashcard.service;
 
-import com.revature.StudyForce.flashcard.dto.FlashcardDTO;
-import com.revature.StudyForce.flashcard.model.Flashcard;
-import com.revature.StudyForce.flashcard.model.Rating;
-import com.revature.StudyForce.flashcard.repository.FlashcardRepository;
-import com.revature.StudyForce.user.model.User;
-import com.revature.StudyForce.flashcard.model.Topic;
+
+import com.revature.studyforce.flashcard.dto.FlashcardDTO;
+import com.revature.studyforce.flashcard.model.Flashcard;
+import com.revature.studyforce.flashcard.model.Topic;
+import com.revature.studyforce.flashcard.repository.FlashcardRepository;
+import com.revature.studyforce.user.model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -64,7 +64,11 @@ class FlashcardServiceTest {
     @Test
     void getAllFlashcardsTest() {
         Mockito.doReturn(flashcardPage).when(flashcardRepository).findAll(any(PageRequest.class));
-        Page<FlashcardDTO> DTOs = flashcardService.getAll(0,3,"id","desc");
+        Page<FlashcardDTO> DTOs = flashcardService.getAll(0,3,"difficulty","asc");
+        DTOs = flashcardService.getAll(0,3,"topic","");
+        DTOs = flashcardService.getAll(0,3,"created","desc");
+        DTOs = flashcardService.getAll(0,3,"resolved","desc");
+        DTOs = flashcardService.getAll(0,3,"id","desc");
         FlashcardDTO DTO = DTOs.getContent().get(0);
         Assertions.assertNotNull(DTO);
         Assertions.assertEquals(1, DTO.getCreator().getUserId());
@@ -128,6 +132,17 @@ class FlashcardServiceTest {
         Assertions.assertEquals(2, DTO.getQuestionDifficultyAverage());
         Assertions.assertEquals(now, DTO.getCreatedTime());
         Assertions.assertEquals(now, DTO.getResolutionTime());
+    }
+
+    @Test
+    void updateWithNullTest() {
+        Mockito.when(flashcardRepository.findById(flashcard.getId())).thenReturn(Optional.of(flashcard));
+        Mockito.when(flashcardRepository.save(org.mockito.ArgumentMatchers.isA(Flashcard.class))).thenReturn(flashcard);
+
+        Flashcard f2 = new Flashcard();
+        f2.setId(-1);
+
+        Assertions.assertThrows(AssertionError.class, () -> flashcardService.update(f2));
     }
 
     @Test

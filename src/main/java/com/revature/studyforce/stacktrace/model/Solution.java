@@ -1,4 +1,4 @@
-package com.revature.StudyForce.stacktrace.model;
+package com.revature.studyforce.stacktrace.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
-import com.revature.StudyForce.user.model.User;
+
 
 /**
  * This model represents the solutions users will supply the Stacktrace owner.
@@ -53,7 +53,7 @@ public class Solution {
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "creator_id")
     @NotNull
-    private User userId;
+    private com.revature.studyforce.user.model.User userId;
 
     /**
      * This is the body of text the user will explain a possible solution for the Stacktrace.
