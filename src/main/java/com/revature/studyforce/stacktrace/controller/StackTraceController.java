@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/stacktrace")
+@CrossOrigin
 public class StackTraceController {
     private final StacktraceService STACKTRACE_SERVICE;
 
