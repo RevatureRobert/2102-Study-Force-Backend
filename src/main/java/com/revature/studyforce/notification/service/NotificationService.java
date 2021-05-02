@@ -5,11 +5,13 @@ import com.revature.studyforce.notification.repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class NotificationService {
 
     @Autowired
@@ -24,9 +26,9 @@ public class NotificationService {
         return notificationRepository.findAll();
     }
 
-    public Page<Notification> findByUserId(Integer userId){
+    public Page<Notification> findByUserId(Integer userId, Integer page){
         // We can change the page request parameters later
-        return notificationRepository.findByApplicationUserId(userId, PageRequest.of(1, 10));
+        return notificationRepository.findByApplicationUserId(userId, PageRequest.of(page, 5, Sort.by("notificationId").descending()));
     }
 
     public void save(Notification notification){
@@ -44,6 +46,8 @@ public class NotificationService {
     public void deleteById(Integer id){
         notificationRepository.deleteById(id);
     }
+
+    public void deleteByUserId(Integer id){ notificationRepository.deleteByApplicationUserId(id); }
 
 
 
