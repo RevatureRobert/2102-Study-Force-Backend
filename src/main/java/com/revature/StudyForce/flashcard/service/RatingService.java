@@ -61,7 +61,7 @@ public class RatingService {
 
         int sum = 0;
         for(Rating rating : ratings){
-            sum += rating.getRatingValue().ordinal();
+            sum += rating.getRatingValue().difficultyValue;
         }
         return new RatingResponseDTO(ratings.size(),(sum/ratings.size()));
     }

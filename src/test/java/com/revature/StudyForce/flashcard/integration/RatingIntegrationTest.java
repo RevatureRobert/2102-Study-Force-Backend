@@ -46,8 +46,8 @@ class RatingIntegrationTest {
         User user = new User(0,"edson@revature.com","password","Edson","Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
 
-        System.out.println(userRepository.save(user));
-        System.out.println(flashcardRepo.save(flashcard));
+        userRepository.save(user);
+        flashcardRepo.save(flashcard);
 
         mockMvc = MockMvcBuilders.standaloneSetup(ratingController).build();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/rate/")
