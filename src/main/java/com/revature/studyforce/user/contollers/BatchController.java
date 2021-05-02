@@ -48,8 +48,8 @@ public class BatchController {
      * @param offset # of object displayed
      * @return All Batches in database with timestamp constraint
      */
-    @GetMapping("/{timestamp}")
-    public Page<Batch> getBatchByCreationTime(@PathVariable("time") Timestamp timestamp,
+    @GetMapping("/batch/time")
+    public Page<Batch> getBatchByCreationTime(@RequestParam("time") Long timestamp,
                                               @RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                               @RequestParam(value = "offset", required = false, defaultValue = "5") int offset,
                                               @RequestParam(value = "sortby", required = false, defaultValue = "batchId") String sortBy,

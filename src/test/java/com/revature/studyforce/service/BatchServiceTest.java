@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.*;
 
 /**
@@ -133,12 +134,15 @@ class BatchServiceTest {
         Authority authority = Authority.ADMIN;
         Authority user1 = Authority.USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
-        User Admin = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
-        User student = new User(2 , "test@gmail.com", "pass", "Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
+        Instant i = Instant.now();
+        long d = Date.from(i).getTime();
+        Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(d));
+        User Admin = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, t2, t2);
+        User student = new User(2 , "test@gmail.com", "pass", "Danny", true, true, true, user1, t2, t2);
         AdminList.add(Admin);
         StudentList.add(student);
 
-        Batch batch = new Batch(1, "2102 Enterprise", AdminList, StudentList, lastLoginTime);
+        Batch batch = new Batch(1, "2102 Enterprise", AdminList, StudentList, t2);
         BatchList.add(batch);
         Page<Batch> Batches = new PageImpl<>(BatchList);
 
@@ -146,7 +150,7 @@ class BatchServiceTest {
                 org.mockito.ArgumentMatchers.isA(Pageable.class))).thenReturn(Batches);
 
 
-        Page<Batch> response = batchService.getBatchByCreationTime(lastLoginTime, 0, 5, "batchId", "DESC");
+        Page<Batch> response = batchService.getBatchByCreationTime(d, 0, 5, "batchId", "DESC");
         Assertions.assertNotNull(response);
         Assertions.assertEquals(1, response.getContent().get(0).getBatchId());
         Assertions.assertEquals("2102 Enterprise", response.getContent().get(0).getName());

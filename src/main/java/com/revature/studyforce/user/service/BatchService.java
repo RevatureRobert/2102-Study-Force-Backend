@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Optional;
 
 /**
@@ -41,7 +42,7 @@ public class BatchService {
     }
 
     /**
-     * @param batchId belonging to batch
+     * @param id belonging to batch
      * @return batch
      */
     public Optional<Batch> getBatchById(int id){
@@ -64,9 +65,11 @@ public class BatchService {
      * @param offset # of object displayed
      * @return All Batches in database with timestamp constraint
      */
-    public Page<Batch> getBatchByCreationTime(Timestamp timestamp, int page, int offset, String sortBy, String order){
+    public Page<Batch> getBatchByCreationTime(Long timestamp, int page, int offset, String sortBy, String order){
+
+        Timestamp t = Timestamp.from(Instant.ofEpochMilli(timestamp));
         Page<Batch> batchPage;
-        batchPage = batchRepository.findByCreationTimeAfter(timestamp, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+        batchPage = batchRepository.findByCreationTimeAfter(t, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
         return batchPage;
     }
 
