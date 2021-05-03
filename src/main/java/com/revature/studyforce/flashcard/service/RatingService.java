@@ -22,21 +22,21 @@ import java.util.Optional;
  */
 @Service
 public class RatingService {
-    private final RatingRepository RATING_REPO;
-    private final FlashcardRepository FLASHCARD_REPO;
-    private final UserRepository USER_REPO;
+    private final RatingRepository ratingRepository;
+    private final FlashcardRepository flashcardRepository;
+    private final UserRepository userRepository;
 
     /**
      * Constructor used to instantiate the necessary repository's
      * @param ratingRepository {@link RatingRepository}
-     * @param flashcardRepository {@link FlashcardRepository}
+     * @param flashcardRepo {@link FlashcardRepository}
      * @param userRepository {@link UserRepository}
      */
     @Autowired
-    public RatingService(RatingRepository ratingRepository, FlashcardRepository flashcardRepository, UserRepository userRepository){
-        this.RATING_REPO = ratingRepository;
-        this.FLASHCARD_REPO = flashcardRepository;
-        this.USER_REPO =userRepository;
+    public RatingService(RatingRepository ratingRepository,FlashcardRepository flashcardRepo,UserRepository userRepository){
+        this.ratingRepository = ratingRepository;
+        this.flashcardRepository = flashcardRepo;
+        this.userRepository =userRepository;
     }
 
     /**
@@ -45,8 +45,8 @@ public class RatingService {
      * @return A data transfer object with the new rating score and the amount of ratings for that flashcard
      */
     public RatingResponseDTO createRating(RatingDTO ratingDTO){
-        Optional<Flashcard> optFlashcard = FLASHCARD_REPO.findById(ratingDTO.getFlashcardId());
-        Optional<User> optUser = USER_REPO.findById(ratingDTO.getUserId());
+        Optional<Flashcard> optFlashcard = flashcardRepository.findById(ratingDTO.getFlashcardId());
+        Optional<User> optUser = userRepository.findById(ratingDTO.getUserId());
         Difficulty difficulty = Difficulty.fromInteger(ratingDTO.getRatingScore());
 
         if(!optFlashcard.isPresent())
@@ -56,12 +56,12 @@ public class RatingService {
         if(difficulty==null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Difficulty must be a number from 1 to 3");
 
-        RATING_REPO.save(new Rating(0,optFlashcard.get(),optUser.get(), difficulty));
-        List<Rating> ratings = RATING_REPO.findByFlashcard_id(ratingDTO.getFlashcardId());
+        ratingRepository.save(new Rating(0,optFlashcard.get(),optUser.get(), difficulty));
+        List<Rating> ratings = ratingRepository.findByFlashcard_id(ratingDTO.getFlashcardId());
 
         int sum = 0;
         for(Rating rating : ratings){
-            sum += rating.getRatingValue().ordinal();
+            sum += rating.getRatingValue().difficultyValue;
         }
         return new RatingResponseDTO(ratings.size(),(sum/ratings.size()));
     }
