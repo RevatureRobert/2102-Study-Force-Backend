@@ -78,6 +78,6 @@ public class Solution {
     /**
      * Bidirectional relationship needed to cascade delete SolutionVotes
      */
-    @OneToMany(mappedBy = "solution", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "solutionId", cascade = CascadeType.ALL)
     private Set<SolutionVote> solutionVotes;
 }
