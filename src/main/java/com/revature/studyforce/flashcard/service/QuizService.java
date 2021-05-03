@@ -1,16 +1,15 @@
 package com.revature.studyforce.flashcard.service;
 
-import com.revature.studyforce.flashcard.dto.QuizDTO;
 import com.revature.studyforce.flashcard.model.Quiz;
 import com.revature.studyforce.flashcard.repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
+import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -25,10 +24,14 @@ public class QuizService {
         this.QUIZ_REPO = quizRepository;
     }
 
+    public Quiz createQuiz(Quiz newQuiz){
+        return QUIZ_REPO.save(newQuiz);
+    }
 
-    public Page<QuizDTO> getAll(int page, int offset, String sortBy, String order){
+    public Page<Quiz> getAll(int page, int offset, String sortBy, String order){
         page = validatePage(page);
         offset = validateOffset(offset);
+        sortBy = validateSortBy(sortBy);
 
         Page<Quiz> quizzes;
         if(order.equalsIgnoreCase("DESC"))
@@ -36,70 +39,13 @@ public class QuizService {
         else
             quizzes = QUIZ_REPO.findAll(PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
 
-        return quizzes.map(QuizDTO.quizToDTO());
+        return quizzes;
 
     }
 
-
-    /**
-     * Gets all quizzes
-     * @param page page options object
-     * @return Pageable representation of QuizDTO's
-     */
-    public Page<QuizDTO> getAll(Pageable page) {
-        Page<Quiz> quizzes = QUIZ_REPO.findAll(page);
-        return quizzes.map(QuizDTO.quizToDTO());
+    public Optional<Quiz> getById(Quiz quiz){
+        return QUIZ_REPO.findById(quiz.getQuizId());
     }
-
-
-//    /**
-//     * Select qu
-//     * @param quiz
-//     * @return
-//     */
-//    public Optional<QuizDTO> getById(Quiz quiz){
-//        return QUIZ_REPO.findById(quiz.getQuizId()).map(QuizDTO.quizToDTO());
-//    }
-
-    /**
-     * Create a new Quiz object
-     * @param quiz - the Quiz object to be persisted
-     * @return new QuizDTO
-     */
-    public QuizDTO createQuiz(Quiz quiz){
-        Quiz saved = QUIZ_REPO.save(quiz);
-        return QuizDTO.quizToDTO().apply(saved);
-    }
-
-    /**
-     * Update a Quiz object
-     * @param quizDTO - quizDTO for Quiz object being mutated
-     * @return the mutated QuizDTO object
-     */
-    public QuizDTO updateQuiz(QuizDTO quizDTO) {
-        Optional<Quiz> optionalQuiz = QUIZ_REPO.findById(quizDTO.getQuizId());
-
-        if(!optionalQuiz.isPresent())
-            return null;
-
-        Quiz quiz = optionalQuiz.get();
-        quiz.setQuizName(quizDTO.getQuizName());
-        quiz.setQuizUser(quizDTO.getQuizUser());
-        quiz.setFlashcards(quizDTO.getFlashcards());
-
-        return  QuizDTO.quizToDTO().apply(QUIZ_REPO.save(quiz));
-    }
-
-
-    /**
-     * Delete a Quiz object
-     * @param quizDTO - the quizDTO to be deleted
-     */
-    public void deleteQuiz(QuizDTO quizDTO) {
-        QUIZ_REPO.deleteById(quizDTO.getQuizId());
-    }
-
-
 
     /**
      * Ensures permitted offset format
@@ -123,17 +69,18 @@ public class QuizService {
         return page;
     }
 
-//    /**
-//     * Ensures permitted sortby format
-//     * @param sortBy The sortby value being validated
-//     * @return A valid sortby value
-//     */
-//    private String validateSortBy(String sortBy){
-//        switch (sortBy.toLowerCase(Locale.ROOT)){
-//            case "difficulty":
-//                return "clockIn";
-//
-//        }
-//        return null;
-//    }
+    /**
+     * Ensures permitted sortby format
+     * @param sortBy The sortby value being validated
+     * @return A valid sortby value
+     */
+    private String validateSortBy(String sortBy){
+        switch (sortBy.toLowerCase(Locale.ROOT)){
+            case "clockin":
+                return "clockIn";
+
+        }
+
+        return null;
+    }
 }
