@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-class TechnologyServiceTest {
+class TechnologyServiceTests {
     //TODO: Standardize Tests across project
     List<Technology> technologyArrayList;
 
