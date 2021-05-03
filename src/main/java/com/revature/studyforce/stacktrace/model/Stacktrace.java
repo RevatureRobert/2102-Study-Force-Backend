@@ -8,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -65,4 +66,9 @@ public class Stacktrace {
     @UpdateTimestamp
     private Timestamp creationTime;
 
+    /**
+     * Bidirectional relationship needed to cascade delete solutions
+     */
+    @OneToMany(mappedBy = "stackTraceId", cascade = CascadeType.ALL)
+    private Set<Solution> solutions;
 }
