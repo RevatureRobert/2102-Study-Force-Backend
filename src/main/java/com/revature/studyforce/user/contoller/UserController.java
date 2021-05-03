@@ -25,10 +25,10 @@ public class UserController {
 
     /**
      * GET mapping for '/getAllUsers' in {@link UserService}
-     * @param sortBy field to be sorted by [batchId | creationTime | name] case insensitive defaults to batchId
-     * @param order type of order to sort batches [asc | desc] case insensitive - defaults to asc
-     * @param page page to be displayed [page >= 0] defaults to 5
-     * @param offset number of batches displayed per page [5/ 10/ 25/ 50] defaults to 5 if invalid
+     * @param sortBy field to be sorted by [userId | email | name] case insensitive defaults to userId
+     * @param order type of order to sort users [asc | desc] case insensitive - defaults to asc
+     * @param page page to be displayed [page >= 0] defaults to 0
+     * @param offset number of users displayed per page [10/ 20/ 30/ 50] defaults to 5 if invalid
      * @return page of Users dependent on provided page , offset, sort, and order
      */
     @GetMapping("/all")
@@ -52,10 +52,10 @@ public class UserController {
     /**
      * GET mapping for '/getUserByName' in {@link UserService#getUserByName(String, int, int, String, String)}
      * @param name name to compare
-     * @param sortBy field to be sorted by [batchId | creationTime | name] case insensitive defaults to batchId
-     * @param order type of order to sort batches [asc | desc] case insensitive - defaults to asc
-     * @param page page to be displayed [page >= 0] defaults to 5
-     * @param offset number of batches displayed per page [5/ 10/ 25/ 50] defaults to 5 if invalid
+     * @param sortBy field to be sorted by [userId | email | name]  case insensitive defaults to userId
+     * @param order type of order to sort users [asc | desc] case insensitive - defaults to asc
+     * @param page page to be displayed [page >= 0] defaults to 0
+     * @param offset number of users displayed per page [10/ 20/ 30/ 50] defaults to 10 if invalid
      * @return page of Users dependent on provided page , offset, sort, and order
      */
     @GetMapping("/name")
@@ -68,7 +68,7 @@ public class UserController {
     }
 
     /**
-     * GET request for 'getBatchByEmail' in {@link UserService#getUserByEmail(String)}
+     * GET request for 'getUserByEmail' in {@link UserService#getUserByEmail(String)}
      * @param email belonging to user
      * @return single user with matching email
      */
@@ -80,10 +80,10 @@ public class UserController {
     /**
      * GET mapping for '/getUserByCreationTime' in {@link UserService#getUserByCreationTime(long, int, int, String, String)}
      * @param timestamp timestamp to check
-     * @param sortBy field to be sorted by [batchId | creationTime | name] case insensitive defaults to batchId
-     * @param order type of order to sort batches [asc | desc] case insensitive - defaults to asc
+     * @param sortBy field to be sorted by [userId | email | name]  case insensitive defaults to userId
+     * @param order type of order to sort users [asc | desc] case insensitive - defaults to asc
      * @param page page to be displayed [page >= 0] defaults to 10
-     * @param offset number of batches displayed per page [10/ 15/ 25/ 50] defaults to 5 if invalid
+     * @param offset number of users displayed per page [10/ 20/ 30/ 50] defaults to 10 if invalid
      * @return page of Users dependent on provided page , offset, sort, and order
      */
     @GetMapping("/user/time")
