@@ -1,12 +1,8 @@
 package com.revature.studyforce.stacktrace.controller;
 
-import com.revature.studyforce.stacktrace.dto.SolutionDTO;
 import com.revature.studyforce.stacktrace.dto.SolutionVoteDTO;
-import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
-import com.revature.studyforce.stacktrace.model.SolutionVote;
 import com.revature.studyforce.stacktrace.service.SolutionVoteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,7 +36,7 @@ public class SolutionVoteController {
      */
     @PostMapping
     public SolutionVoteDTO submitVoteForSolutionId(@RequestBody SolutionVoteDTO solutionVoteDTO){
-        return solutionVoteService.sumbitVote(solutionVoteDTO);
+        return solutionVoteService.submitVote(solutionVoteDTO);
     }
 
 }
