@@ -154,7 +154,7 @@ class FlashcardIntegrationTest {
 
     @Test
     void getByIdTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/id/2")
+        mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/id/3")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

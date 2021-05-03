@@ -20,7 +20,7 @@ class FlashcardDTOTest {
         Topic topic = new Topic();
         topic.setId(1);
         Timestamp now = Timestamp.valueOf(LocalDateTime.now());
-        Flashcard flashcard = new Flashcard(1, user, topic, "question", 2, 2, now, now);
+        Flashcard flashcard = new Flashcard(1, user, topic, "question", 2, 2, now, now, false);
         FlashcardDTO dto = FlashcardDTO.convertToDTO().apply(flashcard);
 
         Assertions.assertEquals(user, dto.getCreator());
@@ -39,7 +39,7 @@ class FlashcardDTOTest {
         Topic topic = new Topic();
         topic.setId(1);
         Timestamp now = Timestamp.valueOf(LocalDateTime.now());
-        FlashcardDTO flashcardDTO = new FlashcardDTO(user, topic, "question", 2, 2, now, now);
+        FlashcardDTO flashcardDTO = new FlashcardDTO(user, topic, "question", 2, 2, now, now, false);
         Flashcard flashcard = FlashcardDTO.convertFromDTO().apply(flashcardDTO);
 
         Assertions.assertEquals(user, flashcard.getCreator());

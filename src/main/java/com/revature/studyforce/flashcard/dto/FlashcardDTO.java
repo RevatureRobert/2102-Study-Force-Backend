@@ -27,6 +27,7 @@ public class FlashcardDTO {
     private int questionDifficultyAverage;
     private Timestamp createdTime;
     private Timestamp resolutionTime;
+    private boolean isResolved;
 
     /**
      * Converts Flashcard to FlashcardDTO
@@ -44,7 +45,8 @@ public class FlashcardDTO {
                     flashcard.getQuestionDifficultyTotal(),
                     flashcard.getQuestionDifficultyAverage(),
                     flashcard.getCreatedTime(),
-                    flashcard.getResolutionTime()
+                    flashcard.getResolutionTime(),
+                    flashcard.isResolved()
             );
         };
     }
@@ -66,7 +68,8 @@ public class FlashcardDTO {
                     flashcardDTO.getQuestionDifficultyTotal(),
                     flashcardDTO.getQuestionDifficultyAverage(),
                     flashcardDTO.getCreatedTime(),
-                    flashcardDTO.getResolutionTime()
+                    flashcardDTO.getResolutionTime(),
+                    flashcardDTO.isResolved()
             );
         };
     }
