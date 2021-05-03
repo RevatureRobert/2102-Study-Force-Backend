@@ -24,16 +24,16 @@ import java.util.Optional;
  * @author Edson Rodriguez
  */
 @Service
-public class AnswerService {
-    private AnswerRepository ANSWER_REPO;
-    private UserRepository USER_REPO;
-    private FlashcardRepository FLASHCARD_REPO;
+public class AnswerService  extends AbstractService{
+    private final AnswerRepository answerRepository;
+    private final UserRepository userRepository;
+    private final FlashcardRepository flashcardRepository;
 
     @Autowired
     public AnswerService(AnswerRepository answerRepository, FlashcardRepository flashcardRepo, UserRepository userRepository){
-        this.ANSWER_REPO=answerRepository;
-        this.USER_REPO=userRepository;
-        this.FLASHCARD_REPO=flashcardRepo;
+        this.answerRepository =answerRepository;
+        this.userRepository =userRepository;
+        this.flashcardRepository =flashcardRepo;
     }
 
     /**
@@ -42,8 +42,8 @@ public class AnswerService {
      * @return The newly created answer object
      */
     public Answer createAnswer(AnswerDTO answerDTO){
-        Optional<Flashcard> optFlashcard = FLASHCARD_REPO.findById(answerDTO.getFlashcardId());
-        Optional<User> optUser = USER_REPO.findById(answerDTO.getUserId());
+        Optional<Flashcard> optFlashcard = flashcardRepository.findById(answerDTO.getFlashcardId());
+        Optional<User> optUser = userRepository.findById(answerDTO.getUserId());
 
         if(!optFlashcard.isPresent())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Flashcard not found exception");
@@ -53,7 +53,7 @@ public class AnswerService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Answer is a empty string");
 
 
-        return ANSWER_REPO.save(new Answer(
+        return answerRepository.save(new Answer(
                 0,
                 optUser.get(),
                 optFlashcard.get(),
@@ -71,7 +71,7 @@ public class AnswerService {
      * @param answerId the id of te answer to delete
      */
     public void deleteAnswerById(int answerId){
-        ANSWER_REPO.deleteById(answerId);
+        answerRepository.deleteById(answerId);
     }
 
     /**
@@ -91,9 +91,9 @@ public class AnswerService {
         Page<Answer> answers;
 
         if(order.equalsIgnoreCase("DESC"))
-            answers = ANSWER_REPO.findByFlashcard_id(flashcardId, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+            answers = answerRepository.findByFlashcard_id(flashcardId, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
         else
-            answers = ANSWER_REPO.findByFlashcard_id(flashcardId, PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
+            answers = answerRepository.findByFlashcard_id(flashcardId, PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
 
         answers.forEach((answer -> {
             answer.getCreator().setPassword("");
@@ -104,33 +104,12 @@ public class AnswerService {
     }
 
     /**
-     * Ensures permitted offset format
-     * @param offset The offset value being validated
-     * @return A valid offset value
-     */
-    private int validateOffset(int offset){
-        if(offset != 5 && offset != 10 && offset != 25 && offset != 50 && offset != 100)
-            offset = 25;
-        return offset;
-    }
-
-    /**
-     * Ensures permitted page format
-     * @param page The page number value being validated
-     * @return A valid page number value
-     */
-    private int validatePage(int page){
-        if(page < 0)
-            page = 0;
-        return page;
-    }
-
-    /**
      * Ensures permitted sortby format
      * @param sortBy The sortby value being validated
      * @return A valid sortby value
      */
-    private String validateSortBy(String sortBy){
+    @Override
+    String validateSortBy(String sortBy){
         switch (sortBy.toLowerCase(Locale.ROOT)) {
             case "answerscore":
                 return "answerScore";

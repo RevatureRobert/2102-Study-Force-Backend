@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/flashcards/answers")
 public class AnswerController {
 
-    private AnswerService ANSWER_SERVICE;
+    private AnswerService answerService;
 
     @Autowired
     public AnswerController(AnswerService answerService){
-        this.ANSWER_SERVICE=answerService;
+        this.answerService =answerService;
     }
 
     /**
@@ -39,7 +39,7 @@ public class AnswerController {
             @RequestParam(value = "offset", required = false, defaultValue = "25") int offset,
             @RequestParam(value = "sortby", required = false, defaultValue = "answerScore") String sortBy,
             @RequestParam(value = "order", required = false, defaultValue = "ASC") String order){
-        return ANSWER_SERVICE.getAllByFlashcardId(id,page,offset,sortBy,order);
+        return answerService.getAllByFlashcardId(id,page,offset,sortBy,order);
     }
 
     /**
@@ -49,7 +49,7 @@ public class AnswerController {
      */
     @DeleteMapping("/")
     public String deleteAnswerById(@RequestBody DeleteAnswerDTO deleteAnswerDTO){
-        ANSWER_SERVICE.deleteAnswerById(deleteAnswerDTO.getAnswerId());
+        answerService.deleteAnswerById(deleteAnswerDTO.getAnswerId());
         return "Deleted answer with id:" + deleteAnswerDTO.getAnswerId();
     }
 
@@ -60,7 +60,7 @@ public class AnswerController {
      */
     @PostMapping("/")
     public Answer createNewAnswer(@RequestBody AnswerDTO answerDTO){
-        return ANSWER_SERVICE.createAnswer(answerDTO);
+        return answerService.createAnswer(answerDTO);
     }
 
 

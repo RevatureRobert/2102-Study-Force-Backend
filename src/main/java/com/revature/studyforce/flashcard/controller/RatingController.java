@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/flashcards/rate")
 public class RatingController {
 
-    private final RatingService RATING_SERVICE;
+    private final RatingService ratingService;
 
     @Autowired
     public RatingController(RatingService ratingService){
-        this.RATING_SERVICE=ratingService;
+        this.ratingService =ratingService;
     }
 
     /**
@@ -31,6 +31,6 @@ public class RatingController {
      */
     @PostMapping("/")
     public RatingResponseDTO createRating(@RequestBody RatingDTO rating ){
-        return RATING_SERVICE.createRating(rating);
+        return ratingService.createRating(rating);
     }
 }
