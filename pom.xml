@@ -19,6 +19,17 @@
 		<sonar.organization>revaturerobert</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
+		<dependencyManagement>
+			<dependencies>
+				<dependency>
+					<groupId>software.amazon.awssdk</groupId>
+					<artifactId>bom</artifactId>
+					<version>2.16.52</version>
+					<type>pom</type>
+					<scope>import</scope>
+				</dependency>
+			</dependencies>
+		</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -73,20 +84,24 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate</groupId>
+			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>7.0.1.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>s3</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>aws-sdk-java</artifactId>
+			<version>2.16.52</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-java-sdk-core</artifactId>
-			<version>1.11.1008</version>
-		</dependency>
-		<dependency>
-			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk-cognitoidp</artifactId>
-			<version>1.11.1008</version>
+			<version>1.11.1009</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>

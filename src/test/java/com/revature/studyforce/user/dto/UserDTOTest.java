@@ -51,7 +51,6 @@ class UserDTOTest {
 
         Assertions.assertEquals (0,user.getUserId ());
         Assertions.assertEquals ("testing@gmail.com",user.getEmail ());
-        Assertions.assertEquals ("password",user.getPassword ());
         Assertions.assertEquals ("test",user.getName ());
         Assertions.assertTrue (user.isActive ());
         Assertions.assertTrue (user.isSubscribedFlashcard ());
