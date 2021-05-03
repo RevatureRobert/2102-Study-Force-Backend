@@ -1,2 +1,43 @@
-package com.revature.studyforce.stacktrace.dto;public class TechnologyDTOTest {
+package com.revature.studyforce.stacktrace.dto;
+
+import com.revature.studyforce.stacktrace.model.Technology;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@SpringBootTest
+class TechnologyDTOTest {
+    Technology testTechnology = new Technology(1, "TestTech");
+    TechnologyDTO testTechnologyDTO = new TechnologyDTO(1, "TestTech");
+
+    @BeforeEach
+    public void setUp(){
+        testTechnologyDTO = new TechnologyDTO(1, "TestTech");
+        testTechnology = new Technology(1, "TestTech");
+    }
+
+    /**
+     * Test that a Technology can correctly return a TechnologyDTO
+     */
+    @Test
+    void TechnologyToDTOTest(){
+        TechnologyDTO technologyDTO = TechnologyDTO.technologyToDTO().apply(testTechnology);
+        assertEquals(technologyDTO.getClass(), TechnologyDTO.class);
+        assertEquals(technologyDTO.getTechnologyId(), testTechnology.getTechnologyId());
+        assertEquals(technologyDTO.getTechnologyName(),testTechnology.getTechnologyName());
+    }
+
+
+    /**
+     * Test that a TechnologyDTO can correctly return a Technology
+     */
+    @Test
+    void DTOToTechnologyTest(){
+        Technology Technology = TechnologyDTO.dTOtoTechnology().apply(testTechnologyDTO);
+        assertEquals(Technology.getClass(), Technology.class);
+        assertEquals(Technology.getTechnologyId(), testTechnologyDTO.getTechnologyId());
+        assertEquals(Technology.getTechnologyName(), testTechnologyDTO.getTechnologyName());
+    }
 }
