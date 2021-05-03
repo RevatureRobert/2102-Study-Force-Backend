@@ -1,4 +1,4 @@
-package com.revature.studyforce.flashcard.service.intgration;
+package com.revature.studyforce.flashcard.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.studyforce.flashcard.controller.TopicController;
