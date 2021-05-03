@@ -1,10 +1,11 @@
 package com.revature.studyforce.flashcard.service;
-
 import com.revature.studyforce.flashcard.dto.VoteDTO;
 import com.revature.studyforce.flashcard.model.Answer;
+import com.revature.studyforce.flashcard.model.Flashcard;
 import com.revature.studyforce.flashcard.model.Vote;
 import com.revature.studyforce.flashcard.repository.AnswerRepository;
 import com.revature.studyforce.flashcard.repository.VoteRepository;
+import com.revature.studyforce.flashcard.service.VoteService;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
@@ -38,7 +39,9 @@ class VoteServiceTest {
     @Test
     void addVoteTest() {
         User u = new User(0,"jesus.christ@revature.com","password","Jesus","Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
-        Answer a = new Answer(0,0,0,"check stackoverflow",5,false,false,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        Flashcard flashcard = new Flashcard(0,u,null,"how is your day",1,1,null,null);
+
+        Answer a = new Answer(0,u,flashcard,"check stackoverflow",5,false,false,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Vote vote = new Vote(6,1,a,u);
 
         Mockito.when(answerRepo.findById(0)).thenReturn(Optional.of(a));

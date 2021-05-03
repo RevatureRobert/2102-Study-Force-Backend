@@ -1,6 +1,8 @@
 package com.revature.studyforce.flashcard.controller;
 import com.revature.studyforce.flashcard.model.Answer;
+import com.revature.studyforce.flashcard.model.Flashcard;
 import com.revature.studyforce.flashcard.repository.AnswerRepository;
+import com.revature.studyforce.flashcard.repository.FlashcardRepository;
 import com.revature.studyforce.flashcard.repository.VoteRepository;
 import com.revature.studyforce.flashcard.service.VoteService;
 import com.revature.studyforce.user.model.Authority;
@@ -17,6 +19,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.sql.Timestamp;
@@ -40,14 +43,24 @@ public class VoteControllerTest {
     private VoteService voteService;
 
     @Autowired
+    private FlashcardRepository flashcardRepository;
+
+    @Autowired
     private VoteController controller;
 
     @Test
     void postVoteTest() throws Exception {
         User u = new User(1,"jesus.christ@revature.com","password","Jesus","Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
-        Answer a = new Answer(2,1,0,"check stackoverflow",5,false,false,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(u);
+
+        Flashcard flashcard = new Flashcard(0,u,null,"how is your day",1,1,null,null);
+        flashcardRepository.save(flashcard);
+
+
+        Answer a = new Answer(2,u,flashcard,"check stackoverflow",5,false,false,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         answerRepository.save(a);
+
+
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
         String string = "{\"answerId\" : \"2\","
                 + "\"userId\" : \"1\","
@@ -60,9 +73,9 @@ public class VoteControllerTest {
                 MockMvcRequestBuilders.post("/flashcards/vote/")
                     .content(
                         string)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isOk())
             .andReturn();
         System.out.println(result.getResponse().getContentAsString());
         System.out.println(result.getResponse().getStatus());

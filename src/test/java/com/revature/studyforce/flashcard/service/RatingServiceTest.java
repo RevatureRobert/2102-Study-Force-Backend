@@ -57,7 +57,7 @@ class RatingServiceTest {
 
         RatingResponseDTO res = ratingService.createRating(RatingDTO.ratingToDTO().apply(rating));
         assertNotNull(res);
-        assertEquals(0, res.getRating());
+        assertEquals(1, res.getRating());
         assertTrue(res.getTotalRatings()>0);
 
         System.out.println(res);
