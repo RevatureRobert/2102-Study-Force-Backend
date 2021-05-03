@@ -1,13 +1,13 @@
-package com.revature.StudyForce.flashcard.model;
+package com.revature.studyforce.flashcard.model;
 
-import com.revature.StudyForce.user.model.User;
+import com.revature.studyforce.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Quiz model
@@ -25,11 +25,14 @@ public class Quiz {
     @Column(name = "quiz_id")
     private int quizId;
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User quizUser;
     @NotNull
     @Column(name = "quiz_name")
     private String quizName;
-    @ManyToMany(mappedBy = "id")
-    private Set<Flashcard> flashcards;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Flashcard> flashcards;
+
+
+
 }

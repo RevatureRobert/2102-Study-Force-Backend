@@ -1,15 +1,16 @@
-package com.revature.StudyForce.flashcard.integration;
+package com.revature.studyforce.flashcard.integration;
 
 import com.google.gson.Gson;
 import com.jayway.jsonpath.JsonPath;
-import com.revature.StudyForce.flashcard.controller.FlashcardController;
-import com.revature.StudyForce.flashcard.dto.FlashcardDTO;
-import com.revature.StudyForce.flashcard.model.Flashcard;
-import com.revature.StudyForce.flashcard.model.Topic;
-import com.revature.StudyForce.flashcard.repository.FlashcardRepository;
-import com.revature.StudyForce.user.model.Authority;
-import com.revature.StudyForce.user.model.User;
-import com.revature.StudyForce.user.repository.UserRepository;
+import com.revature.studyforce.flashcard.controller.FlashcardController;
+import com.revature.studyforce.flashcard.dto.FlashcardDTO;
+import com.revature.studyforce.flashcard.model.Flashcard;
+import com.revature.studyforce.flashcard.model.Topic;
+import com.revature.studyforce.flashcard.repository.FlashcardRepository;
+import com.revature.studyforce.flashcard.repository.TopicRepository;
+import com.revature.studyforce.user.model.Authority;
+import com.revature.studyforce.user.model.User;
+import com.revature.studyforce.user.repository.UserRepository;
 import net.minidev.json.JSONArray;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,7 +51,7 @@ class FlashcardIntegrationTest {
     private MockMvc mockMvc;
 
 //    @Autowired
-//    private WebApplicationContext context;
+    private WebApplicationContext context;
 
     @Autowired
     private FlashcardController flashcardController;
@@ -61,11 +62,15 @@ class FlashcardIntegrationTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private TopicRepository topicRepository;
+
     List<Flashcard> flashcardList = new ArrayList<>();
     Page<Flashcard> flashcardPage;
     FlashcardDTO flashcardDTO;
     Flashcard flashcard;
     User user;
+    Topic topic;
 
     @BeforeEach
     public void setUp() {
@@ -75,13 +80,17 @@ class FlashcardIntegrationTest {
         user = new User(0,"a@b.c","pw","fn","ln",true,false,false, Authority.USER, null,null);
         user.setLastLogin(null);
         user.setRegistrationTime(null);
-        flashcard = new Flashcard(0,user,null,"question",2,2,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        topic = new Topic();
+        topic.setId(0);
+        topic.setTopicName("java");
+        flashcard = new Flashcard(0,user,topic,"question",2,2,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()), false);
         flashcard.setCreatedTime(null);
         flashcard.setResolutionTime(null);
         flashcardList.add(flashcard);
         flashcardPage = new PageImpl<>(flashcardList);
 
         System.out.println(userRepository.save(user));
+        System.out.println(topicRepository.save(topic));
         System.out.println(flashcardRepository.save(flashcard));
         System.out.println(new Gson().toJson(flashcard));
     }
@@ -110,6 +119,41 @@ class FlashcardIntegrationTest {
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].creator").hasJsonPath())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].topic.topicName").isString())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].question").isString())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].questionDifficultyTotal").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].questionDifficultyTotal").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].questionDifficultyAverage").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].createdTime").doesNotExist())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].resolutionTime").doesNotExist());
+    }
+
+    @Test
+    void getAllByTopicTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/topic?topicName=java")
+                .content(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].creator").hasJsonPath())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].topic.topicName").isString())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].question").isString())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].questionDifficultyTotal").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].questionDifficultyTotal").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].questionDifficultyAverage").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].createdTime").doesNotExist())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].resolutionTime").doesNotExist());
+    }
+
+    @Test
+    void getAllByIsResolvedTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/resolved?resolved=false")
+                .content(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].creator").hasJsonPath())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].topic.topicName").isString())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].question").isString())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].questionDifficultyTotal").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].questionDifficultyTotal").isNumber())
@@ -120,12 +164,13 @@ class FlashcardIntegrationTest {
 
     @Test
     void getByIdTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/id/2")
+        mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/id/3")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.creator").hasJsonPath())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.topic.topicName").isString())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.question").isString())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.questionDifficultyTotal").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.questionDifficultyTotal").isNumber())
@@ -150,6 +195,7 @@ class FlashcardIntegrationTest {
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.creator").hasJsonPath())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.topic.topicName").isString())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.question").isString())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.questionDifficultyTotal").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.questionDifficultyTotal").isNumber())
@@ -174,6 +220,7 @@ class FlashcardIntegrationTest {
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.creator").hasJsonPath())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.topic.topicName").isString())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.question").isString())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.questionDifficultyTotal").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.questionDifficultyTotal").isNumber())
@@ -197,6 +244,7 @@ class FlashcardIntegrationTest {
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.creator").hasJsonPath())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.topic.topicName").isString())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.question").isString())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.questionDifficultyTotal").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.questionDifficultyTotal").isNumber())

@@ -1,6 +1,6 @@
-package com.revature.StudyForce.stacktrace.repository;
+package com.revature.studyforce.stacktrace.repository;
 
-import com.revature.StudyForce.stacktrace.model.Solution;
+import com.revature.studyforce.stacktrace.model.Solution;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

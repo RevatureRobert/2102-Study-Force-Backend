@@ -1,7 +1,7 @@
-package com.revature.StudyForce.stacktrace.repository;
+package com.revature.studyforce.stacktrace.repository;
 
-import com.revature.StudyForce.stacktrace.model.Solution;
-import com.revature.StudyForce.stacktrace.model.SolutionVote;
+import com.revature.studyforce.stacktrace.model.Solution;
+import com.revature.studyforce.stacktrace.model.SolutionVote;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

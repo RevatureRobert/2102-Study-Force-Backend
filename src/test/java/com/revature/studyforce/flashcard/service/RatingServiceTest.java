@@ -1,15 +1,15 @@
-package com.revature.StudyForce.flashcard.service;
+package com.revature.studyforce.flashcard.service;
 
-import com.revature.StudyForce.flashcard.dto.RatingDTO;
-import com.revature.StudyForce.flashcard.dto.RatingResponseDTO;
-import com.revature.StudyForce.flashcard.model.Difficulty;
-import com.revature.StudyForce.flashcard.model.Flashcard;
-import com.revature.StudyForce.flashcard.model.Rating;
-import com.revature.StudyForce.flashcard.repository.FlashcardRepository;
-import com.revature.StudyForce.flashcard.repository.RatingRepository;
-import com.revature.StudyForce.user.model.Authority;
-import com.revature.StudyForce.user.model.User;
-import com.revature.StudyForce.user.repository.UserRepository;
+import com.revature.studyforce.flashcard.dto.RatingDTO;
+import com.revature.studyforce.flashcard.dto.RatingResponseDTO;
+import com.revature.studyforce.flashcard.model.Difficulty;
+import com.revature.studyforce.flashcard.model.Flashcard;
+import com.revature.studyforce.flashcard.model.Rating;
+import com.revature.studyforce.flashcard.repository.FlashcardRepository;
+import com.revature.studyforce.flashcard.repository.RatingRepository;
+import com.revature.studyforce.user.model.Authority;
+import com.revature.studyforce.user.model.User;
+import com.revature.studyforce.user.repository.UserRepository;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -35,7 +35,7 @@ class RatingServiceTest {
     @MockBean
     private RatingRepository ratingRepository;
     @MockBean
-    private FlashcardRepository flashcardRepo;
+    private FlashcardRepository flashcardRepository;
     @MockBean
     private UserRepository userRepository;
 
@@ -46,18 +46,18 @@ class RatingServiceTest {
     void whenCreateRating_returnsRatingResponseDTO(){
         List<Rating> rList = new ArrayList<>();
         User user = new User(0,"edson@revature.com","password","Edson","Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
-        Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
+        Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
         Rating rating = new Rating(0,flashcard,user, Difficulty.EASY);
         rList.add(rating);
 
-        Mockito.when(flashcardRepo.findById(0)).thenReturn(Optional.of(flashcard));
+        Mockito.when(flashcardRepository.findById(0)).thenReturn(Optional.of(flashcard));
         Mockito.when(userRepository.findById(0)).thenReturn(Optional.of(user));
         Mockito.when(ratingRepository.findByFlashcard_id(0)).thenReturn(rList);
         Mockito.when(ratingRepository.save(org.mockito.ArgumentMatchers.isA(Rating.class))).thenReturn(rating);
 
         RatingResponseDTO res = ratingService.createRating(RatingDTO.ratingToDTO().apply(rating));
         assertNotNull(res);
-        assertTrue(res.getRating()==0);
+        assertEquals(1, res.getRating());
         assertTrue(res.getTotalRatings()>0);
 
         System.out.println(res);

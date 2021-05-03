@@ -1,10 +1,12 @@
-package com.revature.StudyForce.flashcard.model;
+package com.revature.studyforce.flashcard.model;
 
+import com.revature.studyforce.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import java.sql.Timestamp;
 
 /**
@@ -21,18 +23,22 @@ public class Answer {
     @Column(name = "answer_id")
     private int answerId;
     @NotNull
-    @Column(name = "creator_id")
-    private int creatorId;
+    @ManyToOne
+    private User creator;
     @NotNull
-    @Column(name = "flashcard_id")
-    private int flashcardId;
+    @ManyToOne
+    private Flashcard flashcard;
     @NotNull
-    @Column(name = "answer")
+    @Column(name = "answer_text")
     private String answerText;
+    @NotNull
+    @PositiveOrZero
     @Column(name = "answer_score")
     private int answerScore;
+    @NotNull
     @Column(name = "selected_answer")
     private boolean selectedAnswer;
+    @NotNull
     @Column(name = "trainer_selected")
     private boolean trainerSelected;
     @NotNull

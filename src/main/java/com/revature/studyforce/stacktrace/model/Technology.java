@@ -1,4 +1,4 @@
-package com.revature.StudyForce.stacktrace.model;
+package com.revature.studyforce.stacktrace.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
