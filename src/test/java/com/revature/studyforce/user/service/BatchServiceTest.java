@@ -1,12 +1,9 @@
-package com.revature.studyforce.service;
+package com.revature.studyforce.user.service;
 
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.Batch;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.BatchRepository;
-import com.revature.studyforce.user.repository.UserRepository;
-import com.revature.studyforce.user.service.BatchService;
-import com.revature.studyforce.user.service.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +23,7 @@ import java.time.Instant;
 import java.util.*;
 
 /**
- *
+ * Service Layer Testing {@link BatchService }
  * @author Daniel Reyes
  */
 @SpringBootTest
@@ -41,7 +38,7 @@ class BatchServiceTest {
     private BatchService batchService;
 
     @Test
-    void GetAllBatches(){
+    void whenGetAllBatches_callBatchRepository_retrieveBatchPage(){
 
         Set<User> AdminList = new HashSet<>();
         Set<User> StudentList = new HashSet<>();
@@ -49,9 +46,9 @@ class BatchServiceTest {
 
         Authority authority = Authority.ADMIN;
         Authority user1 = Authority.USER;
-        Instant i = Instant.now();
-        long d = Date.from(i).getTime();
-        Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(d));
+        Instant instant = Instant.now();
+        long epochMilli = Date.from(instant).getTime();
+        Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(epochMilli));
         User Admin = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, t2, t2);
         User student = new User(2 , "test@gmail.com", "pass", "Danny", true, true, true, user1, t2, t2);
         AdminList.add(Admin);
@@ -72,57 +69,49 @@ class BatchServiceTest {
     }
 
     @Test
-    void GetBatchById(){
+    void whenGetBatchById_callBatchRepository_retrieveBatch(){
         Set<User> AdminList = new HashSet<>();
         Set<User> StudentList = new HashSet<>();
-        List<Batch> BatchList = new ArrayList<>();
 
         Authority authority = Authority.ADMIN;
         Authority user1 = Authority.USER;
-        Instant i = Instant.now();
-        long d = Date.from(i).getTime();
-        Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(d));
+        Instant instant = Instant.now();
+        long epochMilli = Date.from(instant).getTime();
+        Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(epochMilli));
         User Admin = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, t2, t2);
         User student = new User(2 , "test@gmail.com", "pass", "Danny", true, true, true, user1, t2, t2);
         AdminList.add(Admin);
         StudentList.add(student);
-
         Batch batch = new Batch(1, "2102 Enterprise", AdminList, StudentList, t2);
-        BatchList.add(batch);
 
         Mockito.when(batchRepository.findById(1)).thenReturn(Optional.of(batch));
 
-
-        Optional<Batch> response = batchService.getBatchById(1);
+        Batch response = batchService.getBatchById(1);
         Assertions.assertNotNull(response);
-        Assertions.assertEquals(1, response.get().getBatchId());
-        Assertions.assertEquals("2102 Enterprise", response.get().getName());
-        Assertions.assertEquals(AdminList, response.get().getInstructors());
-        Assertions.assertEquals(StudentList, response.get().getUsers());
-        Assertions.assertEquals(t2, response.get().getCreationTime());
+        Assertions.assertEquals(1, response.getBatchId());
+        Assertions.assertEquals("2102 Enterprise", response.getName());
+        Assertions.assertEquals(AdminList, response.getInstructors());
+        Assertions.assertEquals(StudentList, response.getUsers());
+        Assertions.assertEquals(t2, response.getCreationTime());
     }
 
     @Test
-    void GetBatchByName(){
+    void whenGetBatchByName_callBatchRepository_retrieveBatch(){
         Set<User> AdminList = new HashSet<>();
         Set<User> StudentList = new HashSet<>();
-        List<Batch> BatchList = new ArrayList<>();
 
         Authority authority = Authority.ADMIN;
         Authority user1 = Authority.USER;
-        Instant i = Instant.now();
-        long d = Date.from(i).getTime();
-        Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(d));
+        Instant instant = Instant.now();
+        long epochMilli = Date.from(instant).getTime();
+        Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(epochMilli));
         User Admin = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, t2, t2);
         User student = new User(2 , "test@gmail.com", "pass", "Danny", true, true, true, user1, t2, t2);
         AdminList.add(Admin);
         StudentList.add(student);
-
         Batch batch = new Batch(1, "2102 Enterprise", AdminList, StudentList, t2);
-        BatchList.add(batch);
 
-        Mockito.when(batchRepository.findByNameIgnoreCase("2102")).thenReturn(batch);
-
+        Mockito.when(batchRepository.findByNameContainingIgnoreCase("2102")).thenReturn(batch);
 
         Batch response = batchService.getBatchByName("2102");
         Assertions.assertNotNull(response);
@@ -134,16 +123,16 @@ class BatchServiceTest {
     }
 
     @Test
-    void GetBatchByCreationTime(){
+    void whenGetBatchByCreationTime_callBatchRepository_retrieveBatchPage(){
         Set<User> AdminList = new HashSet<>();
         Set<User> StudentList = new HashSet<>();
         List<Batch> BatchList = new ArrayList<>();
 
         Authority authority = Authority.ADMIN;
         Authority user1 = Authority.USER;
-        Instant i = Instant.now();
-        long d = Date.from(i).getTime();
-        Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(d));
+        Instant instant = Instant.now();
+        long epochMilli = Date.from(instant).getTime();
+        Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(epochMilli));
         User Admin = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, t2, t2);
         User student = new User(2 , "test@gmail.com", "pass", "Danny", true, true, true, user1, t2, t2);
         AdminList.add(Admin);
@@ -157,7 +146,7 @@ class BatchServiceTest {
                 org.mockito.ArgumentMatchers.isA(Pageable.class))).thenReturn(Batches);
 
 
-        Page<Batch> response = batchService.getBatchByCreationTime(d, 0, 5, "batchId", "DESC");
+        Page<Batch> response = batchService.getBatchByCreationTime(epochMilli, 0, 5, "batchId", "DESC");
         Assertions.assertNotNull(response);
         Assertions.assertEquals(1, response.getContent().get(0).getBatchId());
         Assertions.assertEquals("2102 Enterprise", response.getContent().get(0).getName());

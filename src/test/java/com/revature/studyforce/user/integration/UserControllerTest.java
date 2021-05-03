@@ -1,11 +1,10 @@
-package com.revature.studyforce.controller;
+package com.revature.studyforce.user.integration;
 
 
-import com.revature.studyforce.user.contollers.UserController;
+import com.revature.studyforce.user.contoller.UserController;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
-import com.revature.studyforce.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,20 +13,17 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
 
 /**
- * tests for integration of User Controller
- *
+ * tests for integration of User Controller {@link UserController}
  * @author Daniel Reyes
  */
 
@@ -35,7 +31,7 @@ import java.time.Instant;
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:test-application.properties")
-public class UserControllerTest {
+class UserControllerTest {
 
 
     private MockMvc mockMvc;
@@ -47,12 +43,12 @@ public class UserControllerTest {
     private UserController userController;
 
     @Test
-    void GetAllUsers() throws Exception {
+    void givenBatch_whenGetAllUsers_theUserRetrieved() throws Exception {
         Authority authority = Authority.USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
         User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
         userRepository.save(user);
-    System.out.println(userRepository.findAll().toString());
+        System.out.println(userRepository.findAll().toString());
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/User/all")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -71,7 +67,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void GetUserById() throws Exception {
+    void givenBatch_whenGetUserById_theUserRetrieved() throws Exception {
         Authority authority = Authority.USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
         User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
@@ -94,7 +90,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void GetUserByEmail() throws Exception {
+    void givenBatch_whenGetUserByEmail_theUserRetrieved() throws Exception {
         Authority authority = Authority.USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
         User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
@@ -113,11 +109,11 @@ public class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.subscribedStacktrace").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.authority").value("USER"))
                 .andReturn();
-        //System.out.println(result.getResponse().getContentAsString());
+        System.out.println(result.getResponse().getContentAsString());
     }
 
     @Test
-    void GetUserByName() throws Exception {
+    void givenBatch_whenGetUserByName_theUserRetrieved() throws Exception {
         Authority authority = Authority.USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
         User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
@@ -136,14 +132,14 @@ public class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].subscribedStacktrace").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].authority").value("USER"))
                 .andReturn();
-        //System.out.println(result.getResponse().getContentAsString());
+        System.out.println(result.getResponse().getContentAsString());
     }
     @Test
-    void GetUserByTimeStamp() throws Exception {
+    void givenBatch_whenGetUserByTimeStamp_theUserRetrieved() throws Exception {
         Authority authority = Authority.USER;
-        Instant i = Instant.now();
-        long d = Date.from(i).getTime();
-        Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(d));
+        Instant instant = Instant.now();
+        long epochMilli = Date.from(instant).getTime();
+        Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(epochMilli));
         User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, t2, t2);
         userRepository.save(user);
 
@@ -160,7 +156,7 @@ public class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].subscribedStacktrace").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].authority").value("USER"))
                 .andReturn();
-        //System.out.println(result.getResponse().getContentAsString());
+        System.out.println(result.getResponse().getContentAsString());
     }
 
 

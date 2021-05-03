@@ -1,6 +1,6 @@
-package com.revature.studyforce.controller;
+package com.revature.studyforce.user.integration;
 
-import com.revature.studyforce.user.contollers.BatchController;
+import com.revature.studyforce.user.contoller.BatchController;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.Batch;
 import com.revature.studyforce.user.model.User;
@@ -23,21 +23,18 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
- * tests for integration of Batch Controller
- *
+ * tests for integration of Batch Controller {@link BatchController}
  * @author Daniel Reyes
  */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:test-application.properties")
-public class BatchControllerTest {
+class BatchControllerTest {
 
 
     private MockMvc mockMvc;
@@ -54,10 +51,9 @@ public class BatchControllerTest {
 
     @Transactional
     @Test
-    void GetAllBatches() throws Exception {
+    void givenBatch_whenGetAll_theBatchesRetrieved() throws Exception {
         Set<User> AdminList = new HashSet<>();
         Set<User> StudentList = new HashSet<>();
-        //List<Batch> BatchList = new ArrayList<>();
 
         Authority authority = Authority.ADMIN;
         Authority user1 = Authority.USER;
@@ -70,7 +66,6 @@ public class BatchControllerTest {
         System.out.println(batch.toString());
         batchRepository.save(batch);
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
-        //MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/Batch/allBatches?offset=5&order=ASC&page=0&sortby=batchId")
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/Batch/allBatches")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -84,10 +79,9 @@ public class BatchControllerTest {
 
     @Transactional
     @Test
-    void GetBatchById() throws Exception {
+    void givenBatch_whenGetById_theBatchRetrieved() throws Exception {
         Set<User> AdminList = new HashSet<>();
         Set<User> StudentList = new HashSet<>();
-        //List<Batch> BatchList = new ArrayList<>();
 
         Authority authority = Authority.ADMIN;
         Authority user1 = Authority.USER;
@@ -99,7 +93,6 @@ public class BatchControllerTest {
         AdminList.add(Admin);
         StudentList.add(student);
         Batch batch = new Batch(0, "2102 Enterprise2", AdminList, StudentList, lastLoginTime);
-        //System.out.println(batch.toString());
         batchRepository.save(batch);
     System.out.println(batchRepository.findAll());
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
@@ -115,10 +108,9 @@ public class BatchControllerTest {
 
     @Transactional
     @Test
-    void GetBatchByName() throws Exception {
+    void givenBatch_whenGetBatchByName_theBatchRetrieved() throws Exception {
         Set<User> AdminList = new HashSet<>();
         Set<User> StudentList = new HashSet<>();
-        //List<Batch> BatchList = new ArrayList<>();
 
         Authority authority = Authority.ADMIN;
         Authority user1 = Authority.USER;
@@ -130,9 +122,8 @@ public class BatchControllerTest {
         AdminList.add(Admin);
         StudentList.add(student);
         Batch batch = new Batch(0, "Enterprise2", AdminList, StudentList, lastLoginTime);
-        //System.out.println(batch.toString());
         batchRepository.save(batch);
-        System.out.println(batchRepository.findByNameIgnoreCase("Enterprise2"));
+        System.out.println(batchRepository.findByNameContainingIgnoreCase("Enterprise2"));
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/Batch/batch/name?name=Enterprise2")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -147,33 +138,30 @@ public class BatchControllerTest {
 
     @Transactional
     @Test
-    void GetBatchByCreationTime() throws Exception {
+    void givenBatch_whenGetBatchByCreationTime_theBatchRetrieved() throws Exception {
         Set<User> AdminList = new HashSet<>();
         Set<User> StudentList = new HashSet<>();
-        //List<Batch> BatchList = new ArrayList<>();
 
         Authority authority = Authority.ADMIN;
         Authority user1 = Authority.USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
-        Instant i = Instant.now();
-        long d = Date.from(i).getTime();
-        Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(d));
+        Instant instant = Instant.now();
+        long epochMilli = Date.from(instant).getTime();
+        Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(epochMilli));
         User Admin = new User(0 , "dan2@gmail.com", "pass", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
         User student = new User(0 , "test2@gmail.com", "pass", "Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
         Admin = userRepository.save(Admin);
         student = userRepository.save(student);
         AdminList.add(Admin);
         StudentList.add(student);
-        Batch batch = new Batch(0, "Enterprise2", AdminList, StudentList, t2);
-        //System.out.println(batch.toString());
+        Batch batch = new Batch(3, "Enterprise2", AdminList, StudentList, t2);
         batchRepository.save(batch);
-        System.out.println(batchRepository.findByNameIgnoreCase("Enterprise2"));
+        System.out.println(batchRepository.findByNameContainingIgnoreCase("Enterprise2"));
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/Batch/batch/time?time=1619996684739")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                //.andExpect(MockMvcResultMatchers.jsonPath("$.content").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].batchId").value(3))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name").value("Enterprise2"))
                 .andReturn();

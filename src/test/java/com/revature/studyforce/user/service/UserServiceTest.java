@@ -1,11 +1,10 @@
-package com.revature.studyforce.service;
+package com.revature.studyforce.user.service;
 
 
 import com.revature.studyforce.user.dto.UserDTO;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
-import com.revature.studyforce.user.service.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- *
+ * Service Layer Testing {@link UserService}
  * @author Daniel Reyes
  */
 @SpringBootTest
@@ -44,7 +43,7 @@ class UserServiceTest {
     private UserService userService;
 
     @Test
-    void GetALlUsers_returnUsers(){
+    void whenGetAllUsers_callUserRepository_retrieveUserPage(){
         List<User> userList = new ArrayList<>();
         Authority authority = Authority.USER;
         Instant i = Instant.now();
@@ -68,13 +67,13 @@ class UserServiceTest {
 
 
     @Test
-    void GetUserByIDTest(){
+    void whenGetUserByIdTest_callUserRepository_retrieveUser(){
 
         Authority authority = Authority.USER;
-        Instant i = Instant.now();
-        long d = Date.from(i).getTime();
-        Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(d));
-        User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, t2, t2);
+        Instant instant = Instant.now();
+        long epochMilli = Date.from(instant).getTime();
+        Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(epochMilli));
+        User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, timestamp, timestamp);
 
         Mockito.when(userRepository.findById(1)).thenReturn(Optional.of(user));
 
@@ -84,18 +83,18 @@ class UserServiceTest {
         Assertions.assertEquals("dan@gmail.com", response.getEmail());
         //Assertions.assertEquals("pass", response.getContent().get(0).getPassword()); //DTO Returns Empty String by default
         Assertions.assertEquals("Daniel", response.getName());
-        Assertions.assertEquals(t2, response.getLastLogin());
+        Assertions.assertEquals(timestamp, response.getLastLogin());
 
     }
 
     @Test
-    void GetUserByEmail(){
+    void whenGetUserByEmail_callUserRepository_retrieveUser(){
 
         Authority authority = Authority.USER;
-        Instant i = Instant.now();
-        long d = Date.from(i).getTime();
-        Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(d));
-        User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, t2, t2);
+        Instant instant = Instant.now();
+        long epochMilli = Date.from(instant).getTime();
+        Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(epochMilli));
+        User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, timestamp, timestamp);
 
         Mockito.when(userRepository.findByEmail("dan@gmail.com")).thenReturn(Optional.of(user));
 
@@ -105,22 +104,22 @@ class UserServiceTest {
         Assertions.assertEquals("dan@gmail.com", response.getEmail());
         //Assertions.assertEquals("pass", response.getContent().get(0).getPassword()); //DTO Returns Empty String by default
         Assertions.assertEquals("Daniel", response.getName());
-        Assertions.assertEquals(t2, response.getLastLogin());
+        Assertions.assertEquals(timestamp, response.getLastLogin());
         Assertions.assertTrue(response.isActive());
 
     }
     @Test
-    void GetALlUsers_MatchingName(){
+    void whenGetALlUsers_callUserRepository_retrieveUserPage(){
         List<User> userList = new ArrayList<>();
         Authority authority = Authority.USER;
-        Instant i = Instant.now();
-        long d = Date.from(i).getTime();
-        Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(d));
-        User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, t2, t2);
+        Instant instant = Instant.now();
+        long epochMilli = Date.from(instant).getTime();
+        Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(epochMilli));
+        User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, timestamp, timestamp);
         userList.add(user);
         Page<User> userPage = new PageImpl<>(userList);
 
-        Mockito.when(userRepository.findByNameIgnoreCase(org.mockito.ArgumentMatchers.isA(String.class), org.mockito.ArgumentMatchers.isA(Pageable.class))).thenReturn(userPage);
+        Mockito.when(userRepository.findByNameContainingIgnoreCase(org.mockito.ArgumentMatchers.isA(String.class), org.mockito.ArgumentMatchers.isA(Pageable.class))).thenReturn(userPage);
 
         Page<UserDTO> response = userService.getUserByName("Daniel", 0, 5, "userId", "DESC");
         Assertions.assertNotNull(response);
@@ -128,30 +127,30 @@ class UserServiceTest {
         Assertions.assertEquals("dan@gmail.com", response.getContent().get(0).getEmail());
         //Assertions.assertEquals("pass", response.getContent().get(0).getPassword()); //DTO Returns Empty String by default
         Assertions.assertEquals("Daniel", response.getContent().get(0).getName());
-        Assertions.assertEquals(t2, response.getContent().get(0).getLastLogin());
+        Assertions.assertEquals(timestamp, response.getContent().get(0).getLastLogin());
 
     }
 
     @Test
-    void GetALlUsers_MatchingTimeStamp(){
+    void whenGetALlUsersByRegistrationTime_callUserRepository_retrieveUserPage(){
         List<User> userList = new ArrayList<>();
         Authority authority = Authority.USER;
-        Instant i = Instant.now();
-        long d = Date.from(i).getTime();
-        Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(d));
-        User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, t2, t2);
+        Instant instant = Instant.now();
+        long epochMilli = Date.from(instant).getTime();
+        Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(epochMilli));
+        User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, timestamp, timestamp);
         userList.add(user);
         Page<User> userPage = new PageImpl<>(userList);
 
         Mockito.when(userRepository.findByRegistrationTimeAfter(org.mockito.ArgumentMatchers.isA(Timestamp.class), org.mockito.ArgumentMatchers.isA(Pageable.class))).thenReturn(userPage);
 
-        Page<UserDTO> response = userService.getUserByCreationTime(d, 0, 5, "userId", "DESC");
+        Page<UserDTO> response = userService.getUserByCreationTime(epochMilli, 0, 5, "userId", "DESC");
         Assertions.assertNotNull(response);
         Assertions.assertEquals(1, response.getContent().get(0).getUserId());
         Assertions.assertEquals("dan@gmail.com", response.getContent().get(0).getEmail());
         //Assertions.assertEquals("pass", response.getContent().get(0).getPassword()); //DTO Returns Empty String by default
         Assertions.assertEquals("Daniel", response.getContent().get(0).getName());
-        Assertions.assertEquals(t2, response.getContent().get(0).getLastLogin());
+        Assertions.assertEquals(timestamp, response.getContent().get(0).getLastLogin());
 
     }
 

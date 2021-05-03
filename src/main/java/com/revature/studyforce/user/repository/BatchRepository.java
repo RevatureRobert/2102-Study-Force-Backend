@@ -4,7 +4,6 @@ import com.revature.studyforce.user.model.Batch;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
@@ -19,6 +18,6 @@ public interface BatchRepository extends JpaRepository<Batch,Integer> {
 
     Page<Batch> findByCreationTimeAfter(Timestamp creation, Pageable pageable);
 
-    Batch findByNameIgnoreCase(String name);
+    Batch findByNameContainingIgnoreCase(String name);
 
 }
