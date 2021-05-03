@@ -29,8 +29,10 @@ public class Flashcard {
     @NotNull
     @ManyToOne
     private User creator;
-    @ManyToOne
-    private Topic topic;
+    //TODO: waiting on Topic model
+//    @NotNull
+//    @ManyToOne
+//    private Topic topic;
     @Column(nullable = false)
     private String question;
     private int questionDifficultyTotal = 0;
