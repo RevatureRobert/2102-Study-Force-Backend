@@ -123,8 +123,8 @@ public class BatchService {
      * @return returns 10 as default unless other option selected.
      */
     private int offsetValidation(int offset){
-        if(offset < 10 || offset > 100){
-            offset = 10;
+        if(offset < 5 || offset > 50){
+            offset = 5;
         }
         return offset;
     }
