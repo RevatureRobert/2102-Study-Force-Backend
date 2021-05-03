@@ -50,19 +50,19 @@ public class VoteControllerTest {
 
     @Test
     void postVoteTest() throws Exception {
-        User u = new User(1,"jesus.christ@revature.com","password","Jesus","Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User u = new User(0,"jesus.christ@revature.com","password","Jesus","Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(u);
 
         Flashcard flashcard = new Flashcard(0,u,null,"how is your day",1,1,null,null);
         flashcardRepository.save(flashcard);
 
 
-        Answer a = new Answer(2,u,flashcard,"check stackoverflow",5,false,false,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        Answer a = new Answer(0,u,flashcard,"check stackoverflow",5,false,false,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         answerRepository.save(a);
 
 
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-        String string = "{\"answerId\" : \"2\","
+        String string = "{\"answerId\" : \"3\","
                 + "\"userId\" : \"1\","
                 + "\"value\" : \"1\""
                 + "}";
