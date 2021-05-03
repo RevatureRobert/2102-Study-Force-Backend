@@ -21,7 +21,7 @@ public class QuizController {
 
     @GetMapping("/all")
     public @ResponseBody Page<QuizDTO> getAll(
-            @RequestParam(name="page",defaultValue = "0", required = false) int page,
+            @RequestParam(name="page", defaultValue = "0", required = false) int page,
             @RequestParam(name="offset", defaultValue = "10", required = false) int offset,
             @RequestParam(name="sortby", defaultValue = "quizId", required = false) String sortBy,
             @RequestParam(name = "order", defaultValue = "ASC", required = false) String order)

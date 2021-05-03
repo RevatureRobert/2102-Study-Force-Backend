@@ -75,10 +75,12 @@ class QuizIntegrationTest {
 
     @Test
     void givenQuiz_whenGetAll_thenQuizzesRetrievedWithPagination() throws Exception {
-        Optional<User> tester = userRepository.findById(1);
+//        Optional<User> tester = userRepository.findById(1);
+//        System.out.println(tester);
+
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/quiz/all/")
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content").isNotEmpty())

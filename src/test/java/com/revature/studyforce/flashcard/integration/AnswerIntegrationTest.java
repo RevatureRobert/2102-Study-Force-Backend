@@ -55,10 +55,10 @@ class AnswerIntegrationTest {
 
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
         flashcard = flashcardRepo.save(flashcard);
-        AnswerDTO aDTO = new AnswerDTO(1,3,"tcs filename");
-        AnswerDTO aDTO2 = new AnswerDTO(2,3,"xml filename");
-        answerService.createAnswer(aDTO);
-        answerService.createAnswer(aDTO2);
+//        AnswerDTO aDTO = new AnswerDTO(1,3,"tcs filename");
+//        AnswerDTO aDTO2 = new AnswerDTO(2,3,"xml filename");
+//        answerService.createAnswer(aDTO);
+//        answerService.createAnswer(aDTO2);
 
         mockMvc = MockMvcBuilders.standaloneSetup(answerController).build();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/answers/flashcard-id/3?page=0&offset=50&sortby=\"creator\"&order=\"DESC\"")
@@ -100,8 +100,8 @@ class AnswerIntegrationTest {
         userRepository.save(user);
         flashcardRepo.save(flashcard);
 
-        AnswerDTO aDTO = new AnswerDTO(1,2,"tcs filename");
-        answerService.createAnswer(aDTO);
+//        AnswerDTO aDTO = new AnswerDTO(1,2,"tcs filename");
+//        answerService.createAnswer(aDTO);
 
         mockMvc = MockMvcBuilders.standaloneSetup(answerController).build();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/flashcards/answers/")

@@ -50,7 +50,7 @@ class FlashcardIntegrationTest {
     private MockMvc mockMvc;
 
 //    @Autowired
-//    private WebApplicationContext context;
+    private WebApplicationContext context;
 
     @Autowired
     private FlashcardController flashcardController;

@@ -30,7 +30,9 @@ public class QuizService {
     public Page<QuizDTO> getAll(int page, int offset, String sortBy, String order){
         page = validatePage(page);
         offset = validateOffset(offset);
+        System.out.println(sortBy);
         sortBy = validateSortBy(sortBy);
+        System.out.println(sortBy);
 
         Page<Quiz> quizzes;
         if(order.equalsIgnoreCase("DESC"))
@@ -114,8 +116,8 @@ public class QuizService {
      */
     private String validateSortBy(String sortBy){
         switch (sortBy.toLowerCase(Locale.ROOT)){
-            case "id":
-                return "id";
+            case "quizid":
+                return "quizId";
 
         }
 
