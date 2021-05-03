@@ -16,16 +16,18 @@ import java.util.List;
 
 @Repository
 public interface StackTracesubscriptionRepository extends JpaRepository<StackTraceSubscription, StacktraceSubscriptionID> {
-    //find all the subscriptions for a user
-    @Query(value = "Select * from STACK_TRACE_SUBSCRIPTION where stack_trace_id = :id" ,nativeQuery = true )
-    List<StackTraceSubscription> findBystacktraceId(@RequestParam int id);
+    //find all the users that have a subscription
+    @Query(value = "select * from STACK_TRACE_SUBSCRIPTION where stack_trace = :id " ,nativeQuery = true )
+    List<StackTraceSubscription> findByStacktraceId(@RequestParam int id);
 
-    @Query(value = "Select * from STACK_TRACE_SUBSCRIPTION where user_id = :id" , nativeQuery = true)
-    List<StackTraceSubscription> findByUserId(@RequestParam int id);
+    // find all the subscriptions for a user
+    // Do i want to find all stacktraces here or can i just find their ids and then send back a HATOES Link to them?
+    @Query(value = "select stack_trace from STACK_TRACE_SUBSCRIPTION , SUBSCRIPTIONS where subscription_id = id and user_user_id = :id" , nativeQuery = true)
+    List<Integer> findByUserId(@RequestParam int id);
 
     @Modifying
     @Transactional
     @Query(value = "Delete From STACK_TRACE_SUBSCRIPTION where stack_trace_id = :id" , nativeQuery = true)
-    void removeBySubscrption(@RequestParam int id);
+    void removeBySubscription(@RequestParam int id);
 
 }

@@ -30,7 +30,7 @@ public class subscriptionController {
      */
     @GetMapping(value = "/user/subscription")
     public @ResponseBody
-    List<StackTraceSubscription> findUsers(@RequestParam int id) {
+    List<Integer> findUsers(@RequestParam int id) {
         return this.stackTraceService.findByUser(id);
     }
 
