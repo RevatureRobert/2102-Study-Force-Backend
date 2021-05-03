@@ -1,10 +1,12 @@
 package com.revature.studyforce.flashcard.dto;
 
+import com.revature.studyforce.flashcard.model.Difficulty;
 import com.revature.studyforce.flashcard.model.Rating;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.function.Function;
@@ -17,11 +19,13 @@ import java.util.function.Function;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RatingDTO {
-
+    @NotNull
     @PositiveOrZero
     private int flashcardId;
+    @NotNull
     @Positive
     private int userId;
+    @NotNull
     @Positive
     private int ratingScore;
 
@@ -30,7 +34,7 @@ public class RatingDTO {
      * @return a data transfer object that represents the rating object
      */
     public static Function<Rating,RatingDTO> ratingToDTO(){
-        return (rating) -> {
+        return rating -> {
             Assert.notNull(rating.getFlashcard(),"Flashcard object is null");
             Assert.notNull(rating.getUser(),"User object is null");
 

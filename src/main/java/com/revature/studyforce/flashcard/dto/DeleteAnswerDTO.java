@@ -7,18 +7,14 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 /**
- * Data transfer object used as response for the creation of a new rating
- * It returns the new Rating information
+ * Data transfer object used to delete a existing answer
  * @author Edson Rodriguez
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RatingResponseDTO {
+public class DeleteAnswerDTO {
     @NotNull
     @Positive
-    private int totalRatings;
-    @NotNull
-    @Positive
-    private int rating;
+    private int answerId;
 }

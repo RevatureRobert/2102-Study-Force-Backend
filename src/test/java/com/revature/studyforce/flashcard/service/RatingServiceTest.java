@@ -35,7 +35,7 @@ class RatingServiceTest {
     @MockBean
     private RatingRepository ratingRepository;
     @MockBean
-    private FlashcardRepository flashcardRepo;
+    private FlashcardRepository flashcardRepository;
     @MockBean
     private UserRepository userRepository;
 
@@ -50,14 +50,14 @@ class RatingServiceTest {
         Rating rating = new Rating(0,flashcard,user, Difficulty.EASY);
         rList.add(rating);
 
-        Mockito.when(flashcardRepo.findById(0)).thenReturn(Optional.of(flashcard));
+        Mockito.when(flashcardRepository.findById(0)).thenReturn(Optional.of(flashcard));
         Mockito.when(userRepository.findById(0)).thenReturn(Optional.of(user));
         Mockito.when(ratingRepository.findByFlashcard_id(0)).thenReturn(rList);
         Mockito.when(ratingRepository.save(org.mockito.ArgumentMatchers.isA(Rating.class))).thenReturn(rating);
 
         RatingResponseDTO res = ratingService.createRating(RatingDTO.ratingToDTO().apply(rating));
         assertNotNull(res);
-        assertEquals(0, res.getRating());
+        assertEquals(1, res.getRating());
         assertTrue(res.getTotalRatings()>0);
 
         System.out.println(res);

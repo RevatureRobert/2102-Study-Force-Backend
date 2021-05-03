@@ -4,8 +4,10 @@ import com.revature.studyforce.flashcard.dto.TopicDTO;
 import com.revature.studyforce.flashcard.model.Topic;
 import com.revature.studyforce.flashcard.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -30,11 +32,16 @@ public class TopicController {
      * Get a specific id
      * @param id The id of the topic to get
      * @return Topic of the specified id
+     * @exception throw 404 if topic not found
      */
     @GetMapping("/{id}")
     @ResponseBody
     public Topic findTopicById(@PathVariable int id) {
-        return topicService.getTopicById(id);
+        Topic topic = topicService.getTopicById(id);
+        if (topic == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Topic doesn't exist");
+        }
+        return topic;
     }
 
     /**
@@ -52,11 +59,16 @@ public class TopicController {
      * Delete an topic from database (need to add auth for admin only)
      * @param id The id you want to remove
      * @return The topic that was removed
+     * @exception throw 404 if topic not found
      */
     @DeleteMapping("/{id}")
     @ResponseBody
     public Topic deleteTopic(@PathVariable int id) {
-        return topicService.deleteTopic(id);
+        Topic topic = topicService.deleteTopic(id);
+        if (topic == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Topic doesn't exist");
+        }
+        return topic;
     }
 
 }

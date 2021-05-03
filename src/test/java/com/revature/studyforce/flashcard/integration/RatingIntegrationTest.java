@@ -30,8 +30,6 @@ import java.time.LocalDateTime;
 @TestPropertySource(locations = "classpath:test-application.properties")
 class RatingIntegrationTest {
 
-    private MockMvc mockMvc;
-
     @Autowired
     private RatingController ratingController;
 
@@ -49,7 +47,7 @@ class RatingIntegrationTest {
         System.out.println(userRepository.save(user));
         System.out.println(flashcardRepository.save(flashcard));
 
-        mockMvc = MockMvcBuilders.standaloneSetup(ratingController).build();
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(ratingController).build();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/rate/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"flashcardId\":\"2\",\"userId\":\"1\",\"ratingScore\":\"2\"}"))

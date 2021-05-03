@@ -1,5 +1,6 @@
 package com.revature.studyforce.flashcard.service;
 
+import com.revature.studyforce.flashcard.dto.QuizDTO;
 import com.revature.studyforce.flashcard.model.Quiz;
 import com.revature.studyforce.flashcard.repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +25,14 @@ public class QuizService {
         this.QUIZ_REPO = quizRepository;
     }
 
-    public Quiz createQuiz(Quiz newQuiz){
-        return QUIZ_REPO.save(newQuiz);
-    }
 
-    public Page<Quiz> getAll(int page, int offset, String sortBy, String order){
+
+    public Page<QuizDTO> getAll(int page, int offset, String sortBy, String order){
         page = validatePage(page);
         offset = validateOffset(offset);
+        System.out.println(sortBy);
         sortBy = validateSortBy(sortBy);
+        System.out.println(sortBy);
 
         Page<Quiz> quizzes;
         if(order.equalsIgnoreCase("DESC"))
@@ -39,12 +40,51 @@ public class QuizService {
         else
             quizzes = QUIZ_REPO.findAll(PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
 
-        return quizzes;
+        return quizzes.map(QuizDTO.quizToDTO());
 
     }
 
     public Optional<Quiz> getById(Quiz quiz){
         return QUIZ_REPO.findById(quiz.getQuizId());
+    }
+
+    /**
+     * Create a new Quiz object
+     * @param newQuiz - the Quiz object to be persisted
+     * @return new QuizDTO
+     */
+    public QuizDTO createQuiz(Quiz newQuiz){
+        Quiz saved = QUIZ_REPO.save(newQuiz);
+        return QuizDTO.quizToDTO().apply(saved);
+    }
+
+
+    /**
+     * Update a Quiz object
+     * @param quizDTO - quizDTO for Quiz object being mutated
+     * @return the mutated QuizDTO object
+     */
+    public QuizDTO updateQuiz(QuizDTO quizDTO) {
+        Optional<Quiz> optionalQuiz = QUIZ_REPO.findById(quizDTO.getQuizId());
+
+        if(!optionalQuiz.isPresent())
+            return null;
+
+        Quiz quiz = optionalQuiz.get();
+        quiz.setQuizName(quizDTO.getQuizName());
+        quiz.setQuizUser(quizDTO.getQuizUser());
+        quiz.setFlashcards(quizDTO.getFlashcards());
+
+        return  QuizDTO.quizToDTO().apply(QUIZ_REPO.save(quiz));
+    }
+
+
+    /**
+     * Delete a Quiz object
+     * @param quizDTO - the quizDTO to be deleted
+     */
+    public void deleteQuiz(QuizDTO quizDTO) {
+        QUIZ_REPO.deleteById(quizDTO.getQuizId());
     }
 
     /**
@@ -76,8 +116,8 @@ public class QuizService {
      */
     private String validateSortBy(String sortBy){
         switch (sortBy.toLowerCase(Locale.ROOT)){
-            case "clockin":
-                return "clockIn";
+            case "quizid":
+                return "quizId";
 
         }
 

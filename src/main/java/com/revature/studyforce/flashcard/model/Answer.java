@@ -1,10 +1,12 @@
 package com.revature.studyforce.flashcard.model;
 
+import com.revature.studyforce.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import java.sql.Timestamp;
 
 /**
@@ -16,24 +18,27 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Answer {
-    //TODO:
     @Id
     @GeneratedValue
     @Column(name = "answer_id")
     private int answerId;
     @NotNull
-    @Column(name = "creator_id")
-    private int creatorId;
+    @ManyToOne
+    private User creator;
     @NotNull
-    @Column(name = "flashcard_id")
-    private int flashcardId;
+    @ManyToOne
+    private Flashcard flashcard;
     @NotNull
-    @Column(name = "answer")
+    @Column(name = "answer_text")
     private String answerText;
+    @NotNull
+    @PositiveOrZero
     @Column(name = "answer_score")
     private int answerScore;
+    @NotNull
     @Column(name = "selected_answer")
     private boolean selectedAnswer;
+    @NotNull
     @Column(name = "trainer_selected")
     private boolean trainerSelected;
     @NotNull
@@ -42,75 +47,4 @@ public class Answer {
     @Column(name = "resolution_time")
     private Timestamp resolutionTime;
 
-    public int getAnswerId() {
-        return answerId;
-    }
-
-    public void setAnswerId(int answerId) {
-        this.answerId = answerId;
-    }
-
-    public int getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(int creatorId) {
-        this.creatorId = creatorId;
-    }
-
-    public int getFlashcardId() {
-        return flashcardId;
-    }
-
-    public void setFlashcardId(int flashcardId) {
-        this.flashcardId = flashcardId;
-    }
-
-    public String getAnswer() {
-        return answerText;
-    }
-
-    public void setAnswer(String answer) {
-        this.answerText = answer;
-    }
-
-    public int getAnswerScore() {
-        return answerScore;
-    }
-
-    public void setAnswerScore(int answerScore) {
-        this.answerScore = answerScore;
-    }
-
-    public boolean isSelectedAnswer() {
-        return selectedAnswer;
-    }
-
-    public void setSelectedAnswer(boolean selectedAnswer) {
-        this.selectedAnswer = selectedAnswer;
-    }
-
-    public boolean isTrainerSelected() {
-        return trainerSelected;
-    }
-
-    public void setTrainerSelected(boolean trainerSelected) {
-        this.trainerSelected = trainerSelected;
-    }
-
-    public Timestamp getCreationTime() {
-        return creationTime;
-    }
-
-    public void setCreationTime(Timestamp creationTime) {
-        this.creationTime = creationTime;
-    }
-
-    public Timestamp getResolutionTime() {
-        return resolutionTime;
-    }
-
-    public void setResolutionTime(Timestamp resolutionTime) {
-        this.resolutionTime = resolutionTime;
-    }
 }

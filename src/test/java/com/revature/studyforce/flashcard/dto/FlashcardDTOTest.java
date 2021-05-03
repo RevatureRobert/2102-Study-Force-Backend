@@ -3,6 +3,7 @@ package com.revature.studyforce.flashcard.dto;
 import com.revature.studyforce.flashcard.model.Flashcard;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.flashcard.model.Topic;
+import com.revature.studyforce.flashcard.dto.FlashcardDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
