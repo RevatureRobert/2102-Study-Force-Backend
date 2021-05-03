@@ -21,7 +21,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.io.UnsupportedEncodingException;
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 /**
  * tests for integration of User Controller
@@ -136,6 +138,31 @@ public class UserControllerTest {
                 .andReturn();
         //System.out.println(result.getResponse().getContentAsString());
     }
+    @Test
+    void GetUserByTimeStamp() throws Exception {
+        Authority authority = Authority.USER;
+        Instant i = Instant.now();
+        long d = Date.from(i).getTime();
+        Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(d));
+        User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, t2, t2);
+        userRepository.save(user);
+
+        mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/User/user/time?time=1619996684739")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].userId").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].email").value("dan@gmail.com"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name").value("Daniel"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].active").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].subscribedFlashcard").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].subscribedStacktrace").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].authority").value("USER"))
+                .andReturn();
+        //System.out.println(result.getResponse().getContentAsString());
+    }
+
 
 
 

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -44,6 +45,7 @@ public class UserService {
     }
 
     /**
+     * Get User by their Id
      * @param id belonging to user
      * @return user with that userId
      */
@@ -53,6 +55,7 @@ public class UserService {
     }
 
     /**
+     * Get User with matching email
      * @param email belonging to user
      * @return user
      */
@@ -63,6 +66,7 @@ public class UserService {
 
     /**
      * GET ALL USERS Matching a name
+     * @param name name to compare
      * @param sortBy sort method
      * @param order asc or desc
      * @param page Page displayed
@@ -76,16 +80,18 @@ public class UserService {
     }
 
     /**
-     * GET ALL USERS by Registration Day
+     * GET ALL USERS who registered after a given date
+     * @param timestamp timestamp to check
      * @param sortBy sort method
      * @param order asc or desc
      * @param page Page displayed
      * @param offset # of object displayed
      * @return All Users in database who registered after a specific date
      */
-    public Page<UserDTO> getUserByCreationTime(Timestamp creation, int page, int offset, String sortBy, String order){
+    public Page<UserDTO> getUserByCreationTime(Long timestamp, int page, int offset, String sortBy, String order){
+        Timestamp t = Timestamp.from(Instant.ofEpochMilli(timestamp));
         Page<User> users;
-        users = userRepository.findByRegistrationTimeAfter(creation, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+        users = userRepository.findByRegistrationTimeAfter(t, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
         return users.map(UserDTO.userToDTO());
     }
 

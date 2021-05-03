@@ -1,14 +1,11 @@
 package com.revature.studyforce.user.contollers;
+
 import com.revature.studyforce.user.dto.UserDTO;
-import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
-import java.util.List;
 /**
  * User Controller
  * @author Daniel Reyes
@@ -44,6 +41,7 @@ public class UserController {
     }
 
     /**
+     * Get User by their Id
      * @param id belonging to user
      * @return user with that userId
      */
@@ -54,6 +52,7 @@ public class UserController {
 
     /**
      * GET ALL USERS Matching a name
+     * @param name name to compare
      * @param sortBy sort method
      * @param order asc or desc
      * @param page Page displayed
@@ -70,6 +69,7 @@ public class UserController {
     }
 
     /**
+     * Get User with matching email
      * @param email belonging to user
      * @return user
      */
@@ -79,15 +79,16 @@ public class UserController {
     }
 
     /**
-     * GET ALL USERS by Registration Day
+     * GET ALL USERS who registered after a given date
+     * @param timestamp timestamp to check
      * @param sortBy sort method
      * @param order asc or desc
      * @param page Page displayed
      * @param offset # of object displayed
      * @return All Users in database who registered after a specific date
      */
-    @GetMapping("/timeStamp")
-    public Page<UserDTO> getUserByCreationTime(@RequestParam("time") Timestamp timestamp,
+    @GetMapping("/user/time")
+    public Page<UserDTO> getUserByCreationTime(@RequestParam("time") Long timestamp,
                                         @RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                         @RequestParam(value = "offset", required = false, defaultValue = "10") int offset,
                                         @RequestParam(value = "sortby", required = false, defaultValue = "userId") String sortBy,

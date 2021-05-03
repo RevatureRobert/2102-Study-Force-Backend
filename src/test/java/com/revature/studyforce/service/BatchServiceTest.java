@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -31,6 +32,7 @@ import java.util.*;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ExtendWith(MockitoExtension.class)
+@TestPropertySource(locations = "classpath:test-application.properties")
 class BatchServiceTest {
     @Mock
     private BatchRepository batchRepository;
@@ -47,12 +49,14 @@ class BatchServiceTest {
 
         Authority authority = Authority.ADMIN;
         Authority user1 = Authority.USER;
-        Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
-        User Admin = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
-        User student = new User(2 , "test@gmail.com", "pass", "Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
+        Instant i = Instant.now();
+        long d = Date.from(i).getTime();
+        Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(d));
+        User Admin = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, t2, t2);
+        User student = new User(2 , "test@gmail.com", "pass", "Danny", true, true, true, user1, t2, t2);
         AdminList.add(Admin);
         StudentList.add(student);
-        Batch batch = new Batch(1, "2102 Enterprise", AdminList, StudentList, lastLoginTime);
+        Batch batch = new Batch(1, "2102 Enterprise", AdminList, StudentList, t2);
         BatchList.add(batch);
         Page<Batch> Batches = new PageImpl<>(BatchList);
 
@@ -64,7 +68,7 @@ class BatchServiceTest {
         Assertions.assertEquals("2102 Enterprise", response.getContent().get(0).getName());
         Assertions.assertEquals(AdminList, response.getContent().get(0).getInstructors());
         Assertions.assertEquals(StudentList, response.getContent().get(0).getUsers());
-        Assertions.assertEquals(lastLoginTime, response.getContent().get(0).getCreationTime());
+        Assertions.assertEquals(t2, response.getContent().get(0).getCreationTime());
     }
 
     @Test
@@ -75,13 +79,15 @@ class BatchServiceTest {
 
         Authority authority = Authority.ADMIN;
         Authority user1 = Authority.USER;
-        Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
-        User Admin = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
-        User student = new User(2 , "test@gmail.com", "pass", "Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
+        Instant i = Instant.now();
+        long d = Date.from(i).getTime();
+        Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(d));
+        User Admin = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, t2, t2);
+        User student = new User(2 , "test@gmail.com", "pass", "Danny", true, true, true, user1, t2, t2);
         AdminList.add(Admin);
         StudentList.add(student);
 
-        Batch batch = new Batch(1, "2102 Enterprise", AdminList, StudentList, lastLoginTime);
+        Batch batch = new Batch(1, "2102 Enterprise", AdminList, StudentList, t2);
         BatchList.add(batch);
 
         Mockito.when(batchRepository.findById(1)).thenReturn(Optional.of(batch));
@@ -93,7 +99,7 @@ class BatchServiceTest {
         Assertions.assertEquals("2102 Enterprise", response.get().getName());
         Assertions.assertEquals(AdminList, response.get().getInstructors());
         Assertions.assertEquals(StudentList, response.get().getUsers());
-        Assertions.assertEquals(lastLoginTime, response.get().getCreationTime());
+        Assertions.assertEquals(t2, response.get().getCreationTime());
     }
 
     @Test
@@ -104,13 +110,15 @@ class BatchServiceTest {
 
         Authority authority = Authority.ADMIN;
         Authority user1 = Authority.USER;
-        Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
-        User Admin = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
-        User student = new User(2 , "test@gmail.com", "pass", "Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
+        Instant i = Instant.now();
+        long d = Date.from(i).getTime();
+        Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(d));
+        User Admin = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, t2, t2);
+        User student = new User(2 , "test@gmail.com", "pass", "Danny", true, true, true, user1, t2, t2);
         AdminList.add(Admin);
         StudentList.add(student);
 
-        Batch batch = new Batch(1, "2102 Enterprise", AdminList, StudentList, lastLoginTime);
+        Batch batch = new Batch(1, "2102 Enterprise", AdminList, StudentList, t2);
         BatchList.add(batch);
 
         Mockito.when(batchRepository.findByNameIgnoreCase("2102")).thenReturn(batch);
@@ -122,7 +130,7 @@ class BatchServiceTest {
         Assertions.assertEquals("2102 Enterprise", response.getName());
         Assertions.assertEquals(AdminList, response.getInstructors());
         Assertions.assertEquals(StudentList, response.getUsers());
-        Assertions.assertEquals(lastLoginTime, response.getCreationTime());
+        Assertions.assertEquals(t2, response.getCreationTime());
     }
 
     @Test
@@ -133,7 +141,6 @@ class BatchServiceTest {
 
         Authority authority = Authority.ADMIN;
         Authority user1 = Authority.USER;
-        Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
         Instant i = Instant.now();
         long d = Date.from(i).getTime();
         Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(d));
@@ -156,7 +163,7 @@ class BatchServiceTest {
         Assertions.assertEquals("2102 Enterprise", response.getContent().get(0).getName());
         Assertions.assertEquals(AdminList, response.getContent().get(0).getInstructors());
         Assertions.assertEquals(StudentList, response.getContent().get(0).getUsers());
-        Assertions.assertEquals(lastLoginTime, response.getContent().get(0).getCreationTime());
+        Assertions.assertEquals(t2, response.getContent().get(0).getCreationTime());
     }
 
 

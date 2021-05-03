@@ -41,12 +41,13 @@ public class BatchController {
     }
 
     /**
-     * GET ALL Batches after a creation timestamp
+     * GET ALL Batches that were created after a given timestamp
+     * @param timestamp timestamp in long format
      * @param sortBy sort method
      * @param order asc or desc
      * @param page Page displayed
      * @param offset # of object displayed
-     * @return All Batches in database with timestamp constraint
+     * @return All Batches in database created after given timestamp
      */
     @GetMapping("/batch/time")
     public Page<Batch> getBatchByCreationTime(@RequestParam("time") Long timestamp,
@@ -59,7 +60,7 @@ public class BatchController {
 
     /**
      * @param name batch name
-     * @return batch
+     * @return batch matching name or similar to name given
      */
     @GetMapping("/batch/name")
     public Batch getUserByBatchName(@RequestParam(name = "name") String name){
@@ -68,7 +69,7 @@ public class BatchController {
 
     /**
      * @param batchId belonging to batch
-     * @return batch
+     * @return batch with matching id
      */
     @GetMapping("/batch/{batchId}")
     public Optional<Batch> getUserByBatchId(@PathVariable(name = "batchId") int batchId){
