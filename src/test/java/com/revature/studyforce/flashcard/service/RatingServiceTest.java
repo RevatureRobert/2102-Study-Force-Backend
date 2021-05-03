@@ -46,7 +46,7 @@ class RatingServiceTest {
     void whenCreateRating_returnsRatingResponseDTO(){
         List<Rating> rList = new ArrayList<>();
         User user = new User(0,"edson@revature.com","password","Edson","Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
-        Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
+        Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
         Rating rating = new Rating(0,flashcard,user, Difficulty.EASY);
         rList.add(rating);
 

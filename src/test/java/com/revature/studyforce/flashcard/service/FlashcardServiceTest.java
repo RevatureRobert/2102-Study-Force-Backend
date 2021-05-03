@@ -54,7 +54,7 @@ class FlashcardServiceTest {
         topic = new Topic();
         topic.setId(1);
         now = Timestamp.valueOf(LocalDateTime.now());
-        flashcard = new Flashcard(1, user, topic, "question", 2, 2, now, now);
+        flashcard = new Flashcard(1, user, topic, "question", 2, 2, now, now, false);
         flashcardList.add(flashcard);
         flashcardPage = new PageImpl<>(flashcardList);
     }
@@ -79,7 +79,7 @@ class FlashcardServiceTest {
 
     @Test
     void getAllByDifficultyTest() {
-        Mockito.doReturn(flashcardPage).when(flashcardRepository).findALlByQuestionDifficultyTotal(eq(2), any(PageRequest.class));
+        Mockito.doReturn(flashcardPage).when(flashcardRepository).findAllByQuestionDifficultyTotal(eq(2), any(PageRequest.class));
         Page<FlashcardDTO> DTOs = flashcardService.getAllByDifficulty(0,3,"id","desc", 2);
         FlashcardDTO DTO = DTOs.getContent().get(0);
         Assertions.assertNotNull(DTO);

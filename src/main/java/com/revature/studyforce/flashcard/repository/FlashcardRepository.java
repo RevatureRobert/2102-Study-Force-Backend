@@ -15,5 +15,11 @@ import org.springframework.stereotype.Repository;
 public interface FlashcardRepository extends JpaRepository<Flashcard, Integer> {
 
     // Find questions by difficulty
-    Page<Flashcard> findALlByQuestionDifficultyTotal(int questionDifficultyTotal, Pageable pageable);
+    Page<Flashcard> findAllByQuestionDifficultyTotal(int questionDifficultyTotal, Pageable pageable);
+
+    // Find questions by topic
+    Page<Flashcard> findAllByTopicTopicName(String topicName, Pageable pageable);
+
+    // Find questions by resolved status
+    Page<Flashcard> findAllByIsResolved(Boolean isResolved, Pageable pageable);
 }

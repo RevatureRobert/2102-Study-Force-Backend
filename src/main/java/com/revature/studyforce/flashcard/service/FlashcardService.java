@@ -19,11 +19,11 @@ import java.util.Locale;
 @Service
 public class FlashcardService extends AbstractService {
 
-    private final FlashcardRepository FLASHCARD_REPO;
+    private final FlashcardRepository flashcardRepository;
 
     @Autowired
     public FlashcardService(FlashcardRepository flashcardRepository){
-        this.FLASHCARD_REPO=flashcardRepository;
+        this.flashcardRepository =flashcardRepository;
     }
 
     /**
@@ -42,9 +42,9 @@ public class FlashcardService extends AbstractService {
         Page<Flashcard> flashcards;
 
     if (order.equalsIgnoreCase("DESC")) {
-      flashcards = FLASHCARD_REPO.findAll(PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+      flashcards = flashcardRepository.findAll(PageRequest.of(page, offset, Sort.by(sortBy).descending()));
     } else {
-      flashcards = FLASHCARD_REPO.findAll(PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
+      flashcards = flashcardRepository.findAll(PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
     }
 
         return flashcards.map(FlashcardDTO.convertToDTO());
@@ -67,9 +67,59 @@ public class FlashcardService extends AbstractService {
         Page<Flashcard> flashcards;
 
         if (order.equalsIgnoreCase("DESC")) {
-            flashcards = FLASHCARD_REPO.findALlByQuestionDifficultyTotal(difficulty, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+            flashcards = flashcardRepository.findAllByQuestionDifficultyTotal(difficulty, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
         } else {
-            flashcards = FLASHCARD_REPO.findALlByQuestionDifficultyTotal(difficulty, PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
+            flashcards = flashcardRepository.findAllByQuestionDifficultyTotal(difficulty, PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
+        }
+
+        return flashcards.map(FlashcardDTO.convertToDTO());
+    }
+
+    /**
+     * getAllByTopic() method mapped to HTTP GET requests ("/difficulty")
+     * @param page - number of offsets away from 0
+     * @param offset - number of Flashcards per offset
+     * @param sortBy - column to sort by
+     * @param order - ascending or descending order
+     * @param topicName - limits returned Flashcards to the given topic
+     * @return - returns a List of paginated Flashcards sorted by topic
+     */
+    public Page<FlashcardDTO> getAllByTopic(int page, int offset, String sortBy, String order, String topicName) {
+        page = validatePage(page);
+        offset = validateOffset(offset);
+        sortBy = validateSortBy(sortBy);
+
+        Page<Flashcard> flashcards;
+
+        if (order.equalsIgnoreCase("DESC")) {
+            flashcards = flashcardRepository.findAllByTopicTopicName(topicName, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+        } else {
+            flashcards = flashcardRepository.findAllByTopicTopicName(topicName, PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
+        }
+
+        return flashcards.map(FlashcardDTO.convertToDTO());
+    }
+
+    /**
+     * getAllByIsResolved() method mapped to HTTP GET requests ("/difficulty")
+     * @param page - number of offsets away from 0
+     * @param offset - number of Flashcards per offset
+     * @param sortBy - column to sort by
+     * @param order - ascending or descending order
+     * @param resolved - limits returned Flashcards to the given resolved status
+     * @return - returns a List of paginated Flashcards sorted by resolved status
+     */
+    public Page<FlashcardDTO> getAllByIsResolved(int page, int offset, String sortBy, String order, boolean resolved) {
+        page = validatePage(page);
+        offset = validateOffset(offset);
+        sortBy = validateSortBy(sortBy);
+
+        Page<Flashcard> flashcards;
+
+        if (order.equalsIgnoreCase("DESC")) {
+            flashcards = flashcardRepository.findAllByIsResolved(resolved, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+        } else {
+            flashcards = flashcardRepository.findAllByIsResolved(resolved, PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
         }
 
         return flashcards.map(FlashcardDTO.convertToDTO());
@@ -81,7 +131,7 @@ public class FlashcardService extends AbstractService {
      * @return - returns Flashcard with the given id
      */
     public FlashcardDTO getById(int id) {
-        return FlashcardDTO.convertToDTO().apply(FLASHCARD_REPO.findById(id).orElse(null));
+        return FlashcardDTO.convertToDTO().apply(flashcardRepository.findById(id).orElse(null));
     }
 
     /**
@@ -90,7 +140,7 @@ public class FlashcardService extends AbstractService {
      * @return - returns persisted Flashcard
      */
     public FlashcardDTO save(Flashcard flashcard) {
-        return FlashcardDTO.convertToDTO().apply(FLASHCARD_REPO.save(flashcard));
+        return FlashcardDTO.convertToDTO().apply(flashcardRepository.save(flashcard));
     }
 
     /**
@@ -99,7 +149,7 @@ public class FlashcardService extends AbstractService {
      * @return - returns updated Flashcard
      */
     public FlashcardDTO update(Flashcard flashcard) {
-        Flashcard original = FLASHCARD_REPO.findById(flashcard.getId()).orElse(null);
+        Flashcard original = flashcardRepository.findById(flashcard.getId()).orElse(null);
 
         if (original != null) {
             int id = original.getId();
@@ -107,7 +157,7 @@ public class FlashcardService extends AbstractService {
             original.setId(id);
         }
         assert original != null;
-        return FlashcardDTO.convertToDTO().apply(FLASHCARD_REPO.save(original));
+        return FlashcardDTO.convertToDTO().apply(flashcardRepository.save(original));
     }
 
     /**
@@ -117,7 +167,7 @@ public class FlashcardService extends AbstractService {
      */
     public @ResponseBody
     FlashcardDTO delete(@RequestBody Flashcard flashcard) {
-        FLASHCARD_REPO.delete(flashcard);
+        flashcardRepository.delete(flashcard);
         return FlashcardDTO.convertToDTO().apply(flashcard);
     }
 

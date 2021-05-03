@@ -57,6 +57,44 @@ public class FlashcardController {
     }
 
     /**
+     * getAllByTopic() method mapped to HTTP GET requests ("/topic")
+     * @param page - number of offsets away from 0
+     * @param offset - number of Flashcards per offset
+     * @param sortBy - column to sort by
+     * @param order - ascending or descending order
+     * @param topicName - limits returned Flashcards to the given topic
+     * @return - returns a List of paginated Flashcards sorted by difficulty
+     */
+    @GetMapping("/topic")
+    public @ResponseBody Page<FlashcardDTO> getAllByTopic(
+            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(name = "offset", defaultValue = "10", required = false) int offset,
+            @RequestParam(name = "sortby", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(name = "order", defaultValue = "desc", required = false) String order,
+            @RequestParam(name = "topicName", required = false) String topicName) {
+        return flashcardService.getAllByTopic(page, offset, sortBy, order, topicName);
+    }
+
+    /**
+     * getAllByResolved() method mapped to HTTP GET requests ("/resolved")
+     * @param page - number of offsets away from 0
+     * @param offset - number of Flashcards per offset
+     * @param sortBy - column to sort by
+     * @param order - ascending or descending order
+     * @param resolved - limits returned Flashcards to the given resolved boolean
+     * @return - returns a List of paginated Flashcards sorted by difficulty
+     */
+    @GetMapping("/resolved")
+    public @ResponseBody Page<FlashcardDTO> getAllByIsResolved(
+            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(name = "offset", defaultValue = "10", required = false) int offset,
+            @RequestParam(name = "sortby", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(name = "order", defaultValue = "desc", required = false) String order,
+            @RequestParam(name = "resolved", required = false) Boolean resolved) {
+        return flashcardService.getAllByIsResolved(page, offset, sortBy, order, resolved);
+    }
+
+    /**
      * getById() method mapped to HTTP GET requests ("/id/{id}")
      * @param id - limits returned Flashcard to the given id
      * @return - returns Flashcard with the given id

@@ -1,11 +1,12 @@
 package com.revature.studyforce.flashcard.model;
 
-import com.sun.istack.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import com.revature.studyforce.user.model.User;
 
@@ -37,5 +38,6 @@ public class Flashcard {
     private int questionDifficultyAverage = 0;
     private Timestamp createdTime = Timestamp.valueOf(LocalDateTime.now());
     private Timestamp resolutionTime = Timestamp.valueOf(LocalDateTime.now());
+    private boolean isResolved = false;
 
 }
