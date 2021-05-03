@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
  * @author Daniel Reyes
  */
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/Batch")
 public class BatchController {
 
