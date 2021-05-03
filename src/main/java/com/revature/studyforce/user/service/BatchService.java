@@ -99,8 +99,6 @@ public class BatchService {
         switch(sort.toLowerCase(Locale.ROOT)){
             case "name":
                 return "name";
-            case "email":
-                return "email";
             case "time":
                 return "creationTime";
             default:
