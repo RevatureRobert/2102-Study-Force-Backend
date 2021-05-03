@@ -21,11 +21,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.util.ArrayList;
-
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -37,9 +32,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class TechnologyControllerTests {
     //TODO: Standardize Tests across project
- /*   private MockMvc mockMvc;
+    private MockMvc mockMvc;
 
-    @MockBean
+    @Autowired
     private TechnologyService technologyService;
 
     @Autowired
@@ -49,12 +44,12 @@ class TechnologyControllerTests {
     private TechnologyRepository technologyRepository;
 
     @BeforeEach
-    private void beforeEach() {
-        mockMvc = MockMvcBuilders.standaloneSetup(new TechnologyController()).build();
+    void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(technologyController).build();
     }
 
     @Test
-    void getAllTechnologiesForTechnologyTest() throws Exception {
+    void whenGetAllTechnologies_ThenTechnologiesReturned() throws Exception {
         technologyRepository.save(new Technology(0,"TestTech2"));
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/stacktrace/technology")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -66,7 +61,7 @@ class TechnologyControllerTests {
         System.out.println(result.getResponse().getContentAsString());
     }
     @Test
-    void AddTechnologyTest() throws Exception {
+    void whenAddTechnology_ThenTechnologyReturned() throws Exception {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/stacktrace/technology")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new Gson().toJson(new TechnologyDTO(0,"TestTechAdd"))))
@@ -78,11 +73,10 @@ class TechnologyControllerTests {
         System.out.println(result.getResponse().getContentAsString());
     }
     @Test
-    void deleteTechnologyTest() throws Exception{
-        Mockito.doNothing().when(technologyService).deleteTechnology(1);
+    void whenDeleteTechnology_ThenCorrectReponseReturned() throws Exception{
+        technologyRepository.save(new Technology(1,"TestTech"));
         mockMvc.perform(MockMvcRequestBuilders.delete("/stacktrace/technology/{id}", 1)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
-        verify(technologyService, times(1)).deleteTechnology(1);
-    }*/
+    }
 }

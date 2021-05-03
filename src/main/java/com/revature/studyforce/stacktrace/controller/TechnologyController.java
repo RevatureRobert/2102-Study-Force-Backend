@@ -1,7 +1,6 @@
 package com.revature.studyforce.stacktrace.controller;
 
 import com.revature.studyforce.stacktrace.dto.TechnologyDTO;
-import com.revature.studyforce.stacktrace.model.Technology;
 import com.revature.studyforce.stacktrace.service.TechnologyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,12 @@ import java.util.List;
 @RequestMapping("/stacktrace/technology")
 public class TechnologyController {
 
-  @Autowired TechnologyService technologyService;
+  private TechnologyService technologyService;
+
+  @Autowired public TechnologyController (TechnologyService technologyService) {
+    this.technologyService = technologyService;
+  }
+
 
   /**
    * Gets all Technologies
@@ -30,11 +34,9 @@ public class TechnologyController {
    * @param technologyDTO The technology to be added as a data transfer object
    * @return The data transfer representation of the newly added technology object
    */
-  @PostMapping()
+  @PostMapping
   public TechnologyDTO addNewTechnology(@RequestBody TechnologyDTO technologyDTO){
-    technologyDTO.setTechnologyId(0);
-    Technology t = TechnologyDTO.dTOtoTechnology().apply(technologyDTO);
-    return technologyService.createNewTechnology(t);
+    return technologyService.createNewTechnology(technologyDTO);
   }
 
   /**
