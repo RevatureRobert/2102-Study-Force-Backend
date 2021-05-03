@@ -8,7 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -128,5 +131,23 @@ public class StacktraceService {
             default:
                 return "stacktraceId";
         }
+    }
+@Transactional
+    public void save(StacktraceDTO stacktraceDTO){
+        Stacktrace stacktrace = mapFromDtoToStacktrace(stacktraceDTO);
+        stacktraceRepo.save(stacktrace);
+    }
+
+    private Stacktrace mapFromDtoToStacktrace(StacktraceDTO stacktraceDTO) {
+        Stacktrace stacktrace= new Stacktrace();
+        stacktrace.setStacktraceId(stacktraceDTO.getStacktraceId());
+        stacktrace.setUserId(stacktraceDTO.getUser());
+        stacktrace.setTitle(stacktraceDTO.getTitle());
+        stacktrace.setBody(stacktraceDTO.getBody());
+        stacktrace.setTechnologyId(stacktraceDTO.getTechnologyId());
+        stacktrace.setCreationTime(Timestamp.from(Instant.now()));
+        return  stacktrace;
+
+
     }
 }
