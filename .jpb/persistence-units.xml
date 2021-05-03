@@ -4,7 +4,7 @@
     <persistence-units>
       <persistence-unit name="Default">
         <packages>
-          <package value="com.revature.StudyForce" />
+          <package value="com.revature.studyforce" />
         </packages>
       </persistence-unit>
     </persistence-units>
