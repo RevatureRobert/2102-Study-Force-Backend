@@ -69,6 +69,7 @@ public class StackTraceController {
         return stacktraceService.getStacktraceById(id);
     }
 
+
     /**
      * Deletes the stacktrace with the passed stacktraceId
      * @param stacktraceId Primary id of stacktrace
