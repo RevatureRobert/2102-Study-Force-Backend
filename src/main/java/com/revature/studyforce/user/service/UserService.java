@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    private final UserRepository USER_REPO;
+    private final UserRepository userRepo;
 
     @Autowired
     public UserService(UserRepository userRepo) {
-        this.USER_REPO = userRepo;
+        this.userRepo = userRepo;
     }
 
     /**
@@ -22,7 +22,7 @@ public class UserService {
      * @return The newly persisted user object converted to its data transfer representation using {@link UserDTO#userToDTO()}
      */
     public UserDTO createNewUser(User user) {
-        User saved = USER_REPO.save(user);
+        User saved = userRepo.save(user);
         return UserDTO.userToDTO().apply(saved);
     }
 }

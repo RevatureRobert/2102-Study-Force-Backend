@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserService USER_SERVICE;
+    private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) { this.USER_SERVICE = userService;}
+    public UserController(UserService userService) { this.userService = userService;}
 
 
     /**
@@ -32,7 +32,7 @@ public class UserController {
     public UserDTO addUser(@RequestBody UserDTO userDTO) {
         userDTO.setUserId(0);
         User u = UserDTO.dtoToUser().apply(userDTO);
-    return USER_SERVICE.createNewUser(u);
+        return userService.createNewUser(u);
     }
 
 
