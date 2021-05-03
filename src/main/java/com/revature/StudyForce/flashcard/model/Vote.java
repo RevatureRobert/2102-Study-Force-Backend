@@ -1,6 +1,6 @@
-package com.revature.StudyForce.flashcard.model;
+package com.revature.studyforce.flashcard.model;
 
-import com.revature.StudyForce.user.model.User;
+import com.revature.studyforce.user.model.User;
 import lombok.*;
 
 import javax.persistence.*;

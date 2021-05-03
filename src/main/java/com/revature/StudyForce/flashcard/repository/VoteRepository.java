@@ -1,6 +1,6 @@
-package com.revature.StudyForce.flashcard.repository;
+package com.revature.studyforce.flashcard.repository;
 
-import com.revature.StudyForce.flashcard.model.Vote;
+import com.revature.studyforce.flashcard.model.Vote;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
