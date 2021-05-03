@@ -69,6 +69,37 @@ class BatchServiceTest {
     }
 
     @Test
+    void whenGetAllBatches_callBatchRepository_retrieveBatchPage_testingSortBy(){
+
+        Set<User> AdminList = new HashSet<>();
+        Set<User> StudentList = new HashSet<>();
+        List<Batch> BatchList = new ArrayList<>();
+
+        Authority authority = Authority.ADMIN;
+        Authority user1 = Authority.USER;
+        Instant instant = Instant.now();
+        long epochMilli = Date.from(instant).getTime();
+        Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(epochMilli));
+        User Admin = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, timestamp, timestamp);
+        User student = new User(2 , "test@gmail.com", "pass", "Danny", true, true, true, user1, timestamp, timestamp);
+        AdminList.add(Admin);
+        StudentList.add(student);
+        Batch batch = new Batch(1, "2102 Enterprise", AdminList, StudentList, timestamp);
+        BatchList.add(batch);
+        Page<Batch> Batches = new PageImpl<>(BatchList);
+
+        Mockito.when(batchRepository.findAll(org.mockito.ArgumentMatchers.isA(Pageable.class))).thenReturn(Batches);
+
+        Page<Batch> response = batchService.getAllBatches(0, 5, "batchId", "asc");
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(1, response.getContent().get(0).getBatchId());
+        Assertions.assertEquals("2102 Enterprise", response.getContent().get(0).getName());
+        Assertions.assertEquals(AdminList, response.getContent().get(0).getInstructors());
+        Assertions.assertEquals(StudentList, response.getContent().get(0).getUsers());
+        Assertions.assertEquals(timestamp, response.getContent().get(0).getCreationTime());
+    }
+
+    @Test
     void whenGetBatchById_callBatchRepository_retrieveBatch(){
         Set<User> AdminList = new HashSet<>();
         Set<User> StudentList = new HashSet<>();
@@ -145,7 +176,6 @@ class BatchServiceTest {
         Mockito.when(batchRepository.findByCreationTimeAfter(org.mockito.ArgumentMatchers.isA(Timestamp.class),
                 org.mockito.ArgumentMatchers.isA(Pageable.class))).thenReturn(Batches);
 
-
         Page<Batch> response = batchService.getBatchByCreationTime(epochMilli, 0, 5, "batchId", "DESC");
         Assertions.assertNotNull(response);
         Assertions.assertEquals(1, response.getContent().get(0).getBatchId());
@@ -153,6 +183,38 @@ class BatchServiceTest {
         Assertions.assertEquals(AdminList, response.getContent().get(0).getInstructors());
         Assertions.assertEquals(StudentList, response.getContent().get(0).getUsers());
         Assertions.assertEquals(t2, response.getContent().get(0).getCreationTime());
+    }
+
+    @Test
+    void whenGetBatchByCreationTime_callBatchRepository_retrieveBatchPage_testingSortBy(){
+        Set<User> AdminList = new HashSet<>();
+        Set<User> StudentList = new HashSet<>();
+        List<Batch> BatchList = new ArrayList<>();
+
+        Authority authority = Authority.ADMIN;
+        Authority user1 = Authority.USER;
+        Instant instant = Instant.now();
+        long epochMilli = Date.from(instant).getTime();
+        Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(epochMilli));
+        User Admin = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, timestamp, timestamp);
+        User student = new User(2 , "test@gmail.com", "pass", "Danny", true, true, true, user1, timestamp, timestamp);
+        AdminList.add(Admin);
+        StudentList.add(student);
+
+        Batch batch = new Batch(1, "2102 Enterprise", AdminList, StudentList, timestamp);
+        BatchList.add(batch);
+        Page<Batch> Batches = new PageImpl<>(BatchList);
+
+        Mockito.when(batchRepository.findByCreationTimeAfter(org.mockito.ArgumentMatchers.isA(Timestamp.class),
+                org.mockito.ArgumentMatchers.isA(Pageable.class))).thenReturn(Batches);
+
+        Page<Batch> response = batchService.getBatchByCreationTime(epochMilli, 0, 5, "batchId", "asc");
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(1, response.getContent().get(0).getBatchId());
+        Assertions.assertEquals("2102 Enterprise", response.getContent().get(0).getName());
+        Assertions.assertEquals(AdminList, response.getContent().get(0).getInstructors());
+        Assertions.assertEquals(StudentList, response.getContent().get(0).getUsers());
+        Assertions.assertEquals(timestamp, response.getContent().get(0).getCreationTime());
     }
 
 
