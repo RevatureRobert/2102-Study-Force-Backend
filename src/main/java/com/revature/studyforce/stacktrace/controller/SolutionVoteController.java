@@ -29,9 +29,6 @@ public class SolutionVoteController {
      * @return
      */
     @GetMapping("/{solutionId}")
-//    public List<SolutionVote> getSolutionVoteBySolutionId(@PathVariable(name = "solutionId") int solutionId){
-//        return solutionVoteService.getAllSolutionsVotesForSolution(solutionId);
-//    }
     public List<SolutionVoteDTO> getSolutionVoteBySolutionId(@PathVariable(name = "solutionId") int solutionId){
         return solutionVoteService.getAllSolutionsVotesForSolution(solutionId);
     }
@@ -42,12 +39,9 @@ public class SolutionVoteController {
      * @return
      */
     @PostMapping
-    public SolutionVote submitVoteForSolutionId(@RequestBody SolutionVote solutionVote){
-        return solutionVoteService.submitVote(solutionVote);
+    public SolutionVoteDTO submitVoteForSolutionId(@RequestBody SolutionVoteDTO solutionVoteDTO){
+        return solutionVoteService.sumbitVote(solutionVoteDTO);
     }
-//    public SolutionVoteDTO submitVoteForSolutionId(@RequestBody SolutionVoteDTO solutionVoteDTO){
-//        return solutionVoteService.sumbitVote(solutionVoteDTO);
-//    }
 
     /**
      * This should delete every vote on a specific solution.

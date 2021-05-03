@@ -30,16 +30,6 @@ public class SolutionVoteService {
      * @param solutionId the value that will bring back every vote for a given solution.
      * @return will return a list of votes on a given solution.
      */
-//    public List<SolutionVote> getAllSolutionsVotesForSolution(int solutionId){
-//        List<SolutionVote> solutionVotes = solutionVoteRepository.findBySolutionId(solutionId);
-//        List<SolutionVote> solutionVoteDTOS = new ArrayList<>();
-//
-//        for(SolutionVote solutionVote : solutionVotes){
-//            solutionVoteDTOS.add(solutionVote);
-//        }
-//
-//        return solutionVoteDTOS;
-//    }
     public List<SolutionVoteDTO> getAllSolutionsVotesForSolution(int solutionId){
         List<SolutionVote> solutionVotes = solutionVoteRepository.findBySolutionId(solutionId);
         List<SolutionVoteDTO> solutionVoteDTOS = new ArrayList<>();
@@ -56,12 +46,9 @@ public class SolutionVoteService {
      * @param solutionVoteDTO The solution object that will hold the users vote information.
      * @return will return a soltuionVote for a given user, with a given solution.
      */
-    public SolutionVote submitVote(SolutionVote solutionVote){
-        return solutionVoteRepository.save(solutionVote);
+    public SolutionVoteDTO sumbitVote(SolutionVoteDTO solutionVoteDTO){
+        return SolutionVoteDTO.solutionVoteToDTO().apply(solutionVoteRepository.save(SolutionVoteDTO.dtoToSolutionVote().apply(solutionVoteDTO)));
     }
-//    public SolutionVoteDTO sumbitVote(SolutionVoteDTO solutionVoteDTO){
-//        return SolutionVoteDTO.solutionVoteToDTO().apply(solutionVoteRepository.save(SolutionVoteDTO.dtoToSolutionVote().apply(solutionVoteDTO)));
-//    }
 
     /**
      * Deletes every vote on a solution.
