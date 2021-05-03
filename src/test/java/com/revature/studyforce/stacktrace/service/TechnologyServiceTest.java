@@ -16,10 +16,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class TechnologyServiceTest {
+class TechnologyServiceTest {
+    //TODO: Standardize Tests across project
     List<Technology> technologyArrayList;
 
     @MockBean
@@ -37,19 +41,25 @@ public class TechnologyServiceTest {
     }
 
     @Test
-    void getAllTechnologies() {
+    void getAllTechnologiesTest() {
         Mockito.when(technologyRepository.findAll()).thenReturn(technologyArrayList);
-        List<Technology> returnedTechnologyList = technologyService.getAllTechnologies().stream().map(TechnologyDTO.DTOtoTechnology()).collect(Collectors.toList());
+        List<Technology> returnedTechnologyList = technologyService.getAllTechnologies().stream().map(TechnologyDTO.dTOtoTechnology()).collect(Collectors.toList());
         for(int i = 0; i < returnedTechnologyList.size(); i++){
             assertEquals(returnedTechnologyList.get(i).getTechnologyId(), technologyArrayList.get(i).getTechnologyId());
             assertEquals(returnedTechnologyList.get(i).getTechnologyName(), technologyArrayList.get(i).getTechnologyName());
         }
     }
     @Test
-    void createTechnology() {
+    void createTechnologyTest() {
         technologyService.createNewTechnology(new Technology(0,"TestTech"));
         Mockito.when(technologyRepository.findAll()).thenReturn(technologyArrayList);
-        assertEquals(technologyRepository.findAll().get(0).getTechnologyId(), 0);
-        assertEquals(technologyRepository.findAll().get(0).getTechnologyName(), "TestTech");
+        assertEquals(0,technologyRepository.findAll().get(0).getTechnologyId());
+        assertEquals("TestTech",technologyRepository.findAll().get(0).getTechnologyName());
+    }
+    @Test
+    void deleteTechnologyTest(){
+        Mockito.doNothing().when(technologyRepository).deleteById(any(Integer.class));
+        technologyService.deleteTechnology(1);
+        verify(technologyRepository, times(1)).deleteById(any(Integer.class));
     }
 }

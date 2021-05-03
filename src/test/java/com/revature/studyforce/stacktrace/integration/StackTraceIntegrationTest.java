@@ -1,15 +1,21 @@
 package com.revature.studyforce.stacktrace.integration;
 
 import com.revature.studyforce.stacktrace.controller.StackTraceController;
+import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.model.Technology;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
+import com.revature.studyforce.stacktrace.service.StacktraceService;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,13 +26,17 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class StackTraceIntegrationTest {
-/*
-    private MockMvc mockMvc;
+    //TODO: Standardize Tests across project
+   private MockMvc mockMvc;
 
     @Autowired
     private StacktraceRepository stacktraceRepository;
@@ -34,13 +44,15 @@ public class StackTraceIntegrationTest {
     @Autowired
     private StackTraceController stacktraceController;
 
-    @Test
+    @MockBean
+    private StacktraceService stacktraceService;
+    /*@Test
     public void givenStacktrace_whenGetAll_thenStacktraceRetrieved() throws Exception {
         stacktraceRepository.save(new Stacktrace(1,
                 new User(1,"Test@mail.com","Pass","Bob","Smith",true,true,true, Authority.USER,new Timestamp(0),new Timestamp(0)),
                 "TestTitle", "TestBody", new Technology(1, "TestTech"), new Timestamp(0)));
         mockMvc = MockMvcBuilders.standaloneSetup(stacktraceController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/stacktrace/")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/stacktrace/page")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -62,5 +74,19 @@ public class StackTraceIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].creationTime").value(new Time(0).toString()))
                 .andReturn();
         System.out.println(result.getResponse().getContentAsString());
+    }*/
+/*    @Test
+    public void givenStacktrace_whenGetAllWithPagination_thenStacktraceRetrieved() throws Exception {
+        StacktraceDTO s = new StacktraceDTO(1,
+                new User(1,"Test@mail.com","Pass","Bob","Smith",true,true,true, Authority.USER,new Timestamp(0),new Timestamp(0)),
+                "TestTitle", "TestBody", new Technology(1, "TestTech"), new Timestamp(0));
+        ArrayList<StacktraceDTO> testStacktraceDTOList = new ArrayList<>();
+        testStacktraceDTOList.add(s);
+        Page<StacktraceDTO> p = new PageImpl<>(testStacktraceDTOList);
+        Mockito.doReturn(p).when(stacktraceService).getPageStacktraces(1,0,"stackTraceID","ASC");
+        mockMvc.perform(MockMvcRequestBuilders.get("/stacktrace/page", 1)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        verify(stacktraceService, times(1)).getPageStacktraces(1,0,"stackTraceID","ASC");
     }*/
 }
