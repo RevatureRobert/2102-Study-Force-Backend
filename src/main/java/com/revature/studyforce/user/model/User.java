@@ -38,7 +38,7 @@ public class User {
     private String password;
 
     @Size(max = 511)
-    @Column(name = "first_name")
+    @Column(name = "name")
     private String name;
 
     @Column(name = "is_active")

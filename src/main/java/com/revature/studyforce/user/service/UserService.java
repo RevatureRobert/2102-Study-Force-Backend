@@ -92,7 +92,7 @@ public class UserService {
     /**
      * Updates the name of a User in {@link UserRepository}
      * @param userNameDTO A data transfer object containing the user's id and their new name
-     * @return The data transfer representation of the updated user
+     * @return The data transfer representation of the updated user converted with {@link UserDTO#userToDTO()}
      */
     public UserDTO updateUserName(@NotNull UserNameDTO userNameDTO){
         if(userNameDTO.getName() == null){
@@ -115,7 +115,7 @@ public class UserService {
     /**
      * Updates the authority of a User in {@link UserRepository}
      * @param userAuthorityDTO A data transfer object containing the user's id and their new authority
-     * @return The data transfer representation of the updated user
+     * @return The data transfer representation of the updated user converted with {@link UserDTO#userToDTO()}
      */
     public UserDTO updateUserAuthority(@NotNull UserAuthorityDTO userAuthorityDTO){
         if(userAuthorityDTO.getAuthority() == null){
@@ -138,7 +138,7 @@ public class UserService {
     /**
      * Updates the active status of a User in {@link UserRepository}
      * @param userIsActiveDTO A data transfer object containing the user's id and their new active status
-     * @return The data transfer representation of the updated user
+     * @return The data transfer representation of the updated user converted with {@link UserDTO#userToDTO()}
      */
     public UserDTO updateUserIsActive(@NotNull UserIsActiveDTO userIsActiveDTO){
         Optional<User> userOptional = userRepository.findById(userIsActiveDTO.getUserId());
@@ -157,7 +157,7 @@ public class UserService {
     /**
      * Updates the subscription statuses of a User in {@link UserRepository}
      * @param userSubscriptionsDTO A data transfer object containing the user's id and their new subscription statuses
-     * @return The data transfer representation of the updated user
+     * @return The data transfer representation of the updated user converted with {@link UserDTO#userToDTO()}
      */
     public UserDTO updateUserSubscriptionStatus(UserSubscriptionsDTO userSubscriptionsDTO){
         Optional<User> userOptional = userRepository.findById(userSubscriptionsDTO.getUserId());
@@ -166,7 +166,7 @@ public class UserService {
         if(userOptional.isPresent()){
             user = userOptional.get();
             user.setSubscribedFlashcard(userSubscriptionsDTO.isSubscribedFlashcard());
-            user.setSubscribedFlashcard(userSubscriptionsDTO.isSubscribedStacktrace());
+            user.setSubscribedStacktrace(userSubscriptionsDTO.isSubscribedStacktrace());
             return UserDTO.userToDTO().apply(userRepository.save(user));
 
         } else {
