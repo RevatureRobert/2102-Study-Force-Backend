@@ -1,9 +1,6 @@
 package com.revature.studyforce.user.service;
 
-import com.revature.studyforce.user.dto.UserAuthorityDTO;
-import com.revature.studyforce.user.dto.UserDTO;
-import com.revature.studyforce.user.dto.UserIsActiveDTO;
-import com.revature.studyforce.user.dto.UserNameDTO;
+import com.revature.studyforce.user.dto.*;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +10,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Optional;
@@ -26,11 +22,11 @@ import java.util.Optional;
 @Service
 public class UserService {
     private static final String ID_NOT_FOUND_MESSAGE = "User matching provided userId not found, is your JSON malformed?";
-    private final UserRepository USER_REPO;
+    private final UserRepository userRepository;
 
     @Autowired
     public UserService(UserRepository userRepository){
-        this.USER_REPO = userRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -43,7 +39,7 @@ public class UserService {
      */
     public Page<UserDTO> getAllUsers(int page, int offset, String sortBy, String order){
         Page<User> users;
-        users = USER_REPO.findAll(PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+        users = userRepository.findAll(PageRequest.of(page, offset, Sort.by(sortBy).descending()));
         return users.map(UserDTO.userToDTO());
     }
 
@@ -52,7 +48,7 @@ public class UserService {
      * @return user with that userId
      */
     public UserDTO getUserById(int id){
-        Optional<User> user = USER_REPO.findById(id);
+        Optional<User> user = userRepository.findById(id);
         return user.map(userMap -> UserDTO.userToDTO().apply(userMap)).orElse(null);
     }
 
@@ -61,7 +57,7 @@ public class UserService {
      * @return user
      */
     public UserDTO getUserByEmail(String email){
-        Optional<User> user = USER_REPO.findByEmail(email);
+        Optional<User> user = userRepository.findByEmail(email);
         return user.map(userMap -> UserDTO.userToDTO().apply(userMap)).orElse(null);
     }
 
@@ -75,7 +71,7 @@ public class UserService {
      */
     public Page<UserDTO> getUserByName(String name, int page, int offset, String sortBy, String order){
         Page<User> users;
-        users = USER_REPO.findByNameIgnoreCase(name, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+        users = userRepository.findByNameIgnoreCase(name, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
         return users.map(UserDTO.userToDTO());
     }
 
@@ -89,7 +85,7 @@ public class UserService {
      */
     public Page<UserDTO> getUserByCreationTime(Timestamp creation, int page, int offset, String sortBy, String order){
         Page<User> users;
-        users = USER_REPO.findByRegistrationTimeAfter(creation, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+        users = userRepository.findByRegistrationTimeAfter(creation, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
         return users.map(UserDTO.userToDTO());
     }
 
@@ -103,13 +99,13 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Field name cannot be null, is your JSON malformed?");
         }
 
-        Optional<User> userOptional = USER_REPO.findById(userNameDTO.getUserId());
+        Optional<User> userOptional = userRepository.findById(userNameDTO.getUserId());
         User user;
 
         if(userOptional.isPresent()){
             user = userOptional.get();
             user.setName(userNameDTO.getName());
-            return UserDTO.userToDTO().apply(USER_REPO.save(user));
+            return UserDTO.userToDTO().apply(userRepository.save(user));
 
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ID_NOT_FOUND_MESSAGE);
@@ -126,13 +122,13 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Field authority cannot be null, is your JSON malformed?");
         }
 
-        Optional<User> userOptional = USER_REPO.findById(userAuthorityDTO.getUserId());
+        Optional<User> userOptional = userRepository.findById(userAuthorityDTO.getUserId());
         User user;
 
         if(userOptional.isPresent()){
             user = userOptional.get();
             user.setAuthority(userAuthorityDTO.getAuthority());
-            return UserDTO.userToDTO().apply(USER_REPO.save(user));
+            return UserDTO.userToDTO().apply(userRepository.save(user));
 
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ID_NOT_FOUND_MESSAGE);
@@ -145,14 +141,33 @@ public class UserService {
      * @return The data transfer representation of the updated user
      */
     public UserDTO updateUserIsActive(@NotNull UserIsActiveDTO userIsActiveDTO){
-
-        Optional<User> userOptional = USER_REPO.findById(userIsActiveDTO.getUserId());
+        Optional<User> userOptional = userRepository.findById(userIsActiveDTO.getUserId());
         User user;
 
         if(userOptional.isPresent()){
             user = userOptional.get();
             user.setActive(userIsActiveDTO.isActive());
-            return UserDTO.userToDTO().apply(USER_REPO.save(user));
+            return UserDTO.userToDTO().apply(userRepository.save(user));
+
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ID_NOT_FOUND_MESSAGE);
+        }
+    }
+
+    /**
+     * Updates the subscription statuses of a User in {@link UserRepository}
+     * @param userSubscriptionsDTO A data transfer object containing the user's id and their new subscription statuses
+     * @return The data transfer representation of the updated user
+     */
+    public UserDTO updateUserSubscriptionStatus(UserSubscriptionsDTO userSubscriptionsDTO){
+        Optional<User> userOptional = userRepository.findById(userSubscriptionsDTO.getUserId());
+        User user;
+
+        if(userOptional.isPresent()){
+            user = userOptional.get();
+            user.setSubscribedFlashcard(userSubscriptionsDTO.isSubscribedFlashcard());
+            user.setSubscribedFlashcard(userSubscriptionsDTO.isSubscribedStacktrace());
+            return UserDTO.userToDTO().apply(userRepository.save(user));
 
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ID_NOT_FOUND_MESSAGE);

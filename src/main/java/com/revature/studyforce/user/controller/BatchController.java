@@ -14,7 +14,7 @@ import java.util.Optional;
  */
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/Batch")
+@RequestMapping("/batch")
 public class BatchController {
 
     private final BatchService batchService;

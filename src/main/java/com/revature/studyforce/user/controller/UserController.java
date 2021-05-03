@@ -1,14 +1,10 @@
 package com.revature.studyforce.user.controller;
 
-import com.revature.studyforce.user.dto.UserAuthorityDTO;
-import com.revature.studyforce.user.dto.UserDTO;
-import com.revature.studyforce.user.dto.UserIsActiveDTO;
-import com.revature.studyforce.user.dto.UserNameDTO;
+import com.revature.studyforce.user.dto.*;
 import com.revature.studyforce.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
 import java.sql.Timestamp;
 
 /**
@@ -20,11 +16,11 @@ import java.sql.Timestamp;
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserService USER_SERVICE;
+    private final UserService userService;
 
     @Autowired
     public UserController(UserService userService){
-        this.USER_SERVICE = userService;
+        this.userService = userService;
     }
 
     /**
@@ -40,7 +36,7 @@ public class UserController {
                                      @RequestParam(value = "offset", required = false, defaultValue = "10") int offset,
                                      @RequestParam(value = "sortby", required = false, defaultValue = "userId") String sortBy,
                                      @RequestParam(value = "order", required = false, defaultValue = "ASC") String order) {
-        return USER_SERVICE.getAllUsers(page, offset, sortBy, order);
+        return userService.getAllUsers(page, offset, sortBy, order);
     }
 
     /**
@@ -49,7 +45,7 @@ public class UserController {
      */
     @GetMapping("/{userId}")
     public UserDTO getUser(@PathVariable(name = "userId") int id){
-        return USER_SERVICE.getUserById(id);
+        return userService.getUserById(id);
     }
 
     /**
@@ -66,7 +62,7 @@ public class UserController {
                                             @RequestParam(value = "offset", required = false, defaultValue = "10") int offset,
                                             @RequestParam(value = "sortby", required = false, defaultValue = "userId") String sortBy,
                                             @RequestParam(value = "order", required = false, defaultValue = "ASC") String order){
-        return USER_SERVICE.getUserByName(name, page,offset,sortBy,order);
+        return userService.getUserByName(name, page,offset,sortBy,order);
     }
 
     /**
@@ -75,7 +71,7 @@ public class UserController {
      */
     @GetMapping("/{email}")
     public UserDTO getUserByEmail(@PathVariable(name = "email") String email){
-        return USER_SERVICE.getUserByEmail(email);
+        return userService.getUserByEmail(email);
     }
 
     /**
@@ -87,12 +83,12 @@ public class UserController {
      * @return All Users in database who registered after a specific date
      */
     @GetMapping("/{timeStamp}")
-    public Page<UserDTO> getUserByEmail(@PathVariable("time") Timestamp timestamp,
+    public Page<UserDTO> getUserByTime(@PathVariable("time") Timestamp timestamp,
                                         @RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                         @RequestParam(value = "offset", required = false, defaultValue = "10") int offset,
                                         @RequestParam(value = "sortby", required = false, defaultValue = "userId") String sortBy,
                                         @RequestParam(value = "order", required = false, defaultValue = "ASC") String order){
-        return USER_SERVICE.getUserByCreationTime(timestamp, page,offset,sortBy,order);
+        return userService.getUserByCreationTime(timestamp, page,offset,sortBy,order);
     }
 
     /**
@@ -102,7 +98,7 @@ public class UserController {
      */
     @PutMapping("/name")
     public UserDTO updateUserName(@RequestBody UserNameDTO userNameDTO){
-        return USER_SERVICE.updateUserName(userNameDTO);
+        return userService.updateUserName(userNameDTO);
     }
 
     /**
@@ -112,7 +108,7 @@ public class UserController {
      */
     @PutMapping("/authority")
     public UserDTO updateUserAuthority(@RequestBody UserAuthorityDTO userAuthorityDTO){
-        return USER_SERVICE.updateUserAuthority(userAuthorityDTO);
+        return userService.updateUserAuthority(userAuthorityDTO);
     }
 
     /**
@@ -122,6 +118,16 @@ public class UserController {
      */
     @PutMapping("/active")
     public UserDTO updateUserIsActive(@RequestBody UserIsActiveDTO userIsActiveDTO){
-        return USER_SERVICE.updateUserIsActive(userIsActiveDTO);
+        return userService.updateUserIsActive(userIsActiveDTO);
+    }
+
+    /**
+     * Processes PUT request to update the subscription statuses of a user
+     * @param userSubscriptionsDTO A data transfer object containing the user's id and their new subscription statuses
+     * @return The data transfer representation of the updated user
+     */
+    @PutMapping("/subscription")
+    public UserDTO updateUserSubscriptionStatus (@RequestBody UserSubscriptionsDTO userSubscriptionsDTO){
+        return userService.updateUserSubscriptionStatus(userSubscriptionsDTO);
     }
 }

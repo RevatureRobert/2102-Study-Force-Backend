@@ -17,11 +17,11 @@ import java.util.Optional;
 @Service
 public class BatchService {
 
-    private final BatchRepository BATCH_REPO;
+    private final BatchRepository batchRepository;
 
     @Autowired
     public BatchService(BatchRepository batchRepository){
-        this.BATCH_REPO = batchRepository;
+        this.batchRepository = batchRepository;
     }
 
     /**
@@ -34,7 +34,7 @@ public class BatchService {
      */
     public Page<Batch> getAllBatches(int page, int offset, String sortBy, String order){
         Page<Batch> batchPage;
-        batchPage = BATCH_REPO.findAll(PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+        batchPage = batchRepository.findAll(PageRequest.of(page, offset, Sort.by(sortBy).descending()));
         return batchPage;
     }
 
@@ -43,7 +43,7 @@ public class BatchService {
      * @return batch
      */
     public Optional<Batch> getBatchById(int batchId){
-        return BATCH_REPO.findById(batchId);
+        return batchRepository.findById(batchId);
     }
 
     /**
@@ -51,7 +51,7 @@ public class BatchService {
      * @return batch
      */
     public Batch getBatchByName(String name){
-        return BATCH_REPO.findByNameIgnoreCase(name);
+        return batchRepository.findByNameIgnoreCase(name);
     }
 
     /**
@@ -64,7 +64,7 @@ public class BatchService {
      */
     public Page<Batch> getBatchByCreationTime(Timestamp timestamp, int page, int offset, String sortBy, String order){
         Page<Batch> batchPage;
-        batchPage = BATCH_REPO.findByCreationTimeAfter(timestamp, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+        batchPage = batchRepository.findByCreationTimeAfter(timestamp, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
         return batchPage;
     }
 }
