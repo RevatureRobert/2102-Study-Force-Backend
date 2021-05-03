@@ -44,9 +44,9 @@ class RatingIntegrationTest {
     @Test
     void givenRating_whenCreateRating() throws Exception {
         User user = new User(0,"edson@revature.com","password","Edson","Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
-        Flashcard flashcard = new Flashcard(0,user,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
+        Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,null,null);
 
-        System.out.println("\b\b\b*******"+userRepository.save(user)+"*******\b\b\b");
+        System.out.println(userRepository.save(user));
         System.out.println(flashcardRepository.save(flashcard));
 
         mockMvc = MockMvcBuilders.standaloneSetup(ratingController).build();
