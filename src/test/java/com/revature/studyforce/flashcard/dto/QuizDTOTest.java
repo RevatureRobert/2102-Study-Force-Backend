@@ -27,8 +27,8 @@ class QuizDTOTest {
     @Test
     void whenConvertingToDTO_DTOFieldsMatchOriginalObject(){
         User nick = new User(0, "mscott@dunder.com","password","Michael","Scott",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
-        Flashcard flashcard1 = new Flashcard(0,nick,null,"Whats my favorite color?",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
-        Flashcard flashcard2 = new Flashcard(0,nick,null,"Can I go to the bathroom?",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
+        Flashcard flashcard1 = new Flashcard(0,nick,null,"Whats my favorite color?",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
+        Flashcard flashcard2 = new Flashcard(0,nick,null,"Can I go to the bathroom?",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
 
         List<Flashcard> deck = new ArrayList<>();
         deck.add(flashcard1);
@@ -48,8 +48,8 @@ class QuizDTOTest {
     @Test
     void whenConvertingToQuiz_QuizFieldsMatchOriginalObject(){
         User nick = new User(0, "mscott@dunder.com","password","Michael","Scott",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
-        Flashcard flashcard1 = new Flashcard(0,nick,null,"Whats my favorite color?",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
-        Flashcard flashcard2 = new Flashcard(0,nick,null,"Can I go to the bathroom?",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
+        Flashcard flashcard1 = new Flashcard(0,nick,null,"Whats my favorite color?",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
+        Flashcard flashcard2 = new Flashcard(0,nick,null,"Can I go to the bathroom?",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
         List<Flashcard> deck = new ArrayList<>();
         deck.add(flashcard1);
         deck.add(flashcard2);

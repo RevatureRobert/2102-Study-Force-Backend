@@ -60,8 +60,8 @@ class QuizIntegrationTest {
         User mscott = new User(0,"mscott@dunder.com","password","Michael","Scott",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(mscott);
 
-        Flashcard flashcard1 = new Flashcard(0,mscott,null,"Whats my favorite color?",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
-        Flashcard flashcard2 = new Flashcard(0,mscott,null,"Can I go to the bathroom?",2,2,Timestamp.valueOf(LocalDateTime.now()),null);
+        Flashcard flashcard1 = new Flashcard(0,mscott,null,"Whats my favorite color?",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
+        Flashcard flashcard2 = new Flashcard(0,mscott,null,"Can I go to the bathroom?",2,2,Timestamp.valueOf(LocalDateTime.now()),null,false);
         flashcardRepository.save(flashcard1);
         flashcardRepository.save(flashcard2);
 

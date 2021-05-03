@@ -39,7 +39,7 @@ class VoteServiceTest {
     @Test
     void addVoteTest() {
         User u = new User(0,"jesus.christ@revature.com","password","Jesus","Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
-        Flashcard flashcard = new Flashcard(0,u,null,"how is your day",1,1,null,null);
+        Flashcard flashcard = new Flashcard(0,u,null,"how is your day",1,1,null,null,false);
 
         Answer a = new Answer(0,u,flashcard,"check stackoverflow",5,false,false,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Vote vote = new Vote(6,1,a,u);
