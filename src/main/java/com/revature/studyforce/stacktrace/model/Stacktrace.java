@@ -1,7 +1,7 @@
-package com.revature.StudyForce.stacktrace.model;
+package com.revature.studyforce.stacktrace.model;
 
 
-import com.revature.StudyForce.user.model.User;
+import com.revature.studyforce.user.model.User;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 

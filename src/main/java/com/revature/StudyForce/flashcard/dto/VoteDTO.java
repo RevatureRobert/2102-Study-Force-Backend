@@ -1,5 +1,5 @@
-package com.revature.StudyForce.flashcard.dto;
-import com.revature.StudyForce.flashcard.model.Vote;
+package com.revature.studyforce.flashcard.dto;
+import com.revature.studyforce.flashcard.model.Vote;
 
 import lombok.*;
 import org.springframework.util.Assert;

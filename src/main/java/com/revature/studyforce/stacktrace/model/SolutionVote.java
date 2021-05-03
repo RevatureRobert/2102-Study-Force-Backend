@@ -1,8 +1,8 @@
-package com.revature.StudyForce.stacktrace.model;
+package com.revature.studyforce.stacktrace.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.revature.StudyForce.user.model.User;
+import com.revature.studyforce.user.model.User;
 import lombok.*;
 
 import javax.persistence.*;

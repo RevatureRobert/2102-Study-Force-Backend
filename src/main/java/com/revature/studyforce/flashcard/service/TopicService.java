@@ -47,7 +47,10 @@ public class TopicService {
      * @return the topic object that was removed
      */
     public Topic deleteTopic(int id) {
-        Topic topic = topicRepository.findById(id).get();
+        Topic topic = topicRepository.findById(id).orElse(null);
+        if (topic == null) {
+            return null;
+        }
         topicRepository.delete(topic);
         return topic;
     }

@@ -1,12 +1,13 @@
-package com.revature.StudyForce.flashcard.service;
-import com.revature.StudyForce.flashcard.dto.VoteDTO;
-import com.revature.StudyForce.flashcard.model.Answer;
-import com.revature.StudyForce.flashcard.model.Vote;
-import com.revature.StudyForce.flashcard.repository.AnswerRepository;
-import com.revature.StudyForce.flashcard.repository.VoteRepository;
-import com.revature.StudyForce.user.model.Authority;
-import com.revature.StudyForce.user.model.User;
-import com.revature.StudyForce.user.repository.UserRepository;
+package com.revature.studyforce.flashcard.service;
+
+import com.revature.studyforce.flashcard.dto.VoteDTO;
+import com.revature.studyforce.flashcard.model.Answer;
+import com.revature.studyforce.flashcard.model.Vote;
+import com.revature.studyforce.flashcard.repository.AnswerRepository;
+import com.revature.studyforce.flashcard.repository.VoteRepository;
+import com.revature.studyforce.user.model.Authority;
+import com.revature.studyforce.user.model.User;
+import com.revature.studyforce.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;

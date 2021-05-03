@@ -1,8 +1,8 @@
-package com.revature.StudyForce.flashcard.controller;
+package com.revature.studyforce.flashcard.controller;
 
-import com.revature.StudyForce.flashcard.dto.VoteDTO;
-import com.revature.StudyForce.flashcard.model.Vote;
-import com.revature.StudyForce.flashcard.service.VoteService;
+import com.revature.studyforce.flashcard.dto.VoteDTO;
+import com.revature.studyforce.flashcard.model.Vote;
+import com.revature.studyforce.flashcard.service.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

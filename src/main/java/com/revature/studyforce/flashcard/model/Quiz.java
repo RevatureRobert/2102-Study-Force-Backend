@@ -1,11 +1,13 @@
 package com.revature.studyforce.flashcard.model;
 
+import com.revature.studyforce.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Quiz model
@@ -23,38 +25,14 @@ public class Quiz {
     @Column(name = "quiz_id")
     private int quizId;
     @NotNull
-    @Column(name = "user_id")
-    private int userId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User quizUser;
     @NotNull
     @Column(name = "quiz_name")
     private String quizName;
-    //TODO:here goes the flashcard model
-    //TODO:generate getters and setters for the flashcard property
-    //TODO: create the relationship with other models
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Flashcard> flashcards;
 
 
 
-    public int getQuizId() {
-        return quizId;
-    }
-
-    public void setQuizId(int quizId) {
-        this.quizId = quizId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public String getQuizName() {
-        return quizName;
-    }
-
-    public void setQuizName(String quizName) {
-        this.quizName = quizName;
-    }
 }
