@@ -3,7 +3,7 @@ package com.revature.studyforce.flashcard.integration;
 import com.revature.studyforce.flashcard.controller.AnswerController;
 import com.revature.studyforce.flashcard.dto.AnswerDTO;
 import com.revature.studyforce.flashcard.model.Flashcard;
-import com.revature.studyforce.flashcard.repository.FlashcardRepo;
+import com.revature.studyforce.flashcard.repository.FlashcardRepository;
 import com.revature.studyforce.flashcard.service.AnswerService;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
@@ -20,7 +20,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -42,7 +41,7 @@ class AnswerIntegrationTest {
     private UserRepository userRepository;
 
     @Autowired
-    private FlashcardRepo flashcardRepo;
+    private FlashcardRepository flashcardRepo;
 
     @Autowired
     private AnswerService answerService;

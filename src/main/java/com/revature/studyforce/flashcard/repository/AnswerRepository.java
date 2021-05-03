@@ -6,6 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Represents the repository for the Answer model
+ *
+ * @author Edson Rodriguez
+ */
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer,Integer> {
     Page<Answer> findByFlashcard_id(int id, Pageable of);

@@ -4,7 +4,7 @@ import com.revature.studyforce.flashcard.dto.AnswerDTO;
 import com.revature.studyforce.flashcard.model.Answer;
 import com.revature.studyforce.flashcard.model.Flashcard;
 import com.revature.studyforce.flashcard.repository.AnswerRepository;
-import com.revature.studyforce.flashcard.repository.FlashcardRepo;
+import com.revature.studyforce.flashcard.repository.FlashcardRepository;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +27,10 @@ import java.util.Optional;
 public class AnswerService {
     private AnswerRepository ANSWER_REPO;
     private UserRepository USER_REPO;
-    private FlashcardRepo FLASHCARD_REPO;
+    private FlashcardRepository FLASHCARD_REPO;
 
     @Autowired
-    public AnswerService(AnswerRepository answerRepository, FlashcardRepo flashcardRepo, UserRepository userRepository){
+    public AnswerService(AnswerRepository answerRepository, FlashcardRepository flashcardRepo, UserRepository userRepository){
         this.ANSWER_REPO=answerRepository;
         this.USER_REPO=userRepository;
         this.FLASHCARD_REPO=flashcardRepo;

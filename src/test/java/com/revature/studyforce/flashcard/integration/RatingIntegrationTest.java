@@ -2,7 +2,7 @@ package com.revature.studyforce.flashcard.integration;
 
 import com.revature.studyforce.flashcard.controller.RatingController;
 import com.revature.studyforce.flashcard.model.Flashcard;
-import com.revature.studyforce.flashcard.repository.FlashcardRepo;
+import com.revature.studyforce.flashcard.repository.FlashcardRepository;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
@@ -39,7 +39,7 @@ class RatingIntegrationTest {
     private UserRepository userRepository;
 
     @Autowired
-    private FlashcardRepo flashcardRepo;
+    private FlashcardRepository flashcardRepo;
 
     @Test
     void givenRating_whenCreateRating() throws Exception {

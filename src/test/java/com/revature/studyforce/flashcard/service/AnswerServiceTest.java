@@ -4,7 +4,7 @@ import com.revature.studyforce.flashcard.dto.AnswerDTO;
 import com.revature.studyforce.flashcard.model.Answer;
 import com.revature.studyforce.flashcard.model.Flashcard;
 import com.revature.studyforce.flashcard.repository.AnswerRepository;
-import com.revature.studyforce.flashcard.repository.FlashcardRepo;
+import com.revature.studyforce.flashcard.repository.FlashcardRepository;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
@@ -18,7 +18,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ class AnswerServiceTest {
     private UserRepository userRepository;
 
     @MockBean
-    private FlashcardRepo flashcardRepo;
+    private FlashcardRepository flashcardRepo;
 
     @MockBean
     private AnswerRepository answerRepository;
