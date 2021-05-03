@@ -1,12 +1,11 @@
-package com.revature.StudyForce.flashcard.repository;
+package com.revature.studyforce.flashcard.repository;
 
-import com.revature.StudyForce.flashcard.model.Flashcard;
+import com.revature.studyforce.flashcard.model.Flashcard;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 
 /**
  * Spring repository for Flashcards
@@ -17,5 +16,11 @@ import java.util.List;
 public interface FlashcardRepository extends JpaRepository<Flashcard, Integer> {
 
     // Find questions by difficulty
-    Page<Flashcard> findALlByQuestionDifficultyTotal(int questionDifficultyTotal, Pageable pageable);
+    Page<Flashcard> findAllByQuestionDifficultyTotal(int questionDifficultyTotal, Pageable pageable);
+
+    // Find questions by topic
+    Page<Flashcard> findAllByTopicTopicName(String topicName, Pageable pageable);
+
+    // Find questions by resolved status
+    Page<Flashcard> findAllByIsResolved(Boolean isResolved, Pageable pageable);
 }
