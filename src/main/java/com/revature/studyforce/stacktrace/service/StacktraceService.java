@@ -1,13 +1,18 @@
 package com.revature.studyforce.stacktrace.service;
 
 import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
+import com.revature.studyforce.stacktrace.mapper.StacktraceMapper;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
+import com.revature.studyforce.stacktrace.model.Technology;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
+import com.revature.studyforce.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import com.revature.studyforce.stacktrace.repository.TechnologyRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Locale;
@@ -19,10 +24,15 @@ import java.util.stream.Collectors;
  * @author John Stone
  */
 @Service
+@Transactional
 public class StacktraceService {
 
     @Autowired
     private  StacktraceRepository stacktraceRepo;
+
+    private TechnologyRepository technologyRepository;
+
+    private StacktraceMapper stacktraceMapper;
 
     /**
      * Gets all Stacktraces
@@ -128,5 +138,14 @@ public class StacktraceService {
             default:
                 return "stacktraceId";
         }
+    }
+
+    public void save(StacktraceDTO stacktraceDTO) throws Exception {
+       Technology technology =  technologyRepository.findByName(String.valueOf(stacktraceDTO.getTechnologyId()))
+                .orElseThrow(()->new Exception());
+
+
+        stacktraceMapper.map(stacktraceDTO,technology);
+
     }
 }

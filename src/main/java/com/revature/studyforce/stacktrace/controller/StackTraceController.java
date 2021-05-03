@@ -4,6 +4,8 @@ import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
 import com.revature.studyforce.stacktrace.service.StacktraceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -60,5 +62,12 @@ public class StackTraceController {
     @GetMapping("/{stacktraceId}")
     public StacktraceDTO getStacktraceById(@PathVariable(name = "stacktraceId") int id){
         return stacktraceService.getStacktraceById(id);
+    }
+
+
+    @PostMapping
+    public ResponseEntity createStacktrace(@RequestBody StacktraceDTO stacktraceDTO) throws Exception {
+        stacktraceService.save(stacktraceDTO);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 }
