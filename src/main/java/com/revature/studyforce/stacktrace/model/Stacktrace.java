@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @Builder
+@Data
 public class Stacktrace {
     /**
      * @author : Noel Shaji
