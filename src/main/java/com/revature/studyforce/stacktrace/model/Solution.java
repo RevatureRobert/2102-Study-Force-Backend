@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
+import java.util.Set;
 
 import com.revature.studyforce.user.model.User;
 
@@ -41,7 +42,7 @@ public class Solution {
      */
     @ManyToOne(
             fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinColumn(name = "stacktrace_id")
     private Stacktrace stackTraceId;
 
@@ -73,4 +74,10 @@ public class Solution {
      */
     @Column(name = "creation_time")
     private Date creationTime;
+
+    /**
+     * Bidirectional relationship needed to cascade delete SolutionVotes
+     */
+    @OneToMany(mappedBy = "solution", cascade = CascadeType.ALL)
+    private Set<SolutionVote> solutionVotes;
 }

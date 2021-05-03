@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 /**
  * The StackService allows for communication with {@link StacktraceRepository} and enforces data constraints on requests to repository
  * @author John Stone
+ * @author Joshua Swanson
  */
 @Service
 public class StacktraceService {
@@ -86,6 +87,14 @@ public class StacktraceService {
     public StacktraceDTO getStacktraceById(int stacktraceId){
         Optional<Stacktrace> requested = stacktraceRepo.findById(stacktraceId);
         return requested.map(stacktrace -> StacktraceDTO.stacktraceToDTO().apply(stacktrace)).orElse(null);
+    }
+
+    /**
+     * Deletes a Stacktrace by the primary id passed as parameter
+     * @param stacktraceId primary id of Stacktrace
+     */
+    public void deleteStackTraceById(int stacktraceId){
+        stacktraceRepo.deleteById(stacktraceId);
     }
 
     /**

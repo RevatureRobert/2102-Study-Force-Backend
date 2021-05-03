@@ -1,6 +1,7 @@
 package com.revature.studyforce.stacktrace.dto;
 
 import com.revature.studyforce.stacktrace.model.Solution;
+import com.revature.studyforce.stacktrace.model.SolutionVote;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.user.model.User;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.util.Set;
 import java.util.function.Function;
 
 
@@ -26,6 +28,7 @@ public class SolutionDTO {
     private String body;
     private Boolean adminSelected;
     private Date creationTime;
+    private Set<SolutionVote> solutionVotes;
 
     /**
      * Returns a funtion used to converts Solution to SolutionDTO
@@ -42,7 +45,8 @@ public class SolutionDTO {
                     solution.getUserId(),
                     solution.getBody(),
                     solution.getAdminSelected(),
-                    solution.getCreationTime()
+                    solution.getCreationTime(),
+                    solution.getSolutionVotes()
             );
         };
     }
@@ -62,7 +66,8 @@ public class SolutionDTO {
                     solutionDTO.getUserId(),
                     solutionDTO.getBody(),
                     solutionDTO.getAdminSelected(),
-                    solutionDTO.getCreationTime()
+                    solutionDTO.getCreationTime(),
+                    solutionDTO.getSolutionVotes()
             );
         };
     }

@@ -23,8 +23,8 @@ class SolutionDTOTest {
 
     @BeforeEach
     public void setUp(){
-        testSolutionDTO = new SolutionDTO(1, null, null, "Test Body", false, null);
-        testSolution = new Solution(1, null, null, "Test Body", false, null);
+        testSolutionDTO = new SolutionDTO(1, null, null, "Test Body", false, null, null);
+        testSolution = new Solution(1, null, null, "Test Body", false, null, null);
     }
 
     /**

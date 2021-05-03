@@ -23,10 +23,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /**
  * Tests for {@link StacktraceService}
  * @author John Stone
+ * @author Joshua Swanson
  */
 
 @SpringBootTest
@@ -49,7 +52,8 @@ class StacktraceServiceTest {
                         "TestTitle",
                         "TestBody",
                         new Technology(0, "TestTech"),
-                        new Timestamp(0))
+                        new Timestamp(0),
+                        null)
         );
     }
 
@@ -126,7 +130,7 @@ class StacktraceServiceTest {
     void whenGetStacktraceById_callRepository_getsCorrectStacktrace(){
         Optional<Stacktrace> stacktrace = Optional.of(new Stacktrace(0,
                 new User(0,"Test@mail.com","","Bob","Smith",true,true,true, Authority.USER,new Timestamp(0),new Timestamp(0)),
-                "TestTitle", "TestBody", new Technology(0, "TestTech"), new Timestamp(0)));
+                "TestTitle", "TestBody", new Technology(0, "TestTech"), new Timestamp(0), null));
         Mockito.when(stacktraceRepository.findById(0)).thenReturn(stacktrace);
         Mockito.when(stacktraceRepository.findById(255)).thenReturn(Optional.empty());
 
@@ -155,5 +159,15 @@ class StacktraceServiceTest {
         response = stacktraceService.getStacktraceById(255);
         assertNull(response);
         System.out.println(response);
+    }
+
+    /**
+     * Test for deleteStackTraceById()
+     */
+    @Test
+    void deleteStackTraceByIdTest(){
+        Mockito.doNothing().when(stacktraceRepository).deleteById(1);
+        stacktraceService.deleteStackTraceById(1);
+        verify(stacktraceRepository, times(1)).deleteById(1);
     }
 }
