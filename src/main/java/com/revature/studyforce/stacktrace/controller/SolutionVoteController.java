@@ -43,13 +43,4 @@ public class SolutionVoteController {
         return solutionVoteService.sumbitVote(solutionVoteDTO);
     }
 
-    /**
-     * This should delete every vote on a specific solution.
-     * @param solutionId the id that each vote will have for given solution
-     */
-    @DeleteMapping("/{solutionId}")
-    public void deleteSolutionVotes(@PathVariable int solutionId){
-        solutionVoteService.deleteSolutionVote(solutionId);
-    }
-
 }

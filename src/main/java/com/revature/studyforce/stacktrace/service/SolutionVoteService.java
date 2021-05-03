@@ -50,11 +50,4 @@ public class SolutionVoteService {
         return SolutionVoteDTO.solutionVoteToDTO().apply(solutionVoteRepository.save(SolutionVoteDTO.dtoToSolutionVote().apply(solutionVoteDTO)));
     }
 
-    /**
-     * Deletes every vote on a solution.
-     * @param solutionId the identifier used to track every vote for a solution
-     */
-    public void deleteSolutionVote(int solutionId){
-        solutionVoteRepository.deleteBySolutionId(solutionId);
-    }
 }
