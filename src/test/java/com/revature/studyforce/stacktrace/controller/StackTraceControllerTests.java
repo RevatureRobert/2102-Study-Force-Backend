@@ -1,39 +1,61 @@
-package com.revature.studyforce.stacktrace.integration;
+package com.revature.studyforce.stacktrace.controller;
 
-import com.revature.studyforce.stacktrace.controller.StacktraceController;
-import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
-import com.revature.studyforce.stacktrace.service.StacktraceService;
+import com.revature.studyforce.stacktrace.model.Stacktrace;
+import com.revature.studyforce.stacktrace.model.Technology;
+import com.revature.studyforce.stacktrace.repository.TechnologyRepository;
+import com.revature.studyforce.user.model.Authority;
+import com.revature.studyforce.user.model.User;
+import com.revature.studyforce.user.repository.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.mockito.Mockito.verify;
+import java.sql.Time;
+import java.sql.Timestamp;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @AutoConfigureMockMvc
-public class StackTraceIntegrationTest {
+public class StackTraceControllerTests {
     //TODO: Standardize Tests across project
-   private MockMvc mockMvc;
+ /*   private MockMvc mockMvc;
 
     @Autowired
-    private StacktraceRepository stacktraceRepository;
+    private com.revature.studyforce.stacktrace.service.StacktraceService stacktraceService;
 
     @Autowired
-    private StacktraceController stacktraceController;
+    private StacktraceController StacktraceController;
 
     @Autowired
-    private StacktraceService stacktraceService;
+    private com.revature.studyforce.stacktrace.repository.StacktraceRepository stacktraceRepository;
 
-/*    @Test
-    public void givenStacktrace_whenGetAll_thenStacktraceRetrieved() throws Exception {
-        stacktraceRepository.save(new Stacktrace(1,
-                new User(1,"Test@mail.com","Pass","Bob","Smith",true,true,true, Authority.USER,new Timestamp(0),new Timestamp(0)),
-                "TestTitle", "TestBody", new Technology(1, "TestTech"), new Timestamp(0)));
-        mockMvc = MockMvcBuilders.standaloneSetup(stacktraceController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/stacktrace/page")
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private TechnologyRepository technologyRepository;
+
+    @BeforeEach
+    void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(StacktraceController).build();
+    }
+
+    @Test
+    void whenGetAllStackTraces_ThenStackTracesReturned() throws Exception {
+        User u = userRepository.save(new User(1,"Test@mail.com","Pass","Bob","Smith",true,true,true, Authority.USER,new Timestamp(0),new Timestamp(0)));
+        Technology t = technologyRepository.save(new Technology(1, "TestTech"));
+        stacktraceRepository.save(new Stacktrace(1,u,
+                "TestTitle", "TestBody", t, new Timestamp(0)));
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/stacktrace")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -55,19 +77,5 @@ public class StackTraceIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].creationTime").value(new Time(0).toString()))
                 .andReturn();
         System.out.println(result.getResponse().getContentAsString());
-    }*/
-/*    @Test
-    public void givenStacktrace_whenGetAllWithPagination_thenStacktraceRetrieved() throws Exception {
-        StacktraceDTO s = new StacktraceDTO(1,
-                new User(1,"Test@mail.com","Pass","Bob","Smith",true,true,true, Authority.USER,new Timestamp(0),new Timestamp(0)),
-                "TestTitle", "TestBody", new Technology(1, "TestTech"), new Timestamp(0));
-        ArrayList<StacktraceDTO> testStacktraceDTOList = new ArrayList<>();
-        testStacktraceDTOList.add(s);
-        Page<StacktraceDTO> p = new PageImpl<>(testStacktraceDTOList);
-        Mockito.doReturn(p).when(stacktraceService).getPageStacktraces(1,0,"stackTraceID","ASC");
-        mockMvc.perform(MockMvcRequestBuilders.get("/stacktrace/page", 1)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-        verify(stacktraceService, times(1)).getPageStacktraces(1,0,"stackTraceID","ASC");
     }*/
 }

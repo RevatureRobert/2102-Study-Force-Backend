@@ -54,7 +54,7 @@ class StacktraceServiceTest {
     }
 
     @Test
-    void getAllStacktraces() {
+    void whenGetAllStackTraces_thenAllStackTracesRetrieved() {
         Mockito.when(stacktraceRepository.findAll()).thenReturn(stacktraceArrayList);
         List<Stacktrace> returnedStacktraceList = stacktraceService.getAllStacktraces().stream().map(StacktraceDTO.DTOToStacktrace()).collect(Collectors.toList());
         for(int i = 0; i < returnedStacktraceList.size(); i++){
@@ -63,6 +63,15 @@ class StacktraceServiceTest {
     }
 
     @Test
+    void whenGetAllStackTracesbyTechnologyId_thenStackTracesRetrieved() {
+        Mockito.when(stacktraceRepository.findByTechnologyId_technologyName("TestTech")).thenReturn(stacktraceArrayList);
+        List<Stacktrace> returnedStacktraceList = stacktraceService.getAllStacktraces().stream().map(StacktraceDTO.DTOToStacktrace()).collect(Collectors.toList());
+        for(int i = 0; i < returnedStacktraceList.size(); i++){
+            assertEquals(returnedStacktraceList.get(i).getStacktraceId(),stacktraceArrayList.get(i).getStacktraceId());
+        }
+    }
+
+    /*@Test
     void whenGetPageStackTraces_callRepository_getsStacktraceDTOPage() {
         Page<Stacktrace> stacktraces = new PageImpl<>(stacktraceArrayList);
 
@@ -121,7 +130,7 @@ class StacktraceServiceTest {
         assertEquals(1, response.getNumberOfElements());
         System.out.println(response.getContent());
     }
-
+*/
     @Test
     void whenGetStacktraceById_callRepository_getsCorrectStacktrace(){
         Optional<Stacktrace> stacktrace = Optional.of(new Stacktrace(0,

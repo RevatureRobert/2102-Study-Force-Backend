@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/stacktrace")
-public class StackTraceController {
+public class StacktraceController {
 
     @Autowired
     private StacktraceService stacktraceService;
@@ -32,6 +33,7 @@ public class StackTraceController {
      * @param order The order in which the list is displayed ["ASC"|"DESC"]
      * @return The page of data transfer representations of all stack trace objects with pagination and sorting applied
      */
+/*
     @GetMapping("/page")
     public Page<StacktraceDTO> getPageStacktraces(
             @RequestParam(value="page", required = false, defaultValue = "0") int page,
@@ -51,6 +53,7 @@ public class StackTraceController {
             return stacktraceService.getAllStacktracesByTechnologyId(technologyId,page,offset,sortBy,order);
         }
     }
+*/
 
     /**
      * Gets stacktrace who's id matches provided id
@@ -60,5 +63,10 @@ public class StackTraceController {
     @GetMapping("/{stacktraceId}")
     public StacktraceDTO getStacktraceById(@PathVariable(name = "stacktraceId") int id){
         return stacktraceService.getStacktraceById(id);
+    }
+
+    @GetMapping("/search/technology/{id}")
+    public List<StacktraceDTO> getAllStackTracesofTechnologyName(@PathVariable(name = "technologyName") String name) {
+        return stacktraceService.getAllStacktracesOfTechnologyName(name);
     }
 }

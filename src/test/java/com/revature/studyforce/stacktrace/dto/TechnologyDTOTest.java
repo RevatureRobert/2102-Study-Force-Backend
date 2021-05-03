@@ -35,7 +35,7 @@ class TechnologyDTOTest {
      */
     @Test
     void DTOToTechnologyTest(){
-        Technology Technology = TechnologyDTO.dTOtoTechnology().apply(testTechnologyDTO);
+        Technology Technology = TechnologyDTO.dtoToTechnology().apply(testTechnologyDTO);
         assertEquals(Technology.getClass(), Technology.class);
         assertEquals(Technology.getTechnologyId(), testTechnologyDTO.getTechnologyId());
         assertEquals(Technology.getTechnologyName(), testTechnologyDTO.getTechnologyName());

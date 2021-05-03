@@ -13,8 +13,12 @@ import java.util.stream.Collectors;
 @Service
 public class TechnologyService {
 
+        private TechnologyRepository technologyRepo;
+
         @Autowired
-        TechnologyRepository technologyRepo;
+        public TechnologyService (TechnologyRepository technologyRepo) {
+            this.technologyRepo = technologyRepo;
+        }
 
         /**
          * Gets all Technologies
@@ -23,14 +27,8 @@ public class TechnologyService {
         public List<TechnologyDTO> getAllTechnologies() {
             return technologyRepo.findAll().stream().map(TechnologyDTO.technologyToDTO()).collect(Collectors.toList());
         }
-    /**
-     * Persists a technology object by calling {@link TechnologyRepository#save(Object)} and returns the newly saved technology object as its data transfer representation
-     * @param technology The Technology object being persisted
-     * @return The newly persisted technology object converted to its data transfer representation using {@link TechnologyDTO#technologyToDTO()}
-     */
-    public TechnologyDTO createNewTechnology(Technology technology){
-        technologyRepo.save(technology);
-        return TechnologyDTO.technologyToDTO().apply(technology);
+    public TechnologyDTO createNewTechnology(TechnologyDTO technologyDTO){
+        return TechnologyDTO.technologyToDTO().apply(technologyRepo.save(TechnologyDTO.dtoToTechnology().apply(technologyDTO)));
     }
 
     /**
@@ -54,7 +52,7 @@ public class TechnologyService {
             technology.get().setTechnologyName(technologyDTO.getTechnologyName());
             return TechnologyDTO.technologyToDTO().apply(technologyRepo.save(technology.get()));
         }else{
-            Technology newTechnology = TechnologyDTO.dTOtoTechnology().apply(technologyDTO);
+            Technology newTechnology = TechnologyDTO.dtoToTechnology().apply(technologyDTO);
             technologyRepo.save(newTechnology);
             return technologyDTO;
         }
