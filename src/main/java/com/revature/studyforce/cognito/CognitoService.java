@@ -25,7 +25,7 @@ public class CognitoService {
 
 
     public String getUserEmailFromUserPool(String username){
-        AdminGetUserResponse response = cognitoClient.adminGetUser(request-> request.username(username).userPoolId(userPool).build());
+        AdminGetUserResponse response = cognitoClient.adminGetUser(AdminGetUserRequest.builder().userPoolId(userPool).username(username).build());
         Optional<String> email = response
                 .userAttributes()
                 .stream()
@@ -37,7 +37,13 @@ public class CognitoService {
     }
 
     public String getAuthorityFromUserPool(String username){
-        AdminGetUserResponse response = cognitoClient.adminGetUser(request-> request.username(username).userPoolId(userPool).build());
+        AdminGetUserResponse response = cognitoClient.adminGetUser(
+                AdminGetUserRequest
+                        .builder()
+                        .userPoolId(userPool)
+                        .username(username)
+                        .build()
+        );
         Optional<String> role = response
                 .userAttributes()
                 .stream()
@@ -51,7 +57,14 @@ public class CognitoService {
     }
 
     public String getUserNameFromUserPool(String username) {
-        AdminGetUserResponse response = cognitoClient.adminGetUser(request-> request.username(username).userPoolId(userPool).build());
+        AdminGetUserResponse response = cognitoClient.adminGetUser(
+                AdminGetUserRequest
+                .builder()
+                .userPoolId(userPool)
+                .username(username)
+                .build()
+        );
+
         Optional<String> userName = response
                 .userAttributes()
                 .stream()
