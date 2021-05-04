@@ -1,8 +1,7 @@
 package com.revature.studyforce.stacktrace.model;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.revature.studyforce.user.model.User;
 import lombok.*;
 
@@ -42,8 +41,11 @@ public class SolutionVote {
     /**
      * This is a foreign key for the Solution table which tracks which solution this vote will count towards.
      */
-    @JsonIgnoreProperties("stackTraceId")
-    @ManyToOne
+
+    @JsonManagedReference
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinColumn(name = "solution_id")
     private Solution solutionId;
 

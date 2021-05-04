@@ -63,7 +63,7 @@ class SolutionVoteTest {
     }
 
     @Test
-    void getAllSolutionsVotesForSolutionTests(){
+    void givenSolutionId_whenGetAllSolutionsVotesForSolution_returnSolutionVoteListTests(){
         Mockito.doReturn(testSolutionVoteList).when(solutionVoteRepository).findBySolutionId(1);
         List<SolutionVoteDTO> solutionVoteDTOS = solutionVoteService.getAllSolutionsVotesForSolution(1);
         assertEquals(1, solutionVoteDTOS.size());
@@ -74,7 +74,7 @@ class SolutionVoteTest {
     }
 
     @Test
-    void submitVoteTests(){
+    void givenSolutionVote_whenSubmitVote_returnSolutionVoteTests(){
         Mockito.doReturn(testSolutionVote).when(solutionVoteRepository).save(any(SolutionVote.class));
         SolutionVoteDTO solutionVoteDTO = solutionVoteService.submitVote(testSolutionVoteDTO);
         assertEquals(solutionVoteDTO.getSolutionVoteId(), testSolutionVoteDTO.getSolutionVoteId());

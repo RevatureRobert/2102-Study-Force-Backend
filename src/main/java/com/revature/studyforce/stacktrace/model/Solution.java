@@ -1,5 +1,6 @@
 package com.revature.studyforce.stacktrace.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -79,7 +80,7 @@ public class Solution {
     /**
      * Bidirectional relationship needed to cascade delete SolutionVotes
      */
-    @JsonIgnoreProperties("solutionId")
+    @JsonBackReference
     @OneToMany(mappedBy = "solutionId", cascade = CascadeType.ALL)
     private Set<SolutionVote> solutionVotes;
 }
