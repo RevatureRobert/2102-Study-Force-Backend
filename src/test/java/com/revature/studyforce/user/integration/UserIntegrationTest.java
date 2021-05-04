@@ -13,11 +13,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -50,7 +48,7 @@ class UserIntegrationTest {
         userRepository.save(user);
         System.out.println(userRepository.findAll().toString());
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        mockMvc.perform(MockMvcRequestBuilders.get("/user/all")
+        mockMvc.perform(MockMvcRequestBuilders.get("/user")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -73,7 +71,7 @@ class UserIntegrationTest {
         userRepository.save(user);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        mockMvc.perform(MockMvcRequestBuilders.get("/user/user/1")
+        mockMvc.perform(MockMvcRequestBuilders.get("/user/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -142,7 +140,7 @@ class UserIntegrationTest {
         userRepository.save(user);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        mockMvc.perform(MockMvcRequestBuilders.get("/user/user/time?time=1619996684739")
+        mockMvc.perform(MockMvcRequestBuilders.get("/user/time/1619996684739")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

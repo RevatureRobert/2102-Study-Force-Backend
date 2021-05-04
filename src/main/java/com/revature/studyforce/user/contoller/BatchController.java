@@ -5,10 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
+
 /**
  * Batch Controller for Batch Repo {@link BatchService}
  * @author Daniel Reyes
+ * @author Daniel Bernier
  */
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/batch")
 public class BatchController {
@@ -28,7 +32,7 @@ public class BatchController {
      * @param offset number of batches displayed per page [5/ 10/ 25/ 50] defaults to 5 if invalid
      * @return a page of batches dependent on provided page, offset, sort, and order params.
      */
-    @GetMapping("/allBatches")
+    @GetMapping
     public Page<Batch> getAllBatches(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                 @RequestParam(value = "offset", required = false, defaultValue = "10") int offset,
                                 @RequestParam(value = "sort", required = false, defaultValue = "batchId") String sortBy,
@@ -45,8 +49,8 @@ public class BatchController {
      * @param offset number of batches displayed per page [5 | 10 | 25| 50] defaults to 5 if invalid
      * @return a page of batches dependent on provided page, offset, sort, and order params.
      */
-    @GetMapping("/batch/time")
-    public Page<Batch> getBatchByCreationTime(@RequestParam("time") long timestamp,
+    @GetMapping("/time/{epochMilliseconds}")
+    public Page<Batch> getBatchByCreationTime(@PathVariable("epochMilliseconds") long timestamp,
                                               @RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                               @RequestParam(value = "offset", required = false, defaultValue = "10") int offset,
                                               @RequestParam(value = "sort", required = false, defaultValue = "batchId") String sortBy,
@@ -59,7 +63,7 @@ public class BatchController {
      * @param name String input to represent a batch name
      * @return single batch that matches that name
      */
-    @GetMapping("/batch/name")
+    @GetMapping("/name")
     public Batch getBatchByBatchName(@RequestParam(name = "name") String name){
         return batchService.getBatchByName(name);
     }
@@ -69,7 +73,7 @@ public class BatchController {
      * @param batchId int input to represent a batch id
      * @return single batch return that matches batchId param.
      */
-    @GetMapping("/batch/{batchId}")
+    @GetMapping("/{batchId}")
     public Batch getBatchByBatchId(@PathVariable(name = "batchId") int batchId){
         return batchService.getBatchById(batchId);
     }

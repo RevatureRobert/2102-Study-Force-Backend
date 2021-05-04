@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
+
 /**
  * User Controller for Users {@link UserService}
  * @author Daniel Reyes
+ * @author Daniel Bernier
  */
 
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -31,7 +34,7 @@ public class UserController {
      * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 10 if invalid
      * @return page of Users dependent on provided page , offset, sort, and order
      */
-    @GetMapping("/all")
+    @GetMapping
     public Page<UserDTO> getAllUsers(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                      @RequestParam(value = "offset", required = false, defaultValue = "25") int offset,
                                      @RequestParam(value = "sort", required = false, defaultValue = "userId") String sortBy,
@@ -44,7 +47,7 @@ public class UserController {
      * @param id int input belonging to user
      * @return single user return that matches userId Param
      */
-    @GetMapping("/user/{userId}")
+    @GetMapping("/{userId}")
     public UserDTO getUserById(@PathVariable(name = "userId") int id){
         return userService.getUserById(id);
     }
@@ -86,8 +89,8 @@ public class UserController {
      * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 10 if invalid
      * @return page of Users dependent on provided page , offset, sort, and order
      */
-    @GetMapping("/user/time")
-    public Page<UserDTO> getUserByCreationTime(@RequestParam("time") long timestamp,
+    @GetMapping("/time/{epochMilliseconds}")
+    public Page<UserDTO> getUserByCreationTime(@PathVariable("epochMilliseconds") long timestamp,
                                         @RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                         @RequestParam(value = "offset", required = false, defaultValue = "25") int offset,
                                         @RequestParam(value = "sort", required = false, defaultValue = "userId") String sortBy,
