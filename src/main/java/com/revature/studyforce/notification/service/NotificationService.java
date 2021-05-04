@@ -12,7 +12,12 @@ import java.util.List;
 import java.util.Optional;
 
 /***
- * author: Patrick
+ * Service which processes various requests relating to {@link Notification Notifications}
+ * <p>
+ *     Relies heavily on {@link NotificationRepository} to process these requests
+ * <p/>
+ *
+ * @author Patrick Gonzalez
  */
 @Service
 public class NotificationService {
@@ -21,11 +26,9 @@ public class NotificationService {
     NotificationRepository notificationRepository;
 
     /***
-     * Grab and return the notification based on the id passed
-     * @param id
-     * The id parameter represents the id of the notification in the database
-     * @return
-     * Method returns the notification retrieved from the database
+     * Grab and return the {@link Notification} based on the id passed
+     * @param id The id parameter represents the unique id of the notification
+     * @return Returns the notification retrieved
      * or it returns null if the notification was not found
      */
     public Notification findById(Integer id){
@@ -34,24 +37,20 @@ public class NotificationService {
     }
 
     /***
-     * Grab all notifications from the database and return a list of them
-     * @return
-     * Returns a List of all the notifications in the database
+     * Grab all {@link Notification Notifications} and return a list of them
+     * @return Returns a List of all the notifications
      */
     public List<Notification> findAll(){
         return notificationRepository.findAll();
     }
 
     /***
-     * Find all notifications that belong to a particular user
+     * Find all {@link Notification Notifications} that belong to a particular user
      * and return a page of those notifications
-     * @param userId
-     * We use the userId in order to find and get all of the notifications that correspond to this user
-     * @param page
-     * The page parameter determines what page number we are returning
-     * The default size of the page is always 5 notifications
-     * @return
-     * Method returns a Page of Notifications
+     * @param userId We use the userId in order to find and get all of the notifications corresponding to this user
+     * @param page The page parameter determines what page number we are returning
+     * The default size of the page is 5
+     * @return Returns a Page of Notifications
      */
     public Page<Notification> findByUserId(Integer userId, Integer page){
         // We can change the page request parameters later
@@ -59,20 +58,18 @@ public class NotificationService {
     }
 
     /***
-     * Insert a notification into the database
-     * @param notification
-     * Method takes in a notification that is saved in the database
+     * Post a {@link Notification}
+     * @param notification The notification parameter represents the notification to be stored
+     * @return Returns the notification that was stored
      */
-    public void save(Notification notification){
-        notificationRepository.save(notification);
+    public Notification save(Notification notification){
+        return notificationRepository.save(notification);
     }
 
     /***
-     * Update an existing notification
-     * @param notification
-     * Method takes in a notification that updates an existing notification
-     * If the notification does not exist
-     * then we do not enter the notification into the database
+     * Update an existing {@link Notification},
+     * If the notification does not exist then nothing is performed
+     * @param notification The notification parameter represents the updated notification
      */
     public void update(Notification notification){
         Optional<Notification> checkNotification = notificationRepository.findById(notification.getNotificationId());
@@ -82,28 +79,24 @@ public class NotificationService {
     }
 
     /***
-     * Delete a notification
-     * @param notification
-     * notification is the parameter to be deleted from our database
+     * Delete a {@link Notification}
+     * @param notification The notification parameter represents the notification to be deleted
      */
     public void delete(Notification notification){
         notificationRepository.delete(notification);
     }
 
     /***
-     * Delete a notification based on the id passed
-     * @param id
-     * id is the id of the notification we want to delete from the database
+     * Delete a {@link Notification} based on the id passed
+     * @param id The id parameter represents the unique id of the notification
      */
     public void deleteById(Integer id){
         notificationRepository.deleteById(id);
     }
 
     /***
-     * Delete all notifications that belong to a particular user
-     * @param userId
-     * userId is the parameter used to find all notifications that belong
-     * to that particular user
+     * Delete all {@link Notification notifications} that belong to a particular user
+     * @param userId The userId parameter is used to find all notifications that belong to a particular user
      */
     public void deleteByUserId(Integer userId){ notificationRepository.deleteByApplicationUserId(userId); }
 

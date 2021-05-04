@@ -12,7 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /***
- * author: Patrick
+ * Controller for {@link Notification Notifications}
+ * <p>
+ *     Relies heavily on {@link NotificationService} to handle business logic
+ * <p/>
+ * @author Patrick Gonzalez
  */
 
 @RestController
@@ -23,11 +27,11 @@ public class NotificationController {
     private NotificationService notificationService;
 
     /***
-     *
-     * @return
-     *     Returns either the entire list of notifications from the database
+     *  Retrieves a list of all notifications
+     * @return Returns either the entire list of notifications from the database with the http ok status
      *     or if there are no notifications it returns a not found http response
      */
+
     @GetMapping
     public ResponseEntity<List<Notification>> getAllNotifications(){
         List<Notification> notificationList = notificationService.findAll();
@@ -38,19 +42,12 @@ public class NotificationController {
     }
 
     /***
-     * @param userId
-     * userId is the id of the user that we are grabbing the page for
-     * @param page
-     * default value of page is 0 so if no page number is entered
-     * We start with the very first page.
-     * @return
-     *     Method returns a page of notifications
-     *     The default size of the page is 5
-     *     If there are no notifications then
-     *     We return an Http Response of Not Found
+     * Get a page of notifications for a particular user based on the user id passed.
+     * @param userId userId is the id of the user that we are grabbing the page for
+     * @param page Default value of page is 0 so if no page number is passed as an argument, we start with the very first page.
+     *             Also the default size of the page is 5.
+     * @return Returns a page of notifications, if there are no notifications then we return an Http Response with status of Not Found
      */
-    // If we want the user to specify certain pagination or a certain page then we have
-    // to pass it in as a Path Variable and create the corresponding pageable object
     @GetMapping("/{id}")
     public ResponseEntity<Page<Notification>> getNotificationsByUserId(@PathVariable("id") Integer userId, @RequestParam(name="page", defaultValue = "0") String page){
         Page<Notification> notificationPage = notificationService.findByUserId(userId, Integer.parseInt(page));
@@ -61,29 +58,26 @@ public class NotificationController {
     }
 
     /***
-     *
-     * @param notification
-     * A notification is passed into the controller from the client side
-     * @return
-     * We return the same notification if it is inserted successfully into the database
-     * If the notification parameter is null then we return an Http Response of Unprocessable Entity
+     * Adds a {@link Notification}
+     * @param notification The notification parameter is the notification to be stored
+     * @return We return the same notification if it is inserted successfully.
+     * If the notification parameter is null or we were unable to insert the notification
+     * then we return an Http Response with status Unprocessable Entity
      */
     @PostMapping
     public ResponseEntity<Notification> addNotification(@RequestBody Notification notification){
         if(notification != null){
-            notificationService.save(notification);
+            notification = notificationService.save(notification);
             return new ResponseEntity<>(notification, HttpStatus.CREATED);
         }
         return ResponseEntity.unprocessableEntity().build();
     }
 
     /***
-     *
-     * @param userId
-     * The path should the userId for use
-     * @return
-     * Method returns either a No Content response if the notifications for a user are successfully deleted
-     * or a Not Found Http Response if there weren't any notifications deleted
+     * Delete all {@link Notification notifications} that belong to a particular user
+     * @param userId userId is the id of the user
+     * @return Returns an Http Response with Status No Content when the notifications are successfully deleted,
+     *          Otherwise returns an Http Response with status Not Found
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Notification> deleteAllNotificationsByUserId(@PathVariable("id") Integer userId){
