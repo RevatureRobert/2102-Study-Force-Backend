@@ -1,11 +1,10 @@
-package com.revature.studyforce.user.contoller;
+package com.revature.studyforce.user.controller;
+
 import com.revature.studyforce.user.model.Batch;
 import com.revature.studyforce.user.service.BatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
-import javax.websocket.server.PathParam;
 
 /**
  * Batch Controller for Batch Repo {@link BatchService}

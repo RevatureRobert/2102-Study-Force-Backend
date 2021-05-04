@@ -22,7 +22,7 @@ class UserDTOTest {
         Timestamp registrationTime = Timestamp.valueOf ("2021-04-30 10:58:01");
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
         Authority authority = Authority.USER;
-        User user = new User(0,"testing@gmail.com","password","test",
+        User user = new User(0,"testing@gmail.com","test",
                 true,true,true,
                 authority,registrationTime,lastLoginTime);
 
@@ -30,7 +30,6 @@ class UserDTOTest {
 
         Assertions.assertEquals (0,userDTO.getUserId ());
         Assertions.assertEquals ("testing@gmail.com",userDTO.getEmail ());
-        Assertions.assertEquals ("",userDTO.getPassword ());
         Assertions.assertEquals ("test",userDTO.getName ());
         Assertions.assertTrue (userDTO.isActive ());
         Assertions.assertTrue (userDTO.isSubscribedFlashcard ());
@@ -45,14 +44,13 @@ class UserDTOTest {
         Timestamp registrationTime = Timestamp.valueOf ("2021-04-30 10:58:01");
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
         Authority authority = Authority.USER;
-        UserDTO userDTO = new UserDTO (0,"testing@gmail.com","password","test",
+        UserDTO userDTO = new UserDTO (0,"testing@gmail.com","test",
                 true,true,true,
                 authority,registrationTime,lastLoginTime);
         User user = UserDTO.dtoToUser ().apply (userDTO);
 
         Assertions.assertEquals (0,user.getUserId ());
         Assertions.assertEquals ("testing@gmail.com",user.getEmail ());
-        Assertions.assertEquals ("password",user.getPassword ());
         Assertions.assertEquals ("test",user.getName ());
         Assertions.assertTrue (user.isActive ());
         Assertions.assertTrue (user.isSubscribedFlashcard ());

@@ -1,6 +1,5 @@
 package com.revature.studyforce.user.service;
 
-
 import com.revature.studyforce.user.dto.UserDTO;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
@@ -43,7 +42,7 @@ class UserServiceTest {
         Instant i = Instant.now();
         long d = Date.from(i).getTime();
         Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(d));
-        User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, t2, t2);
+        User user = new User(1 , "dan@gmail.com", "Daniel", true, true, true, authority, t2, t2);
         userList.add(user);
         Page<User> userPage = new PageImpl<>(userList);
 
@@ -53,11 +52,11 @@ class UserServiceTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(1, response.getContent().get(0).getUserId());
         Assertions.assertEquals("dan@gmail.com", response.getContent().get(0).getEmail());
-        Assertions.assertEquals("", response.getContent().get(0).getPassword());
         Assertions.assertEquals("Daniel", response.getContent().get(0).getName());
         Assertions.assertEquals(t2, response.getContent().get(0).getLastLogin());
 
     }
+
     @Test
     void whenGetAllUsers_callUserRepository_retrieveUserPage_testingSortBy(){
         List<User> userList = new ArrayList<>();
@@ -65,7 +64,7 @@ class UserServiceTest {
         Instant i = Instant.now();
         long d = Date.from(i).getTime();
         Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(d));
-        User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, t2, t2);
+        User user = new User(1 , "dan@gmail.com", "Daniel", true, true, true, authority, t2, t2);
         userList.add(user);
         Page<User> userPage = new PageImpl<>(userList);
 
@@ -75,7 +74,6 @@ class UserServiceTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(1, response.getContent().get(0).getUserId());
         Assertions.assertEquals("dan@gmail.com", response.getContent().get(0).getEmail());
-        Assertions.assertEquals("", response.getContent().get(0).getPassword());
         Assertions.assertEquals("Daniel", response.getContent().get(0).getName());
         Assertions.assertEquals(t2, response.getContent().get(0).getLastLogin());
 
@@ -89,7 +87,7 @@ class UserServiceTest {
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(epochMilli));
-        User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, timestamp, timestamp);
+        User user = new User(1 , "dan@gmail.com", "Daniel", true, true, true, authority, timestamp, timestamp);
 
         Mockito.when(userRepository.findById(1)).thenReturn(Optional.of(user));
 
@@ -97,7 +95,6 @@ class UserServiceTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(1, response.getUserId());
         Assertions.assertEquals("dan@gmail.com", response.getEmail());
-        Assertions.assertEquals("", response.getPassword());
         Assertions.assertEquals("Daniel", response.getName());
         Assertions.assertEquals(timestamp, response.getLastLogin());
 
@@ -110,7 +107,7 @@ class UserServiceTest {
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(epochMilli));
-        User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, timestamp, timestamp);
+        User user = new User(1 , "dan@gmail.com", "Daniel", true, true, true, authority, timestamp, timestamp);
 
         Mockito.when(userRepository.findByEmail("dan@gmail.com")).thenReturn(Optional.of(user));
 
@@ -118,12 +115,12 @@ class UserServiceTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(1, response.getUserId());
         Assertions.assertEquals("dan@gmail.com", response.getEmail());
-        Assertions.assertEquals("", response.getPassword());
         Assertions.assertEquals("Daniel", response.getName());
         Assertions.assertEquals(timestamp, response.getLastLogin());
         Assertions.assertTrue(response.isActive());
 
     }
+
     @Test
     void whenGetALlUsers_callUserRepository_retrieveUserPage(){
         List<User> userList = new ArrayList<>();
@@ -131,7 +128,7 @@ class UserServiceTest {
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(epochMilli));
-        User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, timestamp, timestamp);
+        User user = new User(1 , "dan@gmail.com", "Daniel", true, true, true, authority, timestamp, timestamp);
         userList.add(user);
         Page<User> userPage = new PageImpl<>(userList);
 
@@ -141,7 +138,6 @@ class UserServiceTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(1, response.getContent().get(0).getUserId());
         Assertions.assertEquals("dan@gmail.com", response.getContent().get(0).getEmail());
-        Assertions.assertEquals("", response.getContent().get(0).getPassword());
         Assertions.assertEquals("Daniel", response.getContent().get(0).getName());
         Assertions.assertEquals(timestamp, response.getContent().get(0).getLastLogin());
 
@@ -154,7 +150,7 @@ class UserServiceTest {
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(epochMilli));
-        User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, timestamp, timestamp);
+        User user = new User(1 , "dan@gmail.com", "Daniel", true, true, true, authority, timestamp, timestamp);
         userList.add(user);
         Page<User> userPage = new PageImpl<>(userList);
 
@@ -164,7 +160,6 @@ class UserServiceTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(1, response.getContent().get(0).getUserId());
         Assertions.assertEquals("dan@gmail.com", response.getContent().get(0).getEmail());
-        Assertions.assertEquals("", response.getContent().get(0).getPassword());
         Assertions.assertEquals("Daniel", response.getContent().get(0).getName());
         Assertions.assertEquals(timestamp, response.getContent().get(0).getLastLogin());
 
@@ -177,7 +172,7 @@ class UserServiceTest {
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(epochMilli));
-        User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, timestamp, timestamp);
+        User user = new User(1 , "dan@gmail.com", "Daniel", true, true, true, authority, timestamp, timestamp);
         userList.add(user);
         Page<User> userPage = new PageImpl<>(userList);
 
@@ -187,7 +182,6 @@ class UserServiceTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(1, response.getContent().get(0).getUserId());
         Assertions.assertEquals("dan@gmail.com", response.getContent().get(0).getEmail());
-        Assertions.assertEquals("", response.getContent().get(0).getPassword());
         Assertions.assertEquals("Daniel", response.getContent().get(0).getName());
         Assertions.assertEquals(timestamp, response.getContent().get(0).getLastLogin());
 
@@ -199,7 +193,7 @@ class UserServiceTest {
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(epochMilli));
-        User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, timestamp, timestamp);
+        User user = new User(1 , "dan@gmail.com", "Daniel", true, true, true, authority, timestamp, timestamp);
         userList.add(user);
         Page<User> userPage = new PageImpl<>(userList);
 
@@ -209,12 +203,8 @@ class UserServiceTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(1, response.getContent().get(0).getUserId());
         Assertions.assertEquals("dan@gmail.com", response.getContent().get(0).getEmail());
-        Assertions.assertEquals("", response.getContent().get(0).getPassword());
         Assertions.assertEquals("Daniel", response.getContent().get(0).getName());
         Assertions.assertEquals(timestamp, response.getContent().get(0).getLastLogin());
 
     }
-
-
-
 }

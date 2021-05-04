@@ -13,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -28,7 +27,7 @@ import java.time.Instant;
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:test-application.properties")
-class UserController2Test {
+class UserIntegration2Test {
 
     private MockMvc mockMvc;
 
@@ -41,14 +40,14 @@ class UserController2Test {
     @Test
     void userInRepo_whenUpdateUserName_thenUpdatedUserDTORetrieved() throws Exception {
         Timestamp timestamp = Timestamp.from(Instant.now());
-        User user = new User(0, "cool@gmail.com", "pass",
+        User user = new User(0, "cool@gmail.com",
                 "John Doe", true, true, false,
                 Authority.USER, timestamp, timestamp);
 
         userRepository.save(user);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/user/name")
+        mockMvc.perform(MockMvcRequestBuilders.put("/user/name")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"userId\" : 1, \"name\" : \"New Name\" }"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -56,30 +55,26 @@ class UserController2Test {
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.userId").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("cool@gmail.com"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.password").value(""))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("New Name"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.authority").value("USER"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.registrationTime").value(Matchers.greaterThanOrEqualTo(timestamp.getTime())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.lastLogin").value(Matchers.greaterThanOrEqualTo(timestamp.getTime())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.active").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.subscribedStacktrace").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.subscribedFlashcard").value(true))
-                .andReturn();
-
-        System.out.println(result.getResponse().getContentAsString());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.subscribedFlashcard").value(true));
     }
 
     @Test
     void userInRepo_whenUpdateUserAuthority_thenUpdatedUserDTORetrieved() throws Exception {
         Timestamp timestamp = Timestamp.from(Instant.now());
-        User user = new User(0, "cool@gmail.com", "pass",
+        User user = new User(0, "cool@gmail.com",
                 "John Doe", true, true, false,
                 Authority.USER, timestamp, timestamp);
 
         userRepository.save(user);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/user/authority")
+        mockMvc.perform(MockMvcRequestBuilders.put("/user/authority")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"userId\" : 1, \"authority\" : \"ADMIN\" }"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -87,78 +82,66 @@ class UserController2Test {
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.userId").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("cool@gmail.com"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.password").value(""))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("John Doe"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.authority").value("ADMIN"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.registrationTime").value(Matchers.greaterThanOrEqualTo(timestamp.getTime())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.lastLogin").value(Matchers.greaterThanOrEqualTo(timestamp.getTime())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.active").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.subscribedStacktrace").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.subscribedFlashcard").value(true))
-                .andReturn();
-
-        System.out.println(result.getResponse().getContentAsString());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.subscribedFlashcard").value(true));
     }
 
     @Test
     void userInRepo_whenUpdateUserIsActive_thenUpdatedUserDTORetrieved() throws Exception {
         Timestamp timestamp = Timestamp.from(Instant.now());
-        User user = new User(0, "cool@gmail.com", "pass",
+        User user = new User(0, "cool@gmail.com",
                 "John Doe", true, true, false,
                 Authority.USER, timestamp, timestamp);
 
         userRepository.save(user);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/user/active")
+        mockMvc.perform(MockMvcRequestBuilders.put("/user/active")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{ \"userId\" : 1, \"isActive\" : \"false\" }"))
+                .content("{ \"userId\" : 1, \"active\" : \"false\" }"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.userId").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("cool@gmail.com"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.password").value(""))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("John Doe"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.authority").value("USER"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.registrationTime").value(Matchers.greaterThanOrEqualTo(timestamp.getTime())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.lastLogin").value(Matchers.greaterThanOrEqualTo(timestamp.getTime())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.active").value(false))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.subscribedStacktrace").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.subscribedFlashcard").value(true))
-                .andReturn();
-
-        System.out.println(result.getResponse().getContentAsString());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.subscribedFlashcard").value(true));
     }
 
     @Test
     void userInRepo_whenUpdateUserSubscriptionStatus_thenUpdatedUserDTORetrieved() throws Exception {
         Timestamp timestamp = Timestamp.from(Instant.now());
-        User user = new User(0, "cool@gmail.com", "pass",
-                "John Doe", true, true, true,
+        User user = new User(0, "cool@gmail.com",
+                "John Doe", true, false, false,
                 Authority.USER, timestamp, timestamp);
 
         userRepository.save(user);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/user/subscription")
+        mockMvc.perform(MockMvcRequestBuilders.put("/user/subscription")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{ \"userId\" : 1, \"isSubscribedFlashcard\" : false, \"isSubscribedStacktrace\" : false }"))
+                .content("{ \"userId\" : 1, \"subscribedFlashcard\" : true, \"subscribedStacktrace\" : true }"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.userId").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("cool@gmail.com"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.password").value(""))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("John Doe"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.authority").value("USER"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.registrationTime").value(Matchers.greaterThanOrEqualTo(timestamp.getTime())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.lastLogin").value(Matchers.greaterThanOrEqualTo(timestamp.getTime())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.active").value(true))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.subscribedStacktrace").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.subscribedFlashcard").value(false))
-                .andReturn();
-
-        System.out.println(result.getResponse().getContentAsString());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.subscribedStacktrace").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.subscribedFlashcard").value(true));
     }
 }

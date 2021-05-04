@@ -1,12 +1,10 @@
-package com.revature.studyforce.user.contoller;
+package com.revature.studyforce.user.controller;
 
-import com.revature.studyforce.user.dto.UserDTO;
+import com.revature.studyforce.user.dto.*;
 import com.revature.studyforce.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
-import javax.websocket.server.PathParam;
 
 /**
  * User Controller for Users {@link UserService}
@@ -98,4 +96,43 @@ public class UserController {
         return userService.getUserByCreationTime(timestamp, page,offset,sortBy,order);
     }
 
+    /**
+     * Processes PUT request on '/name' to update the name of a user utilizing {@link UserService#updateUserName(UserNameDTO)}
+     * @param userNameDTO A data transfer object containing the user's id and their new name
+     * @return The data transfer representation of the updated user
+     */
+    @PutMapping("/name")
+    public UserDTO updateUserName(@RequestBody UserNameDTO userNameDTO){
+        return userService.updateUserName(userNameDTO);
+    }
+
+    /**
+     * Processes PUT request on '/authority' to update the authority of a user utilizing {@link UserService#updateUserAuthority(UserAuthorityDTO)}
+     * @param userAuthorityDTO A data transfer object containing the user's id and their new authority
+     * @return The data transfer representation of the updated user
+     */
+    @PutMapping("/authority")
+    public UserDTO updateUserAuthority(@RequestBody UserAuthorityDTO userAuthorityDTO){
+        return userService.updateUserAuthority(userAuthorityDTO);
+    }
+
+    /**
+     * Processes PUT request on '/active' to update the active status of a user utilizing {@link UserService#updateUserIsActive(UserIsActiveDTO)}
+     * @param userIsActiveDTO A data transfer object containing the user's id and their new active status
+     * @return The data transfer representation of the updated user
+     */
+    @PutMapping("/active")
+    public UserDTO updateUserIsActive(@RequestBody UserIsActiveDTO userIsActiveDTO){
+        return userService.updateUserIsActive(userIsActiveDTO);
+    }
+
+    /**
+     * Processes PUT request on '/subscription' to update the subscription statuses of a user utilizing {@link UserService#updateUserSubscriptionStatus(UserSubscriptionsDTO)}
+     * @param userSubscriptionsDTO A data transfer object containing the user's id and their new subscription statuses
+     * @return The data transfer representation of the updated user
+     */
+    @PutMapping("/subscription")
+    public UserDTO updateUserSubscriptionStatus (@RequestBody UserSubscriptionsDTO userSubscriptionsDTO){
+        return userService.updateUserSubscriptionStatus(userSubscriptionsDTO);
+    }
 }

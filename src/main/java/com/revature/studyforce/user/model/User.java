@@ -33,10 +33,6 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @NotNull
-    @Column(nullable = false)
-    private String password;
-
     @Size(max = 511)
     @Column(name = "name")
     private String name;

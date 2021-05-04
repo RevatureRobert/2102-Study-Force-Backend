@@ -1,6 +1,6 @@
 package com.revature.studyforce.user.service;
 
-import com.revature.studyforce.user.dto.UserDTO;
+import com.revature.studyforce.user.dto.*;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Locale;
@@ -24,6 +27,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private static final String ID_NOT_FOUND_MESSAGE = "User matching provided userId not found, is your JSON malformed?";
 
     @Autowired
     public UserService(UserRepository userRepository){
@@ -116,6 +120,91 @@ public class UserService {
         else
             users = userRepository.findByRegistrationTimeAfter(timestamp, PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
         return users.map(UserDTO.userToDTO());
+    }
+
+    /**
+     * Updates the name of a User in {@link UserRepository}
+     * @param userNameDTO A data transfer object containing the user's id and their new name
+     * @return The data transfer representation of the updated user converted with {@link UserDTO#userToDTO()}
+     */
+    public UserDTO updateUserName(@NotNull UserNameDTO userNameDTO){
+        if(userNameDTO.getName() == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Field name cannot be null, is your JSON malformed?");
+        }
+
+        Optional<User> userOptional = userRepository.findById(userNameDTO.getUserId());
+        User user;
+
+        if(userOptional.isPresent()){
+            user = userOptional.get();
+            user.setName(userNameDTO.getName());
+            return UserDTO.userToDTO().apply(userRepository.save(user));
+
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ID_NOT_FOUND_MESSAGE);
+        }
+    }
+
+    /**
+     * Updates the authority of a User in {@link UserRepository}
+     * @param userAuthorityDTO A data transfer object containing the user's id and their new authority
+     * @return The data transfer representation of the updated user converted with {@link UserDTO#userToDTO()}
+     */
+    public UserDTO updateUserAuthority(@NotNull UserAuthorityDTO userAuthorityDTO){
+        if(userAuthorityDTO.getAuthority() == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Field authority cannot be null, is your JSON malformed?");
+        }
+
+        Optional<User> userOptional = userRepository.findById(userAuthorityDTO.getUserId());
+        User user;
+
+        if(userOptional.isPresent()){
+            user = userOptional.get();
+            user.setAuthority(userAuthorityDTO.getAuthority());
+            return UserDTO.userToDTO().apply(userRepository.save(user));
+
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ID_NOT_FOUND_MESSAGE);
+        }
+    }
+
+    /**
+     * Updates the active status of a User in {@link UserRepository}
+     * @param userIsActiveDTO A data transfer object containing the user's id and their new active status
+     * @return The data transfer representation of the updated user converted with {@link UserDTO#userToDTO()}
+     */
+    public UserDTO updateUserIsActive(@NotNull UserIsActiveDTO userIsActiveDTO){
+        Optional<User> userOptional = userRepository.findById(userIsActiveDTO.getUserId());
+        User user;
+
+        if(userOptional.isPresent()){
+            user = userOptional.get();
+            user.setActive(userIsActiveDTO.isActive());
+            return UserDTO.userToDTO().apply(userRepository.save(user));
+
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ID_NOT_FOUND_MESSAGE);
+        }
+    }
+
+    /**
+     * Updates the subscription statuses of a User in {@link UserRepository}
+     * @param userSubscriptionsDTO A data transfer object containing the user's id and their new subscription statuses
+     * @return The data transfer representation of the updated user converted with {@link UserDTO#userToDTO()}
+     */
+    public UserDTO updateUserSubscriptionStatus(UserSubscriptionsDTO userSubscriptionsDTO){
+        Optional<User> userOptional = userRepository.findById(userSubscriptionsDTO.getUserId());
+        User user;
+
+        if(userOptional.isPresent()){
+            user = userOptional.get();
+            user.setSubscribedFlashcard(userSubscriptionsDTO.isSubscribedFlashcard());
+            user.setSubscribedStacktrace(userSubscriptionsDTO.isSubscribedStacktrace());
+            return UserDTO.userToDTO().apply(userRepository.save(user));
+
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ID_NOT_FOUND_MESSAGE);
+        }
     }
 
     /**

@@ -1,7 +1,7 @@
 package com.revature.studyforce.user.integration;
 
 
-import com.revature.studyforce.user.contoller.UserController;
+import com.revature.studyforce.user.controller.UserController;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
@@ -44,7 +44,7 @@ class UserIntegrationTest {
     void givenBatch_whenGetAllUsers_theUserRetrieved() throws Exception {
         Authority authority = Authority.USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
-        User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
+        User user = new User(1 , "dan@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
         userRepository.save(user);
         System.out.println(userRepository.findAll().toString());
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
@@ -67,7 +67,7 @@ class UserIntegrationTest {
     void givenBatch_whenGetUserById_theUserRetrieved() throws Exception {
         Authority authority = Authority.USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
-        User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
+        User user = new User(1 , "dan@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
         userRepository.save(user);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
@@ -90,7 +90,7 @@ class UserIntegrationTest {
     void givenBatch_whenGetUserByEmail_theUserRetrieved() throws Exception {
         Authority authority = Authority.USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
-        User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
+        User user = new User(1 , "dan@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
         userRepository.save(user);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
@@ -113,7 +113,7 @@ class UserIntegrationTest {
     void givenBatch_whenGetUserByName_theUserRetrieved() throws Exception {
         Authority authority = Authority.USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
-        User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
+        User user = new User(1 , "dan@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
         userRepository.save(user);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
@@ -130,13 +130,14 @@ class UserIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].authority").value("USER"))
                 .andReturn();
     }
+
     @Test
     void givenBatch_whenGetUserByTimeStamp_theUserRetrieved() throws Exception {
         Authority authority = Authority.USER;
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(epochMilli));
-        User user = new User(1 , "dan@gmail.com", "pass", "Daniel", true, true, true, authority, t2, t2);
+        User user = new User(1 , "dan@gmail.com", "Daniel", true, true, true, authority, t2, t2);
         userRepository.save(user);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
@@ -153,8 +154,4 @@ class UserIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].authority").value("USER"))
                 .andReturn();
     }
-
-
-
-
 }
