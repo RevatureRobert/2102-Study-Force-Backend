@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
-
 import java.sql.Timestamp;
 import java.util.function.Function;
 
@@ -20,6 +19,7 @@ import java.util.function.Function;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FlashcardDTO {
+    private int flashcardId;
     private User creator;
     private Topic topic;
     private String question;
@@ -39,6 +39,7 @@ public class FlashcardDTO {
             Assert.notNull(flashcard, "Flashcard is null");
 
             return new FlashcardDTO(
+                    flashcard.getId(),
                     flashcard.getCreator(),
                     flashcard.getTopic(),
                     flashcard.getQuestion(),
@@ -61,7 +62,7 @@ public class FlashcardDTO {
             Assert.notNull(flashcardDTO, "Flashcard DTO is null");
 
             return new Flashcard(
-                    0,
+                    flashcardDTO.getFlashcardId(),
                     flashcardDTO.getCreator(),
                     flashcardDTO.getTopic(),
                     flashcardDTO.getQuestion(),

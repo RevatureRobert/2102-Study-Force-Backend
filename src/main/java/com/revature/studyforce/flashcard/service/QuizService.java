@@ -8,8 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-
 import java.util.Locale;
 import java.util.Optional;
 
@@ -18,11 +16,11 @@ import java.util.Optional;
  */
 @Service
 public class QuizService {
-    private final QuizRepository QUIZ_REPO;
+    private final QuizRepository quizRepository;
 
     @Autowired
     public QuizService(QuizRepository quizRepository){
-        this.QUIZ_REPO = quizRepository;
+        this.quizRepository = quizRepository;
     }
 
 
@@ -30,22 +28,20 @@ public class QuizService {
     public Page<QuizDTO> getAll(int page, int offset, String sortBy, String order){
         page = validatePage(page);
         offset = validateOffset(offset);
-        System.out.println(sortBy);
         sortBy = validateSortBy(sortBy);
-        System.out.println(sortBy);
 
         Page<Quiz> quizzes;
         if(order.equalsIgnoreCase("DESC"))
-            quizzes = QUIZ_REPO.findAll(PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+            quizzes = quizRepository.findAll(PageRequest.of(page, offset, Sort.by(sortBy).descending()));
         else
-            quizzes = QUIZ_REPO.findAll(PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
+            quizzes = quizRepository.findAll(PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
 
         return quizzes.map(QuizDTO.quizToDTO());
 
     }
 
     public Optional<Quiz> getById(Quiz quiz){
-        return QUIZ_REPO.findById(quiz.getQuizId());
+        return quizRepository.findById(quiz.getQuizId());
     }
 
     /**
@@ -54,7 +50,7 @@ public class QuizService {
      * @return new QuizDTO
      */
     public QuizDTO createQuiz(Quiz newQuiz){
-        Quiz saved = QUIZ_REPO.save(newQuiz);
+        Quiz saved = quizRepository.save(newQuiz);
         return QuizDTO.quizToDTO().apply(saved);
     }
 
@@ -65,7 +61,7 @@ public class QuizService {
      * @return the mutated QuizDTO object
      */
     public QuizDTO updateQuiz(QuizDTO quizDTO) {
-        Optional<Quiz> optionalQuiz = QUIZ_REPO.findById(quizDTO.getQuizId());
+        Optional<Quiz> optionalQuiz = quizRepository.findById(quizDTO.getQuizId());
 
         if(!optionalQuiz.isPresent())
             return null;
@@ -75,7 +71,7 @@ public class QuizService {
         quiz.setQuizUser(quizDTO.getQuizUser());
         quiz.setFlashcards(quizDTO.getFlashcards());
 
-        return  QuizDTO.quizToDTO().apply(QUIZ_REPO.save(quiz));
+        return  QuizDTO.quizToDTO().apply(quizRepository.save(quiz));
     }
 
 
@@ -84,7 +80,7 @@ public class QuizService {
      * @param quizDTO - the quizDTO to be deleted
      */
     public void deleteQuiz(QuizDTO quizDTO) {
-        QUIZ_REPO.deleteById(quizDTO.getQuizId());
+        quizRepository.deleteById(quizDTO.getQuizId());
     }
 
     /**

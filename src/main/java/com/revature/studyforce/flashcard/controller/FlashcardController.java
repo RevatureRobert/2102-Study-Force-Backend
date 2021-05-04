@@ -1,6 +1,8 @@
 package com.revature.studyforce.flashcard.controller;
 
+import com.revature.studyforce.flashcard.dto.FlashcardAllDTO;
 import com.revature.studyforce.flashcard.dto.FlashcardDTO;
+import com.revature.studyforce.flashcard.dto.NewFlashcardDTO;
 import com.revature.studyforce.flashcard.model.Flashcard;
 import com.revature.studyforce.flashcard.service.FlashcardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +19,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/flashcards")
 public class FlashcardController {
 
+
+    private final FlashcardService flashcardService;
+
     @Autowired
-    FlashcardService flashcardService;
+    public FlashcardController(FlashcardService flashcardService){
+        this.flashcardService = flashcardService;
+    }
 
     /**
      * getAll() method mapped to HTTP GET requests ("/all")
@@ -28,8 +35,8 @@ public class FlashcardController {
      * @param order - ascending or descending order
      * @return - returns Page of paginated Flashcards
      */
-    @GetMapping("/all")
-    public @ResponseBody Page<FlashcardDTO> getAll(
+    @GetMapping
+    public @ResponseBody Page<FlashcardAllDTO> getAll(
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,
             @RequestParam(name = "offset", defaultValue = "10", required = false) int offset,
             @RequestParam(name = "sortby", defaultValue = "id", required = false) String sortBy,
@@ -47,7 +54,7 @@ public class FlashcardController {
      * @return - returns a List of paginated Flashcards sorted by difficulty
      */
     @GetMapping("/difficulty")
-    public @ResponseBody Page<FlashcardDTO> getAllByDifficulty(
+    public @ResponseBody Page<FlashcardAllDTO> getAllByDifficulty(
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,
             @RequestParam(name = "offset", defaultValue = "10", required = false) int offset,
             @RequestParam(name = "sortby", defaultValue = "id", required = false) String sortBy,
@@ -65,8 +72,8 @@ public class FlashcardController {
      * @param topicName - limits returned Flashcards to the given topic
      * @return - returns a List of paginated Flashcards sorted by difficulty
      */
-    @GetMapping("/topic")
-    public @ResponseBody Page<FlashcardDTO> getAllByTopic(
+    @GetMapping("/topics")
+    public @ResponseBody Page<FlashcardAllDTO> getAllByTopic(
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,
             @RequestParam(name = "offset", defaultValue = "10", required = false) int offset,
             @RequestParam(name = "sortby", defaultValue = "id", required = false) String sortBy,
@@ -85,7 +92,7 @@ public class FlashcardController {
      * @return - returns a List of paginated Flashcards sorted by difficulty
      */
     @GetMapping("/resolved")
-    public @ResponseBody Page<FlashcardDTO> getAllByIsResolved(
+    public @ResponseBody Page<FlashcardAllDTO> getAllByIsResolved(
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,
             @RequestParam(name = "offset", defaultValue = "10", required = false) int offset,
             @RequestParam(name = "sortby", defaultValue = "id", required = false) String sortBy,
@@ -99,8 +106,8 @@ public class FlashcardController {
      * @param id - limits returned Flashcard to the given id
      * @return - returns Flashcard with the given id
      */
-    @GetMapping("/id/{id}")
-    public @ResponseBody FlashcardDTO getById(@PathVariable("id") Integer id) {
+    @GetMapping("/{id}")
+    public @ResponseBody FlashcardAllDTO getById(@PathVariable("id") Integer id) {
         return flashcardService.getById(id);
     }
 
@@ -110,7 +117,7 @@ public class FlashcardController {
      * @return - returns persisted Flashcard
      */
     @PostMapping
-    public @ResponseBody FlashcardDTO save(@RequestBody Flashcard flashcard) {
+    public @ResponseBody FlashcardDTO save(@RequestBody NewFlashcardDTO flashcard) {
         return flashcardService.save(flashcard);
     }
 
@@ -126,11 +133,12 @@ public class FlashcardController {
 
     /**
      * delete() method mapped to HTTP DELETE requests
-     * @param flashcard - Flashcard to be deleted from the database
+     * @param id - Flashcard to be deleted from the database
      * @return - returns deleted Flashcard
      */
     @DeleteMapping
-    public @ResponseBody FlashcardDTO delete(@RequestBody Flashcard flashcard) {
-        return flashcardService.delete(flashcard);
+    public @ResponseBody Boolean delete(@PathVariable("id") Integer id) {
+        flashcardService.delete(id);
+        return true;
     }
 }

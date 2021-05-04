@@ -4,9 +4,12 @@ import com.revature.studyforce.flashcard.model.Topic;
 import com.revature.studyforce.flashcard.repository.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
+
+/**
+ * @author Kevin wang
+ */
 @Service
 public class TopicService {
 

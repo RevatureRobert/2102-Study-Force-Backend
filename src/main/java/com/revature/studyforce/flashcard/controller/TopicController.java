@@ -12,11 +12,16 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @Controller
-@RequestMapping("/topic")
+@RequestMapping("/topics")
 public class TopicController {
 
+
+    private final TopicService topicService;
+
     @Autowired
-    private TopicService topicService;
+    public TopicController(TopicService topicService){
+        this.topicService = topicService;
+    }
 
     /**
      * Get a list of all topic in json format
@@ -59,7 +64,7 @@ public class TopicController {
      * Delete an topic from database (need to add auth for admin only)
      * @param id The id you want to remove
      * @return The topic that was removed
-     * @exception throw 404 if topic not found
+     * @exception throws 404 if topic not found
      */
     @DeleteMapping("/{id}")
     @ResponseBody
