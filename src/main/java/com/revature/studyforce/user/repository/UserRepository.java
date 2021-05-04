@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
 import java.sql.Timestamp;
 import java.util.Optional;
 
@@ -13,10 +14,12 @@ import java.util.Optional;
  * @author Lok Kan Kung
  * @author Daniel Reyes
  */
-
 @Repository
 public interface UserRepository extends JpaRepository<User,Integer> {
+
     Optional<User> findByEmail(String email);
-    Page<User> findByNameIgnoreCase(String name, Pageable pageable);
+
+    Page<User> findByNameContainingIgnoreCase(String firstName, Pageable pageable);
+
     Page<User> findByRegistrationTimeAfter(Timestamp creation, Pageable pageable);
 }

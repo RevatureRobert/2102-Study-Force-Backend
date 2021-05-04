@@ -40,7 +40,7 @@ public class User  implements UserDetails {
     private String email;
 
     @Size(max = 511)
-    @Column(name = "first_name")
+    @Column(name = "name")
     private String name;
 
     @Column(name = "is_active")
