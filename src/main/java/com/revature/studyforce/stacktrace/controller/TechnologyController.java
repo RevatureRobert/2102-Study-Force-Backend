@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/stacktrace/technology")
+@CrossOrigin
 public class TechnologyController {
 
   @Autowired private TechnologyService technologyService;

@@ -8,6 +8,9 @@ import com.revature.studyforce.stacktrace.model.SolutionVote;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.repository.SolutionRepository;
 import com.revature.studyforce.stacktrace.repository.SolutionVoteRepository;
+import com.revature.studyforce.user.model.User;
+import com.revature.studyforce.user.repository.UserRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +28,12 @@ public class SolutionVoteService {
     @Autowired
     SolutionVoteRepository solutionVoteRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    SolutionRepository solutionRepository;
+
     /**
      *  The controller used to return all votes for a given solution.
      * @param solutionId the value that will bring back every vote for a given solution.
@@ -35,7 +44,13 @@ public class SolutionVoteService {
         List<SolutionVoteDTO> solutionVoteDTOS = new ArrayList<>();
 
         for(SolutionVote solutionVote : solutionVotes){
-            solutionVoteDTOS.add(SolutionVoteDTO.solutionVoteToDTO().apply(solutionVote));
+            SolutionVoteDTO solutionVoteDTO = new SolutionVoteDTO();
+            solutionVoteDTO.setSolutionVoteId(solutionVote.getSolutionVoteId());
+            solutionVoteDTO.setSolutionId(solutionVote.getSolutionId().getSolutionId());
+            solutionVoteDTO.setUserId(solutionVote.getUserId().getUserId());
+            solutionVoteDTO.setValue(solutionVote.getValue());
+            BeanUtils.copyProperties(solutionVote,solutionVoteDTO);
+            solutionVoteDTOS.add(solutionVoteDTO);
         }
 
         return solutionVoteDTOS;
@@ -47,7 +62,24 @@ public class SolutionVoteService {
      * @return will return a solutionVote for a given user, with a given solution.
      */
     public SolutionVoteDTO submitVote(SolutionVoteDTO solutionVoteDTO){
-        return SolutionVoteDTO.solutionVoteToDTO().apply(solutionVoteRepository.save(SolutionVoteDTO.dtoToSolutionVote().apply(solutionVoteDTO)));
+        SolutionVote solutionVote = new SolutionVote();
+
+        //need a user and a solution
+        int solutionIdValue = solutionVoteDTO.getSolutionId();
+        Solution solutionEdit = new Solution();
+        solutionEdit = solutionRepository.findBySolutionId(solutionIdValue);
+        solutionVote.setSolutionId(solutionEdit);
+
+        int userIdValue = solutionVoteDTO.getUserId();
+        User user = new User();
+        user = userRepository.findByUserId(userIdValue);
+        solutionVote.setUserId(user);
+
+        solutionVote.setValue(solutionVoteDTO.getValue());
+
+        solutionVoteRepository.save(solutionVote);
+
+        return solutionVoteDTO;
     }
 
 }

@@ -16,8 +16,7 @@ import javax.validation.constraints.*;
 
 @Entity()
 @Table(name = "solution_vote",uniqueConstraints= @UniqueConstraint(columnNames = {"user_id", "solution_id"}) )
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
