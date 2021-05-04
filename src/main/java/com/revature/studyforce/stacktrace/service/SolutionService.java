@@ -3,6 +3,8 @@ package com.revature.studyforce.stacktrace.service;
 import com.revature.studyforce.stacktrace.dto.SolutionDTO;
 import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.repository.SolutionRepository;
+import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
+import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,12 @@ public class SolutionService {
 
     @Autowired
     SolutionRepository solutionRepository;
+
+    @Autowired
+    StacktraceRepository stacktraceRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     /**
      * Given a stacktrace id, returns all solutions posted on that stacktrace
@@ -44,7 +52,16 @@ public class SolutionService {
      * @return solution
      */
     public SolutionDTO submitFirstSolution(SolutionDTO solutionDTO){
-        return SolutionDTO.solutionToDTO().apply(solutionRepository.save(SolutionDTO.dtoToSolution().apply(solutionDTO)));
+        Solution solution = new Solution(
+                solutionDTO.getSolutionId(),
+                stacktraceRepository.findById(solutionDTO.getStackTraceId()).orElse(null),
+                userRepository.findByUserId(solutionDTO.getUserId()),
+                solutionDTO.getBody(),
+                solutionDTO.getAdminSelected(),
+                solutionDTO.getCreationTime(),
+                null);
+
+        return SolutionDTO.solutionToDTO().apply(solutionRepository.save(solution));
     }
 
     /**
@@ -61,9 +78,15 @@ public class SolutionService {
             solution.get().setBody(solutionDTO.getBody());
             return SolutionDTO.solutionToDTO().apply(solutionRepository.save(solution.get()));
         }else{
-            Solution newSolution = SolutionDTO.dtoToSolution().apply(solutionDTO);
-            solutionRepository.save(newSolution);
-            return solutionDTO;
+            Solution newSolution = new Solution(
+                    solutionDTO.getSolutionId(),
+                    stacktraceRepository.findById(solutionDTO.getStackTraceId()).orElse(null),
+                    userRepository.findByUserId(solutionDTO.getUserId()),
+                    solutionDTO.getBody(),
+                    solutionDTO.getAdminSelected(),
+                    solutionDTO.getCreationTime(),
+                    null);
+            return SolutionDTO.solutionToDTO().apply(solutionRepository.save(newSolution));
         }
     }
 
