@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 /**
  * The StackService allows for communication with {@link StacktraceRepository} and enforces data constraints on requests to repository
  * @author John Stone
+ * @author Joshua Swanson
  */
 @Service
 public class StacktraceService {
@@ -97,6 +98,15 @@ public class StacktraceService {
     }
 
 /*    *//**
+    /**
+     * Deletes a Stacktrace by the primary id passed as parameter
+     * @param stacktraceId primary id of Stacktrace
+     */
+    public void deleteStackTraceById(int stacktraceId){
+        stacktraceRepo.deleteById(stacktraceId);
+    }
+
+    /**
      * Ensures permitted page format
      * @param page The page number value being validated
      * @return A valid page number value

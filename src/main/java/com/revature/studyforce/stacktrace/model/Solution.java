@@ -1,5 +1,6 @@
 package com.revature.studyforce.stacktrace.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
+import java.util.Set;
 
 import com.revature.studyforce.user.model.User;
 
@@ -39,9 +41,10 @@ public class Solution {
      * This is the foreign key which will be connect to the Stacktrace a user has picked as their solution.
      * Should be nullable if solution isn't picked for given solution.
      */
+    @JsonIgnoreProperties("solutions")
     @ManyToOne(
             fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinColumn(name = "stacktrace_id")
     private Stacktrace stackTraceId;
 
@@ -73,4 +76,11 @@ public class Solution {
      */
     @Column(name = "creation_time")
     private Date creationTime;
+
+    /**
+     * Bidirectional relationship needed to cascade delete SolutionVotes
+     */
+    @JsonBackReference
+    @OneToMany(mappedBy = "solutionId", cascade = CascadeType.ALL)
+    private Set<SolutionVote> solutionVotes;
 }

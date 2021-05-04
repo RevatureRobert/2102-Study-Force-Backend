@@ -1,6 +1,8 @@
 package com.revature.studyforce.stacktrace.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.studyforce.user.model.User;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -8,13 +10,16 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Entity
+@Table(name = "stacktrace")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Stacktrace {
     /**
      * @author : Noel Shaji
@@ -33,6 +38,7 @@ public class Stacktrace {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "creator_id", referencedColumnName = "user_id")
+    @JsonIgnore
     private User userId;
 
     /**
@@ -56,6 +62,7 @@ public class Stacktrace {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "technology_id", referencedColumnName = "technology_id")
+    @JsonIgnore
     private Technology technologyId;
 
     /**
@@ -65,4 +72,10 @@ public class Stacktrace {
     @UpdateTimestamp
     private Timestamp creationTime;
 
+    /**
+     * Bidirectional relationship needed to cascade delete solutions
+     */
+    @JsonIgnoreProperties("stackTraceId")
+    @OneToMany(mappedBy = "stackTraceId", cascade = CascadeType.ALL)
+    private Set<Solution> solutions;
 }

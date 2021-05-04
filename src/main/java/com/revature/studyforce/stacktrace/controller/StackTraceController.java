@@ -4,14 +4,20 @@ import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
 import com.revature.studyforce.stacktrace.service.StacktraceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ *  Rest controller to handle stacktrace requests
+ * @author John Stone
+ * @author Joshua Swanson
+ */
 @RestController
-@CrossOrigin
 @RequestMapping("/stacktrace")
-public class StacktraceController {
+@CrossOrigin
+public class StackTraceController {
 
     @Autowired
     private StacktraceService stacktraceService;
@@ -33,7 +39,6 @@ public class StacktraceController {
      * @param order The order in which the list is displayed ["ASC"|"DESC"]
      * @return The page of data transfer representations of all stack trace objects with pagination and sorting applied
      */
-/*
     @GetMapping("/page")
     public Page<StacktraceDTO> getPageStacktraces(
             @RequestParam(value="page", required = false, defaultValue = "0") int page,
@@ -53,7 +58,6 @@ public class StacktraceController {
             return stacktraceService.getAllStacktracesByTechnologyId(technologyId,page,offset,sortBy,order);
         }
     }
-*/
 
     /**
      * Gets stacktrace who's id matches provided id
@@ -65,8 +69,15 @@ public class StacktraceController {
         return stacktraceService.getStacktraceById(id);
     }
 
-    @GetMapping("/search/technology/{id}")
-    public List<StacktraceDTO> getAllStackTracesofTechnologyName(@PathVariable(name = "technologyName") String name) {
-        return stacktraceService.getAllStacktracesOfTechnologyName(name);
+
+    /**
+     * Deletes the stacktrace with the passed stacktraceId
+     * @param stacktraceId Primary id of stacktrace
+     * @return Response Entity with no content
+     */
+    @DeleteMapping("/{stacktraceId}")
+    public ResponseEntity<Void> deleteStacktraceById(@PathVariable("stacktraceId") int stacktraceId){
+        stacktraceService.deleteStackTraceById(stacktraceId);
+        return ResponseEntity.noContent().build();
     }
 }
