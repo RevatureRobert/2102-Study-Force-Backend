@@ -23,6 +23,7 @@ import java.time.Instant;
 /**
  * tests for integration of User Controller {@link UserController}
  * @author Daniel Reyes
+ * @author Daniel Bernier
  */
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)

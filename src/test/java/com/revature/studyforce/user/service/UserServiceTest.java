@@ -24,6 +24,7 @@ import java.util.Optional;
 /**
  * Service Layer Testing {@link UserService}
  * @author Daniel Reyes
+ * @author Daniel Bernier
  */
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test-application.properties")

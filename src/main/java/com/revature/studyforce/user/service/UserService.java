@@ -21,6 +21,7 @@ import java.util.Optional;
 /**
  * Service Layer for Users {@link UserRepository}
  * @author Daniel Reyes
+ * @author Daniel Bernier
  */
 
 @Service

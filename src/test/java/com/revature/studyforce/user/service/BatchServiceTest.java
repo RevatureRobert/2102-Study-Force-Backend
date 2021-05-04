@@ -21,6 +21,7 @@ import java.util.*;
 /**
  * Service Layer Testing {@link BatchService }
  * @author Daniel Reyes
+ * @author Daniel Bernier
  */
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test-application.properties")

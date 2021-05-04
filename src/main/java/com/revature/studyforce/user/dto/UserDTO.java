@@ -12,6 +12,7 @@ import java.util.function.Function;
 /**
  * UserDTO to transfer User data
  * @author Lok Kan Kung
+ * @author Daniel Bernier
  */
 @Data
 @NoArgsConstructor

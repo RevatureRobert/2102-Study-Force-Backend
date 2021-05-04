@@ -11,6 +11,7 @@ import java.util.function.Function;
 /**
  * UserDTO testing to confirm the functionality for the conversion {@link UserDTO}
  * @author Lok Kan Kung
+ * @author Daniel Bernier
  */
 
 @SpringBootTest
