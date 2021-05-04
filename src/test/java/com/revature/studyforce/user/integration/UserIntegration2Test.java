@@ -47,7 +47,7 @@ class UserIntegration2Test {
         userRepository.save(user);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        mockMvc.perform(MockMvcRequestBuilders.put("/user/name")
+        mockMvc.perform(MockMvcRequestBuilders.put("/users/name")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"userId\" : 1, \"name\" : \"New Name\" }"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -74,7 +74,7 @@ class UserIntegration2Test {
         userRepository.save(user);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        mockMvc.perform(MockMvcRequestBuilders.put("/user/authority")
+        mockMvc.perform(MockMvcRequestBuilders.put("/users/authority")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"userId\" : 1, \"authority\" : \"ADMIN\" }"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -101,7 +101,7 @@ class UserIntegration2Test {
         userRepository.save(user);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        mockMvc.perform(MockMvcRequestBuilders.put("/user/active")
+        mockMvc.perform(MockMvcRequestBuilders.put("/users/active")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"userId\" : 1, \"active\" : \"false\" }"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -128,7 +128,7 @@ class UserIntegration2Test {
         userRepository.save(user);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        mockMvc.perform(MockMvcRequestBuilders.put("/user/subscription")
+        mockMvc.perform(MockMvcRequestBuilders.put("/users/subscription")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"userId\" : 1, \"subscribedFlashcard\" : true, \"subscribedStacktrace\" : true }"))
                 .andExpect(MockMvcResultMatchers.status().isOk())

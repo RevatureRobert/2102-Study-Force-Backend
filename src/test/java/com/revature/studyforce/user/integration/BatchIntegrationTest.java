@@ -65,7 +65,7 @@ class BatchIntegrationTest {
         System.out.println(batch.toString());
         batchRepository.save(batch);
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
-        mockMvc.perform(MockMvcRequestBuilders.get("/batch")
+        mockMvc.perform(MockMvcRequestBuilders.get("/batches")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -91,7 +91,7 @@ class BatchIntegrationTest {
         Batch batch = new Batch(0, "2102 Enterprise2", AdminList, StudentList, lastLoginTime);
         batchRepository.save(batch);
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
-        mockMvc.perform(MockMvcRequestBuilders.get("/batch/3")
+        mockMvc.perform(MockMvcRequestBuilders.get("/batches/3")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -117,7 +117,7 @@ class BatchIntegrationTest {
         batchRepository.save(batch);
         System.out.println(batchRepository.findByNameContainingIgnoreCase("Enterprise2"));
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
-        mockMvc.perform(MockMvcRequestBuilders.get("/batch/name?name=Enterprise2")
+        mockMvc.perform(MockMvcRequestBuilders.get("/batches/name?name=Enterprise2")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -147,7 +147,7 @@ class BatchIntegrationTest {
         batchRepository.save(batch);
         System.out.println(batchRepository.findByNameContainingIgnoreCase("Enterprise2"));
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
-        mockMvc.perform(MockMvcRequestBuilders.get("/batch/time/1619996684739")
+        mockMvc.perform(MockMvcRequestBuilders.get("/batches/time/1619996684739")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

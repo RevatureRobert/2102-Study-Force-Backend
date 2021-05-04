@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/batch")
+@RequestMapping("/batches")
 public class BatchController {
 
     private final BatchService batchService;

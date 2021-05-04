@@ -49,7 +49,7 @@ class UserIntegrationTest {
         userRepository.save(user);
         System.out.println(userRepository.findAll().toString());
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        mockMvc.perform(MockMvcRequestBuilders.get("/user")
+        mockMvc.perform(MockMvcRequestBuilders.get("/users")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -72,7 +72,7 @@ class UserIntegrationTest {
         userRepository.save(user);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        mockMvc.perform(MockMvcRequestBuilders.get("/user/1")
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -95,7 +95,7 @@ class UserIntegrationTest {
         userRepository.save(user);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        mockMvc.perform(MockMvcRequestBuilders.get("/user/email?email=dan@gmail.com")
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/email?email=dan@gmail.com")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -118,7 +118,7 @@ class UserIntegrationTest {
         userRepository.save(user);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        mockMvc.perform(MockMvcRequestBuilders.get("/user/name?name=daniel")
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/name?name=daniel")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -142,7 +142,7 @@ class UserIntegrationTest {
         userRepository.save(user);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        mockMvc.perform(MockMvcRequestBuilders.get("/user/time/1619996684739")
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/time/1619996684739")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
