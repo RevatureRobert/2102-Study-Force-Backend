@@ -1,6 +1,6 @@
 package com.revature.studyforce.user.integration;
 
-import com.revature.studyforce.user.contoller.BatchController;
+import com.revature.studyforce.user.controller.BatchController;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.Batch;
 import com.revature.studyforce.user.model.User;
@@ -56,8 +56,8 @@ class BatchIntegrationTest {
         Authority authority = Authority.ADMIN;
         Authority user1 = Authority.USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
-        User Admin = new User(0 , "dan2@gmail.com", "pass", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
-        User student = new User(0 , "test2@gmail.com", "pass", "Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
+        User Admin = new User(0 , "dan2@gmail.com",  "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
+        User student = new User(0 , "test2@gmail.com", "Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
         AdminList.add(Admin);
         StudentList.add(student);
         Batch batch = new Batch(0, "2102 Enterprise2", AdminList, StudentList, lastLoginTime);
@@ -84,8 +84,8 @@ class BatchIntegrationTest {
         Authority authority = Authority.ADMIN;
         Authority user1 = Authority.USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
-        User Admin = new User(0 , "dan2@gmail.com", "pass", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
-        User student = new User(0 , "test2@gmail.com", "pass", "Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
+        User Admin = new User(0 , "dan2@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
+        User student = new User(0 , "test2@gmail.com",  "Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
         Admin = userRepository.save(Admin);
         student = userRepository.save(student);
         AdminList.add(Admin);
@@ -111,8 +111,8 @@ class BatchIntegrationTest {
         Authority authority = Authority.ADMIN;
         Authority user1 = Authority.USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
-        User Admin = new User(0 , "dan2@gmail.com", "pass", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
-        User student = new User(0 , "test2@gmail.com", "pass", "Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
+        User Admin = new User(0 , "dan2@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
+        User student = new User(0 , "test2@gmail.com","Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
         Admin = userRepository.save(Admin);
         student = userRepository.save(student);
         AdminList.add(Admin);
@@ -143,8 +143,8 @@ class BatchIntegrationTest {
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(epochMilli));
-        User Admin = new User(0 , "dan2@gmail.com", "pass", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
-        User student = new User(0 , "test2@gmail.com", "pass", "Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
+        User Admin = new User(0 , "dan2@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
+        User student = new User(0 , "test2@gmail.com",  "Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
         Admin = userRepository.save(Admin);
         student = userRepository.save(student);
         AdminList.add(Admin);

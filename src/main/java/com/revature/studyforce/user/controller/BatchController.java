@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import java.sql.Timestamp;
-import java.util.Optional;
 
 /**
  * Batch Controller
@@ -54,7 +53,7 @@ public class BatchController {
                                               @RequestParam(value = "offset", required = false, defaultValue = "5") int offset,
                                               @RequestParam(value = "sortby", required = false, defaultValue = "batchId") String sortBy,
                                               @RequestParam(value = "order", required = false, defaultValue = "ASC") String order){
-        return batchService.getBatchByCreationTime(timestamp, page,offset,sortBy,order);
+        return batchService.getBatchByCreationTime(timestamp.getTime(), page,offset,sortBy,order);
     }
 
     /**
@@ -71,7 +70,7 @@ public class BatchController {
      * @return batch
      */
     @GetMapping("/{batchId}")
-    public Optional<Batch> getUserByBatchId(@PathVariable(name = "batchId") int batchId){
+    public Batch getUserByBatchId(@PathVariable(name = "batchId") int batchId){
         return batchService.getBatchById(batchId);
     }
 }

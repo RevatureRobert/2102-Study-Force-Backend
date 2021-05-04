@@ -23,9 +23,6 @@ public class CognitoAccessTokenConverter extends JwtAccessTokenConverter {
     @SuppressWarnings("unchecked")
     @Override
     public OAuth2Authentication extractAuthentication(Map<String, ?> claims) {
-
-
-
         if (claims.containsKey(COGNITO_USERNAME)) {
             String email = cognitoService.getUserEmailFromUserPool((String) claims.get(COGNITO_USERNAME));
             String name = cognitoService.getUserNameFromUserPool((String) claims.get(COGNITO_USERNAME));
@@ -41,8 +38,7 @@ public class CognitoAccessTokenConverter extends JwtAccessTokenConverter {
 
 
     private void replaceWithLambda(String email,String userName) {
-        if(userService.getUserByEmail(email) ==null)
-            userService.adminCreateUser(new User(email, userName));
+        if(userService.getUserByEmail(email) ==null) userService.adminCreateUser(new User(email, userName));
     }
 }
 
