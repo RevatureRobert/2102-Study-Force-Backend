@@ -4,9 +4,7 @@ import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.model.Technology;
 import com.revature.studyforce.user.model.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.util.Set;
@@ -17,7 +15,8 @@ import java.util.function.Function;
  * @author John Stone
  * @authore Joshua Swanson
  */
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class StacktraceDTO {

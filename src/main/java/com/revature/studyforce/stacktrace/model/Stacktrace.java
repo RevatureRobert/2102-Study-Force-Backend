@@ -75,6 +75,7 @@ public class Stacktrace {
     /**
      * Bidirectional relationship needed to cascade delete solutions
      */
+    @JsonIgnoreProperties("stackTraceId")
     @OneToMany(mappedBy = "stackTraceId", cascade = CascadeType.ALL)
     private Set<Solution> solutions;
 }
