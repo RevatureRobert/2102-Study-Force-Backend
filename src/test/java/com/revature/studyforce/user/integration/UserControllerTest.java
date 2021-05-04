@@ -50,7 +50,7 @@ class UserControllerTest {
         userRepository.save(user);
         System.out.println(userRepository.findAll().toString());
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/User/all")
+        mockMvc.perform(MockMvcRequestBuilders.get("/User/all")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -63,7 +63,6 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].subscribedStacktrace").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].authority").value("USER"))
                 .andReturn();
-    System.out.println(result.getResponse().getContentAsString());
     }
 
     @Test
@@ -74,7 +73,7 @@ class UserControllerTest {
         userRepository.save(user);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/User/user/1")
+        mockMvc.perform(MockMvcRequestBuilders.get("/User/user/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -86,7 +85,7 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.subscribedStacktrace").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.authority").value("USER"))
                 .andReturn();
-        System.out.println(result.getResponse().getContentAsString());
+
     }
 
     @Test
@@ -97,7 +96,7 @@ class UserControllerTest {
         userRepository.save(user);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/User/email?email=dan@gmail.com")
+        mockMvc.perform(MockMvcRequestBuilders.get("/User/email?email=dan@gmail.com")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -109,7 +108,7 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.subscribedStacktrace").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.authority").value("USER"))
                 .andReturn();
-        System.out.println(result.getResponse().getContentAsString());
+
     }
 
     @Test
@@ -120,7 +119,7 @@ class UserControllerTest {
         userRepository.save(user);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/User/name?name=daniel")
+        mockMvc.perform(MockMvcRequestBuilders.get("/User/name?name=daniel")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -132,7 +131,6 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].subscribedStacktrace").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].authority").value("USER"))
                 .andReturn();
-        System.out.println(result.getResponse().getContentAsString());
     }
     @Test
     void givenBatch_whenGetUserByTimeStamp_theUserRetrieved() throws Exception {
@@ -144,7 +142,7 @@ class UserControllerTest {
         userRepository.save(user);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/User/user/time?time=1619996684739")
+        mockMvc.perform(MockMvcRequestBuilders.get("/User/user/time?time=1619996684739")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -156,7 +154,6 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].subscribedStacktrace").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].authority").value("USER"))
                 .andReturn();
-        System.out.println(result.getResponse().getContentAsString());
     }
 
 

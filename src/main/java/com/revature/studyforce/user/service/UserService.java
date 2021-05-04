@@ -23,8 +23,7 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public UserService(UserRepository userRepository){
@@ -32,11 +31,11 @@ public class UserService {
     }
 
     /**
-     * GET mapping for '/findALL' in {@link UserRepository#findAll()}
-     * @param sortBy field to be sorted by [userId | email | name]  case insensitive defaults to userId
+     * Retrieves all Users with pagination from {@link UserRepository#findAll(Pageable)}
+     * @param sortBy field to be sorted by ["id" | "registration" | "email" | "authority" | "active" | "lastlogin"] case insensitive defaults to userId
      * @param order type of order to sort users [asc | desc] case insensitive - defaults to asc
      * @param page page to be displayed [page >= 0] defaults to 0
-     * @param offset number of Users displayed per page [10/ 20/ 30/ 50] defaults to 10 if invalid
+     * @param offset number of Users displayed per page [5 | 10 | 25 | 50] defaults to 10 if invalid
      * @return page of Users dependent on provided page , offset, sort, and order
      */
     public Page<UserDTO> getAllUsers(int page, int offset, String sortBy, String order){
@@ -54,6 +53,7 @@ public class UserService {
     }
 
     /**
+     * Retrieves User from {@link UserRepository
      * GET request for 'findById' in {@link UserRepository#findById(Object)}
      * @param id int input belonging to user
      * @return single user return that matches userId Param
@@ -64,7 +64,7 @@ public class UserService {
     }
 
     /**
-     * GET request for 'findByEmail' in {@link UserRepository#findByEmail(String)}
+     * Retrieves User from {@link UserRepository#findByEmail(String)}
      * @param email belonging to user
      * @return single user with matching email
      */
@@ -74,12 +74,12 @@ public class UserService {
     }
 
     /**
-     * GET mapping for '/findByNameIgnoreCase' in {@link UserRepository#findByNameContainingIgnoreCase(String, Pageable)}
+     * Retrieves all Users with pagination from {@link UserRepository#findByNameContainingIgnoreCase(String, Pageable)}
      * @param name name to compare
-     * @param sortBy field to be sorted by [userId | email | name]  case insensitive defaults to userId
+     * @param sortBy field to be sorted by ["id" | "registration" | "email" | "authority" | "active" | "lastlogin"] case insensitive defaults to userId
      * @param order type of order to sort users [asc | desc] case insensitive - defaults to asc
      * @param page page to be displayed [page >= 0] defaults to 0
-     * @param offset number of Users displayed per page [10/ 20/ 30/ 50] defaults to 10 if invalid
+     * @param offset number of Users displayed per page [5 | 10 | 25 | 50] defaults to 10 if invalid
      * @return page of Users dependent on provided page , offset, sort, and order
      */
     public Page<UserDTO> getUserByName(String name, int page, int offset, String sortBy, String order){
@@ -96,12 +96,12 @@ public class UserService {
     }
 
     /**
-     * GET mapping for '/findByRegistrationTimeAfter' in {@link UserRepository#findByRegistrationTimeAfter(Timestamp, Pageable)}
+     * Retrieves all Users with pagination from{@link UserRepository#findByRegistrationTimeAfter(Timestamp, Pageable)}
      * @param epochMilli timestamp to check
-     * @param sortBy field to be sorted by [userId | email | name]  case insensitive defaults to userId
+     * @param sortBy field to be sorted by ["id" | "registration" | "email" | "authority" | "active" | "lastlogin"] case insensitive defaults to userId
      * @param order type of order to sort users [asc | desc] case insensitive - defaults to asc
      * @param page page to be displayed [page >= 0] defaults to 0
-     * @param offset number of users displayed per page [10/ 20/ 30/ 50] defaults to 10 if invalid
+     * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 10 if invalid
      * @return page of Users dependent on provided page , offset, sort, and order
      */
     public Page<UserDTO> getUserByCreationTime(long epochMilli, int page, int offset, String sortBy, String order){
@@ -129,8 +129,14 @@ public class UserService {
                 return "name";
             case "email":
                 return "email";
-            case "time":
-                return "time";
+            case "registration":
+                return "registrationTime";
+            case "lastLogin":
+                return "lastLogin";
+            case "active":
+                return "isActive";
+            case "authority":
+                return "authority";
             default:
                 return "userId";
         }
@@ -153,13 +159,11 @@ public class UserService {
      * @return returns 10 as default unless other option selected.
      */
     private int offsetValidation(int offset){
-        if(offset < 10 || offset > 100){
-            offset = 10;
+        if(offset != 5 && offset != 10  && offset != 25 && offset != 50){
+            offset = 25;
         }
         return offset;
     }
-
-
 
 
 }

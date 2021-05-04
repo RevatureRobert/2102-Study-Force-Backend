@@ -8,11 +8,11 @@ import com.revature.studyforce.user.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -36,10 +36,10 @@ import java.util.Optional;
 @TestPropertySource(locations = "classpath:test-application.properties")
 class UserServiceTest {
 
-    @Mock
+    @MockBean
     private UserRepository userRepository;
 
-    @InjectMocks
+    @Autowired
     private UserService userService;
 
     @Test
@@ -59,7 +59,7 @@ class UserServiceTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(1, response.getContent().get(0).getUserId());
         Assertions.assertEquals("dan@gmail.com", response.getContent().get(0).getEmail());
-        //Assertions.assertEquals("pass", response.getContent().get(0).getPassword()); //DTO Returns Empty String by default
+        Assertions.assertEquals("", response.getContent().get(0).getPassword());
         Assertions.assertEquals("Daniel", response.getContent().get(0).getName());
         Assertions.assertEquals(t2, response.getContent().get(0).getLastLogin());
 
@@ -81,7 +81,7 @@ class UserServiceTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(1, response.getContent().get(0).getUserId());
         Assertions.assertEquals("dan@gmail.com", response.getContent().get(0).getEmail());
-        //Assertions.assertEquals("pass", response.getContent().get(0).getPassword()); //DTO Returns Empty String by default
+        Assertions.assertEquals("", response.getContent().get(0).getPassword());
         Assertions.assertEquals("Daniel", response.getContent().get(0).getName());
         Assertions.assertEquals(t2, response.getContent().get(0).getLastLogin());
 
@@ -103,7 +103,7 @@ class UserServiceTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(1, response.getUserId());
         Assertions.assertEquals("dan@gmail.com", response.getEmail());
-        //Assertions.assertEquals("pass", response.getContent().get(0).getPassword()); //DTO Returns Empty String by default
+        Assertions.assertEquals("", response.getPassword());
         Assertions.assertEquals("Daniel", response.getName());
         Assertions.assertEquals(timestamp, response.getLastLogin());
 
@@ -124,7 +124,7 @@ class UserServiceTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(1, response.getUserId());
         Assertions.assertEquals("dan@gmail.com", response.getEmail());
-        //Assertions.assertEquals("pass", response.getContent().get(0).getPassword()); //DTO Returns Empty String by default
+        Assertions.assertEquals("", response.getPassword());
         Assertions.assertEquals("Daniel", response.getName());
         Assertions.assertEquals(timestamp, response.getLastLogin());
         Assertions.assertTrue(response.isActive());
@@ -147,7 +147,7 @@ class UserServiceTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(1, response.getContent().get(0).getUserId());
         Assertions.assertEquals("dan@gmail.com", response.getContent().get(0).getEmail());
-        //Assertions.assertEquals("pass", response.getContent().get(0).getPassword()); //DTO Returns Empty String by default
+        Assertions.assertEquals("", response.getContent().get(0).getPassword());
         Assertions.assertEquals("Daniel", response.getContent().get(0).getName());
         Assertions.assertEquals(timestamp, response.getContent().get(0).getLastLogin());
 
@@ -170,7 +170,7 @@ class UserServiceTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(1, response.getContent().get(0).getUserId());
         Assertions.assertEquals("dan@gmail.com", response.getContent().get(0).getEmail());
-        //Assertions.assertEquals("pass", response.getContent().get(0).getPassword()); //DTO Returns Empty String by default
+        Assertions.assertEquals("", response.getContent().get(0).getPassword());
         Assertions.assertEquals("Daniel", response.getContent().get(0).getName());
         Assertions.assertEquals(timestamp, response.getContent().get(0).getLastLogin());
 
@@ -193,7 +193,7 @@ class UserServiceTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(1, response.getContent().get(0).getUserId());
         Assertions.assertEquals("dan@gmail.com", response.getContent().get(0).getEmail());
-        //Assertions.assertEquals("pass", response.getContent().get(0).getPassword()); //DTO Returns Empty String by default
+        Assertions.assertEquals("", response.getContent().get(0).getPassword());
         Assertions.assertEquals("Daniel", response.getContent().get(0).getName());
         Assertions.assertEquals(timestamp, response.getContent().get(0).getLastLogin());
 
@@ -215,7 +215,7 @@ class UserServiceTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(1, response.getContent().get(0).getUserId());
         Assertions.assertEquals("dan@gmail.com", response.getContent().get(0).getEmail());
-        //Assertions.assertEquals("pass", response.getContent().get(0).getPassword()); //DTO Returns Empty String by default
+        Assertions.assertEquals("", response.getContent().get(0).getPassword());
         Assertions.assertEquals("Daniel", response.getContent().get(0).getName());
         Assertions.assertEquals(timestamp, response.getContent().get(0).getLastLogin());
 

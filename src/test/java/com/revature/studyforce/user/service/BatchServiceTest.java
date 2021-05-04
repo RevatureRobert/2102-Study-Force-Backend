@@ -7,11 +7,11 @@ import com.revature.studyforce.user.repository.BatchRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -31,10 +31,11 @@ import java.util.*;
 @ExtendWith(MockitoExtension.class)
 @TestPropertySource(locations = "classpath:test-application.properties")
 class BatchServiceTest {
-    @Mock
+
+    @MockBean
     private BatchRepository batchRepository;
 
-    @InjectMocks
+    @Autowired
     private BatchService batchService;
 
     @Test

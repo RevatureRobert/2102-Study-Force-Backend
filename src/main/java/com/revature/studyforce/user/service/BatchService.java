@@ -21,7 +21,7 @@ import java.util.Locale;
 @Service
 public class BatchService {
 
-    BatchRepository batchRepository;
+    private final BatchRepository batchRepository;
 
     @Autowired
     public BatchService(BatchRepository batchRepository){
@@ -29,11 +29,11 @@ public class BatchService {
     }
 
     /**
-     * GET mapping for '/allBatches' uses {@link BatchRepository#findAll()}
+     * Retrieves all batches with pagination from {@link BatchRepository#findAll()}
      * @param sortBy field to be sorted by [batchId | creationTime | name] case insensitive defaults to batchId
      * @param order type of order to sort batches [asc | desc] case insensitive - defaults to asc
      * @param page page to be displayed [page >= 0] defaults to 5
-     * @param offset number of batches displayed per page [5/ 10/ 25/ 50] defaults to 5 if invalid
+     * @param offset number of batches displayed per page [5 | 10 | 25 | 50] defaults to 5 if invalid
      * @return a page of batches dependent on provided page, offset, sort, and order params.
      */
     public Page<Batch> getAllBatches(int page, int offset, String sortBy, String order){
@@ -50,7 +50,7 @@ public class BatchService {
     }
 
     /**
-     * GET request for 'getBatchById' in {@link BatchRepository#findById(Object)}
+     * Retrieves batch from {@link BatchRepository#findById(Object)}
      * @param id int input to represent a batch id
      * @return single batch return that matches batchId param.
      */
@@ -59,7 +59,7 @@ public class BatchService {
     }
 
     /**
-     * GET request for 'getBatchByName' in {@link BatchRepository#findByNameContainingIgnoreCase(String)}
+     * Retrieves batch from {@link BatchRepository#findByNameContainingIgnoreCase(String)}
      * @param name String input to represent a batch name
      * @return single batch that matches that name
      */
@@ -68,12 +68,12 @@ public class BatchService {
     }
 
     /**
-     * GET mapping for 'getBatchByCreationTime' in {@link BatchRepository#findByCreationTimeAfter(Timestamp, Pageable)}
+     * Retrieves all batches with pagination from {@link BatchRepository#findByCreationTimeAfter(Timestamp, Pageable)}
      * @param epochTime timestamp in long format
      * @param sortBy field to be sorted by [batchId | creationTime | name] case insensitive defaults to batchId
      * @param order type of order to sort batches [asc | desc] case insensitive - defaults to asc
      * @param page page to be displayed [page >= 0] defaults to 5
-     * @param offset number of batches displayed per page [5/ 10/ 25/ 50] defaults to 5 if invalid
+     * @param offset number of batches displayed per page [5 | 10 | 25 | 50] defaults to 5 if invalid
      * @return a page of batches dependent on provided page, offset, sort, and order params.
      */
     public Page<Batch> getBatchByCreationTime(long epochTime, int page, int offset, String sortBy, String order){
@@ -91,7 +91,7 @@ public class BatchService {
     }
 
     /**
-     * guarantees a sort field is selected if user provides one, userID as default ofr invalid inputs
+     * guarantees a sort field is selected if user provides one, userID as default for invalid inputs
      * @param sort field to sort by
      * @return field to sort by, default userID
      */
@@ -123,8 +123,8 @@ public class BatchService {
      * @return returns 10 as default unless other option selected.
      */
     private int offsetValidation(int offset){
-        if(offset < 5 || offset > 50){
-            offset = 5;
+        if(offset != 5 && offset != 10  && offset != 25 && offset != 50){
+            offset = 10;
         }
         return offset;
     }

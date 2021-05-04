@@ -22,7 +22,7 @@ public class BatchController {
 
     /**
      * GET mapping for '/allBatches' uses {@link BatchService#getAllBatches(int, int, String, String)}
-     * @param sortBy field to be sorted by [batchId | creationTime | name] case insensitive defaults to batchId
+     * @param sortBy field to be sorted by [id | time | name] case insensitive defaults to id
      * @param order type of order to sort batches [asc | desc] case insensitive - defaults to asc
      * @param page page to be displayed [page >= 0] defaults to 5
      * @param offset number of batches displayed per page [5/ 10/ 25/ 50] defaults to 5 if invalid
@@ -30,7 +30,7 @@ public class BatchController {
      */
     @GetMapping("/allBatches")
     public Page<Batch> getAllBatches(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
-                                @RequestParam(value = "offset", required = false, defaultValue = "5") int offset,
+                                @RequestParam(value = "offset", required = false, defaultValue = "10") int offset,
                                 @RequestParam(value = "sort", required = false, defaultValue = "batchId") String sortBy,
                                 @RequestParam(value = "order", required = false, defaultValue = "Desc") String order) {
         return batchService.getAllBatches(page, offset, sortBy, order);
@@ -39,16 +39,16 @@ public class BatchController {
     /**
      * GET mapping for 'getBatchByCreationTime' in {@link BatchService#getBatchByCreationTime(long, int, int, String, String)}
      * @param timestamp timestamp in long format
-     * @param sortBy field to be sorted by [batchId | creationTime | name] case insensitive defaults to batchId
+     * @param sortBy field to be sorted by [id | time | name]  case insensitive defaults to batchId
      * @param order type of order to sort batches [asc | desc] case insensitive - defaults to asc
      * @param page page to be displayed [page >= 0] defaults to 5
-     * @param offset number of batches displayed per page [5/ 10/ 25/ 50] defaults to 5 if invalid
+     * @param offset number of batches displayed per page [5 | 10 | 25| 50] defaults to 5 if invalid
      * @return a page of batches dependent on provided page, offset, sort, and order params.
      */
     @GetMapping("/batch/time")
     public Page<Batch> getBatchByCreationTime(@RequestParam("time") long timestamp,
                                               @RequestParam(value = "page", required = false, defaultValue = "0") int page,
-                                              @RequestParam(value = "offset", required = false, defaultValue = "5") int offset,
+                                              @RequestParam(value = "offset", required = false, defaultValue = "10") int offset,
                                               @RequestParam(value = "sort", required = false, defaultValue = "batchId") String sortBy,
                                               @RequestParam(value = "order", required = false, defaultValue = "ASC") String order){
         return batchService.getBatchByCreationTime(timestamp, page,offset,sortBy,order);

@@ -25,15 +25,15 @@ public class UserController {
 
     /**
      * GET mapping for '/getAllUsers' in {@link UserService}
-     * @param sortBy field to be sorted by [userId | email | name] case insensitive defaults to userId
+     * @param sortBy field to be sorted by ["id" | "registration" | "email" | "authority" | "active" | "lastlogin"] case insensitive defaults to userId
      * @param order type of order to sort users [asc | desc] case insensitive - defaults to asc
      * @param page page to be displayed [page >= 0] defaults to 0
-     * @param offset number of users displayed per page [10/ 20/ 30/ 50] defaults to 5 if invalid
+     * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 5 if invalid
      * @return page of Users dependent on provided page , offset, sort, and order
      */
     @GetMapping("/all")
     public Page<UserDTO> getAllUsers(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
-                                     @RequestParam(value = "offset", required = false, defaultValue = "10") int offset,
+                                     @RequestParam(value = "offset", required = false, defaultValue = "25") int offset,
                                      @RequestParam(value = "sort", required = false, defaultValue = "userId") String sortBy,
                                      @RequestParam(value = "order", required = false, defaultValue = "ASC") String order) {
         return userService.getAllUsers(page, offset, sortBy, order);
@@ -52,16 +52,16 @@ public class UserController {
     /**
      * GET mapping for '/getUserByName' in {@link UserService#getUserByName(String, int, int, String, String)}
      * @param name name to compare
-     * @param sortBy field to be sorted by [userId | email | name]  case insensitive defaults to userId
+     * @param sortBy field to be sorted by ["id" | "registration" | "email" | "authority" | "active" | "lastlogin"]  case insensitive defaults to userId
      * @param order type of order to sort users [asc | desc] case insensitive - defaults to asc
      * @param page page to be displayed [page >= 0] defaults to 0
-     * @param offset number of users displayed per page [10/ 20/ 30/ 50] defaults to 10 if invalid
+     * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 10 if invalid
      * @return page of Users dependent on provided page , offset, sort, and order
      */
     @GetMapping("/name")
     public Page<UserDTO> getUserByName(@RequestParam(name = "name") String name,
                                        @RequestParam(value = "page", required = false, defaultValue = "0") int page,
-                                       @RequestParam(value = "offset", required = false, defaultValue = "10") int offset,
+                                       @RequestParam(value = "offset", required = false, defaultValue = "25") int offset,
                                        @RequestParam(value = "sort", required = false, defaultValue = "userId") String sortBy,
                                        @RequestParam(value = "order", required = false, defaultValue = "ASC") String order){
         return userService.getUserByName(name, page,offset,sortBy,order);
@@ -80,16 +80,16 @@ public class UserController {
     /**
      * GET mapping for '/getUserByCreationTime' in {@link UserService#getUserByCreationTime(long, int, int, String, String)}
      * @param timestamp timestamp to check
-     * @param sortBy field to be sorted by [userId | email | name]  case insensitive defaults to userId
+     * @param sortBy field to be sorted by ["id" | "registration" | "email" | "authority" | "active" | "lastlogin"]  case insensitive defaults to userId
      * @param order type of order to sort users [asc | desc] case insensitive - defaults to asc
      * @param page page to be displayed [page >= 0] defaults to 10
-     * @param offset number of users displayed per page [10/ 20/ 30/ 50] defaults to 10 if invalid
+     * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 10 if invalid
      * @return page of Users dependent on provided page , offset, sort, and order
      */
     @GetMapping("/user/time")
     public Page<UserDTO> getUserByCreationTime(@RequestParam("time") long timestamp,
                                         @RequestParam(value = "page", required = false, defaultValue = "0") int page,
-                                        @RequestParam(value = "offset", required = false, defaultValue = "10") int offset,
+                                        @RequestParam(value = "offset", required = false, defaultValue = "25") int offset,
                                         @RequestParam(value = "sort", required = false, defaultValue = "userId") String sortBy,
                                         @RequestParam(value = "order", required = false, defaultValue = "ASC") String order){
         return userService.getUserByCreationTime(timestamp, page,offset,sortBy,order);

@@ -66,7 +66,7 @@ class BatchControllerTest {
         System.out.println(batch.toString());
         batchRepository.save(batch);
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/Batch/allBatches")
+        mockMvc.perform(MockMvcRequestBuilders.get("/Batch/allBatches")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -74,7 +74,7 @@ class BatchControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].batchId").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name").value("2102 Enterprise2"))
                 .andReturn();
-        System.out.println(result.getResponse().getContentAsString());
+
     }
 
     @Transactional
@@ -94,16 +94,14 @@ class BatchControllerTest {
         StudentList.add(student);
         Batch batch = new Batch(0, "2102 Enterprise2", AdminList, StudentList, lastLoginTime);
         batchRepository.save(batch);
-    System.out.println(batchRepository.findAll());
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/Batch/batch/3")
+        mockMvc.perform(MockMvcRequestBuilders.get("/Batch/batch/3")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.batchId").value(3))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("2102 Enterprise2"))
                 .andReturn();
-        System.out.println(result.getResponse().getContentAsString());
     }
 
     @Transactional
@@ -125,15 +123,14 @@ class BatchControllerTest {
         batchRepository.save(batch);
         System.out.println(batchRepository.findByNameContainingIgnoreCase("Enterprise2"));
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/Batch/batch/name?name=Enterprise2")
+        mockMvc.perform(MockMvcRequestBuilders.get("/Batch/batch/name?name=Enterprise2")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                //.andExpect(MockMvcResultMatchers.jsonPath("$.content").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.batchId").value(3))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Enterprise2"))
                 .andReturn();
-        System.out.println(result.getResponse().getContentAsString());
     }
 
     @Transactional
@@ -158,14 +155,14 @@ class BatchControllerTest {
         batchRepository.save(batch);
         System.out.println(batchRepository.findByNameContainingIgnoreCase("Enterprise2"));
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/Batch/batch/time?time=1619996684739")
+        mockMvc.perform(MockMvcRequestBuilders.get("/Batch/batch/time?time=1619996684739")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].batchId").value(3))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name").value("Enterprise2"))
                 .andReturn();
-        System.out.println(result.getResponse().getContentAsString());
+
     }
 
 }
