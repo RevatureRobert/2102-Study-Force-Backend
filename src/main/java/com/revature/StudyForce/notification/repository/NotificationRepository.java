@@ -1,16 +1,11 @@
 package com.revature.StudyForce.notification.repository;
-
+import java.util.Date; import org.springframework.web.bind.annotation.CrossOrigin; import org.springframework.format.annotation.DateTimeFormat;
 import com.revature.StudyForce.notification.model.Notification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.Date;
-
 @CrossOrigin("http://localhost:4200")
 @RepositoryRestResource(collectionResourceRel = "notifications", path = "notifications")
 public interface NotificationRepository extends JpaRepository<Notification, Integer> {
