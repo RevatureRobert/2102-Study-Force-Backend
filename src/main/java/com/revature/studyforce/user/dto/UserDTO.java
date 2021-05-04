@@ -6,13 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.function.Function;
 
 /**
  * UserDTO to transfer User data
  * @author Lok Kan Kung
+ * @author Daniel Bernier
  */
 @Data
 @NoArgsConstructor
@@ -23,9 +23,6 @@ public class UserDTO {
 
     @Email
     private String email;
-
-    @NotNull
-    private String password;
 
     private String name;
 
@@ -54,7 +51,6 @@ public class UserDTO {
             return new UserDTO (
                     user.getUserId(),
                     user.getEmail(),
-                    "",
                     user.getName(),
                     user.isActive(),
                     user.isSubscribedFlashcard(),
@@ -79,7 +75,6 @@ public class UserDTO {
             return new User (
                     userDTO.getUserId(),
                     userDTO.getEmail(),
-                    userDTO.getPassword(),
                     userDTO.getName(),
                     userDTO.isActive(),
                     userDTO.isSubscribedFlashcard(),

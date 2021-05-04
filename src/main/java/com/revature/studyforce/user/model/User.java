@@ -1,6 +1,5 @@
 package com.revature.studyforce.user.model;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,10 +32,6 @@ public class User {
     @NotNull
     @Column(nullable = false, unique = true)
     private String email;
-
-    @NotNull
-    @Column(nullable = false)
-    private String password;
 
     @Size(max = 511)
     @Column(name = "name")
