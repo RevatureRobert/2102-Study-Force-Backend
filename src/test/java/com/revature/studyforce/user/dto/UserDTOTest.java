@@ -1,6 +1,5 @@
 package com.revature.studyforce.user.dto;
 
-import com.revature.studyforce.user.dto.UserDTO;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import org.junit.jupiter.api.Assertions;
