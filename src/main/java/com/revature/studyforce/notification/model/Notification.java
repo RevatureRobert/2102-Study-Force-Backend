@@ -1,4 +1,4 @@
-package com.revature.StudyForce.notification.model;
+package com.revature.studyforce.notification.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Data
 @Builder
@@ -27,10 +27,10 @@ public class Notification {
     private boolean isRead;
 
     @Column(name = "time_to_live")
-    private Date timeToLive;
+    private Timestamp timeToLive;
 
-    @Column(name = "feature_area_id")
-    private int featureAreaId;
+    @Enumerated
+    private FeatureArea featureArea;
 
     @Column(name = "application_user_id")
     private int applicationUserId;
