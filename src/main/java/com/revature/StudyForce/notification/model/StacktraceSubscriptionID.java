@@ -1,14 +1,11 @@
-package com.revature.studyforce.notifcation.model;
+package com.revature.studyforce.notification.model;
 
-import com.revature.studyforce.user.model.User;
-import lombok.Builder;
+import com.revature.studyforce.stacktrace.model.Stacktrace;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.OneToOne;
-import javax.security.auth.Subject;
 import java.io.Serializable;
 
 /**
@@ -17,12 +14,13 @@ import java.io.Serializable;
 @Embeddable
 @NoArgsConstructor
 @Data
-public class StacktraceSubscriptionID  implements Serializable {
+public class StacktraceSubscriptionId implements Serializable {
 
 
     @OneToOne
     private Subscription subscription;
 
-    private int stackTrace;
+    @OneToOne
+    private Stacktrace stacktrace;
 
 }
