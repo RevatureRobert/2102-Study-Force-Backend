@@ -31,8 +31,6 @@ import java.util.Optional;
  * @author Daniel Reyes
  */
 @SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@ExtendWith(MockitoExtension.class)
 @TestPropertySource(locations = "classpath:test-application.properties")
 class UserServiceTest {
 

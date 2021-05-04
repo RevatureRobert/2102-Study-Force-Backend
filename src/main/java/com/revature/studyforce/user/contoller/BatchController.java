@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
  * @author Daniel Reyes
  */
 @RestController
-@RequestMapping("/Batch")
+@RequestMapping("/batch")
 public class BatchController {
 
     private final BatchService batchService;

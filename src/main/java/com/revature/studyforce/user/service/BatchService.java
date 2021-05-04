@@ -32,8 +32,8 @@ public class BatchService {
      * Retrieves all batches with pagination from {@link BatchRepository#findAll()}
      * @param sortBy field to be sorted by [batchId | creationTime | name] case insensitive defaults to batchId
      * @param order type of order to sort batches [asc | desc] case insensitive - defaults to asc
-     * @param page page to be displayed [page >= 0] defaults to 5
-     * @param offset number of batches displayed per page [5 | 10 | 25 | 50] defaults to 5 if invalid
+     * @param page page to be displayed [page >= 0] defaults to 0
+     * @param offset number of batches displayed per page [5 | 10 | 25 | 50] defaults to 10 if invalid
      * @return a page of batches dependent on provided page, offset, sort, and order params.
      */
     public Page<Batch> getAllBatches(int page, int offset, String sortBy, String order){
@@ -72,8 +72,8 @@ public class BatchService {
      * @param epochTime timestamp in long format
      * @param sortBy field to be sorted by [batchId | creationTime | name] case insensitive defaults to batchId
      * @param order type of order to sort batches [asc | desc] case insensitive - defaults to asc
-     * @param page page to be displayed [page >= 0] defaults to 5
-     * @param offset number of batches displayed per page [5 | 10 | 25 | 50] defaults to 5 if invalid
+     * @param page page to be displayed [page >= 0] defaults to 0
+     * @param offset number of batches displayed per page [5 | 10 | 25 | 50] defaults to 10 if invalid
      * @return a page of batches dependent on provided page, offset, sort, and order params.
      */
     public Page<Batch> getBatchByCreationTime(long epochTime, int page, int offset, String sortBy, String order){
@@ -107,7 +107,7 @@ public class BatchService {
     }
 
     /**
-     * guarantees a page to start off if incorrect input provided by user
+     * validates page is greater than or equal to 0
      * @param page number of the page available
      * @return number of page to start on
      */
@@ -118,7 +118,7 @@ public class BatchService {
     }
 
     /**
-     * Ensures the number of elements a page can fit, 10 by default
+     * Validates acceptable offset resets to 10 if invalid
      * @param offset number of elements desired in each page
      * @return returns 10 as default unless other option selected.
      */

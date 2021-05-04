@@ -143,7 +143,7 @@ public class UserService {
     }
 
     /**
-     * guarantees a page to start off if incorrect input provided by user
+     * validates page is greater than or equal to 0
      * @param page number of the page available
      * @return number of page to start on
      */
@@ -154,7 +154,7 @@ public class UserService {
     }
 
     /**
-     * Ensures the number of elements a page can fit, 10 by default
+     * Validates acceptable offset, resets to 25 if invalid
      * @param offset number of elements desired in each page
      * @return returns 10 as default unless other option selected.
      */

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/User")
+@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
@@ -28,7 +28,7 @@ public class UserController {
      * @param sortBy field to be sorted by ["id" | "registration" | "email" | "authority" | "active" | "lastlogin"] case insensitive defaults to userId
      * @param order type of order to sort users [asc | desc] case insensitive - defaults to asc
      * @param page page to be displayed [page >= 0] defaults to 0
-     * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 5 if invalid
+     * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 10 if invalid
      * @return page of Users dependent on provided page , offset, sort, and order
      */
     @GetMapping("/all")
@@ -82,7 +82,7 @@ public class UserController {
      * @param timestamp timestamp to check
      * @param sortBy field to be sorted by ["id" | "registration" | "email" | "authority" | "active" | "lastlogin"]  case insensitive defaults to userId
      * @param order type of order to sort users [asc | desc] case insensitive - defaults to asc
-     * @param page page to be displayed [page >= 0] defaults to 10
+     * @param page page to be displayed [page >= 0] defaults to 0
      * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 10 if invalid
      * @return page of Users dependent on provided page , offset, sort, and order
      */
