@@ -166,4 +166,7 @@ public class UserService {
     }
 
 
+    public void adminCreateUser(User user) {
+        userRepository.save(user);
+    }
 }

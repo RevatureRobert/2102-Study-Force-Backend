@@ -1,4 +1,7 @@
 package com.revature.studyforce.configuration;
+import com.revature.studyforce.cognito.CognitoAccessTokenConverter;
+import com.revature.studyforce.cognito.CognitoService;
+import com.revature.studyforce.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.context.annotation.Bean;
@@ -29,10 +32,10 @@ public class CognitoSecurityConfig extends ResourceServerConfigurerAdapter {
     }
 
     @Bean
-    public TokenStore jwkTokenStore() {
+    public TokenStore jwkTokenStore(CognitoService cognitoService, UserService userService) {
         return new JwkTokenStore(
                 Collections.singletonList(resource.getJwk().getKeySetUri()),
-                new CognitoAccessTokenConverter(),
+                new CognitoAccessTokenConverter(cognitoService, userService),
                 null);
     }
 
