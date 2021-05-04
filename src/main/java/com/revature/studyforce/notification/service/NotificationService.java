@@ -100,7 +100,4 @@ public class NotificationService {
      */
     public void deleteByUserId(Integer userId){ notificationRepository.deleteByApplicationUserId(userId); }
 
-
-
-
 }

@@ -18,7 +18,7 @@ public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "notification_id")
-    Integer notificationId;
+    private Integer notificationId;
 
     @Column(name = "notification_message")
     private String notificationMessage;
@@ -29,11 +29,24 @@ public class Notification {
     @Column(name = "time_to_live")
     private Timestamp timeToLive;
 
+    @Column(name = "created_time")
+    private Timestamp createdTime;
+
     @Column(name = "feature_area_id")
     @Enumerated
     private FeatureArea featureArea;
 
     @Column(name = "application_user_id")
     private int applicationUserId;
+
+    public Notification(NotificationDto notificationDto){
+        this.notificationId = notificationDto.getId();
+        this.notificationMessage = notificationDto.getMessage();
+        this.isRead = notificationDto.isRead();
+        this.timeToLive = notificationDto.getTimeToLive();
+        this.createdTime = notificationDto.getCreatedTime();
+        this.featureArea = notificationDto.getFeatureArea();
+        this.applicationUserId = notificationDto.getUserId();
+    }
 
 }

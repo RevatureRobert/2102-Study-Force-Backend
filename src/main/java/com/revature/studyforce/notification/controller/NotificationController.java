@@ -1,6 +1,7 @@
 package com.revature.studyforce.notification.controller;
 
 import com.revature.studyforce.notification.model.Notification;
+import com.revature.studyforce.notification.model.NotificationDto;
 import com.revature.studyforce.notification.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -20,7 +21,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping(path="/notification", produces="application/json")
+@RequestMapping(path="/notifications", produces="application/json")
 @CrossOrigin(origins="*")
 public class NotificationController {
     @Autowired
@@ -42,7 +43,7 @@ public class NotificationController {
     }
 
     /***
-     * Get a page of notifications for a particular user based on the user id passed.
+     * Get a page of {@link Notification notifications} for a particular user based on the user id passed.
      * @param userId userId is the id of the user that we are grabbing the page for
      * @param page Default value of page is 0 so if no page number is passed as an argument, we start with the very first page.
      *             Also the default size of the page is 5.
@@ -58,17 +59,19 @@ public class NotificationController {
     }
 
     /***
-     * Adds a {@link Notification}
-     * @param notification The notification parameter is the notification to be stored
+     * Adds a {@link NotificationDto}
+     * @param notificationDto The notificationDto parameter is the {@link Notification} to be stored
      * @return We return the same notification if it is inserted successfully.
      * If the notification parameter is null or we were unable to insert the notification
      * then we return an Http Response with status Unprocessable Entity
      */
     @PostMapping
-    public ResponseEntity<Notification> addNotification(@RequestBody Notification notification){
+    public ResponseEntity<NotificationDto> addNotification(@RequestBody NotificationDto notificationDto){
+        Notification notification = new Notification(notificationDto);
         if(notification != null){
             notification = notificationService.save(notification);
-            return new ResponseEntity<>(notification, HttpStatus.CREATED);
+            notificationDto = new NotificationDto(notification);
+            return new ResponseEntity<>(notificationDto, HttpStatus.CREATED);
         }
         return ResponseEntity.unprocessableEntity().build();
     }
@@ -80,7 +83,7 @@ public class NotificationController {
      *          Otherwise returns an Http Response with status Not Found
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Notification> deleteAllNotificationsByUserId(@PathVariable("id") Integer userId){
+    public ResponseEntity<NotificationDto> deleteAllNotificationsByUserId(@PathVariable("id") Integer userId){
         try{
             notificationService.deleteByUserId(userId);
             return ResponseEntity.noContent().build();
