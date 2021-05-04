@@ -40,6 +40,7 @@ public class Solution {
      * This is the foreign key which will be connect to the Stacktrace a user has picked as their solution.
      * Should be nullable if solution isn't picked for given solution.
      */
+    @JsonIgnoreProperties("solutions")
     @ManyToOne(
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
@@ -78,6 +79,7 @@ public class Solution {
     /**
      * Bidirectional relationship needed to cascade delete SolutionVotes
      */
+    @JsonIgnoreProperties("solutionId")
     @OneToMany(mappedBy = "solutionId", cascade = CascadeType.ALL)
     private Set<SolutionVote> solutionVotes;
 }

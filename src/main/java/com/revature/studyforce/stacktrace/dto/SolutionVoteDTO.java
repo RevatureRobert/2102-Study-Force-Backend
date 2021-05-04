@@ -3,9 +3,8 @@ package com.revature.studyforce.stacktrace.dto;
 import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.model.SolutionVote;
 import com.revature.studyforce.user.model.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.util.function.Function;
 
 
@@ -14,7 +13,8 @@ import java.util.function.Function;
  *
  * @author Joey Elmblad
  */
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class SolutionVoteDTO {

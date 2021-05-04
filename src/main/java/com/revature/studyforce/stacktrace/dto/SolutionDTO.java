@@ -4,9 +4,7 @@ import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.model.SolutionVote;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.user.model.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Date;
 import java.util.Set;
@@ -18,7 +16,8 @@ import java.util.function.Function;
  *
  * @author Joshua Swanson
  */
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class SolutionDTO {

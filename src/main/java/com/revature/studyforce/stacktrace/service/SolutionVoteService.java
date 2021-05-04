@@ -44,7 +44,7 @@ public class SolutionVoteService {
     /**
      * This will save a vote for a specific solution, should only be able to vote on a comment once.
      * @param solutionVoteDTO The solution object that will hold the users vote information.
-     * @return will return a soltuionVote for a given user, with a given solution.
+     * @return will return a solutionVote for a given user, with a given solution.
      */
     public SolutionVoteDTO submitVote(SolutionVoteDTO solutionVoteDTO){
         return SolutionVoteDTO.solutionVoteToDTO().apply(solutionVoteRepository.save(SolutionVoteDTO.dtoToSolutionVote().apply(solutionVoteDTO)));

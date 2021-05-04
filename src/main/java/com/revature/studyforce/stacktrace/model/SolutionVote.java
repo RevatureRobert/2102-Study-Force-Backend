@@ -42,6 +42,7 @@ public class SolutionVote {
     /**
      * This is a foreign key for the Solution table which tracks which solution this vote will count towards.
      */
+    @JsonIgnoreProperties("stackTraceId")
     @ManyToOne
     @JoinColumn(name = "solution_id")
     private Solution solutionId;
