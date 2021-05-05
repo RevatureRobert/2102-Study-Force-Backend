@@ -37,11 +37,11 @@ public class NotificationService {
     }
 
     /***
-     * Grab all {@link Notification Notifications} and return a list of them
-     * @return Returns a List of all the notifications
+     * Grab a page of {@link Notification Notifications}
+     * @return Returns a page of notifications
      */
-    public List<Notification> findAll(){
-        return notificationRepository.findAll();
+    public Page<Notification> findAll(){
+        return notificationRepository.findAll(PageRequest.of(0, 10));
     }
 
     /***

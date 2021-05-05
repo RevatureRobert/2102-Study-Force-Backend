@@ -1,7 +1,7 @@
 package com.revature.studyforce.notification.controller;
 
 import com.revature.studyforce.notification.model.Notification;
-import com.revature.studyforce.notification.model.NotificationDto;
+import com.revature.studyforce.notification.dto.NotificationDto;
 import com.revature.studyforce.notification.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -28,16 +28,16 @@ public class NotificationController {
     private NotificationService notificationService;
 
     /***
-     *  Retrieves a list of all notifications
-     * @return Returns either the entire list of notifications from the database with the http ok status
+     *  Retrieves a Page of notifications
+     * @return Returns either a page of notifications from the database with the http ok status
      *     or if there are no notifications it returns a not found http response
      */
 
     @GetMapping
-    public ResponseEntity<List<Notification>> getAllNotifications(){
-        List<Notification> notificationList = notificationService.findAll();
-        if(notificationList != null){
-            return ResponseEntity.ok(notificationList);
+    public ResponseEntity<Page<Notification>> getAllNotifications(){
+        Page<Notification> notificationPage = notificationService.findAll();
+        if(notificationPage != null){
+            return ResponseEntity.ok(notificationPage);
         }
         return ResponseEntity.notFound().build();
     }

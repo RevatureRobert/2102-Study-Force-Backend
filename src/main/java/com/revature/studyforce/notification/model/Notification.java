@@ -1,5 +1,6 @@
 package com.revature.studyforce.notification.model;
 
+import com.revature.studyforce.notification.dto.NotificationDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

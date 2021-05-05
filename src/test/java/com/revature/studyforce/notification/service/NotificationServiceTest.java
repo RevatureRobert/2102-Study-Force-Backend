@@ -43,6 +43,7 @@ public class NotificationServiceTest {
 
     @Test
     void getAllNotificationsTest(){
-        Mockito.doReturn(notificationList).when(notificationRepository).findAll(any(ArrayList.class));
+        Mockito.doReturn(notificationPage).when(notificationRepository).findAll(any(PageRequest.class));
+        Page<Notification>
     }
 }
