@@ -12,9 +12,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -68,73 +65,13 @@ class StacktraceServiceTest {
 
     @Test
     void whenGetAllStackTracesbyTechnologyId_thenStackTracesRetrieved() {
-        Mockito.when(stacktraceRepository.findByTechnologyId_technologyName("TestTech")).thenReturn(stacktraceArrayList);
+        Mockito.when(stacktraceRepository.findByTechnologyIdTechnologyName("TestTech")).thenReturn(stacktraceArrayList);
         List<Stacktrace> returnedStacktraceList = stacktraceService.getAllStacktraces().stream().map(StacktraceDTO.DTOToStacktrace()).collect(Collectors.toList());
         for(int i = 0; i < returnedStacktraceList.size(); i++){
             assertEquals(returnedStacktraceList.get(i).getStacktraceId(),stacktraceArrayList.get(i).getStacktraceId());
         }
     }
 
-    /*@Test
-    void whenGetPageStackTraces_callRepository_getsStacktraceDTOPage() {
-        Page<Stacktrace> stacktraces = new PageImpl<>(stacktraceArrayList);
-
-        Mockito.when(stacktraceRepository.findAll(org.mockito.ArgumentMatchers.isA(Pageable.class))).thenReturn(stacktraces);
-
-        Page<StacktraceDTO> response = stacktraceService.getPageStacktraces(0, 5, "title", "DESC");
-        assertNotNull(response);
-        assertEquals(0, response.getContent().get(0).getStacktraceId());
-        assertEquals(0, response.getContent().get(0).getUser().getUserId());
-        assertEquals("Test@mail.com", response.getContent().get(0).getUser().getEmail());
-        assertEquals("", response.getContent().get(0).getUser().getPassword());
-        assertEquals("Bob", response.getContent().get(0).getUser().getFirstName());
-        assertEquals("Smith", response.getContent().get(0).getUser().getLastName());
-        assertTrue(response.getContent().get(0).getUser().isActive());
-        assertTrue(response.getContent().get(0).getUser().isSubscribedFlashcard());
-        assertTrue(response.getContent().get(0).getUser().isSubscribedStacktrace());
-        assertEquals(Authority.USER, response.getContent().get(0).getUser().getAuthority());
-        assertEquals(new Timestamp(0), response.getContent().get(0).getUser().getRegistrationTime());
-        assertEquals(new Timestamp(0), response.getContent().get(0).getUser().getLastLogin());
-        assertEquals("TestTitle", response.getContent().get(0).getTitle());
-        assertEquals("TestBody", response.getContent().get(0).getBody());
-        assertEquals(0, response.getContent().get(0).getTechnologyId().getTechnologyId());
-        assertEquals("TestTech", response.getContent().get(0).getTechnologyId().getTechnologyName());
-        assertEquals(new Timestamp(0), response.getContent().get(0).getCreationTime());
-        assertEquals(1, response.getTotalPages());
-        assertEquals(1, response.getNumberOfElements());
-        System.out.println(response.getContent());
-    }
-
-    @Test
-    void whenGetPageStackTracesByTechnology_callRepository_getsStacktraceDTOPage() {
-        Page<Stacktrace> stacktraces = new PageImpl<>(stacktraceArrayList);
-
-        Mockito.when(stacktraceRepository.findByTechnologyId_technologyId(org.mockito.ArgumentMatchers.isA(Integer.class), org.mockito.ArgumentMatchers.isA(Pageable.class))).thenReturn(stacktraces);
-
-        Page<StacktraceDTO> response = stacktraceService.getAllStacktracesByTechnologyId(0, 0,5, "title", "DESC");
-        assertNotNull(response);
-        assertEquals(0, response.getContent().get(0).getStacktraceId());
-        assertEquals(0, response.getContent().get(0).getUser().getUserId());
-        assertEquals("Test@mail.com", response.getContent().get(0).getUser().getEmail());
-        assertEquals("", response.getContent().get(0).getUser().getPassword());
-        assertEquals("Bob", response.getContent().get(0).getUser().getFirstName());
-        assertEquals("Smith", response.getContent().get(0).getUser().getLastName());
-        assertTrue(response.getContent().get(0).getUser().isActive());
-        assertTrue(response.getContent().get(0).getUser().isSubscribedFlashcard());
-        assertTrue(response.getContent().get(0).getUser().isSubscribedStacktrace());
-        assertEquals(Authority.USER, response.getContent().get(0).getUser().getAuthority());
-        assertEquals(new Timestamp(0), response.getContent().get(0).getUser().getRegistrationTime());
-        assertEquals(new Timestamp(0), response.getContent().get(0).getUser().getLastLogin());
-        assertEquals("TestTitle", response.getContent().get(0).getTitle());
-        assertEquals("TestBody", response.getContent().get(0).getBody());
-        assertEquals(0, response.getContent().get(0).getTechnologyId().getTechnologyId());
-        assertEquals("TestTech", response.getContent().get(0).getTechnologyId().getTechnologyName());
-        assertEquals(new Timestamp(0), response.getContent().get(0).getCreationTime());
-        assertEquals(1, response.getTotalPages());
-        assertEquals(1, response.getNumberOfElements());
-        System.out.println(response.getContent());
-    }
-*/
     @Test
     void whenGetStacktraceById_callRepository_getsCorrectStacktrace(){
         Optional<Stacktrace> stacktrace = Optional.of(new Stacktrace(0,

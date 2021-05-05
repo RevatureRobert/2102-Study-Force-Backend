@@ -35,7 +35,7 @@ public class Stacktrace {
      */
     @NotNull
     @ManyToOne(
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "creator_id", referencedColumnName = "user_id")
     @JsonIgnore
@@ -59,7 +59,7 @@ public class Stacktrace {
      * The technology that the stacktrace is using.ex JAVA
      */
     @ManyToOne(
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "technology_id", referencedColumnName = "technology_id")
     @JsonIgnore
@@ -76,6 +76,6 @@ public class Stacktrace {
      * Bidirectional relationship needed to cascade delete solutions
      */
     @JsonIgnoreProperties("stackTraceId")
-    @OneToMany(mappedBy = "stackTraceId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "stackTraceId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Solution> solutions;
 }

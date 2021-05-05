@@ -11,7 +11,6 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping("/stacktrace/technology")
-@CrossOrigin
 public class TechnologyController {
 
   private TechnologyService technologyService;
