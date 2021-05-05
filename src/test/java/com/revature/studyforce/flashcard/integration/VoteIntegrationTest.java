@@ -10,7 +10,6 @@ import com.revature.studyforce.flashcard.service.VoteService;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +50,7 @@ class VoteIntegrationTest {
     private VoteController controller;
 
     @Test
-    void postVoteTest() throws Exception {
+    void givenVoteDTO_whenCreateAnswerVote_shouldReturnVote() throws Exception {
         User u = new User(0,"jesus.christ@revature.com","password","Jesus","Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(u);
 
@@ -79,7 +78,7 @@ class VoteIntegrationTest {
     }
 
     @Test
-    void postVote_withBadValue_Test() throws Exception {
+    void givenVoteWithBadValue_whenCreateAnswerVote_shouldThrowException() throws Exception {
         User u = new User(0,"jesus.christ@revature.com","password","Jesus","Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(u);
 
@@ -106,7 +105,7 @@ class VoteIntegrationTest {
     }
 
     @Test
-    void postVote_withBadUserId_Test() throws Exception {
+    void givenVoteWithBadUserId_whenCreateAnswerVote_shouldThrowException() throws Exception {
         User u = new User(0,"jesus.christ@revature.com","password","Jesus","Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(u);
 
@@ -133,7 +132,7 @@ class VoteIntegrationTest {
     }
 
     @Test
-    void postVote_withBadAnswerId_Test() throws Exception {
+    void givenVoteWithBadAnswerId_whenCreateAnswerVote_shouldThrowException() throws Exception {
         User u = new User(0,"jesus.christ@revature.com","password","Jesus","Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(u);
 

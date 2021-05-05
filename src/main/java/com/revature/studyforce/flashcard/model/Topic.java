@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,6 +18,7 @@ public class Topic {
     @GeneratedValue
     int id;
 
+    @NotNull
     @Column(unique = true)
     String topicName;
 }

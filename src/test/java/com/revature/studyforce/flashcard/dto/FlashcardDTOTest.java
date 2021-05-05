@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 class FlashcardDTOTest {
 
     @Test
-    void ConvertToDTOTest() {
+    void givenFlashcard_whenConvertToDTO_shouldReturnFlashcardDTO() {
         User user = new User();
         user.setUserId(0);
         Topic topic = new Topic();

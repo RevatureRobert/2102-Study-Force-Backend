@@ -1,7 +1,6 @@
 package com.revature.studyforce.flashcard.integration;
 
 import com.google.gson.Gson;
-import com.jayway.jsonpath.JsonPath;
 import com.revature.studyforce.flashcard.controller.FlashcardController;
 import com.revature.studyforce.flashcard.dto.FlashcardDTO;
 import com.revature.studyforce.flashcard.dto.NewFlashcardDTO;
@@ -12,37 +11,25 @@ import com.revature.studyforce.flashcard.repository.TopicRepository;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
-import net.minidev.json.JSONArray;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
@@ -51,7 +38,6 @@ class FlashcardIntegrationTest {
 
     private MockMvc mockMvc;
 
-    //    @Autowired
     private WebApplicationContext context;
 
     @Autowired
@@ -76,7 +62,6 @@ class FlashcardIntegrationTest {
 
     @BeforeEach
     public void setUp() {
-//        mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
         mockMvc = MockMvcBuilders.standaloneSetup(flashcardController).build();
         flashcardDTO = new FlashcardDTO();
         user = new User(0,"a@b.c","pw","fn","ln",true,false,false, Authority.USER, null,null);
@@ -99,7 +84,7 @@ class FlashcardIntegrationTest {
     }
 
     @Test
-    void getAllTest() throws Exception {
+    void whenGetAllWithPagination_shouldReturnPageOfFlashcardAllDTOWithPagination() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/flashcards")
                 .content(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -112,7 +97,7 @@ class FlashcardIntegrationTest {
     }
 
     @Test
-    void getAllByDifficultyTest() throws Exception {
+    void givenDifficultyValue_whenDetAllByDifficulty_shouldReturnPageOfFlashcardAllDTOWithPagination() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/difficulty?difficulty=2")
                 .content(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -125,7 +110,7 @@ class FlashcardIntegrationTest {
     }
 
     @Test
-    void getAllByTopicTest() throws Exception {
+    void givenTopicId_whenGetAllByTopic_shouldReturnPageOfFlashcardAllDTOWithPagination() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/topics?topicName=java")
                 .content(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -138,7 +123,7 @@ class FlashcardIntegrationTest {
     }
 
     @Test
-    void getAllByIsResolvedTest() throws Exception {
+    void givenResolvedStatus_whenGetAllByIsResolved_shouldReturnPageOfFlashcardAllDTOWithPagination() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/resolved?resolved=false")
                 .content(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -151,7 +136,7 @@ class FlashcardIntegrationTest {
     }
 
     @Test
-    void getByIdTest() throws Exception {
+    void givenFlashcardId_whenGetById_shouldReturnFlashcardDTO() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/3")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -165,7 +150,7 @@ class FlashcardIntegrationTest {
     }
 
     @Test
-    void saveTest() throws Exception {
+    void givenNewFlashcardDTO_whenSave_shouldReturnFlashcardDTO() throws Exception {
 
 //        mockMvc = MockMvcBuilders.standaloneSetup(flashcardController).build();
         mockMvc.perform(MockMvcRequestBuilders.post("/flashcards")
@@ -186,7 +171,7 @@ class FlashcardIntegrationTest {
     }
 
     @Test
-    void updateTest() throws Exception {
+    void givenFlashcard_whenUpdate_shouldReturnFlashcardDTO() throws Exception {
         user.setLastLogin(null);
         user.setRegistrationTime(null);
         flashcard.setCreatedTime(null);
@@ -210,7 +195,7 @@ class FlashcardIntegrationTest {
     }
 
     @Test
-    void deleteTest() throws Exception {
+    void givenFlashcardId_whenDelete_shouldDeleteFlashcard() throws Exception {
 //        mockMvc = MockMvcBuilders.standaloneSetup(flashcardController).build();
         mockMvc.perform(MockMvcRequestBuilders.delete("/flashcards/3")
                 .contentType(MediaType.APPLICATION_JSON)

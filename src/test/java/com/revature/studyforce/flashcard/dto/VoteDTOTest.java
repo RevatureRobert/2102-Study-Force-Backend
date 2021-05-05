@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 class VoteDTOTest {
 
     @Test
-    void convertVoteToDTOTest(){
+    void givenVote_whenConvertVoteToDTO_shouldReturnVoteDTO(){
         User u = new User(0,"jesus.christ@revature.com","password","Jesus","Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,u,null,"how is your day",1,1,null,null,false);
 
@@ -22,8 +22,8 @@ class VoteDTOTest {
         Vote vote = new Vote(6,1,a,u);
         VoteDTO v = VoteDTO.convertVoteToDto().apply(vote);
 
-    System.out.println(vote.toString());
-    System.out.println(v.toString());
+        System.out.println(vote);
+        System.out.println(v.toString());
         Assertions.assertEquals(v.getValue(),vote.getVoteValue());
         Assertions.assertEquals(v.getAnswerId(),vote.getAnswer().getAnswerId());
         Assertions.assertEquals(v.getUserId(),vote.getUser().getUserId());

@@ -30,6 +30,7 @@ public class Quiz {
     @NotNull
     @Column(name = "quiz_name")
     private String quizName;
+    @NotNull
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Flashcard> flashcards;
 
