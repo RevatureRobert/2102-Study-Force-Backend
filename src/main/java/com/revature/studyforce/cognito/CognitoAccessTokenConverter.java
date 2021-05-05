@@ -51,7 +51,7 @@ public class CognitoAccessTokenConverter extends JwtAccessTokenConverter {
      * This should be replaced with an AWS Lambda trigger that sends an INSERT query directly to the RDS upon
      * user signup before production for increased efficiency.
      * @param email email received from Cognito
-     * @param userName user_name recieved from Cognito
+     * @param userName user_name received from Cognito
      */
     private void replaceWithLambda(String email,String userName) {
         if(userService.getUserByEmail(email) ==null) userService.adminCreateUser(new User(email, userName));
