@@ -14,6 +14,7 @@ import java.util.List;
  *  Rest controller to handle stacktrace requests
  * @author John Stone
  * @author Joshua Swanson
+ * @author Noel Shaji
  */
 @RestController
 @RequestMapping("/stacktrace")
@@ -54,6 +55,10 @@ public class StackTraceController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Creates a Stacktrace
+     * uses stacktrace service to save it
+     */
     @PostMapping
     public ResponseEntity createStacktrace(@RequestBody StacktraceDTO stacktraceDTO) {
         stacktraceService.save(stacktraceDTO);

@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
  * The StackService allows for communication with {@link StacktraceRepository} and enforces data constraints on requests to repository
  * @author John Stone
  * @author Joshua Swanson
+ * @author Noel Shaji
  */
 @Service
 public class StacktraceService {
@@ -59,12 +60,20 @@ public class StacktraceService {
     }
 
 
-
+    /**
+     * Saves a stacktrace, takes in StacktraceDTO as a parameter
+     * Uses repo to save it
+     */
     @Transactional
     public void save(StacktraceDTO stacktraceDTO){
         Stacktrace stacktrace = mapFromDtoToStacktrace(stacktraceDTO);
         stacktraceRepo.save(stacktrace);
     }
+
+    /**
+     * Maps from the DTO to a Stacktrace , takes the fiels of DTO to Stacktrace
+     * Needed for saving
+     */
 
     private Stacktrace mapFromDtoToStacktrace(StacktraceDTO stacktraceDTO) {
         Stacktrace stacktrace= new Stacktrace();

@@ -32,79 +32,126 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * Test class for StackTraceController
+ *
  * @author John Stone
  * @author Joshua Swanson
+ * @author Noel Shaji
  */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @AutoConfigureMockMvc
 class StackTraceControllerTest {
 
-    private MockMvc mockMvc;
+  private MockMvc mockMvc;
 
-    @Autowired
-    private StacktraceService stacktraceService;
+  @Autowired private StacktraceService stacktraceService;
 
-    @Autowired
-    private StacktraceRepository stacktraceRepository;
+  @Autowired private StacktraceRepository stacktraceRepository;
 
-    @Autowired
-    private StackTraceController stacktraceController;
+  @Autowired private StackTraceController stacktraceController;
 
-    @Autowired
-    private UserRepository userRepository;
+  @Autowired private UserRepository userRepository;
 
-    @BeforeEach
-    void setUp(){
-        mockMvc = MockMvcBuilders.standaloneSetup(stacktraceController).build();
-    }
+  @BeforeEach
+  void setUp() {
+    mockMvc = MockMvcBuilders.standaloneSetup(stacktraceController).build();
+  }
 
-    @Test
-    void givenStacktrace_whenGetAll_thenStacktraceRetrieved() throws Exception {
-        User u = userRepository.save(new User(1,"Test@mail.com","Pass","Bob","Smith",true,true,true, Authority.USER,new Timestamp(0),new Timestamp(0)));
-        Technology t = new Technology(2, "TestTech");
-        stacktraceRepository.save(new Stacktrace(1,
-                new User(1,"Test@mail.com","Pass","Bob","Smith",true,true,true, Authority.USER,new Timestamp(0),new Timestamp(0)),
-                "TestTitle", "TestBody", new Technology(2, "TestTech"), new Timestamp(0), null));
-        mockMvc = MockMvcBuilders.standaloneSetup(stacktraceController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/stacktrace")
+  @Test
+  void givenStacktrace_whenGetAll_thenStacktraceRetrieved() throws Exception {
+    User u =
+        userRepository.save(
+            new User(
+                1,
+                "Test@mail.com",
+                "Pass",
+                "Bob",
+                "Smith",
+                true,
+                true,
+                true,
+                Authority.USER,
+                new Timestamp(0),
+                new Timestamp(0)));
+    Technology t = new Technology(2, "TestTech");
+    stacktraceRepository.save(
+        new Stacktrace(
+            1,
+            new User(
+                1,
+                "Test@mail.com",
+                "Pass",
+                "Bob",
+                "Smith",
+                true,
+                true,
+                true,
+                Authority.USER,
+                new Timestamp(0),
+                new Timestamp(0)),
+            "TestTitle",
+            "TestBody",
+            new Technology(2, "TestTech"),
+            new Timestamp(0),
+            null));
+    mockMvc = MockMvcBuilders.standaloneSetup(stacktraceController).build();
+    MvcResult result =
+        mockMvc
+            .perform(
+                MockMvcRequestBuilders.get("/stacktrace").contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(
+                MockMvcResultMatchers.content()
+                    .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+            // .andExpect(MockMvcResultMatchers.jsonPath("$.content").isNotEmpty())
+            /*.andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.email").value("Test@mail.com"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.password").value("Pass"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.firstName").value("Bob"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.lastName").value("Smith"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.isActive").value("true"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.isSubscribedFlashcard").value("true"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.isSubscribedStacktrace").value("true"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.Authority").value("0"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.registrationTime").value(new Time(0).toString()))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.lastLogin").value(new Time(0).toString()))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].tile").value("TestTitle"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].body").value("TestBody"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].Technology.technologyId").value("0"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].Technology.technologyName").value("TestTech"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].creationTime").value(new Time(0).toString()))*/
+            .andReturn();
+    System.out.println(result.getResponse().getContentAsString());
+  }
+
+  /**
+   * Test for deleteStackTraceById()
+   *
+   * @throws Exception Thrown by MockMvc.perform()
+   */
+  @Test
+  void whenStackTraceDeleted_thenCorrectResponseReturned() throws Exception {
+    User u =
+        userRepository.save(
+            new User(
+                1,
+                "Test@mail.com",
+                "Pass",
+                "Bob",
+                "Smith",
+                true,
+                true,
+                true,
+                Authority.USER,
+                new Timestamp(0),
+                new Timestamp(0)));
+    Technology t = new Technology(2, "TestTech");
+    stacktraceRepository.save(
+        new Stacktrace(1, u, "TestTitle", "TestBody", t, new Timestamp(0), null));
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.delete("/stacktrace/{id}", 1)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                //.andExpect(MockMvcResultMatchers.jsonPath("$.content").isNotEmpty())
-                /*.andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.email").value("Test@mail.com"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.password").value("Pass"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.firstName").value("Bob"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.lastName").value("Smith"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.isActive").value("true"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.isSubscribedFlashcard").value("true"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.isSubscribedStacktrace").value("true"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.Authority").value("0"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.registrationTime").value(new Time(0).toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.lastLogin").value(new Time(0).toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].tile").value("TestTitle"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].body").value("TestBody"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].Technology.technologyId").value("0"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].Technology.technologyName").value("TestTech"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].creationTime").value(new Time(0).toString()))*/
-                .andReturn();
-        System.out.println(result.getResponse().getContentAsString());
-    }
-
-
-    /**
-     * Test for deleteStackTraceById()
-     * @throws Exception Thrown by MockMvc.perform()
-     */
-    @Test
-    void whenStackTraceDeleted_thenCorrectResponseReturned() throws Exception {
-        User u = userRepository.save(new User(1,"Test@mail.com","Pass","Bob","Smith",true,true,true, Authority.USER,new Timestamp(0),new Timestamp(0)));
-        Technology t = new Technology(2, "TestTech");
-        stacktraceRepository.save(new Stacktrace(1,
-                u,
-                "TestTitle", "TestBody", t, new Timestamp(0), null));
-        mockMvc.perform(MockMvcRequestBuilders.delete("/stacktrace/{id}", 1)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
-    }
+        .andExpect(status().isNoContent());
+  }
 }
+
