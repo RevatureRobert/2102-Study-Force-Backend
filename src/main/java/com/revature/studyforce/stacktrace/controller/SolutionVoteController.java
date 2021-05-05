@@ -12,7 +12,7 @@ import java.util.List;
  * @author Joey Elmblad
  */
 @RestController
-@CrossOrigin
+@CrossOrigin("http://localhost:4200")
 @RequestMapping("stacktrace/solution-vote")
 public class SolutionVoteController {
 

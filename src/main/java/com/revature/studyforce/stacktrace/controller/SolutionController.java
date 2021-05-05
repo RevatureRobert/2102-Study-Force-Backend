@@ -15,7 +15,7 @@ import java.util.List;
  * @author Joshua Swanson
  */
 @RestController
-@CrossOrigin
+@CrossOrigin("http://localhost:4200")
 @RequestMapping("/stacktrace/solution")
 public class SolutionController {
 
