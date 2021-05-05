@@ -18,7 +18,6 @@ public enum Authority {
     Authority(String authorityName) {
         this.authorityName = authorityName;
     }
-
     public static Function<Authority, SimpleGrantedAuthority> toAuthorities() {
         return authority -> new SimpleGrantedAuthority(authority.authorityName);
     }
