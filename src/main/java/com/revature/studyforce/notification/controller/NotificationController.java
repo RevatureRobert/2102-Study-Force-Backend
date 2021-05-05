@@ -52,6 +52,7 @@ public class NotificationController {
     @GetMapping("/{id}")
     public ResponseEntity<Page<Notification>> getNotificationsByUserId(@PathVariable("id") Integer userId, @RequestParam(name="page", defaultValue = "0") String page){
         Page<Notification> notificationPage = notificationService.findByUserId(userId, Integer.parseInt(page));
+        Page<NotificationDto> notificationDtoPage = notificationPage.map(new NotificationDto());
         if(notificationPage != null){
             return ResponseEntity.ok(notificationPage);
         }

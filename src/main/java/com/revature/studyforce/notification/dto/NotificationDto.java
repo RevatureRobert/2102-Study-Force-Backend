@@ -29,4 +29,8 @@ public class NotificationDto {
         this.featureArea = notification.getFeatureArea();
         this.userId = notification.getApplicationUserId();
     }
+
+    public NotificationDto convertToDto(){
+        
+    }
 }
