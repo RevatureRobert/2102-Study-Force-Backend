@@ -1,12 +1,12 @@
 package com.revature.studyforce.flashcard.service;
 
-import com.revature.studyforce.flashcard.dto.VoteDTO;
-import com.revature.studyforce.flashcard.model.Answer;
-import com.revature.studyforce.flashcard.model.Vote;
 import com.revature.studyforce.flashcard.repository.AnswerRepository;
 import com.revature.studyforce.flashcard.repository.VoteRepository;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
+import com.revature.studyforce.flashcard.dto.VoteDTO;
+import com.revature.studyforce.flashcard.model.Answer;
+import com.revature.studyforce.flashcard.model.Vote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

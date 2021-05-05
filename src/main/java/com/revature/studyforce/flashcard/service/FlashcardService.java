@@ -1,8 +1,8 @@
 package com.revature.studyforce.flashcard.service;
 
+import com.revature.studyforce.flashcard.repository.FlashcardRepository;
 import com.revature.studyforce.flashcard.dto.FlashcardDTO;
 import com.revature.studyforce.flashcard.model.Flashcard;
-import com.revature.studyforce.flashcard.repository.FlashcardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

@@ -5,7 +5,6 @@ import com.revature.studyforce.flashcard.model.Flashcard;
 import com.revature.studyforce.flashcard.model.Vote;
 import com.revature.studyforce.flashcard.repository.AnswerRepository;
 import com.revature.studyforce.flashcard.repository.VoteRepository;
-import com.revature.studyforce.flashcard.service.VoteService;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;

@@ -12,9 +12,7 @@ import org.springframework.test.context.TestPropertySource;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Test class for the QuizDTO

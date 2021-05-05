@@ -1,13 +1,13 @@
 package com.revature.studyforce.notification.controller;
 
+import com.revature.studyforce.notification.dto.FlashcardSubscriptionDTO;
 import com.revature.studyforce.notification.dto.StacktraceSubscriptionDTO;
 import com.revature.studyforce.notification.model.FlashcardSubscription;
-import com.revature.studyforce.notification.model.StacktraceSubscription;
-import com.revature.studyforce.notification.model.Subscription;
-import com.revature.studyforce.notification.dto.FlashcardSubscriptionDTO;
 import com.revature.studyforce.notification.service.FlashcardSubscriptionService;
 import com.revature.studyforce.notification.service.StacktraceSubscriptionService;
 import com.revature.studyforce.notification.service.SubscriptionService;
+import com.revature.studyforce.notification.model.StacktraceSubscription;
+import com.revature.studyforce.notification.model.Subscription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

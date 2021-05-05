@@ -1,7 +1,7 @@
 package com.revature.studyforce.flashcard.service;
 
-import com.revature.studyforce.flashcard.model.Topic;
 import com.revature.studyforce.flashcard.repository.TopicRepository;
+import com.revature.studyforce.flashcard.model.Topic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

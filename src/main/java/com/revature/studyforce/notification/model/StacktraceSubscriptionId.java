@@ -1,11 +1,9 @@
 package com.revature.studyforce.notification.model;
 
-import com.revature.studyforce.stacktrace.model.Stacktrace;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
-import javax.persistence.OneToOne;
 import java.io.Serializable;
 
 /**
