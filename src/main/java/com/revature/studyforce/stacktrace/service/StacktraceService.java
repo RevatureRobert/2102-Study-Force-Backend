@@ -76,8 +76,8 @@ public class StacktraceService {
     /**
      * Maps from the DTO to a Stacktrace , takes the fields of DTO to Stacktrace
      * Needed for saving
-     * @param stacktraceDTO
-     * @return returns a stacktrace.
+     * @param stacktraceDTO The DTO representation of stacktrace
+     * @return returns a stacktrace that holds the problem a user wants to solve.
      */
     private Stacktrace mapFromDtoToStacktrace(StacktraceDTO stacktraceDTO) {
         Stacktrace stacktrace= new Stacktrace();
