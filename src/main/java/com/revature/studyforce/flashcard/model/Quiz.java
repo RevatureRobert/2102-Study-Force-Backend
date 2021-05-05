@@ -7,28 +7,32 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
- * Model used to store the difficulty ratings of a flashcards {@link Flashcard}, {@link User}, {@link Difficulty}
- *@author Edson Rodriguez
+ * Quiz model
+ *
+ * @author Edson Rodriguez
  */
 @Entity
-@Table(name = "rating")
+@Table(name = "quizzes")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Rating {
+public class Quiz {
     @Id
     @GeneratedValue
-    private int id;
+    @Column(name = "quiz_id")
+    private int quizId;
     @NotNull
-    @ManyToOne
-    private Flashcard flashcard;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User quizUser;
     @NotNull
-    @ManyToOne
-    private User user;
-    @NotNull
-    @Column(name = "rating")
-    private Difficulty ratingValue;
+    @Column(name = "quiz_name")
+    private String quizName;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Flashcard> flashcards;
+
+
 
 }
