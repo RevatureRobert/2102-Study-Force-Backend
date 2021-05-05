@@ -29,9 +29,7 @@ public class Stacktrace {
      * ID of user who created stacktrace
      */
     @NotNull
-    @ManyToOne(
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "creator_id", referencedColumnName = "user_id")
     private User userId;
 
@@ -52,9 +50,7 @@ public class Stacktrace {
     /**
      * The technology that the stacktrace is using.ex JAVA
      */
-    @ManyToOne(
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "technology_id", referencedColumnName = "technology_id")
     private Technology technologyId;
 
@@ -64,5 +60,7 @@ public class Stacktrace {
     @Column(name = "creation_time")
     @UpdateTimestamp
     private Timestamp creationTime;
+
+
 
 }

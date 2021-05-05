@@ -1,5 +1,6 @@
 package com.revature.studyforce.notification.config;
 
+import com.revature.studyforce.notification.service.StacktraceSubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -11,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author Ronald Lopex
+ */
 @Configuration
 public class RestConfig implements RepositoryRestConfigurer {
 
@@ -26,6 +30,10 @@ public class RestConfig implements RepositoryRestConfigurer {
         exposeIds(config);
     }
 
+    /**
+     * Sets the configuration of the HATOES Links
+     * @param config
+     */
     private void exposeIds(RepositoryRestConfiguration config) {
 
         // get a list of all entity classes from teh entity manager
