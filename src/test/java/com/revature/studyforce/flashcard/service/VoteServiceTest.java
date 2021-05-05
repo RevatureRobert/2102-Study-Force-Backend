@@ -53,5 +53,8 @@ class VoteServiceTest {
         assertEquals(1, res.getVoteValue());
         assertEquals(a,res.getAnswer());
         assertEquals(u,res.getUser());
+
+
     }
+
 }

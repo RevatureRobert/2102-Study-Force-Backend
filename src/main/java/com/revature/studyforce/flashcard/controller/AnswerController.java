@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * @author Edson Rodriguez
  */
 @RestController
+@CrossOrigin
 @RequestMapping("/flashcards/answers")
 public class AnswerController {
 

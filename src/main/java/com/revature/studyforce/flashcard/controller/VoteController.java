@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
  * @author Elizabeth Ye
  */
 @RestController
+@CrossOrigin
 @RequestMapping("/flashcards/vote")
 public class VoteController {
 
