@@ -17,17 +17,17 @@ import javax.persistence.*;
 @Table(name = "stacktrace_subscriptions")
 public class StacktraceSubscription {
 
-  @EmbeddedId
+    @EmbeddedId
     private StacktraceSubscriptionId stacktraceSubscriptionId;
 
-  @OneToOne
-  private Stacktrace stacktrace;
-  @OneToOne
-  private Subscription subscription;
+    @OneToOne
+    private Stacktrace stacktrace;
+    @OneToOne
+    private Subscription subscription;
 
-  public StacktraceSubscription(Stacktrace stacktrace, Subscription subscription) {
-    this.stacktraceSubscriptionId = new StacktraceSubscriptionId(stacktrace.getStacktraceId(), subscription.getId());
-    this.stacktrace = stacktrace;
-    this.subscription = subscription;
-  }
+    public StacktraceSubscription(Stacktrace stacktrace, Subscription subscription) {
+        this.stacktraceSubscriptionId = new StacktraceSubscriptionId(stacktrace.getStacktraceId(), subscription.getId());
+        this.stacktrace = stacktrace;
+        this.subscription = subscription;
+    }
 }
