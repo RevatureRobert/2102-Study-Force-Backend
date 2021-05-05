@@ -4,13 +4,9 @@ import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -38,7 +34,7 @@ public class StacktraceService {
      * @return A list of Stacktraces
      */
     public List<StacktraceDTO> getAllStacktracesOfTechnologyName(String name) {
-        return stacktraceRepo.findByTechnologyId_technologyName(name).stream().map(StacktraceDTO.stacktraceToDTO()).collect(Collectors.toList());
+        return stacktraceRepo.findByTechnologyIdTechnologyName(name).stream().map(StacktraceDTO.stacktraceToDTO()).collect(Collectors.toList());
     }
 
     /**
