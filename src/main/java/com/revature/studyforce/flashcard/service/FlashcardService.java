@@ -55,11 +55,11 @@ public class FlashcardService implements AbstractService {
 
         Page<Flashcard> flashcards;
 
-    if (order.equalsIgnoreCase("DESC")) {
-      flashcards = flashcardRepository.findAll(PageRequest.of(page, offset, Sort.by(sortBy).descending()));
-    } else {
-      flashcards = flashcardRepository.findAll(PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
-    }
+        if (order.equalsIgnoreCase("DESC")) {
+            flashcards = flashcardRepository.findAll(PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+        } else {
+            flashcards = flashcardRepository.findAll(PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
+        }
 
         return flashcards.map(FlashcardAllDTO.convertToDTO());
     }
@@ -155,7 +155,7 @@ public class FlashcardService implements AbstractService {
      */
     public FlashcardDTO save(NewFlashcardDTO flashcard) {
         Optional<User> optUser = userRepository.findById(flashcard.getUserId());
-        Optional<Topic> optTopic = topicRepository.findById(flashcard.getTopicID());
+        Optional<Topic> optTopic = topicRepository.findById(flashcard.getTopicId());
         Difficulty difficulty = Difficulty.fromInteger(flashcard.getDifficulty());
 
         if(!optUser.isPresent())

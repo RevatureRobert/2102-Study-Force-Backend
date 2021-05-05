@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class NewFlashcardDTO {
     private int userId;
-    private int topicID;
+    private int topicId;
     private String question;
     private int difficulty;
 }
