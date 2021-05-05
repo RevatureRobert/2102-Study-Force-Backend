@@ -3,6 +3,7 @@ package com.revature.studyforce.stacktrace.service;
 import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
+import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,9 @@ public class StacktraceService {
 
     @Autowired
     private  StacktraceRepository stacktraceRepo;
+
+    @Autowired
+    private UserRepository userRepo;
 
     /**
      * Gets all Stacktraces
@@ -69,7 +73,7 @@ public class StacktraceService {
     private Stacktrace mapFromDtoToStacktrace(StacktraceDTO stacktraceDTO) {
         Stacktrace stacktrace= new Stacktrace();
         stacktrace.setStacktraceId(stacktraceDTO.getStacktraceId());
-        stacktrace.setUserId(stacktraceDTO.getUser());
+        stacktrace.setUserId(userRepo.findByUserId(stacktraceDTO.getUser().getUserId()));
         stacktrace.setTitle(stacktraceDTO.getTitle());
         stacktrace.setBody(stacktraceDTO.getBody());
         stacktrace.setTechnologyId(stacktraceDTO.getTechnologyId());
