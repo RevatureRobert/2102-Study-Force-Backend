@@ -54,6 +54,12 @@ public class StackTraceController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Saves a stacktrace, takes in StacktraceDTO as a parameter
+     * Uses repo to save it
+     * @param stacktraceDTO the DTO of stacktrace as an object
+     * @return Http status for the Response Entity
+     */
     @PostMapping
     public ResponseEntity createStacktrace(@RequestBody StacktraceDTO stacktraceDTO) {
         stacktraceService.save(stacktraceDTO);
