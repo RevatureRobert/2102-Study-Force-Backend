@@ -41,7 +41,7 @@ public class StacktraceService {
      * @return A list of Stacktraces
      */
     public List<StacktraceDTO> getAllStacktracesOfTechnologyName(String name) {
-        return stacktraceRepo.findByTechnologyIdTechnologyName(name).stream().map(StacktraceDTO.stacktraceToDTO()).collect(Collectors.toList());
+        return stacktraceRepo.findByTechnologyTechnologyName(name).stream().map(StacktraceDTO.stacktraceToDTO()).collect(Collectors.toList());
     }
 
     /**

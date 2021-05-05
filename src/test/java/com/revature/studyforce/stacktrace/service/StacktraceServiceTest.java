@@ -76,7 +76,7 @@ class StacktraceServiceTest {
 
     @Test
     void whenGetAllStackTracesbyTechnologyId_thenStackTracesRetrieved() {
-        Mockito.when(stacktraceRepository.findByTechnologyIdTechnologyName("TestTech")).thenReturn(stacktraceArrayList);
+        Mockito.when(stacktraceRepository.findByTechnologyTechnologyName("TestTech")).thenReturn(stacktraceArrayList);
         List<StacktraceDTO> returnedStacktraceList = stacktraceService.getAllStacktraces();
         for(int i = 0; i < returnedStacktraceList.size(); i++){
             assertEquals(returnedStacktraceList.get(i).getStacktraceId(),stacktraceArrayList.get(i).getStacktraceId());
