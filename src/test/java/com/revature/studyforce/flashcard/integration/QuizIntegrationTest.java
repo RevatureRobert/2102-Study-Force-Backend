@@ -2,15 +2,22 @@ package com.revature.studyforce.flashcard.integration;
 
 import com.google.gson.Gson;
 import com.revature.studyforce.flashcard.controller.QuizController;
+import com.revature.studyforce.flashcard.dto.FlashcardAllDTO;
+import com.revature.studyforce.flashcard.dto.NewQuizDTO;
+import com.revature.studyforce.flashcard.dto.QuizDTO;
+import com.revature.studyforce.flashcard.dto.UpdateQuizDTO;
 import com.revature.studyforce.flashcard.model.Flashcard;
 import com.revature.studyforce.flashcard.model.Quiz;
+import com.revature.studyforce.flashcard.model.Topic;
 import com.revature.studyforce.flashcard.repository.FlashcardRepository;
 import com.revature.studyforce.flashcard.repository.QuizRepository;
+import com.revature.studyforce.flashcard.repository.TopicRepository;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,6 +34,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Test class for Quiz model
@@ -52,6 +60,9 @@ class QuizIntegrationTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private TopicRepository topicRepository;
+
 
 
     @BeforeEach
@@ -60,8 +71,11 @@ class QuizIntegrationTest {
         User mscott = new User(0,"mscott@dunder.com","password","Michael","Scott",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(mscott);
 
-        Flashcard flashcard1 = new Flashcard(0,mscott,null,"Whats my favorite color?",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
-        Flashcard flashcard2 = new Flashcard(0,mscott,null,"Can I go to the bathroom?",2,2,Timestamp.valueOf(LocalDateTime.now()),null,false);
+        Topic t = new Topic(0,"java");
+        topicRepository.save(t);
+
+        Flashcard flashcard1 = new Flashcard(0,mscott,t,"Whats my favorite color?",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
+        Flashcard flashcard2 = new Flashcard(0,mscott,t,"Can I go to the bathroom?",2,2,Timestamp.valueOf(LocalDateTime.now()),null,false);
         flashcardRepository.save(flashcard1);
         flashcardRepository.save(flashcard2);
 
@@ -70,6 +84,7 @@ class QuizIntegrationTest {
         deck.add(flashcard2);
 
         Quiz testingQuiz = new Quiz(0,mscott,"demoQuiz",deck);
+        System.out.println(testingQuiz);
         quizRepository.save(testingQuiz);
     }
 
@@ -79,13 +94,13 @@ class QuizIntegrationTest {
 //        System.out.println(tester);
 
 
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/quiz/all/")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/quiz")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].quizId").value("4"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].quizUser").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].quizId").value("5"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].quizUserId").value("1"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].quizName").value("demoQuiz"))
                 .andReturn();
 
@@ -95,33 +110,81 @@ class QuizIntegrationTest {
 
     @Test
     void givenQuiz_whenCreateQuiz_NewQuizIsRetrieved() throws Exception {
-//        User mscott = userRepository.getOne(1);
-//        Flashcard flashcard1 = new Flashcard(0,mscott,"Whats my favorite color?",1,1,Timestamp.valueOf(LocalDateTime.now()),null);
-//        Flashcard flashcard2 = new Flashcard(0,mscott,"What time is improv?",2,2,Timestamp.valueOf(LocalDateTime.now()),null);
-//        List<Flashcard> deck = new ArrayList<>();
-//        deck.add(flashcard1);
-//        deck.add(flashcard2);
-//
-//        Quiz testingQuiz2 = new Quiz(0,mscott,"demoQuiz",deck);
-//
-//
-//
-//        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/quiz")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(String.valueOf(testingQuiz2)))
-//                .andExpect(MockMvcResultMatchers.status().isOk())
-//                .andReturn();
+        User dwight = new User(0,"dshrute@dunder.com","password","Dwight","Schrute",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        userRepository.save(dwight);
 
+        Topic t = new Topic(0,"farming");
+        topicRepository.save(t);
+
+        Flashcard flashcard3 = new Flashcard(0,dwight,t,"Whats my favorite color?",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
+        Flashcard flashcard4 = new Flashcard(0,dwight,t,"What time is improv?",2,2,Timestamp.valueOf(LocalDateTime.now()),null,false);
+        flashcardRepository.save(flashcard3);
+        flashcardRepository.save(flashcard4);
+
+        List<Integer> deck = new ArrayList<>();
+        deck.add(flashcard3.getId());
+        deck.add(flashcard4.getId());
+
+
+        NewQuizDTO testingQuiz2 = new NewQuizDTO(dwight.getUserId(),"demoQuiz2",deck);
+        System.out.println("********\b\b\b\b");
+        System.out.println(new Gson().toJson(testingQuiz2));
+
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/quiz")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new Gson().toJson(testingQuiz2)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.quizName").value("demoQuiz2"))
+                .andReturn();
+
+        System.out.println(result.getResponse().getContentAsString());
     }
 
     @Test
     void givenQuiz_whenUpdateQuiz_QuizIsMutated() throws Exception {
+        Optional<Quiz> qo = quizRepository.findById(5);
+        Quiz q = qo.get();
+        List<Integer> l =  new ArrayList<>();
+        q.getFlashcards().forEach((flashcard -> l.add(flashcard.getId())));
 
+        UpdateQuizDTO updq = new UpdateQuizDTO(q.getQuizId(),q.getQuizUser().getUserId(),"this a new name", l);
+        System.out.println(new Gson().toJson(updq));
+
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/quiz")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new Gson().toJson(updq)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.quizName").value("this a new name"))
+                .andReturn();
+
+        System.out.println(result.getResponse().getContentAsString());
     }
 
     @Test
     void givenQuizId_DeleteQuiz() throws Exception {
+        User dwight = new User(0,"dshrute@dunder.com","password","Dwight","Schrute",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        userRepository.save(dwight);
 
+        Topic t = new Topic(0,"farming");
+        topicRepository.save(t);
+
+        Flashcard flashcard3 = new Flashcard(0,dwight,t,"Whats my favorite color?",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
+        Flashcard flashcard4 = new Flashcard(0,dwight,t,"What time is improv?",2,2,Timestamp.valueOf(LocalDateTime.now()),null,false);
+        flashcardRepository.save(flashcard3);
+        flashcardRepository.save(flashcard4);
+
+        List<Flashcard> deck = new ArrayList<>();
+        deck.add(flashcard3);
+        deck.add(flashcard4);
+        Quiz testingQuiz = new Quiz(5,dwight,"demoQuiz",deck);
+        quizRepository.save(testingQuiz);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/flashcards/quiz/5")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
     }
 
 }

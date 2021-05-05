@@ -27,7 +27,7 @@ import java.util.Optional;
  * @author Luke
  */
 @Service
-public class FlashcardService extends AbstractService {
+public class FlashcardService implements AbstractService {
 
     private final FlashcardRepository flashcardRepository;
     private final TopicRepository topicRepository;
@@ -55,11 +55,11 @@ public class FlashcardService extends AbstractService {
 
         Page<Flashcard> flashcards;
 
-    if (order.equalsIgnoreCase("DESC")) {
-      flashcards = flashcardRepository.findAll(PageRequest.of(page, offset, Sort.by(sortBy).descending()));
-    } else {
-      flashcards = flashcardRepository.findAll(PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
-    }
+        if (order.equalsIgnoreCase("DESC")) {
+            flashcards = flashcardRepository.findAll(PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+        } else {
+            flashcards = flashcardRepository.findAll(PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
+        }
 
         return flashcards.map(FlashcardAllDTO.convertToDTO());
     }
@@ -155,7 +155,7 @@ public class FlashcardService extends AbstractService {
      */
     public FlashcardDTO save(NewFlashcardDTO flashcard) {
         Optional<User> optUser = userRepository.findById(flashcard.getUserId());
-        Optional<Topic> optTopic = topicRepository.findById(flashcard.getTopicID());
+        Optional<Topic> optTopic = topicRepository.findById(flashcard.getTopicId());
         Difficulty difficulty = Difficulty.fromInteger(flashcard.getDifficulty());
 
         if(!optUser.isPresent())
@@ -185,12 +185,14 @@ public class FlashcardService extends AbstractService {
     public FlashcardDTO update(Flashcard flashcard) {
         Flashcard original = flashcardRepository.findById(flashcard.getId()).orElse(null);
 
-        if (original != null) {
-            int id = original.getId();
-            original = flashcard;
-            original.setId(id);
+        if (original == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Flashcard not found exception");
         }
-        assert original != null;
+
+        int id = original.getId();
+        original = flashcard;
+        original.setId(id);
+
         return FlashcardDTO.convertToDTO().apply(flashcardRepository.save(original));
     }
 
@@ -203,7 +205,7 @@ public class FlashcardService extends AbstractService {
     }
 
     @Override
-    String validateSortBy(String sortBy){
+    public String validateSortBy(String sortBy){
         switch (sortBy.toLowerCase(Locale.ROOT)) {
             case "difficulty":
                 return "questionDifficultyTotal";

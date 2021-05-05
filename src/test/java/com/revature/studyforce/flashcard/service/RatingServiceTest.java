@@ -43,7 +43,7 @@ class RatingServiceTest {
     private RatingService ratingService;
 
     @Test
-    void whenCreateRating_returnsRatingResponseDTO(){
+    void givenRatingDTO_whenCreateRating_shouldReturnRatingResponseDTO(){
         List<Rating> rList = new ArrayList<>();
         User user = new User(0,"edson@revature.com","password","Edson","Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);

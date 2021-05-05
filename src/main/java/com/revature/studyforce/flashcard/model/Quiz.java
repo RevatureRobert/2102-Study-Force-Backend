@@ -1,5 +1,6 @@
 package com.revature.studyforce.flashcard.model;
 
+
 import com.revature.studyforce.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +30,7 @@ public class Quiz {
     @NotNull
     @Column(name = "quiz_name")
     private String quizName;
+    @NotNull
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Flashcard> flashcards;
 

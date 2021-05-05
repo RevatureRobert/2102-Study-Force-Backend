@@ -12,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @Controller
+@CrossOrigin
 @RequestMapping("/topics")
 public class TopicController {
 

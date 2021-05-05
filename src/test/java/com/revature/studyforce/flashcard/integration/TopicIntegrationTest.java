@@ -26,7 +26,7 @@ import java.util.List;
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:test-application.properties")
-public class TopicIntegrationTest {
+class TopicIntegrationTest {
 
     private MockMvc mockMvc;
 
@@ -47,7 +47,7 @@ public class TopicIntegrationTest {
             TopicDTO topicDTO = new TopicDTO(Integer.toString(i));
             topicList.add(new Topic(i + 1, topicDTO.getTopic()));
 
-            MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/topic")
+            MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/topics")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(topicDTO)))
                     .andExpect(MockMvcResultMatchers.status().isOk())
@@ -58,7 +58,7 @@ public class TopicIntegrationTest {
             System.out.println(result.getResponse().getContentAsString());
         }
 
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/topic"))
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/topics"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andReturn();

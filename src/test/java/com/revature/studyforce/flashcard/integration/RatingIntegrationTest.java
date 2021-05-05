@@ -40,7 +40,7 @@ class RatingIntegrationTest {
     private FlashcardRepository flashcardRepository;
 
     @Test
-    void givenRating_whenCreateRating() throws Exception {
+    void givenRating_whenCreateRating_shouldReturnRatingResponseDTO() throws Exception {
         User user = new User(0,"edson@revature.com","password","Edson","Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,null,null,false);
 

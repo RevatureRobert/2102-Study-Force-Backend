@@ -4,16 +4,14 @@ import com.revature.studyforce.flashcard.dto.RatingDTO;
 import com.revature.studyforce.flashcard.dto.RatingResponseDTO;
 import com.revature.studyforce.flashcard.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Controller for rating resource handling using {@link RatingService}
  * @author Edson Rodriguez
  */
 @RestController
+@CrossOrigin
 @RequestMapping("/flashcards/rate")
 public class RatingController {
 

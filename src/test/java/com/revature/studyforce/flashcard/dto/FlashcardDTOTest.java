@@ -14,40 +14,24 @@ import java.time.LocalDateTime;
 class FlashcardDTOTest {
 
     @Test
-    void ConvertToDTOTest() {
+    void givenFlashcard_whenConvertToDTO_shouldReturnFlashcardDTO() {
         User user = new User();
-        user.setUserId(1);
+        user.setUserId(0);
         Topic topic = new Topic();
-        topic.setId(1);
+        topic.setId(0);
         Timestamp now = Timestamp.valueOf(LocalDateTime.now());
-        Flashcard flashcard = new Flashcard(1, user, topic, "question", 2, 2, now, now, false);
+        Flashcard flashcard = new Flashcard(0, user, topic, "question", 2, 2, now, now, false);
         FlashcardDTO dto = FlashcardDTO.convertToDTO().apply(flashcard);
 
-        Assertions.assertEquals(user, dto.getCreator());
-        Assertions.assertEquals(topic, dto.getTopic());
-        Assertions.assertEquals("question", dto.getQuestion());
-        Assertions.assertEquals(2, dto.getQuestionDifficultyTotal());
-        Assertions.assertEquals(2, dto.getQuestionDifficultyAverage());
-        Assertions.assertEquals(now, dto.getCreatedTime());
-        Assertions.assertEquals(now, dto.getResolutionTime());
-    }
-
-    @Test
-    void ConvertFromDTOTest() {
-//        User user = new User();
-//        user.setUserId(1);
-//        Topic topic = new Topic();
-//        topic.setId(1);
-//        Timestamp now = Timestamp.valueOf(LocalDateTime.now());
-//        FlashcardDTO flashcardDTO = new FlashcardDTO(user, topic, "question", 2, 2, now, now, false);
-//        Flashcard flashcard = FlashcardDTO.convertFromDTO().apply(flashcardDTO);
-//
-//        Assertions.assertEquals(user, flashcard.getCreator());
-//        Assertions.assertEquals(topic, flashcard.getTopic());
-//        Assertions.assertEquals("question", flashcard.getQuestion());
-//        Assertions.assertEquals(2, flashcard.getQuestionDifficultyTotal());
-//        Assertions.assertEquals(2, flashcard.getQuestionDifficultyAverage());
-//        Assertions.assertEquals(now, flashcard.getCreatedTime());
-//        Assertions.assertEquals(now, flashcard.getResolutionTime());
+        Assertions.assertNotNull(dto);
+        Assertions.assertEquals(flashcard.getId(),dto.getFlashcardId());
+        Assertions.assertEquals(flashcard.getCreator(), dto.getCreator());
+        Assertions.assertEquals(flashcard.getTopic(), dto.getTopic());
+        Assertions.assertEquals(flashcard.getQuestion(), dto.getQuestion());
+        Assertions.assertEquals(flashcard.getQuestionDifficultyTotal(), dto.getQuestionDifficultyTotal());
+        Assertions.assertEquals(flashcard.getQuestionDifficultyAverage(), dto.getQuestionDifficultyAverage());
+        Assertions.assertEquals(flashcard.getCreatedTime(), dto.getCreatedTime());
+        Assertions.assertEquals(flashcard.getResolutionTime(), dto.getResolutionTime());
+        Assertions.assertEquals(flashcard.isResolved(),dto.isResolved());
     }
 }
