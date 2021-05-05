@@ -5,7 +5,10 @@ import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -53,5 +56,26 @@ public class StacktraceService {
      */
     public void deleteStackTraceById(int stacktraceId){
         stacktraceRepo.deleteById(stacktraceId);
+    }
+
+
+
+    @Transactional
+    public void save(StacktraceDTO stacktraceDTO){
+        Stacktrace stacktrace = mapFromDtoToStacktrace(stacktraceDTO);
+        stacktraceRepo.save(stacktrace);
+    }
+
+    private Stacktrace mapFromDtoToStacktrace(StacktraceDTO stacktraceDTO) {
+        Stacktrace stacktrace= new Stacktrace();
+        stacktrace.setStacktraceId(stacktraceDTO.getStacktraceId());
+        stacktrace.setUserId(stacktraceDTO.getUser());
+        stacktrace.setTitle(stacktraceDTO.getTitle());
+        stacktrace.setBody(stacktraceDTO.getBody());
+        stacktrace.setTechnologyId(stacktraceDTO.getTechnologyId());
+        stacktrace.setCreationTime(Timestamp.from(Instant.now()));
+        return  stacktrace;
+
+
     }
 }
