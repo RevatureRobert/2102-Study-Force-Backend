@@ -18,7 +18,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Stacktrace {
     /**
