@@ -20,8 +20,14 @@ public class StacktraceSubscription {
   @EmbeddedId
     private StacktraceSubscriptionId stacktraceSubscriptionId;
 
+  @OneToOne
+  private Stacktrace stacktrace;
+  @OneToOne
+  private Subscription subscription;
+
   public StacktraceSubscription(Stacktrace stacktrace, Subscription subscription) {
-    this.stacktraceSubscriptionId.setStacktrace(stacktrace);
-    this.stacktraceSubscriptionId.setSubscription(subscription);
+    this.stacktraceSubscriptionId = new StacktraceSubscriptionId(stacktrace.getStacktraceId(), subscription.getId());
+    this.stacktrace = stacktrace;
+    this.subscription = subscription;
   }
 }

@@ -1,6 +1,5 @@
 package com.revature.studyforce.notification.model;
 
-import com.revature.studyforce.flashcard.model.Flashcard;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

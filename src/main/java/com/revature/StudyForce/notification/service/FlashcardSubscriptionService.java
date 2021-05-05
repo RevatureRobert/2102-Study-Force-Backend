@@ -2,6 +2,7 @@ package com.revature.studyforce.notification.service;
 
 import com.revature.studyforce.flashcard.repository.FlashcardRepository;
 import com.revature.studyforce.notification.model.FlashcardSubscription;
+import com.revature.studyforce.notification.model.FlashcardSubscriptionId;
 import com.revature.studyforce.notification.repository.FlashcardSubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,12 +27,12 @@ public class FlashcardSubscriptionService {
     }
 
     public FlashcardSubscription getFlashcardSubscriptionByFlashcardAndUserId(Integer flashcardId, Integer userId){
-
         return flashcardSubscriptionRepository.findByFlashcardSubscriptionId(
-                new FlashcardSubscription(
-                        Objects.requireNonNull(flashcardRepository.findById(flashcardId).orElse(null)),
-                        subscriptionService.getSubscriptionByUserId(userId))
-                        .getFlashcardSubscriptionId());
+            new FlashcardSubscriptionId(
+                    Objects.requireNonNull(flashcardRepository.findById(flashcardId).orElse(null)).getId(),
+                    subscriptionService.getSubscriptionByUserId(userId).getId()
+            )
+        );
     }
 
     public List<FlashcardSubscription> getAllSubscribersByFlashcardId(Integer flashcardId){
@@ -44,17 +45,17 @@ public class FlashcardSubscriptionService {
 
     public FlashcardSubscription createFlashcardSubscription(Integer flashcardId, Integer userId){
         return flashcardSubscriptionRepository.save(
-                new FlashcardSubscription(
-                        Objects.requireNonNull(flashcardRepository.findById(flashcardId).orElse(null)),
-                        subscriptionService.getSubscriptionByUserId(userId)
-                )
+            new FlashcardSubscription(
+                    Objects.requireNonNull(flashcardRepository.findById(flashcardId).orElse(null)),
+                    subscriptionService.getSubscriptionByUserId(userId)
+            )
         );
     }
 
     public FlashcardSubscription deleteFlashcardSubscription(Integer flashcardId, Integer userId){
         FlashcardSubscription subscription = new FlashcardSubscription(
-                Objects.requireNonNull(flashcardRepository.findById(flashcardId).orElse(null)),
-                subscriptionService.getSubscriptionByUserId(userId)
+            Objects.requireNonNull(flashcardRepository.findById(flashcardId).orElse(null)),
+            subscriptionService.getSubscriptionByUserId(userId)
         );
         flashcardSubscriptionRepository.delete(subscription);
         return subscription;
@@ -67,13 +68,11 @@ public class FlashcardSubscriptionService {
 
     public List<FlashcardSubscription> deleteAllFlashcardSubscriptionsByFlashcardId(Integer flashcardId){
         List<FlashcardSubscription> subscriptions = getAllSubscribersByFlashcardId(flashcardId);
-        flashcardSubscriptionRepository.deleteAll(subscriptions);
-        return subscriptions;
+        return deleteAllFlashcardSubscriptions(subscriptions);
     }
 
     public List<FlashcardSubscription> deleteAllFlashcardSubscriptionsByUserId(Integer userId){
         List<FlashcardSubscription> subscriptions = getAllSubscriptionsByUserId(userId);
-        flashcardSubscriptionRepository.deleteAll(subscriptions);
-        return subscriptions;
+        return deleteAllFlashcardSubscriptions(subscriptions);
     }
 }

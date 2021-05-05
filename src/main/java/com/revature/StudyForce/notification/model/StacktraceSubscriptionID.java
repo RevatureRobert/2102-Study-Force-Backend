@@ -16,11 +16,12 @@ import java.io.Serializable;
 @Data
 public class StacktraceSubscriptionId implements Serializable {
 
+    private Integer subscription;
+    private Integer stacktrace;
 
-    @OneToOne
-    private Subscription subscription;
-
-    @OneToOne
-    private Stacktrace stacktrace;
+    public StacktraceSubscriptionId(Integer stacktrace, Integer subscription){
+        this.stacktrace = stacktrace;
+        this.subscription = subscription;
+    }
 
 }

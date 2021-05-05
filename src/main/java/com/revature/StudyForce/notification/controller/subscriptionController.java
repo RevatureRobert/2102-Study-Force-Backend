@@ -1,9 +1,12 @@
 package com.revature.studyforce.notification.controller;
 
+import com.revature.studyforce.notification.dto.StacktraceSubscriptionDTO;
 import com.revature.studyforce.notification.model.FlashcardSubscription;
+import com.revature.studyforce.notification.model.StacktraceSubscription;
 import com.revature.studyforce.notification.model.Subscription;
 import com.revature.studyforce.notification.dto.FlashcardSubscriptionDTO;
 import com.revature.studyforce.notification.service.FlashcardSubscriptionService;
+import com.revature.studyforce.notification.service.StacktraceSubscriptionService;
 import com.revature.studyforce.notification.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +16,15 @@ import org.springframework.web.bind.annotation.*;
 public class SubscriptionController {
     private SubscriptionService subscriptionService;
     private FlashcardSubscriptionService flashcardSubscriptionService;
+    private StacktraceSubscriptionService stacktraceSubscriptionService;
 
     @Autowired
     public SubscriptionController(SubscriptionService subscriptionService,
-                                  FlashcardSubscriptionService flashcardSubscriptionService){
+                                  FlashcardSubscriptionService flashcardSubscriptionService,
+                                  StacktraceSubscriptionService stacktraceSubscriptionService){
         this.subscriptionService = subscriptionService;
         this.flashcardSubscriptionService = flashcardSubscriptionService;
+        this.stacktraceSubscriptionService = stacktraceSubscriptionService;
     }
 
     @PostMapping
@@ -46,10 +52,11 @@ public class SubscriptionController {
 
     @GetMapping("/flashcards")
     public @ResponseBody
-    FlashcardSubscription getFlashcardSubscription(@RequestBody FlashcardSubscriptionDTO subscriptionRequest){
+    FlashcardSubscription getFlashcardSubscription(@RequestParam("flashcard-id") String flashcardId,
+                                                   @RequestParam("user-id") String userId){
         return flashcardSubscriptionService.getFlashcardSubscriptionByFlashcardAndUserId(
-                subscriptionRequest.getFlashcardId(),
-                subscriptionRequest.getUserId()
+                Integer.parseInt(flashcardId),
+                Integer.parseInt(userId)
         );
     }
 
@@ -58,6 +65,33 @@ public class SubscriptionController {
     FlashcardSubscription deleteFlashcardSubscription(@RequestBody FlashcardSubscriptionDTO subscriptionRequest){
         return flashcardSubscriptionService.deleteFlashcardSubscription(
                 subscriptionRequest.getFlashcardId(),
+                subscriptionRequest.getUserId()
+        );
+    }
+
+    @PostMapping("/stacktraces")
+    public @ResponseBody
+    StacktraceSubscription createStacktraceSubscription(@RequestBody StacktraceSubscriptionDTO subscriptionRequest){
+        return stacktraceSubscriptionService.createStacktraceSubscription(
+                subscriptionRequest.getStacktraceId(),
+                subscriptionRequest.getUserId());
+    }
+
+    @GetMapping("/stacktraces")
+    public @ResponseBody
+    StacktraceSubscription getStacktraceSubscription(@RequestParam("flashcard-id") String stacktraceId,
+                                                   @RequestParam("user-id") String userId){
+        return stacktraceSubscriptionService.getStacktraceSubscriptionByStacktraceAndUserId(
+                Integer.parseInt(stacktraceId),
+                Integer.parseInt(userId)
+        );
+    }
+
+    @DeleteMapping("/stacktraces")
+    public @ResponseBody
+    StacktraceSubscription deleteStacktraceSubscription(@RequestBody StacktraceSubscriptionDTO subscriptionRequest){
+        return stacktraceSubscriptionService.deleteStacktraceSubscription(
+                subscriptionRequest.getStacktraceId(),
                 subscriptionRequest.getUserId()
         );
     }
