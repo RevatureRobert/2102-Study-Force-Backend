@@ -7,7 +7,6 @@ import com.revature.studyforce.stacktrace.model.Technology;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
-import com.revature.studyforce.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -19,7 +18,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
@@ -63,8 +61,7 @@ class StacktraceServiceTest {
                         "TestTitle",
                         "TestBody",
                         new Technology(0, "TestTech"),
-                        new Timestamp(0),
-                        null)
+                        new Timestamp(0))
         );
     }
 
@@ -79,7 +76,7 @@ class StacktraceServiceTest {
 
     @Test
     void whenGetAllStackTracesbyTechnologyId_thenStackTracesRetrieved() {
-        Mockito.when(stacktraceRepository.findByTechnologyIdTechnologyName("TestTech")).thenReturn(stacktraceArrayList);
+        Mockito.when(stacktraceRepository.findByTechnologyTechnologyName("TestTech")).thenReturn(stacktraceArrayList);
         List<StacktraceDTO> returnedStacktraceList = stacktraceService.getAllStacktraces();
         for(int i = 0; i < returnedStacktraceList.size(); i++){
             assertEquals(returnedStacktraceList.get(i).getStacktraceId(),stacktraceArrayList.get(i).getStacktraceId());
@@ -97,13 +94,13 @@ class StacktraceServiceTest {
         StacktraceDTO response = stacktraceService.getStacktraceById(0);
         assertNotNull(response);
         assertEquals(0, response.getStacktraceId());
-        assertEquals(0, response.getUser().getUserId());
-        assertEquals("Bob", response.getUser().getFirstName());
-        assertEquals("Smith", response.getUser().getLastName());
+        assertEquals(0, response.getCreator().getUserId());
+        assertEquals("Bob", response.getCreator().getFirstName());
+        assertEquals("Smith", response.getCreator().getLastName());
         assertEquals("TestTitle", response.getTitle());
         assertEquals("TestBody", response.getBody());
-        assertEquals(0, response.getTechnologyId().getTechnologyId());
-        assertEquals("TestTech", response.getTechnologyId().getTechnologyName());
+        assertEquals(0, response.getTechnology().getTechnologyId());
+        assertEquals("TestTech", response.getTechnology().getTechnologyName());
         assertEquals(new Timestamp(0), response.getCreationTime());
 
         System.out.println(response);

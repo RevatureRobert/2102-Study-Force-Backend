@@ -62,7 +62,7 @@ public class Stacktrace {
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "technology_id", referencedColumnName = "technology_id")
     @JsonIgnore
-    private Technology technologyId;
+    private Technology technology;
 
     /**
      *The timestamp of when the stacktrace was created

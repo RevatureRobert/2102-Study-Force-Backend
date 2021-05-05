@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Repository
 public interface StacktraceRepository extends JpaRepository<Stacktrace, Integer> {
-    List<Stacktrace> findByTechnologyIdTechnologyName(String technologyName);
+    List<Stacktrace> findByTechnologyTechnologyName(String technologyName);
 
     @Modifying
     @Query(value = "select * from stacktrace where stacktrace_id = :stacktraceId ;", nativeQuery = true)
