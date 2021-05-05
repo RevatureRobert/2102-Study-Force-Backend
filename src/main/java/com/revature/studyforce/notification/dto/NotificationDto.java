@@ -31,6 +31,6 @@ public class NotificationDto {
     }
 
     public NotificationDto convertToDto(){
-        
+
     }
 }
