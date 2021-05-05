@@ -73,10 +73,10 @@ public class StacktraceService {
     private Stacktrace mapFromDtoToStacktrace(StacktraceDTO stacktraceDTO) {
         Stacktrace stacktrace= new Stacktrace();
         stacktrace.setStacktraceId(stacktraceDTO.getStacktraceId());
-        stacktrace.setUserId(userRepo.findByUserId(stacktraceDTO.getUser().getUserId()));
+        stacktrace.setUserId(userRepo.findByUserId(stacktraceDTO.getCreator().getUserId()));
         stacktrace.setTitle(stacktraceDTO.getTitle());
         stacktrace.setBody(stacktraceDTO.getBody());
-        stacktrace.setTechnologyId(stacktraceDTO.getTechnologyId());
+        stacktrace.setTechnology(stacktraceDTO.getTechnology());
         stacktrace.setCreationTime(Timestamp.from(Instant.now()));
         return  stacktrace;
 
