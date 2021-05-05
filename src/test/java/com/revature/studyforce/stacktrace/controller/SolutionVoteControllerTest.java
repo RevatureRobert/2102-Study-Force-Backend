@@ -69,7 +69,7 @@ public class SolutionVoteControllerTest {
 //        stacktrace = stacktraceRepository.save(stacktrace);
 //        Solution solution = new Solution(1, stacktrace, user2, "Test Body", false, null,null);
 //        solution = solutionRepository.save(solution);
-//        SolutionVoteDTO solutionVoteDTO = new SolutionVoteDTO(1, user3, solution, -1);
+//        SolutionVoteDTO solutionVoteDTO = new SolutionVoteDTO(1, 3, 1, -1);
 //        solutionVoteService.getAllSolutionsVotesForSolution(solution.getSolutionId());
 //        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(solutionVoteController).build();
 //        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/stacktrace/solution-vote/1")

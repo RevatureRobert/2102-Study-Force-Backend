@@ -1,14 +1,9 @@
 package com.revature.studyforce.stacktrace.service;
 
-import com.revature.studyforce.stacktrace.dto.SolutionDTO;
 import com.revature.studyforce.stacktrace.dto.SolutionVoteDTO;
-import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
-import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.model.SolutionVote;
-import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.repository.SolutionRepository;
 import com.revature.studyforce.stacktrace.repository.SolutionVoteRepository;
-import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Service used to handle requests for voting on a solution.
@@ -64,16 +58,9 @@ public class SolutionVoteService {
     public SolutionVoteDTO submitVote(SolutionVoteDTO solutionVoteDTO){
         SolutionVote solutionVote = new SolutionVote();
 
-        //need a user and a solution
-        int solutionIdValue = solutionVoteDTO.getSolutionId();
-        Solution solutionEdit = new Solution();
-        solutionEdit = solutionRepository.findBySolutionId(solutionIdValue);
-        solutionVote.setSolutionId(solutionEdit);
+        solutionVote.setSolutionId(solutionRepository.findBySolutionId(solutionVoteDTO.getSolutionId()));
 
-        int userIdValue = solutionVoteDTO.getUserId();
-        User user = new User();
-        user = userRepository.findByUserId(userIdValue);
-        solutionVote.setUserId(user);
+        solutionVote.setUserId(userRepository.findByUserId(solutionVoteDTO.getUserId()));
 
         solutionVote.setValue(solutionVoteDTO.getValue());
 
