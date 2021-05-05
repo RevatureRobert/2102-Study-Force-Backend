@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Objects;
 
 /***
  * Controller for {@link Notification Notifications}
@@ -28,33 +28,32 @@ public class NotificationController {
     private NotificationService notificationService;
 
     /***
-     *  Retrieves a Page of notifications
+     *  Retrieves a Page of {@link NotificationDto notifications} from all of the notifications that exist
      * @return Returns either a page of notifications from the database with the http ok status
      *     or if there are no notifications it returns a not found http response
      */
 
     @GetMapping
-    public ResponseEntity<Page<Notification>> getAllNotifications(){
-        Page<Notification> notificationPage = notificationService.findAll();
-        if(notificationPage != null){
-            return ResponseEntity.ok(notificationPage);
+    public ResponseEntity<Page<NotificationDto>> getAllNotifications(){
+        Page<NotificationDto> notificationDtoPage = notificationService.findAll();
+        if(notificationDtoPage != null){
+            return ResponseEntity.ok(notificationDtoPage);
         }
         return ResponseEntity.notFound().build();
     }
 
     /***
-     * Get a page of {@link Notification notifications} for a particular user based on the user id passed.
+     * Get a page of {@link NotificationDto notifications} for a particular user based on the user id passed.
      * @param userId userId is the id of the user that we are grabbing the page for
      * @param page Default value of page is 0 so if no page number is passed as an argument, we start with the very first page.
      *             Also the default size of the page is 5.
-     * @return Returns a page of notifications, if there are no notifications then we return an Http Response with status of Not Found
+     * @return Returns a page of notifications (specifically NotificationDtos), if there are no notifications then we return an Http Response with status of Not Found
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Page<Notification>> getNotificationsByUserId(@PathVariable("id") Integer userId, @RequestParam(name="page", defaultValue = "0") String page){
-        Page<Notification> notificationPage = notificationService.findByUserId(userId, Integer.parseInt(page));
-        Page<NotificationDto> notificationDtoPage = notificationPage.map(new NotificationDto());
-        if(notificationPage != null){
-            return ResponseEntity.ok(notificationPage);
+    public ResponseEntity<Page<NotificationDto>> getNotificationsByUserId(@PathVariable("id") Integer userId, @RequestParam(name="page", defaultValue = "0") String page){
+        Page<NotificationDto> notificationDtoPage = notificationService.findByUserId(userId, Integer.parseInt(page));
+        if(notificationDtoPage != null){
+            return ResponseEntity.ok(notificationDtoPage);
         }
         return ResponseEntity.notFound().build();
     }
@@ -68,10 +67,8 @@ public class NotificationController {
      */
     @PostMapping
     public ResponseEntity<NotificationDto> addNotification(@RequestBody NotificationDto notificationDto){
-        Notification notification = new Notification(notificationDto);
-        if(notification != null){
-            notification = notificationService.save(notification);
-            notificationDto = new NotificationDto(notification);
+        if(notificationDto != null){
+            notificationDto = notificationService.save(notificationDto);
             return new ResponseEntity<>(notificationDto, HttpStatus.CREATED);
         }
         return ResponseEntity.unprocessableEntity().build();
@@ -84,7 +81,7 @@ public class NotificationController {
      *          Otherwise returns an Http Response with status Not Found
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<NotificationDto> deleteAllNotificationsByUserId(@PathVariable("id") Integer userId){
+    public ResponseEntity<?> deleteAllNotificationsByUserId(@PathVariable("id") Integer userId){
         try{
             notificationService.deleteByUserId(userId);
             return ResponseEntity.noContent().build();

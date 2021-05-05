@@ -1,5 +1,6 @@
 package com.revature.studyforce.notification.service;
 
+import com.revature.studyforce.notification.dto.NotificationDto;
 import com.revature.studyforce.notification.model.Notification;
 import com.revature.studyforce.notification.repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /***
@@ -40,8 +41,15 @@ public class NotificationService {
      * Grab a page of {@link Notification Notifications}
      * @return Returns a page of notifications
      */
-    public Page<Notification> findAll(){
-        return notificationRepository.findAll(PageRequest.of(0, 10));
+    public Page<NotificationDto> findAll(){
+        Page<Notification> notificationPage = notificationRepository.findAll(PageRequest.of(0, 10));
+        try{
+            return notificationPage.map(Objects.requireNonNull(NotificationDto.convertToDto()));
+        }
+        catch(NullPointerException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /***
@@ -52,38 +60,48 @@ public class NotificationService {
      * The default size of the page is 5
      * @return Returns a Page of Notifications
      */
-    public Page<Notification> findByUserId(Integer userId, Integer page){
+    public Page<NotificationDto> findByUserId(Integer userId, Integer page){
         // We can change the page request parameters later
-        return notificationRepository.findByApplicationUserId(userId, PageRequest.of(page, 5, Sort.by("notificationId").descending()));
+        Page<Notification> notificationPage = notificationRepository.findByApplicationUserId(userId, PageRequest.of(page, 5, Sort.by("notificationId").descending()));
+        try{
+            return notificationPage.map(Objects.requireNonNull(NotificationDto.convertToDto()));
+        }
+        catch(NullPointerException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /***
      * Post a {@link Notification}
-     * @param notification The notification parameter represents the notification to be stored
+     * @param notificationDto The {@link NotificationDto} parameter represents the notification to be stored
      * @return Returns the notification that was stored
      */
-    public Notification save(Notification notification){
-        return notificationRepository.save(notification);
+    public NotificationDto save(NotificationDto notificationDto){
+        Notification notification = notificationRepository.save(new Notification(notificationDto));
+        return new NotificationDto(notification);
     }
 
     /***
      * Update an existing {@link Notification},
      * If the notification does not exist then nothing is performed
-     * @param notification The notification parameter represents the updated notification
+     * @param notificationDto The {@link NotificationDto} parameter represents the updated notification
      */
-    public void update(Notification notification){
-        Optional<Notification> checkNotification = notificationRepository.findById(notification.getNotificationId());
+    public NotificationDto update(NotificationDto notificationDto){
+        Optional<Notification> checkNotification = notificationRepository.findById(notificationDto.getId());
         if(checkNotification.isPresent()){
-            notificationRepository.save(notification);
+           return new NotificationDto(notificationRepository.save(new Notification(notificationDto)));
         }
+        return null;
     }
 
     /***
      * Delete a {@link Notification}
-     * @param notification The notification parameter represents the notification to be deleted
+     * @param notificationDto The {@link NotificationDto notificationDto} parameter represents the notification to be deleted
      */
-    public void delete(Notification notification){
-        notificationRepository.delete(notification);
+    public NotificationDto delete(NotificationDto notificationDto){
+        notificationRepository.delete(new Notification(notificationDto));
+
     }
 
     /***
