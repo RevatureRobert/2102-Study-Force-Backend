@@ -35,7 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author John Stone
  * @author Joshua Swanson
- * @author Noel Shaji
  */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
