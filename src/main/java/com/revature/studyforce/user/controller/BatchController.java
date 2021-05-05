@@ -5,7 +5,6 @@ import com.revature.studyforce.user.service.BatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-import java.sql.Timestamp;
 
 /**
  * Batch Controller for Batch Repo {@link BatchService}
@@ -77,6 +76,4 @@ public class BatchController {
     public Batch getBatchByBatchId(@PathVariable(name = "batchId") int batchId){
         return batchService.getBatchById(batchId);
     }
-
-
 }
