@@ -19,7 +19,11 @@ import java.util.function.Function;
 public class SolutionDTO {
     private int solutionId;
     private int stackTraceId;
-    private int userId;
+
+    /**
+     * Stacktrace Group userDTO that only sends userId, firstname and lastname
+     */
+    private StacktraceUserDTO user;
     private String body;
     private Boolean adminSelected;
     private Date creationTime;
@@ -36,7 +40,7 @@ public class SolutionDTO {
             return new SolutionDTO(
                     solution.getSolutionId(),
                     solution.getStackTraceId().getStacktraceId(),
-                    solution.getUserId().getUserId(),
+                    StacktraceUserDTO.userToDTO().apply(solution.getUserId()),
                     solution.getBody(),
                     solution.getAdminSelected(),
                     solution.getCreationTime()

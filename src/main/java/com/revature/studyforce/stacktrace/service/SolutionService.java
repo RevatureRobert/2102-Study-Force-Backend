@@ -55,7 +55,7 @@ public class SolutionService {
         Solution solution = new Solution(
                 solutionDTO.getSolutionId(),
                 stacktraceRepository.findById(solutionDTO.getStackTraceId()).orElse(null),
-                userRepository.findByUserId(solutionDTO.getUserId()),
+                userRepository.findByUserId(solutionDTO.getUser().getUserId()),
                 solutionDTO.getBody(),
                 solutionDTO.getAdminSelected(),
                 solutionDTO.getCreationTime(),
@@ -81,7 +81,7 @@ public class SolutionService {
             Solution newSolution = new Solution(
                     solutionDTO.getSolutionId(),
                     stacktraceRepository.findById(solutionDTO.getStackTraceId()).orElse(null),
-                    userRepository.findByUserId(solutionDTO.getUserId()),
+                    userRepository.findByUserId(solutionDTO.getUser().getUserId()),
                     solutionDTO.getBody(),
                     solutionDTO.getAdminSelected(),
                     solutionDTO.getCreationTime(),
