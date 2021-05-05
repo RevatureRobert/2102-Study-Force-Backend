@@ -3,7 +3,6 @@ package com.revature.studyforce.stacktrace.dto;
 import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.model.Technology;
-import com.revature.studyforce.user.model.User;
 import lombok.*;
 
 import java.sql.Timestamp;
@@ -13,7 +12,7 @@ import java.util.function.Function;
 /**
  * Stacktrace DTO used to transfer Stacktrace Data
  * @author John Stone
- * @authore Joshua Swanson
+ * @author Joshua Swanson
  */
 @Getter
 @Setter
@@ -28,7 +27,7 @@ public class StacktraceDTO {
     /**
      * User who created stacktrace
      */
-    private User user;
+    private StacktraceUserDTO user;
 
     /**
      * the title a user gives to a stacktrace
@@ -52,27 +51,14 @@ public class StacktraceDTO {
 
     private Set<Solution> solutions;
 
-    public static Function<Stacktrace, StacktraceDTO> stacktraceToDTO() {
-        return stacktrace -> {
-            return new StacktraceDTO(stacktrace.getStacktraceId(),
-                    stacktrace.getUserId(),
-                    stacktrace.getTitle(),
-                    stacktrace.getBody(),
-                    stacktrace.getTechnologyId(),
-                    stacktrace.getCreationTime(),
-                    stacktrace.getSolutions());
-        };
-    }
-
-    public static Function<StacktraceDTO, Stacktrace> DTOToStacktrace() {
-        return stacktraceDTO -> {
-            return new Stacktrace(stacktraceDTO.getStacktraceId(),
-                    stacktraceDTO.getUser(),
-                    stacktraceDTO.getTitle(),
-                    stacktraceDTO.getBody(),
-                    stacktraceDTO.getTechnologyId(),
-                    stacktraceDTO.getCreationTime(),
-                    stacktraceDTO.getSolutions());
-        };
+  public static Function<Stacktrace, StacktraceDTO> stacktraceToDTO() {
+    return stacktrace -> new StacktraceDTO(
+          stacktrace.getStacktraceId(),
+          StacktraceUserDTO.userToDTO().apply(stacktrace.getUserId()),
+          stacktrace.getTitle(),
+          stacktrace.getBody(),
+          stacktrace.getTechnologyId(),
+          stacktrace.getCreationTime(),
+          stacktrace.getSolutions());
     }
 }
