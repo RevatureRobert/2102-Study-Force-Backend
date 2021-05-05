@@ -27,11 +27,13 @@ import java.util.Set;
 /**
  * tests for integration of Batch Controller {@link BatchController}
  * @author Daniel Reyes
+ * @author Daniel Bernier
  */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:test-application.properties")
+@Transactional
 class BatchIntegrationTest {
 
 
@@ -47,7 +49,6 @@ class BatchIntegrationTest {
     private BatchController batchController;
 
 
-    @Transactional
     @Test
     void givenBatch_whenGetAll_theBatchesRetrieved() throws Exception {
         Set<User> AdminList = new HashSet<>();
@@ -56,7 +57,7 @@ class BatchIntegrationTest {
         Authority authority = Authority.ADMIN;
         Authority user1 = Authority.USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
-        User Admin = new User(0 , "dan2@gmail.com",  "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
+        User Admin = new User(0 , "dan2@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
         User student = new User(0 , "test2@gmail.com", "Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
         AdminList.add(Admin);
         StudentList.add(student);
@@ -64,18 +65,15 @@ class BatchIntegrationTest {
         System.out.println(batch.toString());
         batchRepository.save(batch);
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
-        mockMvc.perform(MockMvcRequestBuilders.get("/batch")
+        mockMvc.perform(MockMvcRequestBuilders.get("/batches")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].batchId").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name").value("2102 Enterprise2"))
-                .andReturn();
-
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name").value("2102 Enterprise2"));
     }
 
-    @Transactional
     @Test
     void givenBatch_whenGetById_theBatchRetrieved() throws Exception {
         Set<User> AdminList = new HashSet<>();
@@ -85,7 +83,7 @@ class BatchIntegrationTest {
         Authority user1 = Authority.USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
         User Admin = new User(0 , "dan2@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
-        User student = new User(0 , "test2@gmail.com",  "Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
+        User student = new User(0 , "test2@gmail.com", "Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
         Admin = userRepository.save(Admin);
         student = userRepository.save(student);
         AdminList.add(Admin);
@@ -93,16 +91,14 @@ class BatchIntegrationTest {
         Batch batch = new Batch(0, "2102 Enterprise2", AdminList, StudentList, lastLoginTime);
         batchRepository.save(batch);
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
-        mockMvc.perform(MockMvcRequestBuilders.get("/batch/3")
+        mockMvc.perform(MockMvcRequestBuilders.get("/batches/3")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.batchId").value(3))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("2102 Enterprise2"))
-                .andReturn();
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("2102 Enterprise2"));
     }
 
-    @Transactional
     @Test
     void givenBatch_whenGetBatchByName_theBatchRetrieved() throws Exception {
         Set<User> AdminList = new HashSet<>();
@@ -112,7 +108,7 @@ class BatchIntegrationTest {
         Authority user1 = Authority.USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
         User Admin = new User(0 , "dan2@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
-        User student = new User(0 , "test2@gmail.com","Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
+        User student = new User(0 , "test2@gmail.com", "Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
         Admin = userRepository.save(Admin);
         student = userRepository.save(student);
         AdminList.add(Admin);
@@ -121,17 +117,15 @@ class BatchIntegrationTest {
         batchRepository.save(batch);
         System.out.println(batchRepository.findByNameContainingIgnoreCase("Enterprise2"));
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
-        mockMvc.perform(MockMvcRequestBuilders.get("/batch/name?name=Enterprise2")
+        mockMvc.perform(MockMvcRequestBuilders.get("/batches/name?name=Enterprise2")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.batchId").value(3))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Enterprise2"))
-                .andReturn();
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Enterprise2"));
     }
 
-    @Transactional
     @Test
     void givenBatch_whenGetBatchByCreationTime_theBatchRetrieved() throws Exception {
         Set<User> AdminList = new HashSet<>();
@@ -144,7 +138,7 @@ class BatchIntegrationTest {
         long epochMilli = Date.from(instant).getTime();
         Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(epochMilli));
         User Admin = new User(0 , "dan2@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
-        User student = new User(0 , "test2@gmail.com",  "Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
+        User student = new User(0 , "test2@gmail.com", "Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
         Admin = userRepository.save(Admin);
         student = userRepository.save(student);
         AdminList.add(Admin);
@@ -153,14 +147,11 @@ class BatchIntegrationTest {
         batchRepository.save(batch);
         System.out.println(batchRepository.findByNameContainingIgnoreCase("Enterprise2"));
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
-        mockMvc.perform(MockMvcRequestBuilders.get("/batch/time/1619996684739")
+        mockMvc.perform(MockMvcRequestBuilders.get("/batches/time/1619996684739")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].batchId").value(3))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name").value("Enterprise2"))
-                .andReturn();
-
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name").value("Enterprise2"));
     }
-
 }

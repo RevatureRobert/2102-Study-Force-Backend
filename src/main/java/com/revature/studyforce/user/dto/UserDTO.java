@@ -12,6 +12,7 @@ import java.util.function.Function;
 /**
  * UserDTO to transfer User data
  * @author Lok Kan Kung
+ * @author Daniel Bernier
  */
 
 @Data
@@ -44,8 +45,8 @@ public class UserDTO {
                 throw new IllegalArgumentException("Parameter user cannot be null");
             }
             return new UserDTO (
-                    user.getUserId (),
-                    user.getEmail (),
+                    user.getUserId(),
+                    user.getEmail(),
                     user.getName(),
                     user.isActive(),
                     user.isSubscribedFlashcard (),
@@ -63,8 +64,8 @@ public class UserDTO {
                 throw new IllegalArgumentException("Parameter userDTO cannot be null");
             }
             return new User (
-                    userDTO.getUserId (),
-                    userDTO.getEmail (),
+                    userDTO.getUserId(),
+                    userDTO.getEmail(),
                     userDTO.getName(),
                     userDTO.isActive (),
                     userDTO.isSubscribedFlashcard (),

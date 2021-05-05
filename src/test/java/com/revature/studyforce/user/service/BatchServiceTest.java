@@ -21,6 +21,7 @@ import java.util.*;
 /**
  * Service Layer Testing {@link BatchService }
  * @author Daniel Reyes
+ * @author Daniel Bernier
  */
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test-application.properties")
@@ -75,8 +76,8 @@ class BatchServiceTest {
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(epochMilli));
-        User Admin = new User(1 , "dan@gmail.com",  "Daniel", true, true, true, authority, timestamp, timestamp);
-        User student = new User(2 , "test@gmail.com",  "Danny", true, true, true, user1, timestamp, timestamp);
+        User Admin = new User(1 , "dan@gmail.com", "Daniel", true, true, true, authority, timestamp, timestamp);
+        User student = new User(2 , "test@gmail.com", "Danny", true, true, true, user1, timestamp, timestamp);
         AdminList.add(Admin);
         StudentList.add(student);
         Batch batch = new Batch(1, "2102 Enterprise", AdminList, StudentList, timestamp);
@@ -104,7 +105,7 @@ class BatchServiceTest {
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(epochMilli));
-        User Admin = new User(1 , "dan@gmail.com",  "Daniel", true, true, true, authority, t2, t2);
+        User Admin = new User(1 , "dan@gmail.com", "Daniel", true, true, true, authority, t2, t2);
         User student = new User(2 , "test@gmail.com", "Danny", true, true, true, user1, t2, t2);
         AdminList.add(Admin);
         StudentList.add(student);
@@ -211,7 +212,4 @@ class BatchServiceTest {
         Assertions.assertEquals(StudentList, response.getContent().get(0).getUsers());
         Assertions.assertEquals(timestamp, response.getContent().get(0).getCreationTime());
     }
-
-
-
 }
