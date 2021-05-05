@@ -25,13 +25,13 @@ public class SolutionDTO {
     private Date creationTime;
 
     /**
-     * Returns a funtion used to converts Solution to SolutionDTO
-     * @return Funtion used to convert Solution to SolutionDTO
+     * Returns a function used to converts Solution to SolutionDTO
+     * @return Function used to convert Solution to SolutionDTO
      */
     public static Function<Solution, SolutionDTO> solutionToDTO(){
         return solution -> {
             if(solution == null){
-                throw new IllegalArgumentException("Parameter user cannot be null");
+                throw new IllegalArgumentException("Parameter solution cannot be null");
             }
             return new SolutionDTO(
                     solution.getSolutionId(),
