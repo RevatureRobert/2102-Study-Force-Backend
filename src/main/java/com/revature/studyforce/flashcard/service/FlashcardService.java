@@ -185,12 +185,14 @@ public class FlashcardService implements AbstractService {
     public FlashcardDTO update(Flashcard flashcard) {
         Flashcard original = flashcardRepository.findById(flashcard.getId()).orElse(null);
 
-        if (original != null) {
-            int id = original.getId();
-            original = flashcard;
-            original.setId(id);
+        if (original == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Flashcard not found exception");
         }
-        assert original != null;
+
+        int id = original.getId();
+        original = flashcard;
+        original.setId(id);
+
         return FlashcardDTO.convertToDTO().apply(flashcardRepository.save(original));
     }
 
