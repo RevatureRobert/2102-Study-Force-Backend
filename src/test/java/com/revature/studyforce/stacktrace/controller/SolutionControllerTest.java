@@ -1,6 +1,6 @@
 package com.revature.studyforce.stacktrace.controller;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.studyforce.stacktrace.dto.SolutionDTO;
 import com.revature.studyforce.stacktrace.dto.StacktraceUserDTO;
 import com.revature.studyforce.stacktrace.service.SolutionService;
@@ -43,6 +43,7 @@ class SolutionControllerTest {
 
     List<SolutionDTO> testSolutionDTOList;
     SolutionDTO testSolutionDTO;
+    ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp(){
@@ -50,6 +51,7 @@ class SolutionControllerTest {
         testSolutionDTO = new SolutionDTO(1, 1, new StacktraceUserDTO(1, "Test", "Test"), "Test Body", false, null);
         testSolutionDTOList = new ArrayList<>();
         testSolutionDTOList.add(testSolutionDTO);
+        objectMapper = new ObjectMapper();
     }
 
     /**
@@ -73,7 +75,7 @@ class SolutionControllerTest {
     void submitFirstSolutionTest() throws Exception{
         Mockito.doReturn(testSolutionDTO).when(solutionService).submitFirstSolution(testSolutionDTO);
         mockMvc.perform(MockMvcRequestBuilders.post("/stacktrace/solution")
-                .content(new Gson().toJson(testSolutionDTO))
+                .content(objectMapper.writeValueAsString(testSolutionDTO))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -87,7 +89,7 @@ class SolutionControllerTest {
     void updateSolutionTest() throws Exception{
         Mockito.doReturn(testSolutionDTO).when(solutionService).updateSolution(testSolutionDTO);
         mockMvc.perform(MockMvcRequestBuilders.put("/stacktrace/solution")
-                .content(new Gson().toJson(testSolutionDTO))
+                .content(objectMapper.writeValueAsString(testSolutionDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
