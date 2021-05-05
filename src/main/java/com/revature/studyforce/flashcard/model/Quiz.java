@@ -1,5 +1,6 @@
 package com.revature.studyforce.flashcard.model;
 
+
 import com.revature.studyforce.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;

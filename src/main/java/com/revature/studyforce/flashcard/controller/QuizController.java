@@ -1,6 +1,8 @@
 package com.revature.studyforce.flashcard.controller;
 
+import com.revature.studyforce.flashcard.dto.NewQuizDTO;
 import com.revature.studyforce.flashcard.dto.QuizDTO;
+import com.revature.studyforce.flashcard.dto.UpdateQuizDTO;
 import com.revature.studyforce.flashcard.model.Quiz;
 import com.revature.studyforce.flashcard.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,20 +31,18 @@ public class QuizController {
     }
 
     @PostMapping
-    public @ResponseBody QuizDTO createQuiz(@RequestBody QuizDTO quizDTO){
-        quizDTO.setQuizId(0);
-        Quiz q = QuizDTO.DTOToQuiz().apply(quizDTO);
-        return quizService.createQuiz(q);
+    public @ResponseBody Quiz createQuiz(@RequestBody NewQuizDTO quizDTO){
+        return quizService.createQuiz(quizDTO);
     }
 
     @PutMapping
-    public @ResponseBody QuizDTO updateQuiz(@RequestBody QuizDTO quizDTO){
+    public @ResponseBody QuizDTO updateQuiz(@RequestBody UpdateQuizDTO quizDTO){
         return quizService.updateQuiz(quizDTO);
     }
 
-    @DeleteMapping
-    public @ResponseBody void deleteQuiz(@RequestBody QuizDTO quizDTO){
-        quizService.deleteQuiz(quizDTO);
+    @DeleteMapping("/{id}")
+    public @ResponseBody void deleteQuiz(@PathVariable Integer id){
+        quizService.deleteQuiz(id);
     }
 
 }
