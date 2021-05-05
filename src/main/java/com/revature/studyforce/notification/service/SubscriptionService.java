@@ -1,7 +1,7 @@
 package com.revature.studyforce.notification.service;
 
-import com.revature.studyforce.notification.model.Subscription;
 import com.revature.studyforce.notification.repository.SubscriptionRepository;
+import com.revature.studyforce.notification.model.Subscription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

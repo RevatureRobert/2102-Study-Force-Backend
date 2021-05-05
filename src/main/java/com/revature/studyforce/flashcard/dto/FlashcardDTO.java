@@ -1,8 +1,8 @@
 package com.revature.studyforce.flashcard.dto;
 
 import com.revature.studyforce.flashcard.model.Flashcard;
-import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.flashcard.model.Topic;
+import com.revature.studyforce.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

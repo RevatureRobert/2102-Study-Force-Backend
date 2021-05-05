@@ -1,6 +1,7 @@
 package com.revature.studyforce.stacktrace.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.studyforce.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,8 +9,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
-
-import com.revature.studyforce.user.model.User;
 
 /**
  * This model represents the solutions users will supply the Stacktrace owner.

@@ -1,10 +1,9 @@
 package com.revature.studyforce.notification.service;
 
-import com.revature.studyforce.notification.model.FlashcardSubscription;
-import com.revature.studyforce.notification.model.StacktraceSubscription;
-import com.revature.studyforce.notification.model.StacktraceSubscriptionId;
 import com.revature.studyforce.notification.repository.StacktraceSubscriptionRepository;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
+import com.revature.studyforce.notification.model.StacktraceSubscription;
+import com.revature.studyforce.notification.model.StacktraceSubscriptionId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,14 +1,13 @@
 package com.revature.studyforce.flashcard.model;
 
 
+import com.revature.studyforce.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
-import com.revature.studyforce.user.model.User;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
