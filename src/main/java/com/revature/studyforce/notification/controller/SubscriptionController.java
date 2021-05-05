@@ -130,7 +130,7 @@ public class SubscriptionController {
      */
     @GetMapping("/stacktraces")
     public @ResponseBody
-    StacktraceSubscription getStacktraceSubscription(@RequestParam("flashcard-id") String stacktraceId,
+    StacktraceSubscription getStacktraceSubscription(@RequestParam("stacktrace-id") String stacktraceId,
                                                      @RequestParam("user-id") String userId){
         return stacktraceSubscriptionService.getStacktraceSubscriptionByStacktraceAndUserId(
                 Integer.parseInt(stacktraceId),

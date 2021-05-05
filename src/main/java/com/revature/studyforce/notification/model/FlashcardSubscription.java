@@ -11,6 +11,11 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+
+/**
+ * The stack Trace subscription model that holds a link to both the subscription and flashcard
+ * @author Brandon Pinkerton
+ */
 @NoArgsConstructor
 @Getter
 @Setter
@@ -19,6 +24,10 @@ import javax.persistence.Table;
 @Table(name = "flashcard_subscriptions")
 public class FlashcardSubscription {
 
+
+    /**
+     * The composite Key
+     */
     @EmbeddedId
     private FlashcardSubscriptionId flashcardSubscriptionId;
 

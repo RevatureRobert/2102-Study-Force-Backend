@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DTO model for a flashcard subscription
+ * @author Brandon Pinkerton
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

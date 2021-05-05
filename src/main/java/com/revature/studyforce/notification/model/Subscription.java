@@ -7,9 +7,7 @@ import lombok.*;
 import javax.persistence.*;
 
 /**
- * author https://github.com/ralscha/blog2019/commits?author=ralscha
- *
- * Github repo : https://github.com/ralscha/blog2019
+ * @author Brandon Pinkerton
  */
 @Entity
 @Table(name = "subscriptions")
@@ -19,6 +17,12 @@ import javax.persistence.*;
 @Setter
 public class Subscription {
 
+    /**
+     * This class will hold all the information needed to send notifications to a user
+     * the endpoint is the url that is used to send the notification
+     * the p256dh is the encryption key
+     * the auth is the public key
+     */
     @Id
     @GeneratedValue
     private int id;

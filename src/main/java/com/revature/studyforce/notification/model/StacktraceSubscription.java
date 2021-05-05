@@ -9,6 +9,11 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+
+/**
+ * BThe stack Trace subscription model that holds a link to both the subscription and stackTrace
+ * @author Brandon Pinkerton
+ */
 @NoArgsConstructor
 @Getter
 @Setter
@@ -17,6 +22,9 @@ import javax.persistence.*;
 @Table(name = "stacktrace_subscriptions")
 public class StacktraceSubscription {
 
+    /**
+     * The composite Key
+     */
     @EmbeddedId
     private StacktraceSubscriptionId stacktraceSubscriptionId;
 
