@@ -24,7 +24,7 @@ import java.util.Optional;
  * @author Edson Rodriguez
  */
 @Service
-public class AnswerService  extends AbstractService{
+public class AnswerService  implements AbstractService{
     private final AnswerRepository answerRepository;
     private final UserRepository userRepository;
     private final FlashcardRepository flashcardRepository;
@@ -109,7 +109,7 @@ public class AnswerService  extends AbstractService{
      * @return A valid sortby value
      */
     @Override
-    String validateSortBy(String sortBy){
+    public String validateSortBy(String sortBy){
         switch (sortBy.toLowerCase(Locale.ROOT)) {
             case "answerscore":
                 return "answerScore";

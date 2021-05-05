@@ -34,7 +34,7 @@ public class FlashcardDTO {
      * @return - FlashcardDTO
      */
     public static Function<Flashcard, FlashcardDTO> convertToDTO() {
-        return (flashcard) -> {
+        return flashcard -> {
 
             Assert.notNull(flashcard, "Flashcard is null");
 
@@ -48,29 +48,6 @@ public class FlashcardDTO {
                     flashcard.getCreatedTime(),
                     flashcard.getResolutionTime(),
                     flashcard.isResolved()
-            );
-        };
-    }
-
-    /**
-     * Converts FlashcardDTO to Flashcard
-     * @return - Flashcard
-     */
-    public static Function<FlashcardDTO, Flashcard> convertFromDTO() {
-        return (flashcardDTO) -> {
-
-            Assert.notNull(flashcardDTO, "Flashcard DTO is null");
-
-            return new Flashcard(
-                    flashcardDTO.getFlashcardId(),
-                    flashcardDTO.getCreator(),
-                    flashcardDTO.getTopic(),
-                    flashcardDTO.getQuestion(),
-                    flashcardDTO.getQuestionDifficultyTotal(),
-                    flashcardDTO.getQuestionDifficultyAverage(),
-                    flashcardDTO.getCreatedTime(),
-                    flashcardDTO.getResolutionTime(),
-                    flashcardDTO.isResolved()
             );
         };
     }

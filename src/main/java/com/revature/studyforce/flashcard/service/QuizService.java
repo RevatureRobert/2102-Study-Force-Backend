@@ -26,7 +26,7 @@ import java.util.Optional;
  * Services for the quiz repository {@link QuizRepository}
  */
 @Service
-public class QuizService extends AbstractService{
+public class QuizService implements AbstractService{
     private final QuizRepository quizRepository;
     private final UserRepository userRepository;
     private final FlashcardRepository flashcardRepository;
@@ -135,12 +135,16 @@ public class QuizService extends AbstractService{
      * @return A valid sortby value
      */
     @Override
-    protected String validateSortBy(String sortBy){
+    public String validateSortBy(String sortBy){
         switch (sortBy.toLowerCase(Locale.ROOT)){
             case "quizid":
                 return "quizId";
+            case "quizuserid":
+                return "quizUserId";
+            case "quizname":
+                return "quizName";
+            default:
+                return "quizId";
         }
-
-        return "quizId";
     }
 }

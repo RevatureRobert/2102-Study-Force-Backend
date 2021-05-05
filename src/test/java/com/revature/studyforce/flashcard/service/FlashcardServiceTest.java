@@ -1,6 +1,8 @@
 package com.revature.studyforce.flashcard.service;
 
+import com.revature.studyforce.flashcard.dto.FlashcardAllDTO;
 import com.revature.studyforce.flashcard.dto.FlashcardDTO;
+import com.revature.studyforce.flashcard.dto.NewFlashcardDTO;
 import com.revature.studyforce.flashcard.model.Flashcard;
 import com.revature.studyforce.flashcard.repository.FlashcardRepository;
 import com.revature.studyforce.user.model.User;
@@ -17,13 +19,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
@@ -42,9 +42,11 @@ class FlashcardServiceTest {
     Page<Flashcard> flashcardPage;
     FlashcardDTO flashcardDTO;
     Flashcard flashcard;
+    Flashcard flashcard2;
     User user;
     Topic topic;
     Timestamp now;
+    NewFlashcardDTO newFlashcard;
 
     @BeforeEach
     public void setUp() {
@@ -54,67 +56,74 @@ class FlashcardServiceTest {
         topic = new Topic();
         topic.setId(1);
         now = Timestamp.valueOf(LocalDateTime.now());
-        flashcard = new Flashcard(1, user, topic, "question", 2, 2, now, now, false);
+        newFlashcard = new NewFlashcardDTO(1,1,"question",1);
+        flashcard = new Flashcard(1, user, topic, "question", 1, 1, now, now, false);
+        flashcard2 = new Flashcard(2, user, topic, "question", 2, 2, now, now, false);
         flashcardList.add(flashcard);
+        flashcardList.add(flashcard2);
         flashcardPage = new PageImpl<>(flashcardList);
     }
 
     @Test
-    void getAllFlashcardsTest() {
-//        Mockito.doReturn(flashcardPage).when(flashcardRepository).findAll(any(PageRequest.class));
-//        Page<FlashcardDTO> DTOs = flashcardService.getAll(0,3,"difficulty","asc");
-//        DTOs = flashcardService.getAll(0,3,"topic","");
-//        DTOs = flashcardService.getAll(0,3,"created","desc");
-//        DTOs = flashcardService.getAll(0,3,"resolved","desc");
-//        DTOs = flashcardService.getAll(0,3,"id","desc");
-//        FlashcardDTO DTO = DTOs.getContent().get(0);
-//        Assertions.assertNotNull(DTO);
-//        Assertions.assertEquals(1, DTO.getCreator().getUserId());
-//        Assertions.assertEquals(1, DTO.getTopic().getId());
-//        Assertions.assertEquals(2, DTO.getQuestionDifficultyTotal());
-//        Assertions.assertEquals(2, DTO.getQuestionDifficultyAverage());
-//        Assertions.assertEquals(now, DTO.getCreatedTime());
-//        Assertions.assertEquals(now, DTO.getResolutionTime());
+    void givenPaginationArgs_whenGetAll_shouldReturnPageOfFlashcardAllDTOWithPagination() {
+        Mockito.when(flashcardRepository.findAll(any(PageRequest.class))).thenReturn(flashcardPage);
+
+        Page<FlashcardAllDTO> pageFlashcardAllDTOs = flashcardService.getAll(0,3,"difficulty","asc");
+
+        FlashcardAllDTO DTO = pageFlashcardAllDTOs.getContent().get(0);
+        Assertions.assertNotNull(DTO);
+        Assertions.assertEquals(flashcard.getId(), DTO.getFlashcardId());
+        Assertions.assertEquals(flashcard.getCreator().getUserId(), DTO.getCreatorId());
+        Assertions.assertEquals(flashcard.getQuestionDifficultyAverage(), DTO.getDifficulty());
+        Assertions.assertEquals(flashcard.isResolved(), DTO.isResolved());
+
+        DTO = pageFlashcardAllDTOs.getContent().get(1);
+        Assertions.assertNotNull(DTO);
+        Assertions.assertEquals(flashcard2.getId(), DTO.getFlashcardId());
+        Assertions.assertEquals(flashcard2.getCreator().getUserId(), DTO.getCreatorId());
+        Assertions.assertEquals(flashcard2.getQuestionDifficultyAverage(), DTO.getDifficulty());
+        Assertions.assertEquals(flashcard2.isResolved(), DTO.isResolved());
     }
 
     @Test
     void getAllByDifficultyTest() {
-//        Mockito.doReturn(flashcardPage).when(flashcardRepository).findAllByQuestionDifficultyTotal(eq(2), any(PageRequest.class));
-//        Page<FlashcardDTO> DTOs = flashcardService.getAllByDifficulty(0,3,"id","desc", 2);
-//        FlashcardDTO DTO = DTOs.getContent().get(0);
-//        Assertions.assertNotNull(DTO);
-//        Assertions.assertEquals(1, DTO.getCreator().getUserId());
-//        Assertions.assertEquals(1, DTO.getTopic().getId());
-//        Assertions.assertEquals(2, DTO.getQuestionDifficultyTotal());
-//        Assertions.assertEquals(2, DTO.getQuestionDifficultyAverage());
-//        Assertions.assertEquals(now, DTO.getCreatedTime());
-//        Assertions.assertEquals(now, DTO.getResolutionTime());
+        Mockito.doReturn(flashcardPage).when(flashcardRepository).findAllByQuestionDifficultyTotal(eq(2), any(PageRequest.class));
+        Page<FlashcardAllDTO> DTOs = flashcardService.getAllByDifficulty(0,3,"id","desc", 2);
+        FlashcardAllDTO DTO = DTOs.getContent().get(0);
+
+        Assertions.assertNotNull(DTO);
+        Assertions.assertEquals(flashcard2.getId(), DTO.getFlashcardId());
+        Assertions.assertEquals(flashcard2.getCreator().getUserId(), DTO.getCreatorId());
+        Assertions.assertEquals(flashcard2.getQuestionDifficultyAverage(), DTO.getDifficulty());
+        Assertions.assertEquals(flashcard2.isResolved(), DTO.isResolved());
     }
 
     @Test
     void getByIdTest() {
-//        Mockito.doReturn(Optional.of(flashcard)).when(flashcardRepository).findById(flashcard.getId());
-//        FlashcardDTO DTO = flashcardService.getById(1);
-//        Assertions.assertNotNull(DTO);
-//        Assertions.assertEquals(1, DTO.getCreator().getUserId());
-//        Assertions.assertEquals(1, DTO.getTopic().getId());
-//        Assertions.assertEquals(2, DTO.getQuestionDifficultyTotal());
-//        Assertions.assertEquals(2, DTO.getQuestionDifficultyAverage());
-//        Assertions.assertEquals(now, DTO.getCreatedTime());
-//        Assertions.assertEquals(now, DTO.getResolutionTime());
+        Mockito.doReturn(Optional.of(flashcard)).when(flashcardRepository).findById(flashcard.getId());
+        FlashcardAllDTO DTO = flashcardService.getById(1);
+        Assertions.assertNotNull(DTO);
+        Assertions.assertEquals(flashcard.getId(), DTO.getFlashcardId());
+        Assertions.assertEquals(flashcard.getCreator().getUserId(), DTO.getCreatorId());
+        Assertions.assertEquals(flashcard.getQuestionDifficultyAverage(), DTO.getDifficulty());
+        Assertions.assertEquals(flashcard.isResolved(), DTO.isResolved());
     }
 
     @Test
     void saveTest() {
-//        Mockito.doReturn(flashcard).when(flashcardRepository).save(any(Flashcard.class));
-//        FlashcardDTO DTO = flashcardService.save(flashcard);
-//        Assertions.assertNotNull(DTO);
-//        Assertions.assertEquals(1, DTO.getCreator().getUserId());
-//        Assertions.assertEquals(1, DTO.getTopic().getId());
-//        Assertions.assertEquals(2, DTO.getQuestionDifficultyTotal());
-//        Assertions.assertEquals(2, DTO.getQuestionDifficultyAverage());
-//        Assertions.assertEquals(now, DTO.getCreatedTime());
-//        Assertions.assertEquals(now, DTO.getResolutionTime());
+        Mockito.doReturn(flashcard).when(flashcardRepository).save(any(Flashcard.class));
+        FlashcardDTO DTO = flashcardService.save(newFlashcard);
+
+        Assertions.assertNotNull(DTO);
+        Assertions.assertEquals(flashcard.getId(),DTO.getFlashcardId());
+        Assertions.assertEquals(flashcard.getCreator(), DTO.getCreator());
+        Assertions.assertEquals(flashcard.getTopic(), DTO.getTopic());
+        Assertions.assertEquals(flashcard.getQuestion(),DTO.getQuestion());
+        Assertions.assertEquals(flashcard.getQuestionDifficultyTotal(), DTO.getQuestionDifficultyTotal());
+        Assertions.assertEquals(flashcard.getQuestionDifficultyAverage(), DTO.getQuestionDifficultyAverage());
+        Assertions.assertEquals(flashcard.getCreatedTime(), DTO.getCreatedTime());
+        Assertions.assertEquals(flashcard.getResolutionTime(), DTO.getResolutionTime());
+        Assertions.assertEquals(flashcard.isResolved(),DTO.isResolved());
     }
 
     @Test
@@ -124,12 +133,15 @@ class FlashcardServiceTest {
 
         FlashcardDTO DTO = flashcardService.update(flashcard);
         Assertions.assertNotNull(DTO);
-        Assertions.assertEquals(1, DTO.getCreator().getUserId());
-        Assertions.assertEquals(1, DTO.getTopic().getId());
-        Assertions.assertEquals(2, DTO.getQuestionDifficultyTotal());
-        Assertions.assertEquals(2, DTO.getQuestionDifficultyAverage());
-        Assertions.assertEquals(now, DTO.getCreatedTime());
-        Assertions.assertEquals(now, DTO.getResolutionTime());
+        Assertions.assertEquals(flashcard.getId(),DTO.getFlashcardId());
+        Assertions.assertEquals(flashcard.getCreator(), DTO.getCreator());
+        Assertions.assertEquals(flashcard.getTopic(), DTO.getTopic());
+        Assertions.assertEquals(flashcard.getQuestion(),DTO.getQuestion());
+        Assertions.assertEquals(flashcard.getQuestionDifficultyTotal(), DTO.getQuestionDifficultyTotal());
+        Assertions.assertEquals(flashcard.getQuestionDifficultyAverage(), DTO.getQuestionDifficultyAverage());
+        Assertions.assertEquals(flashcard.getCreatedTime(), DTO.getCreatedTime());
+        Assertions.assertEquals(flashcard.getResolutionTime(), DTO.getResolutionTime());
+        Assertions.assertEquals(flashcard.isResolved(),DTO.isResolved());
     }
 
     @Test
@@ -145,14 +157,7 @@ class FlashcardServiceTest {
 
     @Test
     void deleteTest() {
-//        Mockito.doReturn(Optional.of(flashcard)).when(flashcardRepository).findById(flashcard.getId());
-//        FlashcardDTO DTO = flashcardService.delete(flashcard);
-//        Assertions.assertNotNull(DTO);
-//        Assertions.assertEquals(1, DTO.getCreator().getUserId());
-//        Assertions.assertEquals(1, DTO.getTopic().getId());
-//        Assertions.assertEquals(2, DTO.getQuestionDifficultyTotal());
-//        Assertions.assertEquals(2, DTO.getQuestionDifficultyAverage());
-//        Assertions.assertEquals(now, DTO.getCreatedTime());
-//        Assertions.assertEquals(now, DTO.getResolutionTime());
+        flashcardService.delete(1);
+        Mockito.verify(flashcardRepository, Mockito.times(1)).deleteById(1);
     }
 }
