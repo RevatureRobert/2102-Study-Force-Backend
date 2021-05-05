@@ -2,7 +2,10 @@ package com.revature.studyforce.stacktrace.service;
 
 import com.revature.studyforce.stacktrace.dto.SolutionDTO;
 import com.revature.studyforce.stacktrace.model.Solution;
+import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.repository.SolutionRepository;
+import com.revature.studyforce.user.model.Authority;
+import com.revature.studyforce.user.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -39,11 +42,15 @@ class SolutionServiceTest {
     Solution testNullSolution;
     List<SolutionDTO> testSolutionDTOList;
     List<Solution> testSolutionList;
+    User testUser;
+    Stacktrace testStacktrace;
 
     @BeforeEach
     public void setUp(){
-        testSolutionDTO = new SolutionDTO(1, null, null, "Test Body", false, null, null);
-        testSolution = new Solution(1, null, null, "Test Body", false, null, null);
+        testUser = new User(1, "test.test.com", "TestPassword", "Test", "Test", false, true, true, Authority.USER, null, null);
+        testStacktrace = new Stacktrace(1, testUser, "Test Title", "Test Body", null, null, null);
+        testSolutionDTO = new SolutionDTO(1, 1, 1, "Test Body", false, null);
+        testSolution = new Solution(1, testStacktrace, testUser, "Test Body", false, null, null);
         testNullSolution = null;
         testSolutionDTOList = new ArrayList<>();
         testSolutionDTOList.add(testSolutionDTO);

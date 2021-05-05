@@ -1,6 +1,9 @@
 package com.revature.studyforce.stacktrace.dto;
 
 import com.revature.studyforce.stacktrace.model.Solution;
+import com.revature.studyforce.stacktrace.model.Stacktrace;
+import com.revature.studyforce.user.model.Authority;
+import com.revature.studyforce.user.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,11 +23,15 @@ class SolutionDTOTest {
 
     Solution testSolution;
     SolutionDTO testSolutionDTO;
+    User testUser;
+    Stacktrace testStacktrace;
 
     @BeforeEach
     public void setUp(){
-        testSolutionDTO = new SolutionDTO(1, null, null, "Test Body", false, null, null);
-        testSolution = new Solution(1, null, null, "Test Body", false, null, null);
+        testUser = new User(1, "test.test.com", "TestPassword", "Test", "Test", false, true, true, Authority.USER, null, null);
+        testStacktrace = new Stacktrace(1, testUser, "Test Title", "Test Body", null, null, null);
+        testSolutionDTO = new SolutionDTO(1, 1, 1, "Test Body", false, null);
+        testSolution = new Solution(1, testStacktrace, testUser, "Test Body", false, null, null);
     }
 
     /**
@@ -38,8 +45,8 @@ class SolutionDTOTest {
         assertEquals(solutionDTO.getBody(), testSolution.getBody());
         assertEquals(solutionDTO.getAdminSelected(), testSolution.getAdminSelected());
         assertEquals(solutionDTO.getCreationTime(), testSolution.getCreationTime());
-        assertEquals(solutionDTO.getUserId(), testSolution.getUserId());
-        assertEquals(solutionDTO.getStackTraceId(), testSolution.getStackTraceId());
+        assertEquals(solutionDTO.getUserId(), testSolution.getUserId().getUserId());
+        assertEquals(solutionDTO.getStackTraceId(), testSolution.getStackTraceId().getStacktraceId());
     }
 
     /**
@@ -49,29 +56,5 @@ class SolutionDTOTest {
     void SolutionToDTONullSolutionTest(){
         Function<Solution, SolutionDTO> solutionToDTOFunction = SolutionDTO.solutionToDTO();
         assertThrows(IllegalArgumentException.class, () -> solutionToDTOFunction.apply(null));
-    }
-
-    /**
-     * Test that a SolutionDTO can correctly return a Solution
-     */
-    @Test
-    void DTOToSolutionTest(){
-        Solution solution = SolutionDTO.dtoToSolution().apply(testSolutionDTO);
-        assertEquals(solution.getClass(), Solution.class);
-        assertEquals(solution.getSolutionId(), testSolutionDTO.getSolutionId());
-        assertEquals(solution.getBody(), testSolutionDTO.getBody());
-        assertEquals(solution.getAdminSelected(), testSolutionDTO.getAdminSelected());
-        assertEquals(solution.getCreationTime(), testSolutionDTO.getCreationTime());
-        assertEquals(solution.getUserId(), testSolutionDTO.getUserId());
-        assertEquals(solution.getStackTraceId(), testSolutionDTO.getStackTraceId());
-    }
-
-    /**
-     * Test that passing a null SolutionDTO throws an IllegalArgumentException
-     */
-    @Test
-    void DTOToSolutionNullSolutionDTOTest(){
-        Function<SolutionDTO, Solution> dtoToSolutionFunction = SolutionDTO.dtoToSolution();
-        assertThrows(IllegalArgumentException.class, () -> dtoToSolutionFunction.apply(null));
     }
 }
