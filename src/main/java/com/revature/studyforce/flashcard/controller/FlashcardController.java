@@ -136,7 +136,7 @@ public class FlashcardController {
      * @param id - Flashcard to be deleted from the database
      * @return - returns deleted Flashcard
      */
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public @ResponseBody Boolean delete(@PathVariable("id") Integer id) {
         flashcardService.delete(id);
         return true;

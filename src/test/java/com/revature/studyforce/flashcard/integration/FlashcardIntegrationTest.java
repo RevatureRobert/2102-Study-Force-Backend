@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.jayway.jsonpath.JsonPath;
 import com.revature.studyforce.flashcard.controller.FlashcardController;
 import com.revature.studyforce.flashcard.dto.FlashcardDTO;
+import com.revature.studyforce.flashcard.dto.NewFlashcardDTO;
 import com.revature.studyforce.flashcard.model.Flashcard;
 import com.revature.studyforce.flashcard.model.Topic;
 import com.revature.studyforce.flashcard.repository.FlashcardRepository;
@@ -50,7 +51,7 @@ class FlashcardIntegrationTest {
 
     private MockMvc mockMvc;
 
-//    @Autowired
+    //    @Autowired
     private WebApplicationContext context;
 
     @Autowired
@@ -68,6 +69,7 @@ class FlashcardIntegrationTest {
     List<Flashcard> flashcardList = new ArrayList<>();
     Page<Flashcard> flashcardPage;
     FlashcardDTO flashcardDTO;
+    NewFlashcardDTO newFlashcardDTO;
     Flashcard flashcard;
     User user;
     Topic topic;
@@ -88,6 +90,7 @@ class FlashcardIntegrationTest {
         flashcard.setResolutionTime(null);
         flashcardList.add(flashcard);
         flashcardPage = new PageImpl<>(flashcardList);
+        newFlashcardDTO = new NewFlashcardDTO(1, 2, flashcard.getQuestion(), flashcard.getQuestionDifficultyTotal());
 
         System.out.println(userRepository.save(user));
         System.out.println(topicRepository.save(topic));
@@ -97,18 +100,15 @@ class FlashcardIntegrationTest {
 
     @Test
     void getAllTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/all")
+        mockMvc.perform(MockMvcRequestBuilders.get("/flashcards")
                 .content(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].creator").hasJsonPath())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].creatorId").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].question").isString())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].questionDifficultyTotal").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].questionDifficultyTotal").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].questionDifficultyAverage").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].createdTime").doesNotExist())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].resolutionTime").doesNotExist());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].difficulty").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].resolved").isBoolean());
     }
 
     @Test
@@ -118,31 +118,23 @@ class FlashcardIntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].creator").hasJsonPath())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].topic.topicName").isString())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].creatorId").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].question").isString())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].questionDifficultyTotal").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].questionDifficultyTotal").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].questionDifficultyAverage").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].createdTime").doesNotExist())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].resolutionTime").doesNotExist());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].difficulty").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].resolved").isBoolean());
     }
 
     @Test
     void getAllByTopicTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/topic?topicName=java")
+        mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/topics?topicName=java")
                 .content(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].creator").hasJsonPath())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].topic.topicName").isString())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].creatorId").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].question").isString())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].questionDifficultyTotal").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].questionDifficultyTotal").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].questionDifficultyAverage").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].createdTime").doesNotExist())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].resolutionTime").doesNotExist());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].difficulty").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].resolved").isBoolean());
     }
 
     @Test
@@ -152,45 +144,33 @@ class FlashcardIntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].creator").hasJsonPath())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].topic.topicName").isString())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].creatorId").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].question").isString())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].questionDifficultyTotal").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].questionDifficultyTotal").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].questionDifficultyAverage").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].createdTime").doesNotExist())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].resolutionTime").doesNotExist());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].difficulty").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].resolved").isBoolean());
     }
 
     @Test
     void getByIdTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/id/3")
+        mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/3")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.creator").hasJsonPath())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.topic.topicName").isString())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.creatorId").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.question").isString())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.questionDifficultyTotal").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.questionDifficultyTotal").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.questionDifficultyAverage").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.createdTime").doesNotExist())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.resolutionTime").doesNotExist());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.difficulty").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.resolved").isBoolean());
 
     }
 
     @Test
     void saveTest() throws Exception {
-        user.setLastLogin(null);
-        user.setRegistrationTime(null);
-        flashcard.setCreatedTime(null);
-        System.out.println(new Gson().toJson(flashcard));
 
 //        mockMvc = MockMvcBuilders.standaloneSetup(flashcardController).build();
         mockMvc.perform(MockMvcRequestBuilders.post("/flashcards")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(flashcard)))
+                .content(new Gson().toJson(newFlashcardDTO)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
@@ -201,7 +181,7 @@ class FlashcardIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.questionDifficultyTotal").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.questionDifficultyAverage").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.createdTime").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.resolutionTime").isNumber());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.resolutionTime").doesNotExist());
 
     }
 
@@ -230,26 +210,13 @@ class FlashcardIntegrationTest {
     }
 
     @Test
-    void testDelete() throws Exception {
-        user.setLastLogin(null);
-        user.setRegistrationTime(null);
-        flashcard.setCreatedTime(null);
-        System.out.println(new Gson().toJson(flashcard));
-
+    void deleteTest() throws Exception {
 //        mockMvc = MockMvcBuilders.standaloneSetup(flashcardController).build();
-        mockMvc.perform(MockMvcRequestBuilders.delete("/flashcards")
+        mockMvc.perform(MockMvcRequestBuilders.delete("/flashcards/3")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new Gson().toJson(flashcard)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.creator").hasJsonPath())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.topic.topicName").isString())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.question").isString())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.questionDifficultyTotal").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.questionDifficultyTotal").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.questionDifficultyAverage").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.createdTime").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.resolutionTime").isNumber());
+                .andExpect(MockMvcResultMatchers.jsonPath("$").value(true));
     }
 }
