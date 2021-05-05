@@ -6,11 +6,19 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
+/**
+ * Basic Model for a flashcard subscription compositeKey
+ * @author Brandon Pinkerton
+ */
 @Embeddable
 @NoArgsConstructor
 @Data
 public class FlashcardSubscriptionId implements Serializable {
 
+    /**
+     * this is the composite key holding a reference to
+     * the subscription Id and a FlashCardId
+     */
     private Integer subscription;
     private Integer flashcard;
 
