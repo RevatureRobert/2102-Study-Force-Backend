@@ -101,7 +101,7 @@ public class NotificationService {
      */
     public NotificationDto delete(NotificationDto notificationDto){
         notificationRepository.delete(new Notification(notificationDto));
-
+        return notificationDto;
     }
 
     /***
