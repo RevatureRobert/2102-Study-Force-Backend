@@ -12,6 +12,7 @@ import java.util.function.Function;
 /**
  * UserDTO to transfer User data
  * @author Lok Kan Kung
+ * @author Daniel Bernier
  */
 
 @Data
@@ -38,14 +39,19 @@ public class UserDTO {
 
     private Timestamp lastLogin;
 
+    /**
+     * This function converts User object to UserDTO object
+     * If user is null, it throws IllegalArgumentException
+     * @return a Function which convert User to UserDTO Object
+     */
     public static Function<User, UserDTO> userToDTO(){
         return user -> {
             if(user == null){
                 throw new IllegalArgumentException("Parameter user cannot be null");
             }
             return new UserDTO (
-                    user.getUserId (),
-                    user.getEmail (),
+                    user.getUserId(),
+                    user.getEmail(),
                     user.getName(),
                     user.isActive(),
                     user.isSubscribedFlashcard (),
@@ -57,21 +63,26 @@ public class UserDTO {
         };
     }
 
+    /**
+     * This function converts UserDTO object back to User object
+     * If userDTO is null, it throws IllegalArgumentException
+     * @return a Function which convert UserDTO to User Object
+     */
     public static Function<UserDTO, User> dtoToUser(){
         return userDTO -> {
             if(userDTO == null){
                 throw new IllegalArgumentException("Parameter userDTO cannot be null");
             }
             return new User (
-                    userDTO.getUserId (),
-                    userDTO.getEmail (),
+                    userDTO.getUserId(),
+                    userDTO.getEmail(),
                     userDTO.getName(),
-                    userDTO.isActive (),
-                    userDTO.isSubscribedFlashcard (),
-                    userDTO.isSubscribedStacktrace (),
-                    userDTO.getAuthority (),
-                    userDTO.getRegistrationTime (),
-                    userDTO.getLastLogin ()
+                    userDTO.isActive(),
+                    userDTO.isSubscribedFlashcard(),
+                    userDTO.isSubscribedStacktrace(),
+                    userDTO.getAuthority(),
+                    userDTO.getRegistrationTime(),
+                    userDTO.getLastLogin()
             );
         };
     }
