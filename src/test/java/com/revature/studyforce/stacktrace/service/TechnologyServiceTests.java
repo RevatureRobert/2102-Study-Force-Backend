@@ -15,11 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class TechnologyServiceTest {
+class TechnologyServiceTests {
+    //TODO: Standardize Tests across project
     List<Technology> technologyArrayList;
 
     @MockBean
@@ -28,28 +31,35 @@ public class TechnologyServiceTest {
     @Autowired
     private TechnologyService technologyService;
 
+    private Technology testTech;
+
+
     @BeforeEach
     private void beforeEach() {
+        testTech = new Technology(0,"TestTech");
         technologyArrayList = new ArrayList<>();
-        technologyArrayList.add(
-                new Technology(0,"TestTech")
-        );
+        technologyArrayList.add(testTech);
     }
 
     @Test
-    void getAllTechnologies() {
-        Mockito.when(technologyRepository.findAll()).thenReturn(technologyArrayList);
-        List<Technology> returnedTechnologyList = technologyService.getAllTechnologies().stream().map(TechnologyDTO.DTOtoTechnology()).collect(Collectors.toList());
+    void WhenGetAllTechnologies_ThenTechnologyListReturned() {
+        Mockito.doReturn(technologyArrayList).when(technologyRepository).findAll();
+        List<Technology> returnedTechnologyList = technologyService.getAllTechnologies().stream().map(TechnologyDTO.dtoToTechnology()).collect(Collectors.toList());
         for(int i = 0; i < returnedTechnologyList.size(); i++){
             assertEquals(returnedTechnologyList.get(i).getTechnologyId(), technologyArrayList.get(i).getTechnologyId());
             assertEquals(returnedTechnologyList.get(i).getTechnologyName(), technologyArrayList.get(i).getTechnologyName());
         }
     }
     @Test
-    void createTechnology() {
-        technologyService.createNewTechnology(new Technology(0,"TestTech"));
-        Mockito.when(technologyRepository.findAll()).thenReturn(technologyArrayList);
-        assertEquals(technologyRepository.findAll().get(0).getTechnologyId(), 0);
-        assertEquals(technologyRepository.findAll().get(0).getTechnologyName(), "TestTech");
+    void WhenCreateTechnology_ThenTechnologyReturned() {
+        Mockito.doReturn(testTech).when(technologyRepository).save(any(Technology.class));
+        TechnologyDTO technologyDTO = technologyService.createNewTechnology(new TechnologyDTO(0,"TestTech"));
+        assertEquals(0,technologyDTO.getTechnologyId());
+        assertEquals("TestTech",technologyDTO.getTechnologyName());
     }
+/*    @Test()
+    void deleteTechnologyTest(){
+        technologyRepository.save(technologyArrayList.get(0));
+        technologyService.deleteTechnology(1);
+    }*/
 }
