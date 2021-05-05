@@ -62,14 +62,23 @@ public class StacktraceService {
         stacktraceRepo.deleteById(stacktraceId);
     }
 
-
-
-    @Transactional
-    public void save(StacktraceDTO stacktraceDTO){
+  /**
+   * Saves a stacktrace, takes in StacktraceDTO as a parameter * Uses repo to save it
+   *
+   * @param stacktraceDTO The DTO representation of stacktrace
+   */
+  @Transactional
+  public void save(StacktraceDTO stacktraceDTO) {
         Stacktrace stacktrace = mapFromDtoToStacktrace(stacktraceDTO);
         stacktraceRepo.save(stacktrace);
     }
 
+    /**
+     * Maps from the DTO to a Stacktrace , takes the fields of DTO to Stacktrace
+     * Needed for saving
+     * @param stacktraceDTO The DTO representation of stacktrace
+     * @return returns a stacktrace that holds the problem a user wants to solve.
+     */
     private Stacktrace mapFromDtoToStacktrace(StacktraceDTO stacktraceDTO) {
         Stacktrace stacktrace= new Stacktrace();
         stacktrace.setStacktraceId(stacktraceDTO.getStacktraceId());
@@ -79,7 +88,5 @@ public class StacktraceService {
         stacktrace.setTechnology(stacktraceDTO.getTechnology());
         stacktrace.setCreationTime(Timestamp.from(Instant.now()));
         return  stacktrace;
-
-
     }
 }
