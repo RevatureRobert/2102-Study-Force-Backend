@@ -36,6 +36,8 @@ public class TechnologyService {
      */
     public Technology deleteTechnology(int technologyId){
         Technology technology = technologyRepo.findById(technologyId).orElse(null);
+        if(technology == null)
+            return null;
         technologyRepo.delete(technology);
         return technology;
     }

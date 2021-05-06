@@ -4,8 +4,6 @@ import com.revature.studyforce.stacktrace.dto.SolutionDTO;
 import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.service.SolutionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +23,6 @@ public class SolutionController {
 
     /**
      * Given a stacktrace id, returns all solutions posted on that stacktrace
-     *  TODO: implement pagination
      * @param stackTraceId Stacktrace primary id
      * @return  List of solutions for the given stacktrace id
      */
@@ -69,7 +66,6 @@ public class SolutionController {
      */
     @DeleteMapping("/{solutionId}")
     public SolutionDTO deleteSolution(@PathVariable int solutionId){
-        SolutionDTO solutionDTO = solutionService.deleteSolution(solutionId);
-        return solutionDTO;
+        return solutionService.deleteSolution(solutionId);
     }
 }

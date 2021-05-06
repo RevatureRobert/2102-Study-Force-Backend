@@ -4,7 +4,6 @@ import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.service.StacktraceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,7 +45,7 @@ public class StackTraceController {
      * @return Response Entity with no content
      */
     @DeleteMapping("/{stacktraceId}")
-    public Stacktrace deleteStacktraceById(@PathVariable("stacktraceId") int stacktraceId){
+    public StacktraceDTO deleteStacktraceById(@PathVariable("stacktraceId") int stacktraceId){
         return stacktraceService.deleteStackTraceById(stacktraceId);
     }
 

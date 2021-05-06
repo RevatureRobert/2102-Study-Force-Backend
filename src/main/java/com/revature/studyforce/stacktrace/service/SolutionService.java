@@ -5,7 +5,6 @@ import com.revature.studyforce.stacktrace.dto.StacktraceUserDTO;
 import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.repository.SolutionRepository;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
-import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -101,8 +100,10 @@ public class SolutionService {
      */
     public SolutionDTO deleteSolution(int solutionId){
         Solution solution = solutionRepository.findById(solutionId).orElse(null);
+        if(solution == null)
+            return null;
         solutionRepository.delete(solution);
-        SolutionDTO solutionDTO = new SolutionDTO(
+        return new SolutionDTO(
                 solution.getSolutionId(),
                 solution.getStackTraceId().getStacktraceId(),
                 StacktraceUserDTO.userToDTO().apply(solution.getUserId()),
@@ -110,6 +111,5 @@ public class SolutionService {
                 solution.getAdminSelected(),
                 solution.getCreationTime()
         );
-        return solutionDTO;
     }
 }

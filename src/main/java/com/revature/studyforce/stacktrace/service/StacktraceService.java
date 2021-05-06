@@ -1,21 +1,17 @@
 package com.revature.studyforce.stacktrace.service;
 
 import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
-import com.revature.studyforce.stacktrace.model.Solution;
+import com.revature.studyforce.stacktrace.dto.StacktraceUserDTO;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
-import com.revature.studyforce.stacktrace.model.Technology;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
 import com.revature.studyforce.stacktrace.repository.TechnologyRepository;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
-import java.time.Instant;
+
 import java.util.List;
 import java.util.Optional;
-import java.util.Stack;
 import java.util.stream.Collectors;
 
 /**
@@ -67,10 +63,19 @@ public class StacktraceService {
      * Deletes a Stacktrace by the primary id passed as parameter
      * @param stacktraceId primary id of Stacktrace
      */
-    public Stacktrace deleteStackTraceById(int stacktraceId){
+    public StacktraceDTO deleteStackTraceById(int stacktraceId){
         Stacktrace stacktrace = stacktraceRepo.findById(stacktraceId).orElse(null);
+        if(stacktrace == null){
+            return null;
+        }
         stacktraceRepo.delete(stacktrace);
-        return stacktrace;
+        return new StacktraceDTO(
+                stacktrace.getStacktraceId(),
+                StacktraceUserDTO.userToDTO().apply(stacktrace.getUserId()),
+                stacktrace.getTitle(),
+                stacktrace.getBody(),
+                stacktrace.getTechnology(),
+                stacktrace.getCreationTime());
     }
 
   /**
