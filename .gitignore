@@ -14,8 +14,8 @@ buildNumber.properties
 
 ### Example user template
 
-# IntelliJ project files
-.idea
+.idea/*
+!.idea/externalDependencies.xml
 *.iml
 out
 gen
