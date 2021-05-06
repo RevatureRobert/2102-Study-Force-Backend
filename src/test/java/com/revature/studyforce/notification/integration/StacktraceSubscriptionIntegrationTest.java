@@ -37,7 +37,7 @@ import java.time.LocalDateTime;
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:test-application.properties")
-public class StacktraceSubscriptionIntegrationTest {
+class StacktraceSubscriptionIntegrationTest {
 
     private MockMvc mockMvc;
 
@@ -100,6 +100,8 @@ public class StacktraceSubscriptionIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.stacktraceSubscriptionId.stacktrace").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.stacktraceSubscriptionId.subscription").value(2))
                 .andReturn();
         System.out.println("GET");
         System.out.println(result.getResponse().getContentAsString());

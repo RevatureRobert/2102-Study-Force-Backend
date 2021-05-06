@@ -1,8 +1,6 @@
 package com.revature.studyforce.notification.service;
 
-import com.revature.studyforce.flashcard.repository.FlashcardRepository;
-import com.revature.studyforce.notification.model.FlashcardSubscriptionId;
-import com.revature.studyforce.notification.repository.FlashcardSubscriptionRepository;
+
 import com.revature.studyforce.notification.repository.StacktraceSubscriptionRepository;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
 import com.revature.studyforce.notification.model.StacktraceSubscription;
@@ -20,9 +18,9 @@ import java.util.Objects;
 @Service
 public class StacktraceSubscriptionService {
 
-    private StacktraceSubscriptionRepository stacktraceSubscriptionRepository;
-    private SubscriptionService subscriptionService;
-    private StacktraceRepository stacktraceRepository;
+    private final StacktraceSubscriptionRepository stacktraceSubscriptionRepository;
+    private final SubscriptionService subscriptionService;
+    private final StacktraceRepository stacktraceRepository;
 
 
 
