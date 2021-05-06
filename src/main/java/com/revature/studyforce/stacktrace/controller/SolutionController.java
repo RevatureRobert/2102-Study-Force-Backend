@@ -31,9 +31,9 @@ public class SolutionController {
      */
     @GetMapping("/{stackTraceId}")
     public List<SolutionDTO> getAllSolutionsForStacktrace(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                          @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+                                                          @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize,
                                                           @PathVariable int stackTraceId){
-        return solutionService.getAllSolutionsForStacktrace(stackTraceId);
+        return solutionService.getAllSolutionsForStacktrace(stackTraceId, page, pageSize);
     }
 
     /**

@@ -7,6 +7,8 @@ import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,8 +39,8 @@ public class SolutionService {
      * @param stackTraceId Primary id of stacktrace
      * @return All solutions posted for the given stacktrace
      */
-    public List<SolutionDTO> getAllSolutionsForStacktrace(int stackTraceId){
-        List<Solution> solutions = solutionRepository.findByStackTraceId(stackTraceId);
+    public List<SolutionDTO> getAllSolutionsForStacktrace(int stackTraceId, int page, int pageSize){
+        List<Solution> solutions = solutionRepository.findByStackTraceId(stackTraceId, PageRequest.of(page, pageSize));
         List<SolutionDTO> solutionDTOS = new ArrayList<>();
 
         for(Solution solution : solutions){

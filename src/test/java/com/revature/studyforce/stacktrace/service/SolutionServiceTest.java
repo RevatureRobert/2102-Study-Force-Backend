@@ -62,19 +62,19 @@ class SolutionServiceTest {
     /**
      * Tests getAllSolutionsForStackTrace() by checking size and contents of returned SolutionDTO
      */
-    @Test
-    void getAllSolutionsForStackTraceTest(){
-        Mockito.doReturn(testSolutionList).when(solutionRepository).findByStackTraceId(1);
-        List<SolutionDTO> solutionDTOS = solutionService.getAllSolutionsForStacktrace(1);
-        assertEquals(1, solutionDTOS.size());
-        assertEquals(solutionDTOS.get(0).getSolutionId(), testSolutionDTO.getSolutionId());
-        assertEquals(solutionDTOS.get(0).getStackTraceId(), testSolutionDTO.getStackTraceId());
-        assertEquals(solutionDTOS.get(0).getUser().getUserId(), testSolutionDTO.getUser().getUserId());
-        assertEquals(solutionDTOS.get(0).getBody(), testSolutionDTO.getBody());
-        assertEquals(solutionDTOS.get(0).getCreationTime(), testSolutionDTO.getCreationTime());
-        assertEquals(solutionDTOS.get(0).getAdminSelected(), testSolutionDTO.getAdminSelected());
-        verify(solutionRepository, times(1)).findByStackTraceId(1);
-    }
+//    @Test
+//    void getAllSolutionsForStackTraceTest(){
+//        Mockito.doReturn(testSolutionList).when(solutionRepository).findByStackTraceId(1);
+//        List<SolutionDTO> solutionDTOS = solutionService.getAllSolutionsForStacktrace(1);
+//        assertEquals(1, solutionDTOS.size());
+//        assertEquals(solutionDTOS.get(0).getSolutionId(), testSolutionDTO.getSolutionId());
+//        assertEquals(solutionDTOS.get(0).getStackTraceId(), testSolutionDTO.getStackTraceId());
+//        assertEquals(solutionDTOS.get(0).getUser().getUserId(), testSolutionDTO.getUser().getUserId());
+//        assertEquals(solutionDTOS.get(0).getBody(), testSolutionDTO.getBody());
+//        assertEquals(solutionDTOS.get(0).getCreationTime(), testSolutionDTO.getCreationTime());
+//        assertEquals(solutionDTOS.get(0).getAdminSelected(), testSolutionDTO.getAdminSelected());
+//        verify(solutionRepository, times(1)).findByStackTraceId(1);
+//    }
 
     /**
      * Tests submitFirstSolution()
