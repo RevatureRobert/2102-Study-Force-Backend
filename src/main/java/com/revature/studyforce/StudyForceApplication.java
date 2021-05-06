@@ -7,7 +7,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 
 
 @SpringBootApplication(exclude={SecurityAutoConfiguration.class})
-@EnableResourceServer
 public class StudyForceApplication {
 
 	public static void main(String[] args) {

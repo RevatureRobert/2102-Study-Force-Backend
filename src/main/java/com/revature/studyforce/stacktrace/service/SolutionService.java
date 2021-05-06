@@ -26,6 +26,7 @@ public class SolutionService {
     private final SolutionRepository solutionRepository;
     private final StacktraceRepository stacktraceRepository;
     private final UserRepository userRepository;
+    private final int defaultPageSize;
 
     @Autowired
     public SolutionService(SolutionRepository solutionRepository,
@@ -33,6 +34,7 @@ public class SolutionService {
         this.solutionRepository =solutionRepository;
         this.stacktraceRepository = stacktraceRepository;
         this.userRepository = userRepository;
+        this.defaultPageSize = 5;
     }
 
     /**
@@ -127,9 +129,9 @@ public class SolutionService {
      * @return valid page size
      */
     public int validatePageSize(int pageSize){
-        if(pageSize != 5 || pageSize != 10 || pageSize != 20)
-            pageSize = 5;
-        return pageSize;
+        if(pageSize == 5 || pageSize == 10 || pageSize == 20)
+            return pageSize;
+        return defaultPageSize;
     }
 
     /**
