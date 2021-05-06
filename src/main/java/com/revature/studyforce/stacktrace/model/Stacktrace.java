@@ -21,8 +21,8 @@ import java.util.Set;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Stacktrace {
     /**
-     * @author : Noel Shaji
      * Primary key
+     * @author : Noel Shaji
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
