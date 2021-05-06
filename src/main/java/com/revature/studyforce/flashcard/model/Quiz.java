@@ -1,33 +1,38 @@
 package com.revature.studyforce.flashcard.model;
 
+
 import com.revature.studyforce.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
- * Model used to store the difficulty ratings of a flashcards {@link Flashcard}, {@link User}, {@link Difficulty}
- *@author Edson Rodriguez
+ * Quiz model
+ * @author Edson Rodriguez
  */
 @Entity
-@Table(name = "rating")
+@Table(name = "quizzes")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Rating {
+public class Quiz {
     @Id
     @GeneratedValue
-    private int id;
+    @Column(name = "quiz_id")
+    private int quizId;
     @NotNull
-    @ManyToOne
-    private Flashcard flashcard;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User quizUser;
     @NotNull
-    @ManyToOne
-    private User user;
+    @Column(name = "quiz_name")
+    private String quizName;
     @NotNull
-    @Column(name = "rating")
-    private Difficulty ratingValue;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Flashcard> flashcards;
+
+
 
 }
