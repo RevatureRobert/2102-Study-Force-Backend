@@ -95,11 +95,6 @@ public class AnswerService  implements AbstractService{
         else
             answers = answerRepository.findByFlashcard_id(flashcardId, PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
 
-        answers.forEach((answer -> {
-            answer.getCreator().setPassword("");
-            answer.getFlashcard().getCreator().setPassword("");
-        }));
-
         return answers;
     }
 
