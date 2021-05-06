@@ -54,7 +54,7 @@ public class User  implements UserDetails {
     private boolean isSubscribedStacktrace;
 
     @Enumerated(EnumType.ORDINAL)
-    @ColumnDefault ("USER")
+    @ColumnDefault ("1")
     @JoinColumn(name = "authority_id", referencedColumnName = "authority_id")
     @NotNull
     private Authority authority;
