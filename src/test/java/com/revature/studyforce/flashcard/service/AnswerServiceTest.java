@@ -26,6 +26,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
+ * Test class for AnswerService {@link AnswerService}
  * @author Edson Rodriguez
  */
 @SpringBootTest
@@ -68,7 +69,6 @@ class AnswerServiceTest {
         assertFalse(res.isTrainerSelected());
         assertNotNull(res.getCreationTime());
         assertNull(res.getResolutionTime());
-
     }
 
     @Test

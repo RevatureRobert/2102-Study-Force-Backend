@@ -16,10 +16,8 @@ import javax.validation.constraints.Positive;
 @AllArgsConstructor
 public class AnswerDTO {
 
-    @NotNull
     @Positive
     private int userId;
-    @NotNull
     @Positive
     private int flashcardId;
     @NotNull

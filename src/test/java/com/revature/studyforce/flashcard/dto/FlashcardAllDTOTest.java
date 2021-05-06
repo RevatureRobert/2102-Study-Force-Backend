@@ -9,6 +9,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+/**
+ * Test class for method in FlashcardAllDTO {@link FlashcardAllDTO}
+ * @author Luke Mohr
+ */
 @SpringBootTest
 class FlashcardAllDTOTest {
 

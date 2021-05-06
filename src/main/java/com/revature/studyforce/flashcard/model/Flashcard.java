@@ -27,12 +27,14 @@ public class Flashcard {
     @NotNull
     @ManyToOne
     private User creator;
+    @NotNull
     @ManyToOne
     private Topic topic;
     @NotNull
     private String question;
     private int questionDifficultyTotal = 0;
     private int questionDifficultyAverage = 0;
+    @NotNull
     private Timestamp createdTime = Timestamp.valueOf(LocalDateTime.now());
     private Timestamp resolutionTime = Timestamp.valueOf(LocalDateTime.now());
     private boolean isResolved = false;

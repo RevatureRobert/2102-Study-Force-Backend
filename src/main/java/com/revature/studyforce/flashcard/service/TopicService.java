@@ -8,6 +8,7 @@ import java.util.List;
 
 
 /**
+ * Service class for the TopicRepository {@link TopicRepository}
  * @author Kevin wang
  */
 @Service
@@ -27,7 +28,7 @@ public class TopicService {
     /**
      * Retrieve topic of the specified id
      * @param id The id given to the topic element on the database
-     * @return
+     * @return the Topic matching the given Id
      */
     public Topic getTopicById(int id) {
         return topicRepository.findById(id).orElse(null);

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/flashcards/vote")
+@RequestMapping("/flashcards/votes")
 public class VoteController {
 
     @Autowired
@@ -25,11 +25,11 @@ public class VoteController {
 
     /**
      * Adds a new answer vote to the database
-     * @param vote A DTO for a vote object that has the information to be persisted
+     * @param voteDTO A DTO for a vote object that has the information to be persisted
      * @return The vote that was added
      */
     @PostMapping
-    public Vote createAnswerVote(@RequestBody VoteDTO vote) {
-        return voteService.addVote(vote);
+    public Vote createAnswerVote(@RequestBody VoteDTO voteDTO) {
+        return voteService.addVote(voteDTO);
     }
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/flashcards/rate")
+@RequestMapping("/flashcards/ratings")
 public class RatingController {
 
     private final RatingService ratingService;
@@ -30,5 +30,10 @@ public class RatingController {
     @PostMapping("/")
     public RatingResponseDTO createRating(@RequestBody RatingDTO rating ){
         return ratingService.createRating(rating);
+    }
+
+    @GetMapping
+    public RatingDTO getRating(@RequestParam int flashcardId, @RequestParam int userId){
+        return ratingService.getRating(flashcardId,userId);
     }
 }

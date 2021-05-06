@@ -3,6 +3,8 @@ package com.revature.studyforce.flashcard.service;
 
 /**
  * Abstract service with commonly-used methods
+ *
+ * @author Luke Mohr
  */
 public interface AbstractService {
     /**

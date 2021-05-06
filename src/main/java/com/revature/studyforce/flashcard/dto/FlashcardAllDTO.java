@@ -5,22 +5,34 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.function.Function;
 
+/**
+ * Data transfer object with the minimum information to display a flashcard on the front-end
+ * @author Edson Rodriguez
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class FlashcardAllDTO {
+    @Positive
     private int flashcardId;
+    @Positive
     private int creatorId;
+    @NotNull
     private String topicName;
+    @NotNull
     private String question;
+    @Positive
     private int difficulty;
     private boolean isResolved;
 
     /**
-     * Converts Flashcard to FlashcardDTO
-     * @return - FlashcardDTO
+     * Creates a function that will Convert Flashcard to FlashcardDTO
+     * @return - the function that will convert flashcard to a flashcardDTO
      */
     public static Function<Flashcard, FlashcardAllDTO> convertToDTO() {
         return flashcard -> {

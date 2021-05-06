@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/flashcards/answers")
+@RequestMapping("/answers")
 public class AnswerController {
 
     private final AnswerService answerService;
@@ -33,7 +33,7 @@ public class AnswerController {
      * @param order The order in which the list is displayed ["ASC"|"DESC"]
      * @return a Page of answers that match the Flashcard id with pagination and sorting applied
      */
-    @GetMapping("/flashcard-id/{flashcardId}")
+    @GetMapping("/{flashcardId}")
     public Page<Answer> getAllAnswersByFlashcardId(
             @PathVariable(name = "flashcardId") int id,
             @RequestParam(value="page", required = false, defaultValue = "0") int page,
@@ -48,7 +48,7 @@ public class AnswerController {
      * @param deleteAnswerDTO the data transfer object that contains the id of the answer to delete
      * @return a confirmation message if the object was deleted
      */
-    @DeleteMapping("/")
+    @DeleteMapping("/{id}")
     public String deleteAnswerById(@RequestBody DeleteAnswerDTO deleteAnswerDTO){
         answerService.deleteAnswerById(deleteAnswerDTO.getAnswerId());
         return "Deleted answer with id:" + deleteAnswerDTO.getAnswerId();

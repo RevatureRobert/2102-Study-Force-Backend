@@ -27,6 +27,10 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * Test class for VoteController {@link VoteController}
+ * @author Nick Zimmerman
+ */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -39,15 +43,13 @@ class VoteIntegrationTest {
     private UserRepository userRepository;
     @Autowired
     private AnswerRepository answerRepository;
-
     @Autowired
     private VoteService voteService;
-
     @Autowired
     private FlashcardRepository flashcardRepository;
-
     @Autowired
     private VoteController controller;
+
 
     @Test
     void givenVoteDTO_whenCreateAnswerVote_shouldReturnVote() throws Exception {
@@ -66,7 +68,7 @@ class VoteIntegrationTest {
                 + "\"value\" : \"1\""
                 + "}";
         System.out.println(string);
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/vote/")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/votes/")
                 .content(string)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -94,7 +96,7 @@ class VoteIntegrationTest {
                 + "\"value\" : \"33\""
                 + "}";
         System.out.println(string);
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/vote/")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/votes/")
                 .content(string)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())// .content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -121,7 +123,7 @@ class VoteIntegrationTest {
                 + "\"value\" : \"1\""
                 + "}";
         System.out.println(string);
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/vote/")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/votes/")
                 .content(string)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())// .content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -148,7 +150,7 @@ class VoteIntegrationTest {
                 + "\"value\" : \"1\""
                 + "}";
         System.out.println(string);
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/vote/")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/votes/")
                 .content(string)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())// .content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
