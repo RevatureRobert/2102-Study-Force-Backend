@@ -1,5 +1,5 @@
 {
-    "executionRoleArn": "arn:aws:iam::967240801169:role/ecsTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::868071628547:role/ecsTaskExecutionRole",
     "containerDefinitions": [
         {
             "name": "revstudyforce",
@@ -9,7 +9,7 @@
                 {
                     "hostPort": 80,
                     "protocol": "tcp",
-                    "containerPort": 80
+                    "containerPort": 8080
                 }
             ]
         }
