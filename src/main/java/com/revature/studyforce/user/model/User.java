@@ -53,8 +53,11 @@ public class User {
     @Column(name = "is_subscribed_stacktrace")
     private boolean isSubscribedStacktrace;
 
-    @Enumerated(EnumType.STRING)
-    @ColumnDefault ("USER")
+    /*
+    make .STRING AND USER FOR LOCAL DATABASE
+     */
+    @Enumerated(EnumType.ORDINAL)
+    @ColumnDefault ("1")
     @JoinColumn(name = "authority_id", referencedColumnName = "authority_id")
     @NotNull
     private Authority authority;
