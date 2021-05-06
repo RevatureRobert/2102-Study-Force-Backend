@@ -10,6 +10,7 @@ import javax.validation.constraints.PositiveOrZero;
 import java.sql.Timestamp;
 
 /**
+ * Answer model
  * @author Edson Rodriguez
  */
 @Entity

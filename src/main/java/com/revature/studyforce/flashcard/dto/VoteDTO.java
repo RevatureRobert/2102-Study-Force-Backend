@@ -26,7 +26,7 @@ public class VoteDTO {
 
     /**
      * function to take a Vote model and if not null return it as a data transfer object
-     * @return a new VoteDTO with the corresponding fields
+     * @return A Function that can be used to create a new VoteDTO from a vote object {@link Vote}
      */
     public static Function<Vote,VoteDTO> convertVoteToDto(){
         return v -> {

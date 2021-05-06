@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.studyforce.flashcard.controller.TopicController;
 import com.revature.studyforce.flashcard.dto.TopicDTO;
 import com.revature.studyforce.flashcard.model.Topic;
-import com.revature.studyforce.flashcard.repository.TopicRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +17,13 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Test class for TopicController {@link TopicController}
+ * @author Kevin Wang
+ */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,12 +35,9 @@ class TopicIntegrationTest {
     @Autowired
     TopicController topicController;
 
-    @Autowired
-    TopicRepository topicRepository;
-
     @Test
-    void topicGetAllIntegrationTest() throws Exception {
-        List<Topic> topicList = new LinkedList();
+    void whenGetAll_shouldReturnListOfTopics() throws Exception {
+        List<Topic> topicList = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
 
         mockMvc = MockMvcBuilders.standaloneSetup(topicController).build();
@@ -67,8 +66,8 @@ class TopicIntegrationTest {
     }
 
     @Test
-    void getSpecificTopicTest() throws Exception {
-        List<Topic> topicList = new LinkedList();
+    void givenTopicId_whenFindTopicById_shouldReturnTopic() throws Exception {
+        List<Topic> topicList = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
 
         mockMvc = MockMvcBuilders.standaloneSetup(topicController).build();
@@ -98,13 +97,9 @@ class TopicIntegrationTest {
         }
     }
 
-    /**
-     * This also test 404 not found
-     * @throws Exception
-     */
     @Test
-    void deleteSpecificTopicTest() throws Exception {
-        List<Topic> topicList = new LinkedList();
+    void givenTopicId_whenDeleteTopic_shouldReturnDeletedTopic() throws Exception {
+        List<Topic> topicList = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
 
         mockMvc = MockMvcBuilders.standaloneSetup(topicController).build();

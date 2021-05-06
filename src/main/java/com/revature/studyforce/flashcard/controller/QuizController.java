@@ -10,7 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Controller for HTTP requests pertaining to Quiz class
+ * Controller for HTTP requests pertaining to Quiz class {@link QuizService}
  * @author Nick Zimmerman
  */
 @RestController

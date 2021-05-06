@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Test class for the QuizDTO
+ * Test class for the QuizDTO {@link QuizDTO}
  * @author Nick Zimmerman
  */
 @SpringBootTest

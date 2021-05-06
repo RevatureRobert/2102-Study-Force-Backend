@@ -1,11 +1,11 @@
 package com.revature.studyforce.flashcard.service;
+
 import com.revature.studyforce.flashcard.dto.VoteDTO;
 import com.revature.studyforce.flashcard.model.Answer;
 import com.revature.studyforce.flashcard.model.Flashcard;
 import com.revature.studyforce.flashcard.model.Vote;
 import com.revature.studyforce.flashcard.repository.AnswerRepository;
 import com.revature.studyforce.flashcard.repository.VoteRepository;
-
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
@@ -21,6 +21,10 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Test class for VoteService {@link VoteService}
+ * @author Nick Zimmerman
+ */
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @TestPropertySource(locations = "classpath:test-application.properties")
