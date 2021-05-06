@@ -31,4 +31,9 @@ public class RatingController {
     public RatingResponseDTO createRating(@RequestBody RatingDTO rating ){
         return ratingService.createRating(rating);
     }
+
+    @GetMapping
+    public RatingDTO getRating(@PathVariable int flashcardId, @PathVariable int userID){
+        return ratingService.getRating(flashcardId,userID);
+    }
 }

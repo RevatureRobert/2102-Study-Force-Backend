@@ -4,6 +4,7 @@ import com.revature.studyforce.flashcard.model.Rating;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -14,4 +15,5 @@ import java.util.List;
 @Repository
 public interface RatingRepository extends JpaRepository<Rating,Integer> {
     List<Rating> findByFlashcard_id(final int id);
+    Optional<Rating> findByFlashcard_idAndUser_userId(final int fId, final int uId);
 }
