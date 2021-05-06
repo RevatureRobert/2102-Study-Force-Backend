@@ -79,8 +79,8 @@ public class NotificationService {
      * @return Returns the notification that was stored
      */
     public NotificationDto save(NotificationDto notificationDto){
-        Notification notification = notificationRepository.save(new Notification(notificationDto));
-        return new NotificationDto(notification);
+        Notification notification = notificationRepository.save(NotificationDto.convertFromDto().apply(notificationDto));
+        return NotificationDto.convertToDto().apply(notification);
     }
 
     /***
@@ -91,7 +91,7 @@ public class NotificationService {
     public NotificationDto update(NotificationDto notificationDto){
         Optional<Notification> checkNotification = notificationRepository.findById(notificationDto.getId());
         if(checkNotification.isPresent()){
-           return new NotificationDto(notificationRepository.save(new Notification(notificationDto)));
+           return NotificationDto.convertToDto().apply(notificationRepository.save(NotificationDto.convertFromDto().apply(notificationDto)));
         }
         return null;
     }
@@ -101,7 +101,7 @@ public class NotificationService {
      * @param notificationDto The {@link NotificationDto notificationDto} parameter represents the notification to be deleted
      */
     public void delete(NotificationDto notificationDto){
-        notificationRepository.delete(new Notification(notificationDto));
+        notificationRepository.delete(NotificationDto.convertFromDto().apply(notificationDto));
     }
 
     /***

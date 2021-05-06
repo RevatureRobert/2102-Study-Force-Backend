@@ -21,15 +21,6 @@ public class NotificationDto {
     private FeatureArea featureArea;
     private Integer userId;
 
-    public NotificationDto(Notification notification){
-        this.id = notification.getNotificationId();
-        this.message = notification.getNotificationMessage();
-        this.createdTime = notification.getCreatedTime();
-        this.read = notification.isRead();
-        this.timeToLive = notification.getTimeToLive();
-        this.featureArea = notification.getFeatureArea();
-        this.userId = notification.getApplicationUserId();
-    }
     public static Function<Notification, NotificationDto> convertToDto(){
         try{
             return (Notification) -> new NotificationDto(

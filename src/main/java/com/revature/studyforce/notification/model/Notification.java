@@ -40,14 +40,4 @@ public class Notification {
     @Column(name = "application_user_id")
     private int applicationUserId;
 
-    public Notification(NotificationDto notificationDto){
-        this.notificationId = notificationDto.getId();
-        this.notificationMessage = notificationDto.getMessage();
-        this.isRead = notificationDto.isRead();
-        this.timeToLive = notificationDto.getTimeToLive();
-        this.createdTime = notificationDto.getCreatedTime();
-        this.featureArea = notificationDto.getFeatureArea();
-        this.applicationUserId = notificationDto.getUserId();
-    }
-
 }

@@ -22,7 +22,7 @@ public class NotificationDtoTest {
         FeatureArea featureArea = FeatureArea.FLASHCARD;
         Integer userId = 1;
         Notification notification = new Notification(id, message, isRead, timeToLive, createdTime, featureArea, userId);
-        NotificationDto dto = new NotificationDto(notification);
+        NotificationDto dto = NotificationDto.convertToDto().apply(notification);
 
         Assertions.assertEquals(id, dto.getId());
         Assertions.assertEquals(message, dto.getMessage());
@@ -43,7 +43,7 @@ public class NotificationDtoTest {
         FeatureArea featureArea = FeatureArea.FLASHCARD;
         Integer userId = 1;
         NotificationDto notificationDto = new NotificationDto(id, message, isRead, timeToLive, createdTime, featureArea, userId);
-        Notification notification = new Notification(notificationDto);
+        Notification notification = NotificationDto.convertFromDto().apply(notificationDto);
 
         Assertions.assertEquals(id, notification.getNotificationId());
         Assertions.assertEquals(message, notification.getNotificationMessage());

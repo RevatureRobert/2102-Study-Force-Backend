@@ -8,29 +8,38 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
+import org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.times;
 
-public class NotificationServiceTest {
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@SpringBootTest
+@TestPropertySource(locations = "classpath:test-application.properties")
+class NotificationServiceTest {
 
     @MockBean
     private NotificationRepository notificationRepository;
@@ -52,7 +61,7 @@ public class NotificationServiceTest {
         timeToLive = Timestamp.valueOf(now.plusDays(3));
         featureArea = FeatureArea.FLASHCARD;
         notification = new Notification(0, "Flashcard Solution", false, timeToLive, Timestamp.valueOf(now), featureArea, 1);
-        notificationDto = new NotificationDto(notification);
+        notificationDto = NotificationDto.convertToDto().apply(notification);
         notificationList.add(notification);
         notificationPage = new PageImpl<>(notificationList);
     }
@@ -70,6 +79,8 @@ public class NotificationServiceTest {
         Assertions.assertEquals(Timestamp.valueOf(now), dto.getCreatedTime());
         Assertions.assertEquals(1, dto.getUserId());
         Assertions.assertEquals(featureArea, dto.getFeatureArea());
+
+//        verify(notificationRepository, times(1)).findAll(any(PageRequest.class));
     }
 
     @Test
@@ -85,8 +96,11 @@ public class NotificationServiceTest {
         Assertions.assertEquals(Timestamp.valueOf(now), dto.getCreatedTime());
         Assertions.assertEquals(1, dto.getUserId());
         Assertions.assertEquals(featureArea, dto.getFeatureArea());
+
+//        verify(notificationRepository, times(1)).findByApplicationUserId(1, any(PageRequest.class));
     }
 
+    @Test
     void saveTest(){
         Mockito.doReturn(notification).when(notificationRepository).save(any(Notification.class));
         NotificationDto dto = notificationService.save(notificationDto);
@@ -98,12 +112,14 @@ public class NotificationServiceTest {
         Assertions.assertEquals(Timestamp.valueOf(now), dto.getCreatedTime());
         Assertions.assertEquals(1, dto.getUserId());
         Assertions.assertEquals(featureArea, dto.getFeatureArea());
+
+        verify(notificationRepository, times(1)).save(notification);
     }
 
     @Test
     void updateTest(){
-        Mockito.doReturn(notification).when(notificationRepository).findById(1);
-        Mockito.doReturn(null).when(notificationRepository).save(notification);
+        Mockito.when(notificationRepository.findById(notification.getNotificationId())).thenReturn(Optional.of(notification));
+        Mockito.when(notificationRepository.save(ArgumentMatchers.isA(Notification.class))).thenReturn(notification);
         NotificationDto dto = notificationService.update(notificationDto);
         Assertions.assertNotNull(dto);
         Assertions.assertEquals(0, dto.getId());
@@ -113,6 +129,9 @@ public class NotificationServiceTest {
         Assertions.assertEquals(Timestamp.valueOf(now), dto.getCreatedTime());
         Assertions.assertEquals(1, dto.getUserId());
         Assertions.assertEquals(featureArea, dto.getFeatureArea());
+
+        verify(notificationRepository, times(1)).findById(0);
+        verify(notificationRepository, times(1)).save(notification);
     }
 
     @Test
@@ -124,6 +143,6 @@ public class NotificationServiceTest {
     @Test
     void deleteByUserIdTest(){
         notificationService.deleteByUserId(1);
-        verify(notificationRepository, times(1)).deleteById(1);
+        verify(notificationRepository, times(1)).deleteByApplicationUserId(1);
     }
 }
