@@ -63,11 +63,11 @@ public class RatingService {
         ratingRepository.save(new Rating(0,optFlashcard.get(),optUser.get(), difficulty));
         List<Rating> ratings = ratingRepository.findByFlashcard_id(ratingDTO.getFlashcardId());
 
-        int sum = 0;
+        double sum = 0;
         for(Rating rating : ratings){
             sum += rating.getRatingValue().difficultyValue;
         }
-        return new RatingResponseDTO(ratings.size(),(sum/ratings.size()));
+        return new RatingResponseDTO(ratings.size(),(Math.round(sum/ratings.size())));
     }
 
     /**

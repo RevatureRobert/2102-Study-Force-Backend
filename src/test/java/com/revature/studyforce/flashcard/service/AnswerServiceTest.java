@@ -69,7 +69,6 @@ class AnswerServiceTest {
         assertFalse(res.isTrainerSelected());
         assertNotNull(res.getCreationTime());
         assertNull(res.getResolutionTime());
-
     }
 
     @Test
