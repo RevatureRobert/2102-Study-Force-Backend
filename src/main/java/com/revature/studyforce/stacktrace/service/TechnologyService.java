@@ -11,32 +11,43 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Service which creates, deletes, and displays technologies or
+ * Service which processes various requests related to {@link Technology Technologies}
+ * <p>Relies on {@link TechnologyRepository} and {@link TechnologyDTO} for processing these requests</p>
+ * @author Joey Elmbald
+ * @author John Stone
  */
-
 @Service
 public class TechnologyService {
-        private final TechnologyRepository technologyRepo;
+    private final TechnologyRepository technologyRepo;
 
-        @Autowired
-        public TechnologyService (TechnologyRepository technologyRepo) {
-            this.technologyRepo = technologyRepo;
-        }
+    @Autowired
+    public TechnologyService (TechnologyRepository technologyRepo) {
+        this.technologyRepo = technologyRepo;
+    }
 
-        /**
-         * Gets all Technologies
-         * @return A list of Technologies
-         */
-        public List<TechnologyDTO> getAllTechnologies() {
-            return technologyRepo.findAll().stream().map(TechnologyDTO.technologyToDTO()).collect(Collectors.toList());
-        }
+    /**
+     * Gets all Technologies as a List of {@link TechnologyDTO TechnologyDTOs}
+     * @return A List of All Technologies in the Database
+     */
+    public List<TechnologyDTO> getAllTechnologies() {
+        return technologyRepo.findAll().stream().map(TechnologyDTO.technologyToDTO()).collect(Collectors.toList());
+    }
+
+    /**
+     * Adds a new Technology to the Databse
+     * <p>Converts a {@link TechnologyDTO} into a {@link Technology} and saves it to the {@link TechnologyRepository}</p>
+     * @param technologyDTO The Data Transfer Object to be converted to a {@link Technology}
+     * @return A {@link TechnologyDTO} matching the {@link Technology} created
+     */
     public TechnologyDTO createNewTechnology(TechnologyDTO technologyDTO){
         return TechnologyDTO.technologyToDTO().apply(technologyRepo.save(TechnologyDTO.dtoToTechnology().apply(technologyDTO)));
     }
 
     /**
-     * Deletes Technology with the given id
-     * @param technologyId Primary id of Technology to be deleted
+     * Deletes {@link Technology} with the given id
+     * <p>Searches the {@link TechnologyRepository} for a {@link Technology} that matches technologyId</p>
+     * @param technologyId Primary id of the {@link Technology} to be deleted
+     * @return A copy of {@link Technology}
      */
     public Technology deleteTechnology(int technologyId){
         Technology technology = technologyRepo.findById(technologyId).orElse(null);
@@ -48,11 +59,12 @@ public class TechnologyService {
 
     /**
      * Updates a technology by its ID. If the technology doesn't exist it will be created.
-     * @param technologyDTO Data transfer object of the technology to be updated.
-     * @return Data transfer object of the technology to be updated.
+     * <p>Searches he {@link TechnologyRepository} for a {@link Technology} that that matches the input.
+     * If it exists, the {@link Technology} is update.
+     * If it doesn't exist, a new {@link Technology} is created.</p>
+     * @param technologyDTO Data transfer object of the {@link Technology} to be updated
+     * @return The technologyDTO parameter is returned without modification
      */
-
-
     public TechnologyDTO updateTechnology(TechnologyDTO technologyDTO){
         Optional<Technology> technology = technologyRepo.findById(technologyDTO.getTechnologyId());
         if(technology.isPresent()){
