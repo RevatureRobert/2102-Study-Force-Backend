@@ -73,7 +73,7 @@ public class StacktraceService {
         if(stacktrace == null){
             return null;
         }
-        stacktraceRepo.delete(stacktrace);
+        stacktraceRepo.deleteById(stacktraceId);
         return new StacktraceDTO(
                 stacktrace.getStacktraceId(),
                 stacktrace.getUserId().getUserId(),

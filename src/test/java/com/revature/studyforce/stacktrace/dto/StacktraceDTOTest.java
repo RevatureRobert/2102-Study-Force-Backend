@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test-application.properties")
+
 class StacktraceDTOTest {
     @Test
     void whenStackTraceToDTOThenCorrectDTOReturned () {

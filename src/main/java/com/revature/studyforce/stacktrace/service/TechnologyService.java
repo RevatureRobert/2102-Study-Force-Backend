@@ -53,7 +53,7 @@ public class TechnologyService {
         Technology technology = technologyRepo.findById(technologyId).orElse(null);
         if(technology == null)
             return null;
-        technologyRepo.delete(technology);
+        technologyRepo.deleteById(technologyId);
         return technology;
     }
 
