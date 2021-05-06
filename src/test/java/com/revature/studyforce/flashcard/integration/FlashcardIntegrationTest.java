@@ -1,6 +1,7 @@
 package com.revature.studyforce.flashcard.integration;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.studyforce.flashcard.controller.FlashcardController;
 import com.revature.studyforce.flashcard.dto.FlashcardDTO;
 import com.revature.studyforce.flashcard.dto.NewFlashcardDTO;
@@ -61,7 +62,7 @@ class FlashcardIntegrationTest {
     Topic topic;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws JsonProcessingException {
         mockMvc = MockMvcBuilders.standaloneSetup(flashcardController).build();
         flashcardDTO = new FlashcardDTO();
         user = new User(0,"a@b.c","pw","fn","ln",true,false,false, Authority.USER, null,null);
@@ -80,7 +81,7 @@ class FlashcardIntegrationTest {
         System.out.println(userRepository.save(user));
         System.out.println(topicRepository.save(topic));
         System.out.println(flashcardRepository.save(flashcard));
-        System.out.println(new Gson().toJson(flashcard));
+        System.out.println(new ObjectMapper().writeValueAsString(flashcard));
     }
 
     @Test
@@ -155,7 +156,7 @@ class FlashcardIntegrationTest {
 //        mockMvc = MockMvcBuilders.standaloneSetup(flashcardController).build();
         mockMvc.perform(MockMvcRequestBuilders.post("/flashcards")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(newFlashcardDTO)))
+                .content(new ObjectMapper().writeValueAsString(newFlashcardDTO)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
@@ -175,12 +176,12 @@ class FlashcardIntegrationTest {
         user.setLastLogin(null);
         user.setRegistrationTime(null);
         flashcard.setCreatedTime(null);
-        System.out.println(new Gson().toJson(flashcard));
+        System.out.println(new ObjectMapper().writeValueAsString(flashcard));
 
 //        mockMvc = MockMvcBuilders.standaloneSetup(flashcardController).build();
         mockMvc.perform(MockMvcRequestBuilders.put("/flashcards")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(flashcard)))
+                .content(new ObjectMapper().writeValueAsString(flashcard)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
@@ -199,7 +200,7 @@ class FlashcardIntegrationTest {
 //        mockMvc = MockMvcBuilders.standaloneSetup(flashcardController).build();
         mockMvc.perform(MockMvcRequestBuilders.delete("/flashcards/3")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(flashcard)))
+                .content(new ObjectMapper().writeValueAsString(flashcard)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").value(true));
