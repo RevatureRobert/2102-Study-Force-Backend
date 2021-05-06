@@ -68,8 +68,8 @@ public class SolutionController {
      * @return solution Response Entity with 204 status(No Content success status)
      */
     @DeleteMapping("/{solutionId}")
-    public Solution deleteSolution(@PathVariable int solutionId){
-        Solution solution = solutionService.deleteSolution(solutionId);
-        return solution;
+    public SolutionDTO deleteSolution(@PathVariable int solutionId){
+        SolutionDTO solutionDTO = solutionService.deleteSolution(solutionId);
+        return solutionDTO;
     }
 }

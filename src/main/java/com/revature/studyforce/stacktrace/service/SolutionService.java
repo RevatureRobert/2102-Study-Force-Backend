@@ -1,6 +1,7 @@
 package com.revature.studyforce.stacktrace.service;
 
 import com.revature.studyforce.stacktrace.dto.SolutionDTO;
+import com.revature.studyforce.stacktrace.dto.StacktraceUserDTO;
 import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.repository.SolutionRepository;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
@@ -98,9 +99,17 @@ public class SolutionService {
      * Deletes Solution with the given id
      * @param solutionId Primary id of Solution to be deleted
      */
-    public Solution deleteSolution(int solutionId){
+    public SolutionDTO deleteSolution(int solutionId){
         Solution solution = solutionRepository.findById(solutionId).orElse(null);
         solutionRepository.delete(solution);
-        return solution;
+        SolutionDTO solutionDTO = new SolutionDTO(
+                solution.getSolutionId(),
+                solution.getStackTraceId().getStacktraceId(),
+                StacktraceUserDTO.userToDTO().apply(solution.getUserId()),
+                solution.getBody(),
+                solution.getAdminSelected(),
+                solution.getCreationTime()
+        );
+        return solutionDTO;
     }
 }
