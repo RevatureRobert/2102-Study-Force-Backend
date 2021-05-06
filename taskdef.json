@@ -2,8 +2,8 @@
     "executionRoleArn": "arn:aws:iam::967240801169:role/ecsTaskExecutionRole",
     "containerDefinitions": [
         {
-            "name": "sample-website",
-            "image": "studyforce",
+            "name": "revstudyforce",
+            "image": "<IMAGE1_NAME>",
             "essential": true,
             "portMappings": [
                 {
