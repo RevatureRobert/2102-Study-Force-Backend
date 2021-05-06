@@ -2,19 +2,25 @@ package com.revature.studyforce.notification.service;
 
 import com.revature.studyforce.notification.model.Subscription;
 import nl.martijndwars.webpush.Notification;
+import nl.martijndwars.webpush.PushAsyncService;
 import nl.martijndwars.webpush.PushService;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.HttpResponse;
+import org.asynchttpclient.Response;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.google.gson.Gson;
 
+
 import java.security.Security;
+import java.util.concurrent.CompletableFuture;
 
 /**
- * Main code is from
+ * @author Daniel Kopeloff
  *
  */
+@Service
 public class SendNotificationService {
 
     private static final String PUBLIC_KEY = "BEH36g-ez23QfnT8OIbnZJMmj892dDYa_LKyGz_wM2tyZbSt1YK4Jy1sRz1OyAeilAOBDrg-TnCBLFtWdVIApK8";
@@ -25,7 +31,6 @@ public class SendNotificationService {
 
     /**
      * This Method will be how to the notification is sent. Just need to pass in a nl.martijndwars.webpush subscription
-     * TODO:Maybe just pass in our subscription and I'll do the mapping on this end?
      * The subject identifier is used to tell the method what subject the notification is coming from
      * Key for subjectIdentifier
      * 1: Stacktrace
@@ -62,16 +67,18 @@ public class SendNotificationService {
         }
         Security.addProvider(new BouncyCastleProvider());
 
-        nl.martijndwars.webpush.Subscription sub1 = new nl.martijndwars.webpush.Subscription();
+        nl.martijndwars.webpush.Subscription sub1 = new nl.martijndwars.webpush.Subscription(subscription.getEndpoint(),
+                new nl.martijndwars.webpush.Subscription.Keys(subscription.getP256dh(),subscription.getAuth()));
 
 
 
         try {
-            PushService pushService = new PushService(PUBLIC_KEY, PRIVATE_KEY, SUBJECT);
+            PushAsyncService pushService = new PushAsyncService(PUBLIC_KEY, PRIVATE_KEY, SUBJECT);
 //            Subscription subscription = new Gson().fromJson(subscriptionJson, Subscription.class);
-            Notification notification = new Notification(subscription, PAYLOAD);
-            HttpResponse httpResponse = pushService.send(notification);
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            Notification notification = new Notification(sub1, PAYLOAD);
+            CompletableFuture<Response> httpResponse = pushService.send(notification);
+
+            int statusCode = httpResponse.get().getStatusCode();
 
 
             return String.valueOf(statusCode);

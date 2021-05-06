@@ -42,7 +42,9 @@ public class SubscriptionController {
      */
     //TODO: create a subscription DTO
     @PostMapping
+    @CrossOrigin(origins = {"*"})
     public @ResponseBody Subscription createSubscription(@RequestBody Subscription subscription){
+        System.out.println("Is this being hit");
         return subscriptionService.createSubscription(subscription);
     }
 
