@@ -12,7 +12,7 @@ import java.util.List;
  * @author Joey Elmblad
  */
 @RestController
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RequestMapping("stacktrace/solution-vote")
 public class SolutionVoteController {
 
@@ -21,6 +21,7 @@ public class SolutionVoteController {
 
     /**
      * For a given solutionId returns all of the votes for that specific solution
+     * these shouldn't be pageable because they are only used to be added together.
      * @param solutionId the id that ties the votes with the solution
      * @return
      */

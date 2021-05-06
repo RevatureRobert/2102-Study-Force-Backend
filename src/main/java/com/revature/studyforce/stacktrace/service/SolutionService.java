@@ -4,6 +4,7 @@ import com.revature.studyforce.stacktrace.dto.SolutionDTO;
 import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.repository.SolutionRepository;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
+import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,15 +19,17 @@ import java.util.Optional;
  */
 @Service
 public class SolutionService {
+    private final SolutionRepository solutionRepository;
+    private final StacktraceRepository stacktraceRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    SolutionRepository solutionRepository;
-
-    @Autowired
-    StacktraceRepository stacktraceRepository;
-
-    @Autowired
-    UserRepository userRepository;
+    public SolutionService(SolutionRepository solutionRepository,
+                           StacktraceRepository stacktraceRepository, UserRepository userRepository){
+        this.solutionRepository =solutionRepository;
+        this.stacktraceRepository = stacktraceRepository;
+        this.userRepository = userRepository;
+    }
 
     /**
      * Given a stacktrace id, returns all solutions posted on that stacktrace
@@ -55,7 +58,7 @@ public class SolutionService {
         Solution solution = new Solution(
                 solutionDTO.getSolutionId(),
                 stacktraceRepository.findById(solutionDTO.getStackTraceId()).orElse(null),
-                userRepository.findByUserId(solutionDTO.getUser().getUserId()),
+                userRepository.findById(solutionDTO.getUser().getUserId()).orElse(null),
                 solutionDTO.getBody(),
                 solutionDTO.getAdminSelected(),
                 solutionDTO.getCreationTime(),
@@ -81,11 +84,12 @@ public class SolutionService {
             Solution newSolution = new Solution(
                     solutionDTO.getSolutionId(),
                     stacktraceRepository.findById(solutionDTO.getStackTraceId()).orElse(null),
-                    userRepository.findByUserId(solutionDTO.getUser().getUserId()),
+                    userRepository.findById(solutionDTO.getUser().getUserId()).orElse(null),
                     solutionDTO.getBody(),
                     solutionDTO.getAdminSelected(),
                     solutionDTO.getCreationTime(),
                     null);
+
             return SolutionDTO.solutionToDTO().apply(solutionRepository.save(newSolution));
         }
     }
@@ -94,7 +98,9 @@ public class SolutionService {
      * Deletes Solution with the given id
      * @param solutionId Primary id of Solution to be deleted
      */
-    public void deleteSolution(int solutionId){
-        solutionRepository.deleteBySolutionId(solutionId);
+    public Solution deleteSolution(int solutionId){
+        Solution solution = solutionRepository.findById(solutionId).orElse(null);
+        solutionRepository.delete(solution);
+        return solution;
     }
 }

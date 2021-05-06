@@ -21,12 +21,14 @@ import java.util.stream.Collectors;
  */
 @Service
 public class StacktraceService {
+    private final StacktraceRepository stacktraceRepo;
+    private final UserRepository userRepository;
 
     @Autowired
-    private  StacktraceRepository stacktraceRepo;
-
-    @Autowired
-    private UserRepository userRepo;
+    public StacktraceService(StacktraceRepository stacktraceRepo, UserRepository userRepository){
+        this.stacktraceRepo = stacktraceRepo;
+        this.userRepository = userRepository;
+    }
 
     /**
      * Gets all Stacktraces
@@ -82,7 +84,7 @@ public class StacktraceService {
     private Stacktrace mapFromDtoToStacktrace(StacktraceDTO stacktraceDTO) {
         Stacktrace stacktrace= new Stacktrace();
         stacktrace.setStacktraceId(stacktraceDTO.getStacktraceId());
-        stacktrace.setUserId(userRepo.findByUserId(stacktraceDTO.getCreator().getUserId()));
+        stacktrace.setUserId(userRepository.findById(stacktraceDTO.getCreator().getUserId()).orElse(null));
         stacktrace.setTitle(stacktraceDTO.getTitle());
         stacktrace.setBody(stacktraceDTO.getBody());
         stacktrace.setTechnology(stacktraceDTO.getTechnology());

@@ -1,6 +1,7 @@
 package com.revature.studyforce.stacktrace.controller;
 
 import com.revature.studyforce.stacktrace.dto.SolutionDTO;
+import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.service.SolutionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,7 +16,7 @@ import java.util.List;
  * @author Joshua Swanson
  */
 @RestController
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RequestMapping("/stacktrace/solution")
 public class SolutionController {
 
@@ -67,8 +68,8 @@ public class SolutionController {
      * @return solution Response Entity with 204 status(No Content success status)
      */
     @DeleteMapping("/{solutionId}")
-    public ResponseEntity<Void> deleteSolution(@PathVariable int solutionId){
-        solutionService.deleteSolution(solutionId);
-        return ResponseEntity.noContent().build();
+    public Solution deleteSolution(@PathVariable int solutionId){
+        Solution solution = solutionService.deleteSolution(solutionId);
+        return solution;
     }
 }

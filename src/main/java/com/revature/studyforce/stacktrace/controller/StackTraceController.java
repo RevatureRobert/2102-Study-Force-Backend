@@ -16,8 +16,7 @@ import java.util.List;
  * @author Joshua Swanson
  */
 @RestController
-@RequestMapping("/stacktrace")
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class StackTraceController {
 
     @Autowired
