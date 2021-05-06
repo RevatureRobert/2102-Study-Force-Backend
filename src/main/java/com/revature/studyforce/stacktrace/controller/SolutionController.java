@@ -26,14 +26,14 @@ public class SolutionController {
     SolutionService solutionService;
 
     /**
-     * Retrieves all {@link Solution Solutions} matching a {@link com.revature.studyforce.stacktrace.model.Stacktrace Stacktrace} id
+     * Retrieves all {@link Solution Solutions} matching a Stacktrace id
      *<p>
      *     This method receives a request and all logic is performed by {@link SolutionService#getAllSolutionsForStacktrace(int)}
      *</p>
      * @param page The page to be displayed
      * @param pageSize Size of the page that will be used to calculate offset
-     * @param stackTraceId {@link com.revature.studyforce.stacktrace.model.Stacktrace Stacktrace} primary id
-     * @return List of {@link Solution Solutions} for the given {@link com.revature.studyforce.stacktrace.model.Stacktrace Stacktrace} id
+     * @param stackTraceId Stacktrace primary id
+     * @return List of {@link Solution Solutions} for the given Stacktrace id
      */
     @GetMapping("/{stackTraceId}")
     public List<SolutionDTO> getAllSolutionsForStacktrace(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
