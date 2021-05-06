@@ -25,7 +25,10 @@ public class QuizDTO {
     private String quizName;
     private List<FlashcardAllDTO> flashcards;
 
-
+    /**
+     * Creates a function that will convert a Quiz into a QuizDTO
+     * @return the function that will convert a Quiz into a QuizDTO
+     */
     public static Function<Quiz,QuizDTO> quizToDTO(){
         return quiz -> {
             Assert.notNull(quiz.getQuizUser(), "Quiz has no associated user...");

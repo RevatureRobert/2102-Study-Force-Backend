@@ -125,9 +125,7 @@ class QuizIntegrationTest {
         deck.add(flashcard3.getId());
         deck.add(flashcard4.getId());
 
-
         NewQuizDTO testingQuiz2 = new NewQuizDTO(dwight.getUserId(),"demoQuiz2",deck);
-        System.out.println("********\b\b\b\b");
         System.out.println(new ObjectMapper().writeValueAsString(testingQuiz2));
 
 
@@ -145,6 +143,9 @@ class QuizIntegrationTest {
     void givenQuiz_whenUpdateQuiz_QuizIsMutated() throws Exception {
         Optional<Quiz> qo = quizRepository.findById(5);
         Quiz q = qo.get();
+        System.out.println("\n\n\n\n*********");
+        System.out.println(q);
+        System.out.println("*********\n\n\n\n");
         List<Integer> l =  new ArrayList<>();
         q.getFlashcards().forEach((flashcard -> l.add(flashcard.getId())));
 
@@ -152,10 +153,12 @@ class QuizIntegrationTest {
         System.out.println(new ObjectMapper().writeValueAsString(updq));
 
 
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/quiz")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/flashcards/quiz")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(updq)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.quizId").value(q.getQuizId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.quizUserId").value(q.getQuizUser().getUserId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.quizName").value("this a new name"))
                 .andReturn();
 

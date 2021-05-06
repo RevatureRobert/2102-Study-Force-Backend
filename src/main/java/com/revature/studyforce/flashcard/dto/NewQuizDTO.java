@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+/**
+ * Aditional QuizDTO specifically for when a new Quiz is being created
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
