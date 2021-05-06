@@ -30,7 +30,7 @@ public class FlashcardController {
     /**
      * Retrieves a Page of flashcards {@link FlashcardService#getAll(int, int, String, String)}
      * @param page - number of offsets away from 0 (defaults to 0)
-     * @param offset number of elements per page [5|10|25|50|100] - defaults to 25
+     * @param offset - number of elements per page [5|10|25|50|100] - defaults to 10
      * @param sortBy - column to sort by ["difficulty"|"topic"|"created"|"resolved"] defaults to creator if sortby could not be understood
      * @param order - order in which the Page is displayed ["ASC"|"DESC"]
      * @return - returns a Page of Flashcards according the the given page, offset, sortBy, and order parameters
@@ -47,7 +47,7 @@ public class FlashcardController {
     /**
      * Retrieves a Page of flashcards with a given difficulty {@link FlashcardService#getAllByDifficulty(int, int, String, String, int)}
      * @param page - number of offsets away from 0 (defaults to 0)
-     * @param offset number of elements per page [5|10|25|50|100] - defaults to 25
+     * @param offset - number of elements per page [5|10|25|50|100] - defaults to 10
      * @param sortBy - column to sort by ["difficulty"|"topic"|"created"|"resolved"] defaults to creator if sortby could not be understood
      * @param order - order in which the Page is displayed ["ASC"|"DESC"]
      * @param difficulty - only return flashcards with the given difficulty
@@ -66,7 +66,7 @@ public class FlashcardController {
     /**
      * Retrieves a Page of flashcards with a given topicName {@link FlashcardService#getAllByTopic(int, int, String, String, String)}
      * @param page - number of offsets away from 0 (defaults to 0)
-     * @param offset number of elements per page [5|10|25|50|100] - defaults to 25
+     * @param offset - number of elements per page [5|10|25|50|100] - defaults to 10
      * @param sortBy - column to sort by ["difficulty"|"topic"|"created"|"resolved"] defaults to creator if sortby could not be understood
      * @param order - order in which the Page is displayed ["ASC"|"DESC"]
      * @param topicName - only return flashcards with the given topic name
@@ -85,7 +85,7 @@ public class FlashcardController {
     /**
      * Retrieves a Page of flashcards with a given resolved status (boolean) {@link FlashcardService#getAllByIsResolved(int, int, String, String, boolean)}
      * @param page - number of offsets away from 0 (defaults to 0)
-     * @param offset number of elements per page [5|10|25|50|100] - defaults to 25
+     * @param offset - number of elements per page [5|10|25|50|100] - defaults to 10
      * @param sortBy - column to sort by ["difficulty"|"topic"|"created"|"resolved"] defaults to creator if sortby could not be understood
      * @param order - order in which the Page is displayed ["ASC"|"DESC"]
      * @param resolved - only return flashcards with the given resolved status [true|false]
