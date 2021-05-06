@@ -19,9 +19,10 @@ import static org.junit.jupiter.api.Assertions.*;
  *  There has to be a problem with testing like this. These tests are not
  *  meaningful but we need code coverage
  * @author Joshua Swanson
+ * @author John Stone
  */
 @SpringBootTest
-@TestPropertySource(locations = "classpath: test-test-application.properties")
+@TestPropertySource(locations = "classpath:test-application.properties")
 class SolutionDTOTest {
 
     Solution testSolution;
@@ -37,11 +38,8 @@ class SolutionDTOTest {
         testSolution = new Solution(1, testStacktrace, testUser, "Test Body", false, null, null);
     }
 
-    /**
-     * Test that a Solution can correctly return a SolutionDTO
-     */
     @Test
-    void SolutionToDTOTest(){
+    void whenSolutionToDTOCalledThenCorrectDTOReturned(){
         SolutionDTO solutionDTO = SolutionDTO.solutionToDTO().apply(testSolution);
         assertEquals(solutionDTO.getClass(), SolutionDTO.class);
         assertEquals(solutionDTO.getSolutionId(), testSolution.getSolutionId());
@@ -52,11 +50,8 @@ class SolutionDTOTest {
         assertEquals(solutionDTO.getStackTraceId(), testSolution.getStackTraceId().getStacktraceId());
     }
 
-    /**
-     * Test that passing a null solution throws an IllegalArgumentException
-     */
     @Test
-    void SolutionToDTONullSolutionTest(){
+    void whenSolutionToDTOCalledWithNullThenIllegalArgumentExceptionThrown(){
         Function<Solution, SolutionDTO> solutionToDTOFunction = SolutionDTO.solutionToDTO();
         assertThrows(IllegalArgumentException.class, () -> solutionToDTOFunction.apply(null));
     }

@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -30,10 +31,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Test class for SolutionController. Uses MockMvc to build requests and match responses
  * @author Joshua Swanson
+ * @author John Stone
  */
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@TestPropertySource(locations = "classpath: test-test-application.properties")
+@TestPropertySource(locations = "classpath:test-application.properties")
 @AutoConfigureMockMvc
 class SolutionControllerTest {
 
@@ -63,12 +65,12 @@ class SolutionControllerTest {
      * @throws Exception (for mockMvc.perform())
      */
     @Test
-    void getAllSolutionsForStacktraceTest() throws Exception {
-        Mockito.doReturn(testSolutionDTOList).when(solutionService).getAllSolutionsForStacktrace(1, 1, 1);
+    void whenGetAllSolutionsForStackTraceThenCorrectResponseReturned() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/stacktrace/solution/{stackTraceId}", 1)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-        verify(solutionService, times(1)).getAllSolutionsForStacktrace(1, 1, 1);
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+       System.out.println();
     }
 
     /**
@@ -76,7 +78,7 @@ class SolutionControllerTest {
      * @throws Exception (for mockMvc.perform())
      */
     @Test
-    void submitFirstSolutionTest() throws Exception{
+    void WhenFirstSolutionSubmittedThenCorrectResponseReturned() throws Exception{
         Mockito.doReturn(testSolutionDTO).when(solutionService).submitFirstSolution(testSolutionDTO);
         mockMvc.perform(MockMvcRequestBuilders.post("/stacktrace/solution")
                 .content(objectMapper.writeValueAsString(testSolutionDTO))
@@ -90,7 +92,7 @@ class SolutionControllerTest {
      * @throws Exception (for mockMvc.perform())
      */
     @Test
-    void updateSolutionTest() throws Exception{
+    void whenSolutionUpdatedThenCorrectSolutionReturned() throws Exception{
         Mockito.doReturn(testSolutionDTO).when(solutionService).updateSolution(testSolutionDTO);
         mockMvc.perform(MockMvcRequestBuilders.put("/stacktrace/solution")
                 .content(objectMapper.writeValueAsString(testSolutionDTO))
@@ -99,15 +101,15 @@ class SolutionControllerTest {
     }
 
     /**
-     * Test for deleteSolutionTest
+     * Test for deleteSolution
      * @throws Exception (for mockMvc.perform())
      */
     @Test
-    void deleteSolutionTest() throws Exception{
-        Mockito.doNothing().when(solutionService).deleteSolution(1);
+    void WhenSolutionDeletedThenRepositoryCalled() throws Exception{
+        Mockito.doReturn(testSolutionDTO).when(solutionService).deleteSolution(1);
         mockMvc.perform(MockMvcRequestBuilders.delete("/stacktrace/solution/{id}", 1)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk());
         verify(solutionService, times(1)).deleteSolution(1);
     }
 }

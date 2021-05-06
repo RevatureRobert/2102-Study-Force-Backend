@@ -28,6 +28,7 @@ import static org.mockito.ArgumentMatchers.any;
 /**
  * Test class for Solution Service
  * @author Joshua Swanson
+ * @author John Stone
  */
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test-application.properties")
@@ -53,7 +54,7 @@ class SolutionServiceTest {
 
         testUser = new User(1, "test.test.com", "TestName", false, true, true, Authority.USER, null, null);
         testStacktrace = new Stacktrace(1, testUser, "Test Title", "Test Body", null, null, null);
-        testSolutionDTO = new SolutionDTO(1, 1,1, "Test", "Test Body", false, null);
+        testSolutionDTO = new SolutionDTO(1, 1,1, "TestName", "Test Body", false, null);
         testSolution = new Solution(1, testStacktrace, testUser, "Test Body", false, null, null);
         testNullSolution = null;
         testSolutionDTOList = new ArrayList<>();
@@ -62,30 +63,12 @@ class SolutionServiceTest {
         testSolutionList.add(testSolution);
     }
 
-    /**
-     * Tests getAllSolutionsForStackTrace() by checking size and contents of returned SolutionDTO
-     */
-
-//    @Test
-//    void getAllSolutionsForStackTraceTest(){
-//        Mockito.doReturn(testSolutionList).when(solutionRepository).findByStackTraceId(1);
-//        List<SolutionDTO> solutionDTOS = solutionService.getAllSolutionsForStacktrace(1);
-//        assertEquals(1, solutionDTOS.size());
-//        assertEquals(solutionDTOS.get(0).getSolutionId(), testSolutionDTO.getSolutionId());
-//        assertEquals(solutionDTOS.get(0).getStackTraceId(), testSolutionDTO.getStackTraceId());
-//        assertEquals(solutionDTOS.get(0).getUserName(), testSolutionDTO.getUserName());
-//        assertEquals(solutionDTOS.get(0).getBody(), testSolutionDTO.getBody());
-//        assertEquals(solutionDTOS.get(0).getCreationTime(), testSolutionDTO.getCreationTime());
-//        assertEquals(solutionDTOS.get(0).getAdminSelected(), testSolutionDTO.getAdminSelected());
-//        verify(solutionRepository, times(1)).findByStackTraceId(1);
-//    }
-
 
     /**
      * Tests submitFirstSolution()
      */
     @Test
-    void submitFirstSolutionTest(){
+    void whenSubmitFirstSolutionThenCorrectSolutionReturend(){
         Mockito.doReturn(testSolution).when(solutionRepository).save(any(Solution.class));
         SolutionDTO solutionDTO = solutionService.submitFirstSolution(testSolutionDTO);
         assertEquals(solutionDTO.getSolutionId(), testSolutionDTO.getSolutionId());
@@ -138,7 +121,7 @@ class SolutionServiceTest {
      * Tests deleteSolution() to verify repository invokes correct method
      */
     @Test
-    void deleteSolutionTest(){
+    void WhenSolutionDeletedThenRepositoryCalled(){
         Mockito.doNothing().when(solutionRepository).delete(any(Solution.class));
         solutionService.deleteSolution(1);
         verify(solutionRepository, times(1)).delete(any(Solution.class));

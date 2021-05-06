@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(locations = "classpath: test-test-application.properties")
+@TestPropertySource(locations = "classpath:test-application.properties")
 class StackTraceControllerTest {
 
     private MockMvc mockMvc;
@@ -73,24 +73,15 @@ class StackTraceControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                //.andExpect(MockMvcResultMatchers.jsonPath("$.content").isNotEmpty())
-                /*.andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.email").value("Test@mail.com"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.password").value("Pass"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.firstName").value("Bob"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.lastName").value("Smith"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.isActive").value("true"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.isSubscribedFlashcard").value("true"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.isSubscribedStacktrace").value("true"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.Authority").value("0"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.registrationTime").value(new Time(0).toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].User.lastLogin").value(new Time(0).toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].tile").value("TestTitle"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].body").value("TestBody"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].Technology.technologyId").value("0"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].Technology.technologyName").value("TestTech"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].creationTime").value(new Time(0).toString()))*/
+                .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].stacktraceId").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].userId").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].userName").value("Bob"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("TestTitle"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].body").value("TestBody"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].technologyId").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].technologyName").value("TestTech"))
                 .andReturn();
-        System.out.println(result.getResponse().getContentAsString());
     }
 
 
@@ -100,13 +91,22 @@ class StackTraceControllerTest {
      */
     @Test
     void whenStackTraceDeleted_thenCorrectResponseReturned() throws Exception {
-        User u = userRepository.save(new User(1,"Test@mail.com","Bob",true,true,true, Authority.USER,new Timestamp(0),new Timestamp(0)));
+        User u = userRepository.save(new User(1,"Test@mail.com","Bob",true,true,true, Authority.USER,Timestamp.valueOf("2007-09-23 10:10:10.0"),Timestamp.valueOf("2007-09-23 10:10:10.0")));
         Technology t = new Technology(2, "TestTech");
         stacktraceRepository.save(new Stacktrace(1,
                 u,
                 "TestTitle", "TestBody", t, new Timestamp(0), null));
-        mockMvc.perform(MockMvcRequestBuilders.delete("/stacktrace/{id}", 1)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/stacktrace/{id}", 1))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.stacktraceId").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.userId").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.userName").value("Bob"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("TestTitle"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.body").value("TestBody"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.technologyId").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.technologyName").value("TestTech"))
+                .andReturn();
     }
 }

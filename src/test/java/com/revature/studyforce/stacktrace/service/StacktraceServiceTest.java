@@ -116,7 +116,7 @@ class StacktraceServiceTest {
      * Test for deleteStackTraceById()
      */
     @Test
-    void deleteStackTraceByIdTest(){
+    void whenStackTraceDeletedthenRepoCalled(){
         Mockito.doNothing().when(stacktraceRepository).deleteById(1);
         stacktraceService.deleteStackTraceById(1);
         verify(stacktraceRepository, times(1)).deleteById(1);
