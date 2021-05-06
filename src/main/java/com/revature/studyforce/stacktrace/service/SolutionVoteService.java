@@ -13,23 +13,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Service used to handle requests for voting on a solution.
+ * Service used to handle requests for voting on a solution using {@link SolutionVoteRepository}
  * @author Joey Elmblad
  */
 @Service
 public class SolutionVoteService {
+    private final SolutionVoteRepository solutionVoteRepository;
+    private final UserRepository userRepository;
+    private final SolutionRepository solutionRepository;
 
     @Autowired
-    SolutionVoteRepository solutionVoteRepository;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    SolutionRepository solutionRepository;
+    public SolutionVoteService(SolutionVoteRepository solutionVoteRepository,
+                               UserRepository userRepository, SolutionRepository solutionRepository){
+        this.solutionVoteRepository = solutionVoteRepository;
+        this.userRepository = userRepository;
+        this.solutionRepository = solutionRepository;
+    }
 
     /**
-     *  The controller used to return all votes for a given solution.
+     *  The controller used to return all votes for a given solution using {@link SolutionVoteRepository#}
      * @param solutionId the value that will bring back every vote for a given solution.
      * @return will return a list of votes on a given solution.
      */
@@ -43,7 +45,6 @@ public class SolutionVoteService {
             solutionVoteDTO.setSolutionId(solutionVote.getSolutionId().getSolutionId());
             solutionVoteDTO.setUserId(solutionVote.getUserId().getUserId());
             solutionVoteDTO.setValue(solutionVote.getValue());
-            BeanUtils.copyProperties(solutionVote,solutionVoteDTO);
             solutionVoteDTOS.add(solutionVoteDTO);
         }
 
@@ -56,14 +57,11 @@ public class SolutionVoteService {
      * @return will return a solutionVote for a given user, with a given solution.
      */
     public SolutionVoteDTO submitVote(SolutionVoteDTO solutionVoteDTO){
+
         SolutionVote solutionVote = new SolutionVote();
-
-        solutionVote.setSolutionId(solutionRepository.findBySolutionId(solutionVoteDTO.getSolutionId()));
-
-        solutionVote.setUserId(userRepository.findByUserId(solutionVoteDTO.getUserId()));
-
+        solutionVote.setSolutionId(solutionRepository.findById(solutionVoteDTO.getSolutionId()).orElse(null));
+        solutionVote.setUserId(userRepository.findById(solutionVoteDTO.getUserId()).orElse(null));
         solutionVote.setValue(solutionVoteDTO.getValue());
-
         solutionVoteRepository.save(solutionVote);
 
         return solutionVoteDTO;

@@ -1,16 +1,16 @@
 package com.revature.studyforce.stacktrace.controller;
 
 import com.revature.studyforce.stacktrace.dto.TechnologyDTO;
+import com.revature.studyforce.stacktrace.model.Technology;
 import com.revature.studyforce.stacktrace.service.TechnologyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/stacktrace/technology")
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin(origins = "*")
 
 public class TechnologyController {
 
@@ -46,9 +46,8 @@ public class TechnologyController {
    * @return an empty HTML response
    */
   @DeleteMapping("/{technologyId}")
-  public ResponseEntity<Void> deleteTechnology(@PathVariable int technologyId){
-    technologyService.deleteTechnology(technologyId);
-    return ResponseEntity.noContent().build();
+  public Technology deleteTechnology(@PathVariable int technologyId){
+    return technologyService.deleteTechnology(technologyId);
   }
   @PutMapping
   public TechnologyDTO updateTechnology(@RequestBody TechnologyDTO technologyDTO){

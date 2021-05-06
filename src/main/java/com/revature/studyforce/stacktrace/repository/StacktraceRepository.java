@@ -11,8 +11,9 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 /**
- * Basic repo for  {@link com.revature.studyforce.stacktrace.model.Stacktrace}
- * author: Noel Shaji
+ * Basic repo for  {@link Stacktrace}
+ * @author Noel Shaji
+ * @author Joey Elmblad
  */
 @Repository
 public interface StacktraceRepository extends JpaRepository<Stacktrace, Integer> {
@@ -22,8 +23,4 @@ public interface StacktraceRepository extends JpaRepository<Stacktrace, Integer>
     @Query(value = "select * from stacktrace where stacktrace_id = :stacktraceId ;", nativeQuery = true)
     List<Stacktrace> findByStacktraceId(@Param("stacktraceId") int stacktraceId);
 
-    @Transactional
-    @Modifying
-    @Query("delete from Stacktrace where stacktrace_id = :stacktraceId")
-    void deleteByStackTraceId(@Param("stacktraceId") int stacktraceId);
 }

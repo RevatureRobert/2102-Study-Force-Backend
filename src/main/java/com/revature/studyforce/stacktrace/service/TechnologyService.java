@@ -10,10 +10,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Service which creates, deletes, and displays technologies or
+ */
+
 @Service
 public class TechnologyService {
-
-        private TechnologyRepository technologyRepo;
+        private final TechnologyRepository technologyRepo;
 
         @Autowired
         public TechnologyService (TechnologyRepository technologyRepo) {
@@ -35,8 +38,12 @@ public class TechnologyService {
      * Deletes Technology with the given id
      * @param technologyId Primary id of Technology to be deleted
      */
-    public void deleteTechnology(int technologyId){
-        technologyRepo.deleteById(technologyId);
+    public Technology deleteTechnology(int technologyId){
+        Technology technology = technologyRepo.findById(technologyId).orElse(null);
+        if(technology == null)
+            return null;
+        technologyRepo.delete(technology);
+        return technology;
     }
 
     /**

@@ -134,8 +134,8 @@ class SolutionServiceTest {
      */
     @Test
     void deleteSolutionTest(){
-        Mockito.doNothing().when(solutionRepository).deleteBySolutionId(any(Integer.class));
+        Mockito.doNothing().when(solutionRepository).delete(any(Solution.class));
         solutionService.deleteSolution(1);
-        verify(solutionRepository, times(1)).deleteBySolutionId(any(Integer.class));
+        verify(solutionRepository, times(1)).delete(any(Solution.class));
     }
 }

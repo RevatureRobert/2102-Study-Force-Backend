@@ -1,11 +1,9 @@
 package com.revature.studyforce.stacktrace.controller;
 
 import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
+import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.service.StacktraceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +14,7 @@ import java.util.List;
  * @author Joshua Swanson
  */
 @RestController
-@RequestMapping("/stacktrace")
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class StackTraceController {
 
     @Autowired
@@ -39,9 +36,8 @@ public class StackTraceController {
      */
     @GetMapping("/{stacktraceId}")
     public StacktraceDTO getStacktraceById(@PathVariable(name = "stacktraceId") int id){
-        return stacktraceService.getStacktraceById(id);
+        return stacktraceService.getStackTraceById(id);
     }
-
 
     /**
      * Deletes the stacktrace with the passed stacktraceId
@@ -49,9 +45,8 @@ public class StackTraceController {
      * @return Response Entity with no content
      */
     @DeleteMapping("/{stacktraceId}")
-    public ResponseEntity<Void> deleteStacktraceById(@PathVariable("stacktraceId") int stacktraceId){
-        stacktraceService.deleteStackTraceById(stacktraceId);
-        return ResponseEntity.noContent().build();
+    public StacktraceDTO deleteStacktraceById(@PathVariable("stacktraceId") int stacktraceId){
+        return stacktraceService.deleteStackTraceById(stacktraceId);
     }
 
     /**
@@ -61,8 +56,7 @@ public class StackTraceController {
      * @return Http status for the Response Entity
      */
     @PostMapping
-    public ResponseEntity createStacktrace(@RequestBody StacktraceDTO stacktraceDTO) {
-        stacktraceService.save(stacktraceDTO);
-        return new ResponseEntity(HttpStatus.OK);
+    public StacktraceDTO createStacktrace(@RequestBody StacktraceDTO stacktraceDTO) {
+        return stacktraceService.submitStackTrace(stacktraceDTO);
     }
 }

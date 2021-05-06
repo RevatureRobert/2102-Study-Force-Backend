@@ -63,6 +63,7 @@ class TechnologyControllerTests {
                 .andReturn();
         System.out.println(result.getResponse().getContentAsString());
     }
+
     @Test
     void whenAddTechnology_ThenTechnologyReturned() throws Exception {
         String content = objectMapper.writeValueAsString(new TechnologyDTO(0,"TestTechAdd"));
@@ -76,6 +77,7 @@ class TechnologyControllerTests {
                 .andReturn();
         System.out.println(result.getResponse().getContentAsString());
     }
+  
     @Test
     void whenDeleteTechnology_ThenCorrectReponseReturned() throws Exception{
         technologyRepository.save(new Technology(1,"TestTech"));
