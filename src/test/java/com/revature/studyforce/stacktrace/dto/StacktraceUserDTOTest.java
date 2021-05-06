@@ -6,6 +6,7 @@ import com.revature.studyforce.user.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.function.Function;
 
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Joshua Swanson
  */
 @SpringBootTest
+@TestPropertySource(locations = "classpath: test-application.properties")
 class StacktraceUserDTOTest {
 
     User testUser;

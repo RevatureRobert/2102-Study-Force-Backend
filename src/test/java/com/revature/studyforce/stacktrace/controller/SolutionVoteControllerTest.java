@@ -31,7 +31,7 @@ import java.sql.Timestamp;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @AutoConfigureMockMvc
-//@TestPropertySource(locations = "classpath: test-application.properties")
+@TestPropertySource(locations = "classpath: test-application.properties")
 public class SolutionVoteControllerTest {
 
     @Autowired
