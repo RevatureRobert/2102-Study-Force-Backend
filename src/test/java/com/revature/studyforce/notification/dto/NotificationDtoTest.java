@@ -6,17 +6,21 @@ import com.revature.studyforce.notification.dto.NotificationDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /***
  * author: Patrick Gonzalez
  */
+
 @SpringBootTest
-public class NotificationDtoTest {
+@TestPropertySource(locations = "classpath:test-application.properties")
+class NotificationDtoTest {
 
     @Test
-    void ConvertToDtoTest(){
+    void whenConvertToDto_shouldReturnNotificationDto(){
         Integer id = 0;
         String message = "Flashcard";
         boolean isRead = false;
@@ -37,7 +41,7 @@ public class NotificationDtoTest {
     }
 
     @Test
-    void ConvertFromDtoTest(){
+    void whenConvertFromDto_shouldReturnNotificationDto(){
         Integer id = 0;
         String message = "Flashcard";
         boolean isRead = false;
