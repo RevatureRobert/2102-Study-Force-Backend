@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ import static org.mockito.Mockito.verify;
  */
 
 @SpringBootTest
+@TestPropertySource(locations = "classpath: test-application.properties")
 class StacktraceServiceTest {
 
     List<Stacktrace> stacktraceArrayList;
