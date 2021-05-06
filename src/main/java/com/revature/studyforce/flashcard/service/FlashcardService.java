@@ -41,12 +41,12 @@ public class FlashcardService implements AbstractService {
     }
 
     /**
-     * getAll() method mapped to HTTP GET requests ("/all")
-     * @param page - number of offsets away from 0
-     * @param offset - number of Flashcards per page
-     * @param sortBy - column to sort by
-     * @param order - ascending or descending order
-     * @return - returns Page of paginated Flashcards
+     * Retrieves a Page of flashcards
+     * @param page - number of offsets away from 0 (defaults to 0)
+     * @param offset number of elements per page [5|10|25|50|100] - defaults to 25
+     * @param sortBy - column to sort by ["difficulty"|"topic"|"created"|"resolved"] defaults to creator if sortby could not be understood
+     * @param order - order in which the Page is displayed ["ASC"|"DESC"]
+     * @return - returns a Page of Flashcards according the the given page, offset, sortBy, and order parameters
      */
     public Page<FlashcardAllDTO> getAll(int page, int offset, String sortBy, String order){
         page = validatePage(page);
@@ -65,13 +65,13 @@ public class FlashcardService implements AbstractService {
     }
 
     /**
-     * getAllByDifficulty() method mapped to HTTP GET requests ("/difficulty")
-     * @param page - number of offsets away from 0
-     * @param offset - number of Flashcards per offset
-     * @param sortBy - column to sort by
-     * @param order - ascending or descending order
-     * @param difficulty - limits returned Flashcards to the given difficulty
-     * @return - returns a List of paginated Flashcards sorted by difficulty
+     * Retrieves a Page of flashcards with a given difficulty
+     * @param page - number of offsets away from 0 (defaults to 0)
+     * @param offset number of elements per page [5|10|25|50|100] - defaults to 25
+     * @param sortBy - column to sort by ["difficulty"|"topic"|"created"|"resolved"] defaults to creator if sortby could not be understood
+     * @param order - order in which the Page is displayed ["ASC"|"DESC"]
+     * @param difficulty - only return flashcards with the given difficulty
+     * @return - returns a Page of Flashcards according the the given page, offset, sortBy, order, and difficulty parameters
      */
     public Page<FlashcardAllDTO> getAllByDifficulty(int page, int offset, String sortBy, String order, int difficulty) {
         page = validatePage(page);
@@ -90,13 +90,13 @@ public class FlashcardService implements AbstractService {
     }
 
     /**
-     * getAllByTopic() method mapped to HTTP GET requests ("/difficulty")
-     * @param page - number of offsets away from 0
-     * @param offset - number of Flashcards per offset
-     * @param sortBy - column to sort by
-     * @param order - ascending or descending order
-     * @param topicName - limits returned Flashcards to the given topic
-     * @return - returns a List of paginated Flashcards sorted by topic
+     * Retrieves a Page of flashcards with a given topicName
+     * @param page - number of offsets away from 0 (defaults to 0)
+     * @param offset number of elements per page [5|10|25|50|100] - defaults to 25
+     * @param sortBy - column to sort by ["difficulty"|"topic"|"created"|"resolved"] defaults to creator if sortby could not be understood
+     * @param order - order in which the Page is displayed ["ASC"|"DESC"]
+     * @param topicName - only return flashcards with the given topic name
+     * @return - returns a Page of Flashcards according the the given page, offset, sortBy, order, and topicName parameters
      */
     public Page<FlashcardAllDTO> getAllByTopic(int page, int offset, String sortBy, String order, String topicName) {
         page = validatePage(page);
@@ -115,13 +115,13 @@ public class FlashcardService implements AbstractService {
     }
 
     /**
-     * getAllByIsResolved() method mapped to HTTP GET requests ("/difficulty")
-     * @param page - number of offsets away from 0
-     * @param offset - number of Flashcards per offset
-     * @param sortBy - column to sort by
-     * @param order - ascending or descending order
-     * @param resolved - limits returned Flashcards to the given resolved status
-     * @return - returns a List of paginated Flashcards sorted by resolved status
+     * Retrieves a Page of flashcards with a given resolved status (boolean)
+     * @param page - number of offsets away from 0 (defaults to 0)
+     * @param offset number of elements per page [5|10|25|50|100] - defaults to 25
+     * @param sortBy - column to sort by ["difficulty"|"topic"|"created"|"resolved"] defaults to creator if sortby could not be understood
+     * @param order - order in which the Page is displayed ["ASC"|"DESC"]
+     * @param resolved - only return flashcards with the given resolved status [true|false]
+     * @return - returns a Page of Flashcards according the the given page, offset, sortBy, order, and resolved parameters
      */
     public Page<FlashcardAllDTO> getAllByIsResolved(int page, int offset, String sortBy, String order, boolean resolved) {
         page = validatePage(page);
@@ -140,7 +140,7 @@ public class FlashcardService implements AbstractService {
     }
 
     /**
-     * getById() method mapped to HTTP GET requests ("/id/{id}")
+     * Retrieves flashcard with the given id
      * @param id - limits returned Flashcard to the given id
      * @return - returns Flashcard with the given id
      */
@@ -149,7 +149,7 @@ public class FlashcardService implements AbstractService {
     }
 
     /**
-     * save() method mapped to HTTP POST requests
+     * Persists flashcard (uses NewFlashcardDTO)
      * @param flashcard - Flashcard object to persist
      * @return - returns persisted Flashcard
      */
@@ -178,7 +178,7 @@ public class FlashcardService implements AbstractService {
     }
 
     /**
-     * update() method mapped to HTTP PUT requests
+     * Updates existing flashcard
      * @param flashcard - new Flashcard to replace original in database
      * @return - returns updated Flashcard
      */
