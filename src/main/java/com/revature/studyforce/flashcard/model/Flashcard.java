@@ -29,13 +29,10 @@ public class Flashcard {
     private User creator;
     @ManyToOne
     private Topic topic;
-    @Column(nullable = false)
+    @NotNull
     private String question;
-    @NotNull
     private int questionDifficultyTotal = 0;
-    @NotNull
     private int questionDifficultyAverage = 0;
-    @NotNull
     private Timestamp createdTime = Timestamp.valueOf(LocalDateTime.now());
     private Timestamp resolutionTime = Timestamp.valueOf(LocalDateTime.now());
     private boolean isResolved = false;

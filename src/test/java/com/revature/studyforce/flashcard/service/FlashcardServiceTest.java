@@ -30,7 +30,10 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
-
+/**
+ * Flashcard service tests {@link FlashcardService}
+ * @author Luke Mohr
+ */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test-application.properties")

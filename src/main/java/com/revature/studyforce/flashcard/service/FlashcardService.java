@@ -23,8 +23,8 @@ import java.util.Locale;
 import java.util.Optional;
 
 /**
- * Services for the Flashcard repository
- * @author Luke
+ * Services for the Flashcard repository {@link FlashcardRepository}
+ * @author Luke Mohr
  */
 @Service
 public class FlashcardService implements AbstractService {

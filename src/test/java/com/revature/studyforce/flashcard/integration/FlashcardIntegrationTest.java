@@ -1,6 +1,7 @@
 package com.revature.studyforce.flashcard.integration;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.studyforce.flashcard.controller.FlashcardController;
 import com.revature.studyforce.flashcard.dto.FlashcardDTO;
 import com.revature.studyforce.flashcard.dto.NewFlashcardDTO;
@@ -30,7 +31,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Flashcard integration tests {@link FlashcardController}
+ * @author Luke Mohr
+ */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test-application.properties")
@@ -61,7 +65,7 @@ class FlashcardIntegrationTest {
     Topic topic;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws JsonProcessingException {
         mockMvc = MockMvcBuilders.standaloneSetup(flashcardController).build();
         flashcardDTO = new FlashcardDTO();
         user = new User(0,"a@b.c","pw","fn","ln",true,false,false, Authority.USER, null,null);
@@ -80,7 +84,7 @@ class FlashcardIntegrationTest {
         System.out.println(userRepository.save(user));
         System.out.println(topicRepository.save(topic));
         System.out.println(flashcardRepository.save(flashcard));
-        System.out.println(new Gson().toJson(flashcard));
+        System.out.println(new ObjectMapper().writeValueAsString(newFlashcardDTO));
     }
 
     @Test
@@ -152,10 +156,9 @@ class FlashcardIntegrationTest {
     @Test
     void givenNewFlashcardDTO_whenSave_shouldReturnFlashcardDTO() throws Exception {
 
-//        mockMvc = MockMvcBuilders.standaloneSetup(flashcardController).build();
         mockMvc.perform(MockMvcRequestBuilders.post("/flashcards")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(newFlashcardDTO)))
+                .content("{\"userId\":1,\"topicId\":2,\"question\":\"question\",\"difficulty\":2}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
@@ -172,15 +175,10 @@ class FlashcardIntegrationTest {
 
     @Test
     void givenFlashcard_whenUpdate_shouldReturnFlashcardDTO() throws Exception {
-        user.setLastLogin(null);
-        user.setRegistrationTime(null);
-        flashcard.setCreatedTime(null);
-        System.out.println(new Gson().toJson(flashcard));
 
-//        mockMvc = MockMvcBuilders.standaloneSetup(flashcardController).build();
         mockMvc.perform(MockMvcRequestBuilders.put("/flashcards")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(flashcard)))
+                .content("{\"id\":3,\"creator\":{\"userId\":1},\"topic\":{\"id\":2},\"question\":\"question\",\"questionDifficultyTotal\":2,\"questionDifficultyAverage\":2,\"createdTime\":null,\"resolutionTime\":null,\"resolved\":false}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
@@ -190,16 +188,16 @@ class FlashcardIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.questionDifficultyTotal").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.questionDifficultyTotal").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.questionDifficultyAverage").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.createdTime").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.resolutionTime").isNumber());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.createdTime").doesNotExist())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.resolutionTime").doesNotExist());
     }
 
     @Test
     void givenFlashcardId_whenDelete_shouldDeleteFlashcard() throws Exception {
-//        mockMvc = MockMvcBuilders.standaloneSetup(flashcardController).build();
+
         mockMvc.perform(MockMvcRequestBuilders.delete("/flashcards/3")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(flashcard)))
+                .content("{\"userId\":1,\"topicId\":2,\"question\":\"question\",\"difficulty\":2}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").value(true));

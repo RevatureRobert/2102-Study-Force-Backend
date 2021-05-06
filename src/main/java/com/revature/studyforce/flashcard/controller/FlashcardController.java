@@ -11,8 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Controller for handling Flashcards
- * @author Luke
+ * Controller for handling Flashcards using {@link FlashcardService}
+ * @author Luke Mohr
  */
 @Controller
 @CrossOrigin
@@ -28,7 +28,7 @@ public class FlashcardController {
     }
 
     /**
-     * getAll() method mapped to HTTP GET requests ("/all")
+     * Retrieves all flashcards
      * @param page - number of offsets away from 0
      * @param offset - number of Flashcards per page
      * @param sortBy - column to sort by
@@ -45,13 +45,13 @@ public class FlashcardController {
     }
 
     /**
-     * getAllByDifficulty() method mapped to HTTP GET requests ("/difficulty")
+     * Retrieves all flashcards with the given difficulty
      * @param page - number of offsets away from 0
      * @param offset - number of Flashcards per offset
      * @param sortBy - column to sort by
      * @param order - ascending or descending order
      * @param difficulty - limits returned Flashcards to the given difficulty
-     * @return - returns a List of paginated Flashcards sorted by difficulty
+     * @return - returns a Page of Flashcards by difficulty
      */
     @GetMapping("/difficulty")
     public @ResponseBody Page<FlashcardAllDTO> getAllByDifficulty(
@@ -64,13 +64,13 @@ public class FlashcardController {
     }
 
     /**
-     * getAllByTopic() method mapped to HTTP GET requests ("/topic")
+     * Retrieves all flashcards with the given topic
      * @param page - number of offsets away from 0
      * @param offset - number of Flashcards per offset
      * @param sortBy - column to sort by
      * @param order - ascending or descending order
      * @param topicName - limits returned Flashcards to the given topic
-     * @return - returns a List of paginated Flashcards sorted by difficulty
+     * @return - returns a Page of Flashcards by topic
      */
     @GetMapping("/topics")
     public @ResponseBody Page<FlashcardAllDTO> getAllByTopic(
@@ -83,13 +83,13 @@ public class FlashcardController {
     }
 
     /**
-     * getAllByResolved() method mapped to HTTP GET requests ("/resolved")
+     * Retrieves all flashcards with the given resolved status (boolean)
      * @param page - number of offsets away from 0
      * @param offset - number of Flashcards per offset
      * @param sortBy - column to sort by
      * @param order - ascending or descending order
      * @param resolved - limits returned Flashcards to the given resolved boolean
-     * @return - returns a List of paginated Flashcards sorted by difficulty
+     * @return - returns a Page of Flashcards by resolved status
      */
     @GetMapping("/resolved")
     public @ResponseBody Page<FlashcardAllDTO> getAllByIsResolved(
@@ -102,7 +102,7 @@ public class FlashcardController {
     }
 
     /**
-     * getById() method mapped to HTTP GET requests ("/id/{id}")
+     * Retrieves flashcard by id
      * @param id - limits returned Flashcard to the given id
      * @return - returns Flashcard with the given id
      */
@@ -112,7 +112,7 @@ public class FlashcardController {
     }
 
     /**
-     * save() method mapped to HTTP POST requests
+     * Persists flashcard (uses NewFlashcardDTO)
      * @param flashcard - Flashcard object to persist
      * @return - returns persisted Flashcard
      */
@@ -122,7 +122,7 @@ public class FlashcardController {
     }
 
     /**
-     * update() method mapped to HTTP PUT requests
+     * Updates existing flashcard
      * @param flashcard - new Flashcard to replace original in database
      * @return - returns updated Flashcard
      */
@@ -132,9 +132,9 @@ public class FlashcardController {
     }
 
     /**
-     * delete() method mapped to HTTP DELETE requests
+     * Deletes existing flashcard with given id
      * @param id - Flashcard to be deleted from the database
-     * @return - returns deleted Flashcard
+     * @return - returns deletion success boolean
      */
     @DeleteMapping("/{id}")
     public @ResponseBody Boolean delete(@PathVariable("id") Integer id) {
