@@ -74,6 +74,12 @@ public class NotificationController {
         return ResponseEntity.unprocessableEntity().build();
     }
 
+    /***
+     * Update a {@link Notification}
+     * @param notificationDto {@link NotificationDto} represents the notification to be updated
+     * @return Returns an
+     */
+
     @PutMapping
     public ResponseEntity<NotificationDto> updateNotification(@RequestBody NotificationDto notificationDto){
         notificationDto = notificationService.update(notificationDto);
@@ -84,12 +90,28 @@ public class NotificationController {
     }
 
     /***
+     * Delete a {@link Notification} based on the id passed
+     * @param notificationId The id of the notification we want to delete
+     * @return Returns an Http Response of No Content if the notification is successfully deleted
+     *          otherwise return an Http Response of Not Found
+     */
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteByNotificationId(@PathVariable("id") Integer notificationId){
+        if(notificationId != null){
+            notificationService.deleteByNotificationId(notificationId);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    /***
      * Delete all {@link Notification notifications} that belong to a particular user
      * @param userId userId is the id of the user
      * @return Returns an Http Response with Status No Content when the notifications are successfully deleted,
      *          Otherwise returns an Http Response with status Not Found
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<?> deleteAllNotificationsByUserId(@PathVariable("id") Integer userId){
         try{
             notificationService.deleteByUserId(userId);

@@ -105,6 +105,14 @@ public class NotificationService {
     }
 
     /***
+     * Delete a {@link Notification}
+     * @param id The parameter id is the id of the Notification we want to delete
+     */
+    public void deleteByNotificationId(Integer id){
+        notificationRepository.deleteById(id);
+    }
+
+    /***
      * Delete all {@link Notification notifications} that belong to a particular user
      * @param userId The userId parameter is used to find all notifications that belong to a particular user
      */

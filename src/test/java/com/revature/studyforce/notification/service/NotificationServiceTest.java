@@ -37,6 +37,12 @@ import static org.mockito.ArgumentMatchers.any;
 import org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.times;
 
+/***
+ * Tests for {@link NotificationService}
+ *
+ * author: Patrick Gonzalez
+ */
+
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test-application.properties")
