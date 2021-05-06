@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
@@ -68,8 +69,9 @@ class NotificationServiceTest {
 
     @Test
     void findAllTest(){
+//        Page<Notification> page = new PageRequest();
         Mockito.doReturn(notificationPage).when(notificationRepository).findAll(any(PageRequest.class));
-        Page<NotificationDto> dtos = notificationService.findByUserId(1, 0);
+        Page<NotificationDto> dtos = notificationService.findAll();
         NotificationDto dto = dtos.getContent().get(0);
         Assertions.assertNotNull(dto);
         Assertions.assertEquals(0, dto.getId());
@@ -80,12 +82,12 @@ class NotificationServiceTest {
         Assertions.assertEquals(1, dto.getUserId());
         Assertions.assertEquals(featureArea, dto.getFeatureArea());
 
-//        verify(notificationRepository, times(1)).findAll(any(PageRequest.class));
     }
 
     @Test
     void findByUserIdTest(){
-        Mockito.doReturn(notificationPage).when(notificationRepository).findByApplicationUserId(1, any(PageRequest.class));
+//        when(notificationRepository.findAll()).thenReturn();
+        Mockito.doReturn(notificationPage).when(notificationRepository).findByApplicationUserId(eq(notification.getApplicationUserId()), any(PageRequest.class));
         Page<NotificationDto> dtos = notificationService.findByUserId(1, 0);
         NotificationDto dto = dtos.getContent().get(0);
         Assertions.assertNotNull(dto);
@@ -97,7 +99,6 @@ class NotificationServiceTest {
         Assertions.assertEquals(1, dto.getUserId());
         Assertions.assertEquals(featureArea, dto.getFeatureArea());
 
-//        verify(notificationRepository, times(1)).findByApplicationUserId(1, any(PageRequest.class));
     }
 
     @Test
@@ -113,7 +114,6 @@ class NotificationServiceTest {
         Assertions.assertEquals(1, dto.getUserId());
         Assertions.assertEquals(featureArea, dto.getFeatureArea());
 
-        verify(notificationRepository, times(1)).save(notification);
     }
 
     @Test
@@ -130,8 +130,6 @@ class NotificationServiceTest {
         Assertions.assertEquals(1, dto.getUserId());
         Assertions.assertEquals(featureArea, dto.getFeatureArea());
 
-        verify(notificationRepository, times(1)).findById(0);
-        verify(notificationRepository, times(1)).save(notification);
     }
 
     @Test

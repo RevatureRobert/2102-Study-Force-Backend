@@ -9,6 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+/***
+ * author: Patrick Gonzalez
+ */
 @SpringBootTest
 public class NotificationDtoTest {
 
