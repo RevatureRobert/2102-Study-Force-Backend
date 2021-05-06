@@ -23,7 +23,7 @@ public class StackTraceController {
     private StacktraceService stacktraceService;
 
     /**
-     * Gets all Stacktraces
+     * Gets all Stacktraces using {@link StacktraceService#getAllStacktraces()}
      * @return A list of Stacktraces
      */
     @GetMapping()
@@ -32,7 +32,7 @@ public class StackTraceController {
     }
 
     /**
-     * Gets stacktrace who's id matches provided id
+     * Gets stacktrace who's id matches provided id using {@link StacktraceService#getStackTraceById(int)}
      * @param id The id of the stacktrace requested
      * @return The data transfer representation of the requested Stacktrace
      */
@@ -42,7 +42,7 @@ public class StackTraceController {
     }
 
     /**
-     * Deletes the stacktrace with the passed stacktraceId
+     * Deletes the stacktrace with the passed stacktraceId using {@link StacktraceService#deleteStackTraceById(int)}
      * @param stacktraceId id of stacktrace to be deleted
      * @return The data transfer representation of the deleted Stacktrace
      */
@@ -52,7 +52,7 @@ public class StackTraceController {
     }
 
     /**
-     * Saves a stacktrace, takes in StacktraceDTO as a parameter
+     * Saves a stacktrace using {@link StacktraceService#submitStackTrace(StacktraceDTO)}
      * Uses repo to save it
      * @param stacktraceDTO the DTO of stacktrace as an object
      * @return The data transfer representation of the created Stacktrace

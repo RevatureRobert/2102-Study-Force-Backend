@@ -35,7 +35,7 @@ public class StacktraceService {
     }
 
     /**
-     * Gets all Stacktraces
+     * Gets all Stacktraces using {@link StacktraceRepository#findAll()}
      * @return A list of Stacktraces
      */
     public List<StacktraceDTO> getAllStacktraces() {
