@@ -32,7 +32,7 @@ import java.time.LocalDateTime;
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:test-application.properties")
-public class FlashcardSubscriptionIntegrationTest {
+class FlashcardSubscriptionIntegrationTest {
 
     private MockMvc mockMvc;
 
@@ -89,6 +89,8 @@ public class FlashcardSubscriptionIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.flashcardSubscriptionId.flashcard").value(2))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.flashcardSubscriptionId.subscription").value(3))
                 .andReturn();
         System.out.println("GET");
         System.out.println(result.getResponse().getContentAsString());

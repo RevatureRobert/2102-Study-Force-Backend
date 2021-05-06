@@ -27,7 +27,7 @@ import java.util.Optional;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test-application.properties")
-public class StacktraceSubscriptionServiceTest {
+class StacktraceSubscriptionServiceTest {
     @Autowired
     private StacktraceSubscriptionService stacktraceSubscriptionService;
 
@@ -54,7 +54,7 @@ public class StacktraceSubscriptionServiceTest {
     }
 
     @Test
-    void getStacktraceSubscriptionByStacktraceAndUserId(){
+    void getStacktraceSubscriptionByStacktraceAndUserIdAndReturnStacktraceSubscriptionTest(){
         Mockito.doReturn(Optional.of(stacktrace)).when(stacktraceRepository).findById(1);
         Mockito.doReturn(subscription).when(subscriptionService).getSubscriptionByUserId(1);
         Mockito.doReturn(stacktraceSubscription).when(stacktraceSubscriptionRepository)
@@ -67,7 +67,7 @@ public class StacktraceSubscriptionServiceTest {
     }
 
     @Test
-    void createStacktraceSubscriptionByStacktraceAndUserId(){
+    void createStacktraceSubscriptionByStacktraceAndUserIdAndReturnStacktraceSubscriptionTest(){
         Mockito.doReturn(Optional.of(stacktrace)).when(stacktraceRepository).findById(1);
         Mockito.doReturn(subscription).when(subscriptionService).getSubscriptionByUserId(1);
         Mockito.doReturn(stacktraceSubscription).when(stacktraceSubscriptionRepository)
@@ -80,7 +80,7 @@ public class StacktraceSubscriptionServiceTest {
     }
 
     @Test
-    void getAllSubscribersByStacktraceIdTest(){
+    void getAllSubscribersByStacktraceIdTestAndReturnStacktraceSubscriptionsListTest(){
         Mockito.doReturn(stacktraceSubscriptions).when(stacktraceSubscriptionRepository).findAllByStacktrace_StacktraceId(1);
         List<StacktraceSubscription> result = stacktraceSubscriptionService.getAllSubscribersByStacktraceId(1);
         Assertions.assertNotNull(result);
@@ -91,7 +91,7 @@ public class StacktraceSubscriptionServiceTest {
     }
 
     @Test
-    void getAllSubscriptionsByUserIdTest(){
+    void getAllSubscriptionsByUserIdTestAndReturnStacktraceSubscriptionsListTest(){
         Mockito.doReturn(stacktraceSubscriptions).when(stacktraceSubscriptionRepository).findAllBySubscription_User_UserId(1);
         List<StacktraceSubscription> result = stacktraceSubscriptionService.getAllSubscriptionsByUserId(1);
         Assertions.assertNotNull(result);
@@ -102,7 +102,7 @@ public class StacktraceSubscriptionServiceTest {
     }
 
     @Test
-    void deleteStacktraceSubscriptionByStacktraceAndUserId(){
+    void deleteStacktraceSubscriptionByStacktraceAndUserIdAndReturnStacktraceSubscriptionTest(){
         Mockito.doReturn(Optional.of(stacktrace)).when(stacktraceRepository).findById(1);
         Mockito.doReturn(subscription).when(subscriptionService).getSubscriptionByUserId(1);
         StacktraceSubscription result = stacktraceSubscriptionService.deleteStacktraceSubscription(1,1);
@@ -113,7 +113,7 @@ public class StacktraceSubscriptionServiceTest {
     }
 
     @Test
-    void deleteAllStacktraceSubscriptionsByStacktraceSubscriptionsList(){
+    void deleteAllStacktraceSubscriptionsByStacktraceSubscriptionsListAndReturnStacktraceSubscriptionsListTest(){
         List<StacktraceSubscription> result = stacktraceSubscriptionService.deleteAllStacktraceSubscriptions(stacktraceSubscriptions);
         Assertions.assertNotNull(result);
         Assertions.assertEquals(stacktraceSubscription.getStacktraceSubscriptionId(), Objects.requireNonNull(result.stream().findFirst().orElse(null)).getStacktraceSubscriptionId());
@@ -122,7 +122,7 @@ public class StacktraceSubscriptionServiceTest {
     }
 
     @Test
-    void deleteAllFlashcardSubscriptionsByFlashcardId(){
+    void deleteAllStacktraceSubscriptionsByStacktraceIdAndReturnStacktraceSubscriptionsListTest(){
         Mockito.doReturn(stacktraceSubscriptions).when(stacktraceSubscriptionRepository).findAllByStacktrace_StacktraceId(1);
         List<StacktraceSubscription> result = stacktraceSubscriptionService.deleteAllStacktraceSubscriptionByStacktraceId(1);
         Assertions.assertNotNull(result);
@@ -132,7 +132,7 @@ public class StacktraceSubscriptionServiceTest {
     }
 
     @Test
-    void deleteAllFlashcardSubscriptionsByUserId(){
+    void deleteAllStacktraceSubscriptionsByUserIdAndReturnStacktraceSubscriptionsListTest(){
         Mockito.doReturn(stacktraceSubscriptions).when(stacktraceSubscriptionRepository).findAllBySubscription_User_UserId(1);
         List<StacktraceSubscription> result = stacktraceSubscriptionService.deleteAllStacktraceSubscriptionsByUserId(1);
         Assertions.assertNotNull(result);

@@ -32,7 +32,7 @@ public class Subscription {
 
     private String endpoint;
 
-    private  String p256dh;
+    private  String key;
 
     private  String auth;
 }
