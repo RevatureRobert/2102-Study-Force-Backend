@@ -39,15 +39,11 @@ public class SolutionService {
      * @param stackTraceId Primary id of stacktrace
      * @return All solutions posted for the given stacktrace
      */
-    public List<SolutionDTO> getAllSolutionsForStacktrace(int stackTraceId, int page, int pageSize){
-        List<Solution> solutions = solutionRepository.findByStackTraceId(stackTraceId, PageRequest.of(page, pageSize));
-        List<SolutionDTO> solutionDTOS = new ArrayList<>();
-
-        for(Solution solution : solutions){
-            solutionDTOS.add(SolutionDTO.solutionToDTO().apply(solution));
-        }
-
-        return solutionDTOS;
+    public Page<SolutionDTO> getAllSolutionsForStacktrace(int stackTraceId, int page, int pageSize){
+        page = validatePage(page);
+        pageSize = validatePageSize(pageSize);
+        Page<Solution> solutions = solutionRepository.findByStackTraceId_stacktraceId(stackTraceId, PageRequest.of(page, pageSize));
+        return solutions.map(SolutionDTO.solutionToDTO());
     }
 
     /**
@@ -104,5 +100,27 @@ public class SolutionService {
         Solution solution = solutionRepository.findById(solutionId).orElse(null);
         solutionRepository.delete(solution);
         return solution;
+    }
+
+    /**
+     * Validates the size of pages
+     * @param pageSize size of a page
+     * @return valid page size
+     */
+    public int validatePageSize(int pageSize){
+        if(pageSize != 5 || pageSize != 10 || pageSize != 20)
+            pageSize = 5;
+        return pageSize;
+    }
+
+    /**
+     * validates page is not negative
+     * @param page page number
+     * @return valid page number
+     */
+    public int validatePage(int page){
+        if(page < 0)
+            page = 0;
+        return page;
     }
 }

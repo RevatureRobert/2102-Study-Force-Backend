@@ -21,9 +21,7 @@ import java.util.List;
 @Repository
 public interface SolutionRepository extends JpaRepository<Solution,Integer> {
 
-
-    @Query("from Solution where stacktrace_id = :stackTraceId")
-    List<Solution> findByStackTraceId(@Param("stackTraceId") int stacktraceId, Pageable pageable);
+    Page<Solution> findByStackTraceId_stacktraceId(int stacktraceId, Pageable pageable);
 
     @Transactional
     @Modifying

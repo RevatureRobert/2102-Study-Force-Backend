@@ -30,7 +30,7 @@ public class SolutionController {
      * @return  List of solutions for the given stacktrace id
      */
     @GetMapping("/{stackTraceId}")
-    public List<SolutionDTO> getAllSolutionsForStacktrace(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+    public Page<SolutionDTO> getAllSolutionsForStacktrace(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                                           @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize,
                                                           @PathVariable int stackTraceId){
         return solutionService.getAllSolutionsForStacktrace(stackTraceId, page, pageSize);
