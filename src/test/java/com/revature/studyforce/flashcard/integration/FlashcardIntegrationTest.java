@@ -156,6 +156,7 @@ class FlashcardIntegrationTest {
     @Test
     void givenNewFlashcardDTO_whenSave_shouldReturnFlashcardDTO() throws Exception {
 
+//        mockMvc = MockMvcBuilders.standaloneSetup(flashcardController).build();
         mockMvc.perform(MockMvcRequestBuilders.post("/flashcards")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"userId\":1,\"topicId\":2,\"question\":\"question\",\"difficulty\":2}"))

@@ -24,12 +24,14 @@ import java.util.Optional;
 
 /**
  * Services for the quiz repository {@link QuizRepository}
+ * @author Nick Zimmerman
  */
 @Service
 public class QuizService implements AbstractService{
     private final QuizRepository quizRepository;
     private final UserRepository userRepository;
     private final FlashcardRepository flashcardRepository;
+
 
     @Autowired
     public QuizService(QuizRepository quizRepository, UserRepository userRepository, FlashcardRepository flashcardRepository){
@@ -39,7 +41,14 @@ public class QuizService implements AbstractService{
     }
 
 
-
+    /**
+     * Http GET request that queries the configured database for a pageable list of all quizzes
+     * @param page the page number
+     * @param offset number of entries per page
+     * @param sortBy attribute to sort by
+     * @param order asc or desc
+     * @return page of QuizDTO entries to be displayed
+     */
     public Page<QuizDTO> getAll(int page, int offset, String sortBy, String order){
         page = validatePage(page);
         offset = validateOffset(offset);
@@ -55,6 +64,11 @@ public class QuizService implements AbstractService{
 
     }
 
+    /**
+     * Queries the quiz with specified id
+     * @param quiz object containing the quiz id
+     * @return Optional with quiz object if it was found
+     */
     public Optional<Quiz> getById(Quiz quiz){
         return quizRepository.findById(quiz.getQuizId());
     }

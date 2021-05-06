@@ -37,7 +37,7 @@ class TopicIntegrationTest {
     TopicRepository topicRepository;
 
     @Test
-    void topicIntegrationTest1() throws Exception {
+    void topicGetAllIntegrationTest() throws Exception {
         List<Topic> topicList = new LinkedList();
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -64,7 +64,85 @@ class TopicIntegrationTest {
                 .andReturn();
 
         Assertions.assertEquals(result.getResponse().getContentAsString(), objectMapper.writeValueAsString(topicList));
+    }
 
+    @Test
+    void getSpecificTopicTest() throws Exception {
+        List<Topic> topicList = new LinkedList();
+        ObjectMapper objectMapper = new ObjectMapper();
 
+        mockMvc = MockMvcBuilders.standaloneSetup(topicController).build();
+
+        for (int i = 0; i < 5; i++) {
+            TopicDTO topicDTO = new TopicDTO(Integer.toString(i));
+            topicList.add(new Topic(i + 1, topicDTO.getTopic()));
+
+            MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/topics")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(topicDTO)))
+                    .andExpect(MockMvcResultMatchers.status().isOk())
+                    .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.topicName").value(topicDTO.getTopic()))
+                    .andReturn();
+
+            System.out.println(result.getResponse().getContentAsString());
+        }
+
+        for (Topic topic : topicList) {
+            MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/topics/" + topic.getId()))
+                    .andExpect(MockMvcResultMatchers.status().isOk())
+                    .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                    .andReturn();
+
+            Assertions.assertEquals(result.getResponse().getContentAsString(), objectMapper.writeValueAsString(topic));
+        }
+    }
+
+    /**
+     * This also test 404 not found
+     * @throws Exception
+     */
+    @Test
+    void deleteSpecificTopicTest() throws Exception {
+        List<Topic> topicList = new LinkedList();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        mockMvc = MockMvcBuilders.standaloneSetup(topicController).build();
+
+        for (int i = 0; i < 5; i++) {
+            TopicDTO topicDTO = new TopicDTO(Integer.toString(i));
+            topicList.add(new Topic(i + 1, topicDTO.getTopic()));
+
+            MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/topics")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(topicDTO)))
+                    .andExpect(MockMvcResultMatchers.status().isOk())
+                    .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.topicName").value(topicDTO.getTopic()))
+                    .andReturn();
+
+            System.out.println(result.getResponse().getContentAsString());
+        }
+
+        for (Topic topic : topicList) {
+            MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/topics/" + topic.getId()))
+                    .andExpect(MockMvcResultMatchers.status().isOk())
+                    .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                    .andReturn();
+
+            Assertions.assertEquals(result.getResponse().getContentAsString(), objectMapper.writeValueAsString(topic));
+        }
+
+        for (Topic topic : topicList) {
+            MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/topics/" + topic.getId()))
+                    .andExpect(MockMvcResultMatchers.status().isNotFound())
+                    .andReturn();
+        }
+
+        for (Topic topic : topicList) {
+            MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/topics/" + topic.getId()))
+                    .andExpect(MockMvcResultMatchers.status().isNotFound())
+                    .andReturn();
+        }
     }
 }

@@ -1,6 +1,6 @@
 package com.revature.studyforce.flashcard.integration;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.studyforce.flashcard.controller.QuizController;
 import com.revature.studyforce.flashcard.dto.FlashcardAllDTO;
 import com.revature.studyforce.flashcard.dto.NewQuizDTO;
@@ -125,15 +125,13 @@ class QuizIntegrationTest {
         deck.add(flashcard3.getId());
         deck.add(flashcard4.getId());
 
-
         NewQuizDTO testingQuiz2 = new NewQuizDTO(dwight.getUserId(),"demoQuiz2",deck);
-        System.out.println("********\b\b\b\b");
-        System.out.println(new Gson().toJson(testingQuiz2));
+        System.out.println(new ObjectMapper().writeValueAsString(testingQuiz2));
 
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/quiz")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(testingQuiz2)))
+                .content(new ObjectMapper().writeValueAsString(testingQuiz2)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.quizName").value("demoQuiz2"))
                 .andReturn();
@@ -145,17 +143,22 @@ class QuizIntegrationTest {
     void givenQuiz_whenUpdateQuiz_QuizIsMutated() throws Exception {
         Optional<Quiz> qo = quizRepository.findById(5);
         Quiz q = qo.get();
+        System.out.println("\n\n\n\n*********");
+        System.out.println(q);
+        System.out.println("*********\n\n\n\n");
         List<Integer> l =  new ArrayList<>();
         q.getFlashcards().forEach((flashcard -> l.add(flashcard.getId())));
 
         UpdateQuizDTO updq = new UpdateQuizDTO(q.getQuizId(),q.getQuizUser().getUserId(),"this a new name", l);
-        System.out.println(new Gson().toJson(updq));
+        System.out.println(new ObjectMapper().writeValueAsString(updq));
 
 
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/quiz")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/flashcards/quiz")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(updq)))
+                .content(new ObjectMapper().writeValueAsString(updq)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.quizId").value(q.getQuizId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.quizUserId").value(q.getQuizUser().getUserId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.quizName").value("this a new name"))
                 .andReturn();
 
