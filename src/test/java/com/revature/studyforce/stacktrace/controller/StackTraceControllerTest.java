@@ -61,10 +61,10 @@ class StackTraceControllerTest {
 
     @Test
     void givenStacktrace_whenGetAll_thenStacktraceRetrieved() throws Exception {
-        User u = userRepository.save(new User(1,"Test@mail.com","Pass","Bob","Smith",true,true,true, Authority.USER,new Timestamp(0),new Timestamp(0)));
+        User u = userRepository.save(new User(1,"Test@mail.com","Bob",true,true,true, Authority.USER,new Timestamp(0),new Timestamp(0)));
         Technology t = new Technology(2, "TestTech");
         stacktraceRepository.save(new Stacktrace(1,
-                new User(1,"Test@mail.com","Pass","Bob","Smith",true,true,true, Authority.USER,new Timestamp(0),new Timestamp(0)),
+                new User(1,"Test@mail.com","Bob",true,true,true, Authority.USER,new Timestamp(0),new Timestamp(0)),
                 "TestTitle", "TestBody", new Technology(2, "TestTech"), new Timestamp(0), null));
         mockMvc = MockMvcBuilders.standaloneSetup(stacktraceController).build();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/stacktrace")
@@ -98,7 +98,7 @@ class StackTraceControllerTest {
      */
     @Test
     void whenStackTraceDeleted_thenCorrectResponseReturned() throws Exception {
-        User u = userRepository.save(new User(1,"Test@mail.com","Pass","Bob","Smith",true,true,true, Authority.USER,new Timestamp(0),new Timestamp(0)));
+        User u = userRepository.save(new User(1,"Test@mail.com","Bob",true,true,true, Authority.USER,new Timestamp(0),new Timestamp(0)));
         Technology t = new Technology(2, "TestTech");
         stacktraceRepository.save(new Stacktrace(1,
                 u,

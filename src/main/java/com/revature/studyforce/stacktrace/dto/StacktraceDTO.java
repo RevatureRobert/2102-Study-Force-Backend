@@ -2,6 +2,7 @@ package com.revature.studyforce.stacktrace.dto;
 
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.model.Technology;
+import com.revature.studyforce.user.dto.UserNameDTO;
 import lombok.*;
 
 import java.sql.Timestamp;
@@ -23,9 +24,15 @@ public class StacktraceDTO {
     private int stacktraceId;
 
     /**
-     * User who created stacktrace
+     * ID of User who created stacktrace
      */
-    private StacktraceUserDTO creator;
+
+    private int userId;
+
+    /**
+     * Name of User who created stacktrace
+     */
+    private String userName;
 
     /**
      * the title a user gives to a stacktrace
@@ -38,9 +45,15 @@ public class StacktraceDTO {
     private String body;
 
     /**
-     * The technology that the stacktrace is using.ex JAVA
+     * The Id of the technology that the stacktrace is using.ex JAVA
      */
-    private Technology technology;
+
+    private int technologyId;
+
+    /**
+     * The name of the technology that the stacktrace is using.ex JAVA
+     */
+    private String technologyName;
 
     /**
      * The timestamp of when the stacktrace was created
@@ -50,10 +63,12 @@ public class StacktraceDTO {
     public static Function<Stacktrace, StacktraceDTO> stacktraceToDTO() {
     return stacktrace -> new StacktraceDTO(
           stacktrace.getStacktraceId(),
-          StacktraceUserDTO.userToDTO().apply(stacktrace.getUserId()),
+          stacktrace.getUserId().getUserId(),
+          stacktrace.getUserId().getName(),
           stacktrace.getTitle(),
           stacktrace.getBody(),
-          stacktrace.getTechnology(),
+          stacktrace.getTechnology().getTechnologyId(),
+          stacktrace.getTechnology().getTechnologyName(),
           stacktrace.getCreationTime());
     }
 }

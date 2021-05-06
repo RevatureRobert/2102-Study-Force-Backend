@@ -1,10 +1,10 @@
 package com.revature.studyforce.stacktrace.service;
 
 import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
-import com.revature.studyforce.stacktrace.dto.StacktraceUserDTO;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.model.Technology;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
+import com.revature.studyforce.user.dto.UserNameDTO;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,7 +47,7 @@ class StacktraceServiceTest {
         stacktraceArrayList = new ArrayList<>();
         stacktraceArrayList.add(
                 new Stacktrace(0,
-                        new User(2,"Test@mail.com","","Bob","Smith",true,true,true, Authority.USER,new Timestamp(0),new Timestamp(0)),
+                        new User(2,"Test@mail.com","Bob",true,true,true, Authority.USER,new Timestamp(0),new Timestamp(0)),
                         "TestTitle",
                         "TestBody",
                         new Technology(0, "TestTech"),
@@ -57,10 +57,12 @@ class StacktraceServiceTest {
         stacktraceDTOArrayList = new ArrayList<>();
         stacktraceDTOArrayList.add(
                 new StacktraceDTO(1,
-                        new StacktraceUserDTO(2,"Bob","Smith"),
+                        1,
+                        "Bob",
                         "TestTitle",
                         "TestBody",
-                        new Technology(0, "TestTech"),
+                        0,
+                        "TestTech",
                         new Timestamp(0))
         );
     }
@@ -86,7 +88,7 @@ class StacktraceServiceTest {
     @Test
     void whenGetStacktraceById_callRepository_getsCorrectStacktrace(){
         Optional<Stacktrace> stacktrace = Optional.of(new Stacktrace(0,
-                new User(0,"Test@mail.com","","Bob","Smith",true,true,true, Authority.USER,new Timestamp(0),new Timestamp(0)),
+                new User(0,"Test@mail.com","Bob",true,true,true, Authority.USER,new Timestamp(0),new Timestamp(0)),
                 "TestTitle", "TestBody", new Technology(0, "TestTech"), new Timestamp(0), null));
         Mockito.when(stacktraceRepository.findById(0)).thenReturn(stacktrace);
         Mockito.when(stacktraceRepository.findById(255)).thenReturn(Optional.empty());
@@ -94,13 +96,11 @@ class StacktraceServiceTest {
         StacktraceDTO response = stacktraceService.getStackTraceById(0);
         assertNotNull(response);
         assertEquals(0, response.getStacktraceId());
-        assertEquals(0, response.getCreator().getUserId());
-        assertEquals("Bob", response.getCreator().getFirstName());
-        assertEquals("Smith", response.getCreator().getLastName());
+        assertEquals("Bob", response.getUserName());
         assertEquals("TestTitle", response.getTitle());
         assertEquals("TestBody", response.getBody());
-        assertEquals(0, response.getTechnology().getTechnologyId());
-        assertEquals("TestTech", response.getTechnology().getTechnologyName());
+        assertEquals(0, response.getTechnologyId());
+        assertEquals("TestTech", response.getTechnologyName());
         assertEquals(new Timestamp(0), response.getCreationTime());
 
         System.out.println(response);

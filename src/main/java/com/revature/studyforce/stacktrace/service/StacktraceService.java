@@ -1,10 +1,10 @@
 package com.revature.studyforce.stacktrace.service;
 
 import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
-import com.revature.studyforce.stacktrace.dto.StacktraceUserDTO;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
 import com.revature.studyforce.stacktrace.repository.TechnologyRepository;
+import com.revature.studyforce.user.dto.UserNameDTO;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,10 +76,12 @@ public class StacktraceService {
         stacktraceRepo.delete(stacktrace);
         return new StacktraceDTO(
                 stacktrace.getStacktraceId(),
-                StacktraceUserDTO.userToDTO().apply(stacktrace.getUserId()),
+                stacktrace.getUserId().getUserId(),
+                stacktrace.getUserId().getName(),
                 stacktrace.getTitle(),
                 stacktrace.getBody(),
-                stacktrace.getTechnology(),
+                stacktrace.getTechnology().getTechnologyId(),
+                stacktrace.getTechnology().getTechnologyName(),
                 stacktrace.getCreationTime());
     }
 
@@ -92,10 +94,10 @@ public class StacktraceService {
   public StacktraceDTO submitStackTrace(StacktraceDTO stacktraceDTO) {
       Stacktrace stacktrace = new Stacktrace(
               stacktraceDTO.getStacktraceId(),
-              userRepository.findById(stacktraceDTO.getCreator().getUserId()).orElse(null),
+              userRepository.findById(stacktraceDTO.getUserId()).orElse(null),
               stacktraceDTO.getTitle(),
               stacktraceDTO.getBody(),
-              technologyRepository.findById(stacktraceDTO.getTechnology().getTechnologyId()).orElse(null),
+              technologyRepository.findById(stacktraceDTO.getTechnologyId()).orElse(null),
               stacktraceDTO.getCreationTime(),
               null);
       stacktraceRepo.save(stacktrace);

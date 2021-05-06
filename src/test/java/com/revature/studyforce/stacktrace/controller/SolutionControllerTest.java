@@ -2,8 +2,8 @@ package com.revature.studyforce.stacktrace.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.studyforce.stacktrace.dto.SolutionDTO;
-import com.revature.studyforce.stacktrace.dto.StacktraceUserDTO;
 import com.revature.studyforce.stacktrace.service.SolutionService;
+import com.revature.studyforce.user.dto.UserNameDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -48,7 +48,7 @@ class SolutionControllerTest {
     @BeforeEach
     void setUp(){
         mockMvc = MockMvcBuilders.standaloneSetup(solutionController).build();
-        testSolutionDTO = new SolutionDTO(1, 1, new StacktraceUserDTO(1, "Test", "Test"), "Test Body", false, null);
+        testSolutionDTO = new SolutionDTO(1, 1,1, "Test", "Test Body", false, null);
         testSolutionDTOList = new ArrayList<>();
         testSolutionDTOList.add(testSolutionDTO);
         objectMapper = new ObjectMapper();

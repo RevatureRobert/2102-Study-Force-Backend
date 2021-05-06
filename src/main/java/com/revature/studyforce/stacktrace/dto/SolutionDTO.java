@@ -1,6 +1,7 @@
 package com.revature.studyforce.stacktrace.dto;
 
 import com.revature.studyforce.stacktrace.model.Solution;
+import com.revature.studyforce.user.dto.UserNameDTO;
 import lombok.*;
 
 import java.sql.Date;
@@ -23,7 +24,8 @@ public class SolutionDTO {
     /**
      * Stacktrace Group userDTO that only sends userId, firstname and lastname
      */
-    private StacktraceUserDTO user;
+    private int userId;
+    private String userName;
     private String body;
     private Boolean adminSelected;
     private Date creationTime;
@@ -38,9 +40,10 @@ public class SolutionDTO {
                 throw new IllegalArgumentException("Parameter solution cannot be null");
             }
             return new SolutionDTO(
+                    solution.getUserId().getUserId(),
                     solution.getSolutionId(),
                     solution.getStackTraceId().getStacktraceId(),
-                    StacktraceUserDTO.userToDTO().apply(solution.getUserId()),
+                    solution.getUserId().getName(),
                     solution.getBody(),
                     solution.getAdminSelected(),
                     solution.getCreationTime()

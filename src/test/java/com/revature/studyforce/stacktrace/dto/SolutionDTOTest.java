@@ -2,6 +2,7 @@ package com.revature.studyforce.stacktrace.dto;
 
 import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
+import com.revature.studyforce.user.dto.UserNameDTO;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,9 +29,9 @@ class SolutionDTOTest {
 
     @BeforeEach
     public void setUp(){
-        testUser = new User(1, "test.test.com", "TestPassword", "Test", "Test", false, true, true, Authority.USER, null, null);
+        testUser = new User(1, "test.test.com", "Test", false, true, true, Authority.USER, null, null);
         testStacktrace = new Stacktrace(1, testUser, "Test Title", "Test Body", null, null, null);
-        testSolutionDTO = new SolutionDTO(1, 1, new StacktraceUserDTO(1, "Test", "Test"), "Test Body", false, null);
+        testSolutionDTO = new SolutionDTO(1, 1,1,"Test", "Test Body", false, null);
         testSolution = new Solution(1, testStacktrace, testUser, "Test Body", false, null, null);
     }
 
@@ -45,7 +46,7 @@ class SolutionDTOTest {
         assertEquals(solutionDTO.getBody(), testSolution.getBody());
         assertEquals(solutionDTO.getAdminSelected(), testSolution.getAdminSelected());
         assertEquals(solutionDTO.getCreationTime(), testSolution.getCreationTime());
-        assertEquals(solutionDTO.getUser().getUserId(), testSolution.getUserId().getUserId());
+        assertEquals(solutionDTO.getUserName(), testSolution.getUserId().getName());
         assertEquals(solutionDTO.getStackTraceId(), testSolution.getStackTraceId().getStacktraceId());
     }
 
