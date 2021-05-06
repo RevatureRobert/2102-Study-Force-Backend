@@ -17,5 +17,5 @@ public class RatingResponseDTO {
     @Positive
     private int totalRatings;
     @Positive
-    private int rating;
+    private double rating;
 }
