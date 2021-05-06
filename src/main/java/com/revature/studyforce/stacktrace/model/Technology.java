@@ -10,6 +10,8 @@ import javax.validation.constraints.Size;
 
 /**
  * Model for technology
+ * A Technology can't be deleted if associated with
+ * Stacktrace but can be edited.
  * @author John Stone
  */
 

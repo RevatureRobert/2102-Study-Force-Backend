@@ -49,6 +49,7 @@ public class TechnologyController {
   public Technology deleteTechnology(@PathVariable int technologyId){
     return technologyService.deleteTechnology(technologyId);
   }
+
   @PutMapping
   public TechnologyDTO updateTechnology(@RequestBody TechnologyDTO technologyDTO){
     return technologyService.updateTechnology(technologyDTO);

@@ -143,4 +143,5 @@ class SolutionServiceTest {
         solutionService.deleteSolution(1);
         verify(solutionRepository, times(1)).delete(any(Solution.class));
     }
+
 }

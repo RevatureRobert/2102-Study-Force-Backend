@@ -111,7 +111,7 @@ public class SolutionService {
         Solution solution = solutionRepository.findById(solutionId).orElse(null);
         if(solution == null)
             return null;
-        solutionRepository.delete(solution);
+        solutionRepository.deleteSolutionById(solutionId);
         return new SolutionDTO(
                 solution.getSolutionId(),
                 solution.getUserId().getUserId(),
