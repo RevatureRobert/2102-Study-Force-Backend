@@ -78,19 +78,26 @@ public class BatchController {
         return batchService.getBatchById(batchId);
     }
 
+    /**
+     * Post request for 'createBatch' in {@link BatchService#createBatch(CreateUpdateBatchDTO)}
+     * @param createDTO Data Transfer Object with batchId, name, array of instructors and array of users
+     * @return Batch
+     */
     @PostMapping("/create")
     public @ResponseBody Batch createBatch(@RequestBody CreateUpdateBatchDTO createDTO){
-
-        System.out.println(createDTO.toString());
+        
         return batchService.createBatch(createDTO);
 
     }
 
+    /**
+     * Put request for 'updateBatch' in {@link BatchService#updateBatch(CreateUpdateBatchDTO)}
+     * @param updateDTO Data Transfer Object with batchId, name, array of instructors and array of users
+     * @return Batch
+     */
     @PutMapping("/update")
     public @ResponseBody Batch updateBatch(@RequestBody CreateUpdateBatchDTO updateDTO){
-//        System.out.println(updateDTO.getBatchID());
-//        System.out.println(updateDTO.toString());
-        updateDTO.setBatchID(1);
+        
         return batchService.updateBatch(updateDTO);
 
     }

@@ -100,13 +100,19 @@ public class BatchService {
         return batchPage;
     }
 
-
+    /**
+     * Creates a batch using {@link BatchRepository}
+     * If array of instructors and users are included, This method will make sure the users exist before adding them to the batch.
+     * @param createBatch Data transfer object with batchId, name, array of instructor emails and array of user emails
+     * @return new batch or exception if batch with that name exist in database
+     */
     public Batch createBatch(CreateUpdateBatchDTO createBatch){
        Optional<Batch> checkBatchName = Optional.ofNullable(batchRepository.findByNameContainingIgnoreCase(createBatch.getName()));
        Timestamp timestamp = Timestamp.from(Instant.now());
+       createBatch.setBatchId(0);
 
         if(checkBatchName.isPresent()){
-            return null;
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Batch with that name exist in database. Please enter another name.");
         }
 
         Set<User> users = new HashSet<>();
@@ -114,8 +120,8 @@ public class BatchService {
 
         createBatch.getInstructors().forEach(email -> {
             Optional <User> instructor = userRepository.findByEmail(email);
-            if(!instructor.isPresent()){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Instructor does not exist");
+            if(!instructor.isPresent() ){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"____Instructor does not exist or does not have Admin privileges!!____");
             }
 
             instructors.add(instructor.get());
@@ -133,7 +139,7 @@ public class BatchService {
         });
 
         Batch batch = new Batch(
-                createBatch.getBatchID(),
+                createBatch.getBatchId(),
                 createBatch.getName(),
                 instructors,
                 users,
@@ -145,20 +151,25 @@ public class BatchService {
 
     }
 
-    public Batch updateBatch(CreateUpdateBatchDTO createBatch){
-        Optional<Batch> checkBatchId = batchRepository.findById(createBatch.getBatchID());
+    /**
+     * Updates existing batch using {@link BatchRepository}
+     * If array of instructors and users are included, This method will make sure the users exist before adding them to the batch.
+     * @param updateBatch Data transfer object with batchId, name, array of instructor emails and array of user emails
+     * @return updated batch or exception if no batch matching batchId exist
+     */
 
+    public Batch updateBatch(CreateUpdateBatchDTO updateBatch){
+        Optional<Batch> checkBatchId = batchRepository.findById(updateBatch.getBatchId());
         if(!checkBatchId.isPresent()){
-            System.out.println("Throw No batch found exception");
-            return null;
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"___Not Batch found___");
         }
 
         Set<User> users = new HashSet<>();
         Set<User> instructors = new HashSet<>();
 
-        createBatch.getInstructors().forEach(email -> {
+        updateBatch.getInstructors().forEach(email -> {
             Optional <User> instructor = userRepository.findByEmail(email);
-            if(!instructor.isPresent()){
+            if(!instructor.isPresent() || !instructor.get().getAuthority().authorityName.equals("ADMIN")){
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Instructor does not exist");
             }
 
@@ -166,7 +177,7 @@ public class BatchService {
 
         });
 
-        createBatch.getUsers().forEach(email -> {
+        updateBatch.getUsers().forEach(email -> {
             Optional <User> user = userRepository.findByEmail(email);
             if(!user.isPresent()){
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User does not exist");
@@ -177,8 +188,8 @@ public class BatchService {
         });
 
         Batch batch = new Batch(
-                createBatch.getBatchID(),
-                createBatch.getName(),
+                updateBatch.getBatchId(),
+                updateBatch.getName(),
                 instructors,
                 users,
                 checkBatchId.get().getCreationTime()
@@ -228,6 +239,8 @@ public class BatchService {
         }
         return offset;
     }
+
+
 
 
 }
