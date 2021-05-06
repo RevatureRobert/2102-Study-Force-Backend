@@ -6,10 +6,13 @@ import com.revature.studyforce.flashcard.model.Topic;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+/**
+ * Test class for method in FlashcardDTO {@link FlashcardDTO}
+ * @author Luke Mohr
+ */
 @SpringBootTest
 class FlashcardDTOTest {
 

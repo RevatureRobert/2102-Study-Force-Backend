@@ -8,10 +8,14 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Test class for TopicService {@link TopicService}
+ * @author Kevin Wang
+ */
 @SpringBootTest
 class TopicServiceTest {
 
@@ -22,8 +26,9 @@ class TopicServiceTest {
     private TopicService topicService;
 
     @Test
-    void getAllTest() {
-        List<Topic> topicList = new LinkedList();
+    void whenGetAll_shouldReturnListOfTopic() {
+
+        List<Topic> topicList = new ArrayList<>();
         topicList.add(new Topic(1, "1"));
         topicList.add(new Topic(2, "2"));
         topicList.add(new Topic(3, "3"));
@@ -39,7 +44,7 @@ class TopicServiceTest {
     }
 
     @Test
-    void getTopicByIdTest() {
+    void givenTopicId_whenGetTopicById_shouldReturnTopic() {
         Topic topic = new Topic(1, "1");
 
         Mockito.when(topicRepository.findById(0)).thenReturn(Optional.empty());
@@ -54,7 +59,7 @@ class TopicServiceTest {
     }
 
     @Test
-    void addTopicTest() {
+    void givenTopicName_whenAddTopic_shouldReturnNewTopic() {
         Topic topic = new Topic(0, "1");
 
         Mockito.when(topicRepository.save(topic)).thenReturn(new Topic(1, "1"));
@@ -67,7 +72,7 @@ class TopicServiceTest {
     }
 
     @Test
-    void deleteTopic() {
+    void givenTopicId_whenDeleteTopic_shouldReturnDeletedTopic() {
         Topic topic = new Topic(1, "1");
 
         Mockito.when(topicRepository.findById(0)).thenReturn(Optional.empty());

@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /**
+ * Test class for the RatingDTO method {@link RatingDTO}
  * @author Edson Rodriguez
  */
 @SpringBootTest

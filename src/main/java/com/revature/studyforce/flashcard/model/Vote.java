@@ -29,7 +29,6 @@ public class Vote {
     /**
      * Value of vote, integer of -1 or 1 for down votes and up votes respectively
      */
-    @NotNull
     private int voteValue;
 
     /**

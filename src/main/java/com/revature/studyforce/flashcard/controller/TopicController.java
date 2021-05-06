@@ -8,9 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
 
+/**
+ * Controller for the Topic resource handling using TopicService {@link TopicService}
+ * @author Kevin Wang
+ */
 @Controller
 @CrossOrigin
 @RequestMapping("/topics")
@@ -38,7 +41,7 @@ public class TopicController {
      * Get a specific id
      * @param id The id of the topic to get
      * @return Topic of the specified id
-     * @exception throw 404 if topic not found
+     * @exception ResponseStatusException if topic not found
      */
     @GetMapping("/{id}")
     @ResponseBody
@@ -65,7 +68,7 @@ public class TopicController {
      * Delete an topic from database (need to add auth for admin only)
      * @param id The id you want to remove
      * @return The topic that was removed
-     * @exception throws 404 if topic not found
+     * @exception ResponseStatusException if topic not found
      */
     @DeleteMapping("/{id}")
     @ResponseBody

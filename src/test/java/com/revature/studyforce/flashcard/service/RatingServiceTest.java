@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ * Test class for RatingService {@link RatingService}
  * @author Edson Rodriguez
  */
 @SpringBootTest

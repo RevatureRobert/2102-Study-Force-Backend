@@ -11,7 +11,6 @@ import java.util.List;
 
 /**
  * Quiz model
- *
  * @author Edson Rodriguez
  */
 @Entity

@@ -10,6 +10,7 @@ import javax.validation.constraints.PositiveOrZero;
 import java.sql.Timestamp;
 
 /**
+ * Answer model
  * @author Edson Rodriguez
  */
 @Entity
@@ -31,14 +32,14 @@ public class Answer {
     @NotNull
     @Column(name = "answer_text")
     private String answerText;
-    @NotNull
+
     @PositiveOrZero
     @Column(name = "answer_score")
     private int answerScore;
-    @NotNull
+
     @Column(name = "selected_answer")
     private boolean selectedAnswer;
-    @NotNull
+
     @Column(name = "trainer_selected")
     private boolean trainerSelected;
     @NotNull

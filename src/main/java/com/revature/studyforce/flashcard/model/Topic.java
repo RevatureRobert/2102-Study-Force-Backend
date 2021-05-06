@@ -9,6 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Topic model
+ * @author Kevin Wang
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

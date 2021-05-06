@@ -9,6 +9,10 @@ import org.springframework.test.context.TestPropertySource;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+/**
+ * Test class for the methods in VoteDTO {@link VoteDTO}
+ * @author Nick Zimmerman
+ */
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test-application.properties")
 class VoteDTOTest {

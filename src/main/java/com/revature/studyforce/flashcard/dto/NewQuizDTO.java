@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+/**
+ * Additional QuizDTO specifically for when a new Quiz is being created
+ * @author Edson Rodriguez
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
