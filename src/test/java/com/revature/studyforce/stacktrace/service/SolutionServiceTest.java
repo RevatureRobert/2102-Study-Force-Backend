@@ -30,7 +30,7 @@ import static org.mockito.ArgumentMatchers.any;
  * @author Joshua Swanson
  */
 @SpringBootTest
-@TestPropertySource(locations = "classpath: test-application.properties")
+@TestPropertySource(locations = "classpath:test-application.properties")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class SolutionServiceTest {
 

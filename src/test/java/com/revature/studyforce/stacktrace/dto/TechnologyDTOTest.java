@@ -9,7 +9,7 @@ import org.springframework.test.context.TestPropertySource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@TestPropertySource(locations = "classpath: test-application.properties")
+@TestPropertySource(locations = "classpath:test-application.properties")
 class TechnologyDTOTest {
     Technology testTechnology = new Technology(1, "TestTech");
     TechnologyDTO testTechnologyDTO = new TechnologyDTO(1, "TestTech");

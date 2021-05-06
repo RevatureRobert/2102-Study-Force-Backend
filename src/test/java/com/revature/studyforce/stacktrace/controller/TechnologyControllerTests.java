@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @AutoConfigureMockMvc
-@TestPropertySource(locations = "classpath: test-application.properties")
+@TestPropertySource(locations = "classpath:test-application.properties")
 class TechnologyControllerTests {
     //TODO: Standardize Tests across project
     private MockMvc mockMvc;

@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(locations = "classpath: test-application.properties")
+@TestPropertySource(locations = "classpath:test-application.properties")
 class StackTraceControllerTest {
 
     private MockMvc mockMvc;

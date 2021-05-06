@@ -14,14 +14,14 @@ import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
-@TestPropertySource(locations = "classpath: test-application.properties")
+@TestPropertySource(locations = "classpath:test-application.properties")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class TechnologyServiceTests {
     //TODO: Standardize Tests across project
@@ -59,9 +59,16 @@ class TechnologyServiceTests {
         assertEquals(0,technologyDTO.getTechnologyId());
         assertEquals("TestTech",technologyDTO.getTechnologyName());
     }
-/*    @Test()
-    void deleteTechnologyTest(){
-        technologyRepository.save(technologyArrayList.get(0));
-        technologyService.deleteTechnology(1);
-    }*/
+    @Test
+    void whenDeleteTechnologyCalled_ThenDeleteAndReturnTechnology() {
+        Mockito.doReturn(Optional.of(testTech)).when(technologyRepository).findById(1);
+        Mockito.doNothing().when(technologyRepository).delete(testTech);
+        assertEquals(testTech, technologyService.deleteTechnology(1));
+    }
+
+    @Test
+    void whenDeleteTechnologyCalledWithNullParameter_ThenReturnNull() {
+        Mockito.doReturn(Optional.ofNullable(null)).when(technologyRepository).findById(1);
+        assertNull(technologyService.deleteTechnology(1));
+    }
 }
