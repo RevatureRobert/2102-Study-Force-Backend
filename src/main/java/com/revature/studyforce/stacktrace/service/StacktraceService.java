@@ -1,10 +1,10 @@
 package com.revature.studyforce.stacktrace.service;
 
 import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
-import com.revature.studyforce.stacktrace.dto.StacktraceUserDTO;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
 import com.revature.studyforce.stacktrace.repository.TechnologyRepository;
+import com.revature.studyforce.user.dto.UserNameDTO;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,7 +76,7 @@ public class StacktraceService {
         stacktraceRepo.delete(stacktrace);
         return new StacktraceDTO(
                 stacktrace.getStacktraceId(),
-                StacktraceUserDTO.userToDTO().apply(stacktrace.getUserId()),
+                new UserNameDTO(stacktrace.getUserId().getUserId(),stacktrace.getUserId().getName()),
                 stacktrace.getTitle(),
                 stacktrace.getBody(),
                 stacktrace.getTechnology(),

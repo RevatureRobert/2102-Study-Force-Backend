@@ -1,15 +1,14 @@
 package com.revature.studyforce.stacktrace.service;
 
 import com.revature.studyforce.stacktrace.dto.SolutionDTO;
-import com.revature.studyforce.stacktrace.dto.StacktraceUserDTO;
 import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.repository.SolutionRepository;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
+import com.revature.studyforce.user.dto.UserNameDTO;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -116,7 +115,7 @@ public class SolutionService {
         return new SolutionDTO(
                 solution.getSolutionId(),
                 solution.getStackTraceId().getStacktraceId(),
-                StacktraceUserDTO.userToDTO().apply(solution.getUserId()),
+                new UserNameDTO(solution.getUserId().getUserId(),solution.getUserId().getName()),
                 solution.getBody(),
                 solution.getAdminSelected(),
                 solution.getCreationTime()
