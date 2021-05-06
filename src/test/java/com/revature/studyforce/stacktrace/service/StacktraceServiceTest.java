@@ -57,10 +57,12 @@ class StacktraceServiceTest {
         stacktraceDTOArrayList = new ArrayList<>();
         stacktraceDTOArrayList.add(
                 new StacktraceDTO(1,
-                        new UserNameDTO(2,"Bob"),
+                        1,
+                        "Bob",
                         "TestTitle",
                         "TestBody",
-                        new Technology(0, "TestTech"),
+                        0,
+                        "TestTech",
                         new Timestamp(0))
         );
     }
@@ -94,13 +96,11 @@ class StacktraceServiceTest {
         StacktraceDTO response = stacktraceService.getStackTraceById(0);
         assertNotNull(response);
         assertEquals(0, response.getStacktraceId());
-        assertEquals(0, response.getCreator().getUserId());
-        assertEquals("Bob", response.getCreator().getName());
-        assertEquals("Smith", response.getCreator().getName());
+        assertEquals("Bob", response.getUserName());
         assertEquals("TestTitle", response.getTitle());
         assertEquals("TestBody", response.getBody());
-        assertEquals(0, response.getTechnology().getTechnologyId());
-        assertEquals("TestTech", response.getTechnology().getTechnologyName());
+        assertEquals(0, response.getTechnologyId());
+        assertEquals("TestTech", response.getTechnologyName());
         assertEquals(new Timestamp(0), response.getCreationTime());
 
         System.out.println(response);

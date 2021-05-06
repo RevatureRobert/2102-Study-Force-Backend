@@ -62,7 +62,7 @@ public class SolutionService {
         Solution solution = new Solution(
                 solutionDTO.getSolutionId(),
                 stacktraceRepository.findById(solutionDTO.getStackTraceId()).orElse(null),
-                userRepository.findById(solutionDTO.getUser().getUserId()).orElse(null),
+                userRepository.findById(solutionDTO.getUserId()).orElse(null),
                 solutionDTO.getBody(),
                 solutionDTO.getAdminSelected(),
                 solutionDTO.getCreationTime(),
@@ -90,7 +90,7 @@ public class SolutionService {
             Solution newSolution = new Solution(
                     solutionDTO.getSolutionId(),
                     stacktraceRepository.findById(solutionDTO.getStackTraceId()).orElse(null),
-                    userRepository.findById(solutionDTO.getUser().getUserId()).orElse(null),
+                    userRepository.findById(solutionDTO.getUserId()).orElse(null),
                     solutionDTO.getBody(),
                     solutionDTO.getAdminSelected(),
                     solutionDTO.getCreationTime(),
@@ -114,8 +114,9 @@ public class SolutionService {
         solutionRepository.delete(solution);
         return new SolutionDTO(
                 solution.getSolutionId(),
+                solution.getUserId().getUserId(),
                 solution.getStackTraceId().getStacktraceId(),
-                new UserNameDTO(solution.getUserId().getUserId(),solution.getUserId().getName()),
+                solution.getUserId().getName(),
                 solution.getBody(),
                 solution.getAdminSelected(),
                 solution.getCreationTime()

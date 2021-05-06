@@ -50,7 +50,7 @@ class SolutionServiceTest {
     public void setUp(){
         testUser = new User(1, "test.test.com", "Test", false, true, true, Authority.USER, null, null);
         testStacktrace = new Stacktrace(1, testUser, "Test Title", "Test Body", null, null, null);
-        testSolutionDTO = new SolutionDTO(1, 1, new UserNameDTO(1, "Test"), "Test Body", false, null);
+        testSolutionDTO = new SolutionDTO(1, 1,1, "Test", "Test Body", false, null);
         testSolution = new Solution(1, testStacktrace, testUser, "Test Body", false, null, null);
         testNullSolution = null;
         testSolutionDTOList = new ArrayList<>();
@@ -69,7 +69,7 @@ class SolutionServiceTest {
         assertEquals(1, solutionDTOS.size());
         assertEquals(solutionDTOS.get(0).getSolutionId(), testSolutionDTO.getSolutionId());
         assertEquals(solutionDTOS.get(0).getStackTraceId(), testSolutionDTO.getStackTraceId());
-        assertEquals(solutionDTOS.get(0).getUser().getUserId(), testSolutionDTO.getUser().getUserId());
+        assertEquals(solutionDTOS.get(0).getUserName(), testSolutionDTO.getUserName());
         assertEquals(solutionDTOS.get(0).getBody(), testSolutionDTO.getBody());
         assertEquals(solutionDTOS.get(0).getCreationTime(), testSolutionDTO.getCreationTime());
         assertEquals(solutionDTOS.get(0).getAdminSelected(), testSolutionDTO.getAdminSelected());
@@ -85,7 +85,7 @@ class SolutionServiceTest {
         SolutionDTO solutionDTO = solutionService.submitFirstSolution(testSolutionDTO);
         assertEquals(solutionDTO.getSolutionId(), testSolutionDTO.getSolutionId());
         assertEquals(solutionDTO.getStackTraceId(), testSolutionDTO.getStackTraceId());
-        assertEquals(solutionDTO.getUser().getUserId(), testSolutionDTO.getUser().getUserId());
+        assertEquals(solutionDTO.getUserName(), testSolutionDTO.getUserName());
         assertEquals(solutionDTO.getBody(), testSolutionDTO.getBody());
         assertEquals(solutionDTO.getCreationTime(), testSolutionDTO.getCreationTime());
         assertEquals(solutionDTO.getAdminSelected(), testSolutionDTO.getAdminSelected());
@@ -102,7 +102,7 @@ class SolutionServiceTest {
         SolutionDTO solutionDTO = solutionService.updateSolution(testSolutionDTO);
         assertEquals(solutionDTO.getSolutionId(), testSolutionDTO.getSolutionId());
         assertEquals(solutionDTO.getStackTraceId(), testSolutionDTO.getStackTraceId());
-        assertEquals(solutionDTO.getUser().getUserId(), testSolutionDTO.getUser().getUserId());
+        assertEquals(solutionDTO.getUserName(), testSolutionDTO.getUserName());
         assertEquals(solutionDTO.getBody(), testSolutionDTO.getBody());
         assertEquals(solutionDTO.getCreationTime(), testSolutionDTO.getCreationTime());
         assertEquals(solutionDTO.getAdminSelected(), testSolutionDTO.getAdminSelected());
@@ -121,7 +121,7 @@ class SolutionServiceTest {
         SolutionDTO solutionDTO = solutionService.updateSolution(testSolutionDTO);
         assertEquals(solutionDTO.getSolutionId(), testSolutionDTO.getSolutionId());
         assertEquals(solutionDTO.getStackTraceId(), testSolutionDTO.getStackTraceId());
-        assertEquals(solutionDTO.getUser().getUserId(), testSolutionDTO.getUser().getUserId());
+        assertEquals(solutionDTO.getUserName(), testSolutionDTO.getUserName());
         assertEquals(solutionDTO.getBody(), testSolutionDTO.getBody());
         assertEquals(solutionDTO.getCreationTime(), testSolutionDTO.getCreationTime());
         assertEquals(solutionDTO.getAdminSelected(), testSolutionDTO.getAdminSelected());

@@ -24,7 +24,8 @@ public class SolutionDTO {
     /**
      * Stacktrace Group userDTO that only sends userId, firstname and lastname
      */
-    private UserNameDTO user;
+    private int userId;
+    private String userName;
     private String body;
     private Boolean adminSelected;
     private Date creationTime;
@@ -39,9 +40,10 @@ public class SolutionDTO {
                 throw new IllegalArgumentException("Parameter solution cannot be null");
             }
             return new SolutionDTO(
+                    solution.getUserId().getUserId(),
                     solution.getSolutionId(),
                     solution.getStackTraceId().getStacktraceId(),
-                    new UserNameDTO(solution.getUserId().getUserId(),solution.getUserId().getName()),
+                    solution.getUserId().getName(),
                     solution.getBody(),
                     solution.getAdminSelected(),
                     solution.getCreationTime()

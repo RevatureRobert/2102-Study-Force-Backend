@@ -48,7 +48,7 @@ class SolutionControllerTest {
     @BeforeEach
     void setUp(){
         mockMvc = MockMvcBuilders.standaloneSetup(solutionController).build();
-        testSolutionDTO = new SolutionDTO(1, 1, new UserNameDTO(1, "Test"), "Test Body", false, null);
+        testSolutionDTO = new SolutionDTO(1, 1,1, "Test", "Test Body", false, null);
         testSolutionDTOList = new ArrayList<>();
         testSolutionDTOList.add(testSolutionDTO);
         objectMapper = new ObjectMapper();

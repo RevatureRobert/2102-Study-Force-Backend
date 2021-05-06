@@ -76,10 +76,12 @@ public class StacktraceService {
         stacktraceRepo.delete(stacktrace);
         return new StacktraceDTO(
                 stacktrace.getStacktraceId(),
-                new UserNameDTO(stacktrace.getUserId().getUserId(),stacktrace.getUserId().getName()),
+                stacktrace.getUserId().getUserId(),
+                stacktrace.getUserId().getName(),
                 stacktrace.getTitle(),
                 stacktrace.getBody(),
-                stacktrace.getTechnology(),
+                stacktrace.getTechnology().getTechnologyId(),
+                stacktrace.getTechnology().getTechnologyName(),
                 stacktrace.getCreationTime());
     }
 
@@ -92,10 +94,10 @@ public class StacktraceService {
   public StacktraceDTO submitStackTrace(StacktraceDTO stacktraceDTO) {
       Stacktrace stacktrace = new Stacktrace(
               stacktraceDTO.getStacktraceId(),
-              userRepository.findById(stacktraceDTO.getCreator().getUserId()).orElse(null),
+              userRepository.findById(stacktraceDTO.getUserId()).orElse(null),
               stacktraceDTO.getTitle(),
               stacktraceDTO.getBody(),
-              technologyRepository.findById(stacktraceDTO.getTechnology().getTechnologyId()).orElse(null),
+              technologyRepository.findById(stacktraceDTO.getTechnologyId()).orElse(null),
               stacktraceDTO.getCreationTime(),
               null);
       stacktraceRepo.save(stacktrace);
