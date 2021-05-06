@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- *  Rest controller to handle stacktrace requests
+ * Rest controller to handle stacktrace requests
+ * Requested are processed via {@link StacktraceService}
  * @author John Stone
  * @author Joshua Swanson
  */
@@ -22,7 +23,7 @@ public class StackTraceController {
     private StacktraceService stacktraceService;
 
     /**
-     * Gets all Stacktraces
+     * Gets all Stacktraces using {@link StacktraceService#getAllStacktraces()}
      * @return A list of Stacktraces
      */
     @GetMapping()
@@ -31,8 +32,8 @@ public class StackTraceController {
     }
 
     /**
-     * Gets stacktrace who's id matches provided id
-     * @param id The id of the customer
+     * Gets stacktrace who's id matches provided id using {@link StacktraceService#getStackTraceById(int)}
+     * @param id The id of the stacktrace requested
      * @return The data transfer representation of the requested Stacktrace
      */
     @GetMapping("/{stacktraceId}")
@@ -41,9 +42,9 @@ public class StackTraceController {
     }
 
     /**
-     * Deletes the stacktrace with the passed stacktraceId
-     * @param stacktraceId Primary id of stacktrace
-     * @return Response Entity with no content
+     * Deletes the stacktrace with the passed stacktraceId using {@link StacktraceService#deleteStackTraceById(int)}
+     * @param stacktraceId id of stacktrace to be deleted
+     * @return The data transfer representation of the deleted Stacktrace
      */
     @DeleteMapping("/{stacktraceId}")
     public StacktraceDTO deleteStacktraceById(@PathVariable("stacktraceId") int stacktraceId){
@@ -51,10 +52,10 @@ public class StackTraceController {
     }
 
     /**
-     * Saves a stacktrace, takes in StacktraceDTO as a parameter
+     * Saves a stacktrace using {@link StacktraceService#submitStackTrace(StacktraceDTO)}
      * Uses repo to save it
      * @param stacktraceDTO the DTO of stacktrace as an object
-     * @return Http status for the Response Entity
+     * @return The data transfer representation of the created Stacktrace
      */
     @PostMapping
     public StacktraceDTO createStacktrace(@RequestBody StacktraceDTO stacktraceDTO) {
