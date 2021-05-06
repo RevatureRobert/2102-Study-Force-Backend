@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- *  Rest controller to handle stacktrace requests
+ * Rest controller to handle stacktrace requests
+ * Requested are processed via {@link StacktraceService}
  * @author John Stone
  * @author Joshua Swanson
  */
@@ -32,7 +33,7 @@ public class StackTraceController {
 
     /**
      * Gets stacktrace who's id matches provided id
-     * @param id The id of the customer
+     * @param id The id of the stacktrace requested
      * @return The data transfer representation of the requested Stacktrace
      */
     @GetMapping("/{stacktraceId}")
@@ -42,8 +43,8 @@ public class StackTraceController {
 
     /**
      * Deletes the stacktrace with the passed stacktraceId
-     * @param stacktraceId Primary id of stacktrace
-     * @return Response Entity with no content
+     * @param stacktraceId id of stacktrace to be deleted
+     * @return The data transfer representation of the deleted Stacktrace
      */
     @DeleteMapping("/{stacktraceId}")
     public StacktraceDTO deleteStacktraceById(@PathVariable("stacktraceId") int stacktraceId){
@@ -54,7 +55,7 @@ public class StackTraceController {
      * Saves a stacktrace, takes in StacktraceDTO as a parameter
      * Uses repo to save it
      * @param stacktraceDTO the DTO of stacktrace as an object
-     * @return Http status for the Response Entity
+     * @return The data transfer representation of the created Stacktrace
      */
     @PostMapping
     public StacktraceDTO createStacktrace(@RequestBody StacktraceDTO stacktraceDTO) {

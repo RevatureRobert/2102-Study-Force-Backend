@@ -15,7 +15,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * The StackService allows for communication with {@link StacktraceRepository} and enforces data constraints on requests to repository
+ * The StackService allows for communication with {@link StacktraceRepository}
+ * and enforces data constraints on requests to repository
  * @author John Stone
  * @author Joshua Swanson
  */
@@ -42,8 +43,9 @@ public class StacktraceService {
     }
 
     /**
-     * Gets all Stacktraces
-     * @return A list of Stacktraces
+     * Gets Stacktraces with the given technology name using {@link StacktraceRepository#findById(Object)}
+     * @param name the name of the technology to search for
+     * @return A list of Stacktraces exactly matching the given technology name
      */
     public List<StacktraceDTO> getAllStacktracesOfTechnologyName(String name) {
         return stacktraceRepo.findByTechnologyTechnologyName(name).stream().map(StacktraceDTO.stacktraceToDTO()).collect(Collectors.toList());
@@ -51,8 +53,9 @@ public class StacktraceService {
 
     /**
      * Gets a stacktrace by stacktrace id using {@link StacktraceRepository#findById(Object)}
-     * @param stacktraceId The customer id of the stacktrace being requested
-     * @return Data transfer object representation of Stacktrace object converted using {@link StacktraceDTO#stacktraceToDTO()}
+     * @param stacktraceId The id of the stacktrace being requested
+     * @return Data transfer object representation of Stacktrace object converted
+     * using {@link StacktraceDTO#stacktraceToDTO()}
      */
     public StacktraceDTO getStackTraceById(int stacktraceId){
         Optional<Stacktrace> requested = stacktraceRepo.findById(stacktraceId);
@@ -61,7 +64,9 @@ public class StacktraceService {
 
     /**
      * Deletes a Stacktrace by the primary id passed as parameter
+     * using {@link StacktraceRepository#findById(Object)}
      * @param stacktraceId primary id of Stacktrace
+     * @return Data Transfer Object of the deleted Stacktrace
      */
     public StacktraceDTO deleteStackTraceById(int stacktraceId){
         Stacktrace stacktrace = stacktraceRepo.findById(stacktraceId).orElse(null);
@@ -79,9 +84,10 @@ public class StacktraceService {
     }
 
   /**
-   * Saves a stacktrace, takes in StacktraceDTO as a parameter * Uses repo to save it
-   *
+   * Saves a stacktrace, takes in StacktraceDTO as a parameter
+   * using {@link StacktraceRepository#findById(Object)}
    * @param stacktraceDTO The DTO representation of stacktrace
+   * @return Data Transfer Object of the created Stacktrace
    */
   public StacktraceDTO submitStackTrace(StacktraceDTO stacktraceDTO) {
       Stacktrace stacktrace = new Stacktrace(
