@@ -10,6 +10,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Service which creates, deletes, and displays technologies or
+ */
+
 @Service
 public class TechnologyService {
         private final TechnologyRepository technologyRepo;

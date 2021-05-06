@@ -11,8 +11,9 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 /**
- * Basic repo for  {@link com.revature.studyforce.stacktrace.model.Stacktrace}
- * author: Noel Shaji
+ * Basic repo for  {@link Stacktrace}
+ * @author Noel Shaji
+ * @author Joey Elmblad
  */
 @Repository
 public interface StacktraceRepository extends JpaRepository<Stacktrace, Integer> {

@@ -5,9 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
+ * Represents the Repository for {@link Technology}
+ *
  * @author John Stone
- * Represents the Repository for Technology Model
  */
 @Repository
-public interface TechnologyRepository extends JpaRepository<Technology, Integer> {
-}
+public interface TechnologyRepository extends JpaRepository<Technology, Integer> {}

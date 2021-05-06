@@ -1,6 +1,5 @@
 package com.revature.studyforce.stacktrace.controller;
 
-import com.google.gson.Gson;
 import com.revature.studyforce.stacktrace.dto.TechnologyDTO;
 import com.revature.studyforce.stacktrace.model.Technology;
 import com.revature.studyforce.stacktrace.repository.TechnologyRepository;
@@ -60,18 +59,18 @@ class TechnologyControllerTests {
                 .andReturn();
         System.out.println(result.getResponse().getContentAsString());
     }
-    @Test
-    void whenAddTechnology_ThenTechnologyReturned() throws Exception {
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/stacktrace/technology")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(new TechnologyDTO(0,"TestTechAdd"))))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.technologyName").value("TestTechAdd"))
-                .andReturn();
-        System.out.println(result.getResponse().getContentAsString());
-    }
+//    @Test
+//    void whenAddTechnology_ThenTechnologyReturned() throws Exception {
+//        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/stacktrace/technology")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(new Gson().toJson(new TechnologyDTO(0,"TestTechAdd"))))
+//                .andExpect(MockMvcResultMatchers.status().isOk())
+//                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.technologyName").value("TestTechAdd"))
+//                .andReturn();
+//        System.out.println(result.getResponse().getContentAsString());
+//    }
     @Test
     void whenDeleteTechnology_ThenCorrectReponseReturned() throws Exception{
         technologyRepository.save(new Technology(1,"TestTech"));
