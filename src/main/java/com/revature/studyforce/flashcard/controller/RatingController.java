@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/flashcards/rate")
+@RequestMapping("/flashcards/ratings")
 public class RatingController {
 
     private final RatingService ratingService;

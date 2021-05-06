@@ -49,7 +49,7 @@ class RatingIntegrationTest {
         System.out.println(flashcardRepository.save(flashcard));
 
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(ratingController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/rate/")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/ratings/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"flashcardId\":\"2\",\"userId\":\"1\",\"ratingScore\":\"2\"}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())

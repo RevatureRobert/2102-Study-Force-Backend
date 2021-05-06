@@ -30,8 +30,8 @@ public class FlashcardDTO {
     private boolean isResolved;
 
     /**
-     * Converts Flashcard to FlashcardDTO
-     * @return - FlashcardDTO
+     * Creates a function that will convert a Flashcard to FlashcardDTO
+     * @return - function that will convert a flashcard to flashcardDTO
      */
     public static Function<Flashcard, FlashcardDTO> convertToDTO() {
         return flashcard -> {

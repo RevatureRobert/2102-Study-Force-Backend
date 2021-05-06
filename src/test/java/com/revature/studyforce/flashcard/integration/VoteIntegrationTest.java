@@ -68,7 +68,7 @@ class VoteIntegrationTest {
                 + "\"value\" : \"1\""
                 + "}";
         System.out.println(string);
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/vote/")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/votes/")
                 .content(string)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -96,7 +96,7 @@ class VoteIntegrationTest {
                 + "\"value\" : \"33\""
                 + "}";
         System.out.println(string);
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/vote/")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/votes/")
                 .content(string)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())// .content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -123,7 +123,7 @@ class VoteIntegrationTest {
                 + "\"value\" : \"1\""
                 + "}";
         System.out.println(string);
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/vote/")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/votes/")
                 .content(string)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())// .content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -150,7 +150,7 @@ class VoteIntegrationTest {
                 + "\"value\" : \"1\""
                 + "}";
         System.out.println(string);
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/vote/")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/votes/")
                 .content(string)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())// .content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
