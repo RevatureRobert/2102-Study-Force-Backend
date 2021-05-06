@@ -1,7 +1,9 @@
 package com.revature.studyforce.notification.service;
 
+import com.revature.studyforce.notification.dto.SubscriptionDTO;
 import com.revature.studyforce.notification.repository.SubscriptionRepository;
 import com.revature.studyforce.notification.model.Subscription;
+import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,19 +14,29 @@ import org.springframework.stereotype.Service;
 @Service
 public class SubscriptionService {
 
-    private SubscriptionRepository subscriptionRepository;
+    private final SubscriptionRepository subscriptionRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public SubscriptionService(SubscriptionRepository subscriptionRepository){
+    public SubscriptionService(SubscriptionRepository subscriptionRepository,
+                               UserRepository userRepository){
         this.subscriptionRepository = subscriptionRepository;
+        this.userRepository = userRepository;
     }
 
     /**
      * Creates a subscription using {@link SubscriptionRepository#save(Object)}
-     * @param subscription A subscription to be created.
+     * @param subscriptionDTO A subscription to be created.
      * @return The subscription that was created.
      */
-    public Subscription createSubscription(Subscription subscription){
+    public Subscription createSubscription(SubscriptionDTO subscriptionDTO){
+    Subscription subscription =
+        new Subscription(
+            subscriptionDTO.getId(),
+            userRepository.findById(subscriptionDTO.getUserId()).orElse(null),
+            subscriptionDTO.getEndpoint(),
+            subscriptionDTO.getKey(),
+            subscriptionDTO.getAuth());
         return subscriptionRepository.save(subscription);
     }
 

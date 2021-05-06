@@ -31,7 +31,7 @@ import java.util.Optional;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test-application.properties")
-public class FlashcardSubscriptionServiceTest {
+class FlashcardSubscriptionServiceTest {
     @Autowired
     private FlashcardSubscriptionService flashcardSubscriptionService;
 
@@ -58,7 +58,7 @@ public class FlashcardSubscriptionServiceTest {
     }
 
     @Test
-    void getFlashcardSubscriptionByFlashcardAndUserId(){
+    void getFlashcardSubscriptionByFlashcardIdAndUserIdAndReturnFlashcardSubscriptionTest(){
         Mockito.doReturn(Optional.of(flashcard)).when(flashcardRepository).findById(1);
         Mockito.doReturn(subscription).when(subscriptionService).getSubscriptionByUserId(1);
         Mockito.doReturn(flashcardSubscription).when(flashcardSubscriptionRepository)
@@ -71,7 +71,7 @@ public class FlashcardSubscriptionServiceTest {
     }
 
     @Test
-    void createFlashcardSubscriptionByFlashcardAndUserId(){
+    void createFlashcardSubscriptionByFlashcardIdAndUserIdAndReturnFlashcardSubscriptionTest(){
         Mockito.doReturn(Optional.of(flashcard)).when(flashcardRepository).findById(1);
         Mockito.doReturn(subscription).when(subscriptionService).getSubscriptionByUserId(1);
         Mockito.doReturn(flashcardSubscription).when(flashcardSubscriptionRepository)
@@ -84,7 +84,7 @@ public class FlashcardSubscriptionServiceTest {
     }
 
     @Test
-    void getAllSubscribersByFlashcardIdTest(){
+    void getAllSubscribersByFlashcardIdTestAndReturnFlashcardSubscriptionsListTest(){
         Mockito.doReturn(flashcardSubscriptions).when(flashcardSubscriptionRepository).findAllByFlashcard_Id(1);
         List<FlashcardSubscription> result = flashcardSubscriptionService.getAllSubscribersByFlashcardId(1);
         Assertions.assertNotNull(result);
@@ -95,7 +95,7 @@ public class FlashcardSubscriptionServiceTest {
     }
 
     @Test
-    void getAllSubscriptionsByUserIdTest(){
+    void getAllSubscriptionsByUserIdTestAndReturnFlashcardSubscriptionsListTest(){
         Mockito.doReturn(flashcardSubscriptions).when(flashcardSubscriptionRepository).findAllBySubscription_User_UserId(1);
         List<FlashcardSubscription> result = flashcardSubscriptionService.getAllSubscriptionsByUserId(1);
         Assertions.assertNotNull(result);
@@ -106,7 +106,7 @@ public class FlashcardSubscriptionServiceTest {
     }
 
     @Test
-    void deleteFlashcardSubscriptionByFlashcardAndUserId(){
+    void deleteFlashcardSubscriptionByFlashcardAndUserIdAndReturnFlashcardSubscriptionTest(){
         Mockito.doReturn(Optional.of(flashcard)).when(flashcardRepository).findById(1);
         Mockito.doReturn(subscription).when(subscriptionService).getSubscriptionByUserId(1);
         FlashcardSubscription result = flashcardSubscriptionService.deleteFlashcardSubscription(1,1);
@@ -117,7 +117,7 @@ public class FlashcardSubscriptionServiceTest {
     }
 
     @Test
-    void deleteAllFlashcardSubscriptionsByFlashcardSubscriptionsList(){
+    void deleteAllFlashcardSubscriptionsByFlashcardSubscriptionsListAndReturnFlashcardSubscriptionsListTest(){
         List<FlashcardSubscription> result = flashcardSubscriptionService.deleteAllFlashcardSubscriptions(flashcardSubscriptions);
         Assertions.assertNotNull(result);
         Assertions.assertEquals(flashcardSubscription.getFlashcardSubscriptionId(), Objects.requireNonNull(result.stream().findFirst().orElse(null)).getFlashcardSubscriptionId());
@@ -126,7 +126,7 @@ public class FlashcardSubscriptionServiceTest {
     }
 
     @Test
-    void deleteAllFlashcardSubscriptionsByFlashcardId(){
+    void deleteAllFlashcardSubscriptionsByFlashcardIdAndReturnFlashcardSubscriptionsListTest(){
         Mockito.doReturn(flashcardSubscriptions).when(flashcardSubscriptionRepository).findAllByFlashcard_Id(1);
         List<FlashcardSubscription> result = flashcardSubscriptionService.deleteAllFlashcardSubscriptionsByFlashcardId(1);
         Assertions.assertNotNull(result);
@@ -136,7 +136,7 @@ public class FlashcardSubscriptionServiceTest {
     }
 
     @Test
-    void deleteAllFlashcardSubscriptionsByUserId(){
+    void deleteAllFlashcardSubscriptionsByUserIdAndReturnFlashcardSubscriptionsListTest(){
         Mockito.doReturn(flashcardSubscriptions).when(flashcardSubscriptionRepository).findAllBySubscription_User_UserId(1);
         List<FlashcardSubscription> result = flashcardSubscriptionService.deleteAllFlashcardSubscriptionsByUserId(1);
         Assertions.assertNotNull(result);
