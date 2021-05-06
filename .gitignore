@@ -19,5 +19,6 @@ buildNumber.properties
 *.iml
 out
 gen
+test.mv.db
 
 /src/main/resources/env.properties
