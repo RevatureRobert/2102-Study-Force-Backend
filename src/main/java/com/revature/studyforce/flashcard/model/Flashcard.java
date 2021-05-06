@@ -1,13 +1,13 @@
 package com.revature.studyforce.flashcard.model;
 
-import com.sun.istack.NotNull;
+
+import com.revature.studyforce.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-import com.revature.studyforce.user.model.User;
+import javax.validation.constraints.NotNull;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -29,15 +29,14 @@ public class Flashcard {
     @NotNull
     @ManyToOne
     private User creator;
-    //TODO: waiting on Topic model
-//    @NotNull
-//    @ManyToOne
-//    private Topic topic;
+    @ManyToOne
+    private Topic topic;
     @Column(nullable = false)
     private String question;
     private int questionDifficultyTotal = 0;
     private int questionDifficultyAverage = 0;
     private Timestamp createdTime = Timestamp.valueOf(LocalDateTime.now());
     private Timestamp resolutionTime = Timestamp.valueOf(LocalDateTime.now());
+    private boolean isResolved = false;
 
 }

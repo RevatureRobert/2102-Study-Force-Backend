@@ -1,21 +1,19 @@
 package com.revature.studyforce.flashcard.model;
 
+import com.revature.studyforce.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import com.revature.studyforce.user.model.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
- * Model used to store the difficulty ratings of a flashcards
- *
+ * Model used to store the difficulty ratings of a flashcards {@link Flashcard}, {@link User}, {@link Difficulty}
  *@author Edson Rodriguez
  */
 @Entity
-@Table(name = "timesheets")
+@Table(name = "rating")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,8 +22,10 @@ public class Rating {
     @GeneratedValue
     private int id;
     @NotNull
-    private Flashcard flashcardId;
+    @ManyToOne
+    private Flashcard flashcard;
     @NotNull
+    @ManyToOne
     private User user;
     @NotNull
     @Column(name = "rating")
