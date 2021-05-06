@@ -26,15 +26,15 @@ public class QuizController {
     }
 
     /**
-     * Retrieves page of QuizDTO entries with pagination
+     * Retrieves page of QuizDTO entries with pagination {@link QuizService#getAll(int, int, String, String)}
      * @param page which page to display
      * @param offset how many entries per page
-     * @param sortBy attribute to sort by
+     * @param sortBy attribute to sort by [ quizId | quizName | quizUser ]
      * @param order asc or desc
      * @return page of QuizDTO entries
      */
     @GetMapping
-    public @ResponseBody Page<QuizDTO> getAll(
+    public Page<QuizDTO> getAll(
             @RequestParam(name="page", defaultValue = "0", required = false) int page,
             @RequestParam(name="offset", defaultValue = "10", required = false) int offset,
             @RequestParam(name="sortby", defaultValue = "quizId", required = false) String sortBy,
@@ -44,27 +44,36 @@ public class QuizController {
     }
 
     /**
-     * Creates a Quiz through a supplied DTO
+     * GET request for 'getQuizById' in {@link QuizService#getById(int)}
+     * @param quizId Id of quiz to be returned
+     * @return single QuizDto that matches Id param
+     */
+    public QuizDTO getByQuizId(Integer quizId){
+        return quizService.getById(quizId);
+    }
+
+    /**
+     * Creates a Quiz through a supplied DTO {@link QuizService#createQuiz(NewQuizDTO)}
      * @param quizDTO dto for incoming quiz
      * @return a new Quiz
      */
     @PostMapping
-    public @ResponseBody Quiz createQuiz(@RequestBody NewQuizDTO quizDTO){
+    public QuizDTO createQuiz(@RequestBody NewQuizDTO quizDTO){
         return quizService.createQuiz(quizDTO);
     }
 
     /**
-     * Updates given QuizDTO such that the quizId is specified
+     * Updates given QuizDTO such that the quizId is specified {@link QuizService#updateQuiz(UpdateQuizDTO)}
      * @param quizDTO QuizDTO with quizId of he Quiz to be modified
      * @return updated QuizDTO
      */
     @PutMapping
-    public @ResponseBody QuizDTO updateQuiz(@RequestBody UpdateQuizDTO quizDTO){
+    public QuizDTO updateQuiz(@RequestBody UpdateQuizDTO quizDTO){
         return quizService.updateQuiz(quizDTO);
     }
 
     /**
-     * Deletes given QuizDTO such that the quizId is specified
+     * Deletes given QuizDTO such that the quizId is specified {@link QuizService#deleteQuiz(int)}
      * @param id id of the quiz to be deleted
      */
     @DeleteMapping("/{id}")

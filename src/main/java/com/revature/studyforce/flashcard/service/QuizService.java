@@ -41,7 +41,7 @@ public class QuizService implements AbstractService{
 
 
     /**
-     * Http GET request that queries the configured database for a pageable list of all quizzes
+     * Http GET request that queries the configured database for a pageable list of all quizzes from {@link QuizRepository#findAll()}
      * @param page the page number
      * @param offset number of entries per page
      * @param sortBy attribute to sort by
@@ -64,25 +64,24 @@ public class QuizService implements AbstractService{
     }
 
     /**
-     * Queries the quiz with specified id
-     * @param quiz object containing the quiz id
+     * Queries the quiz with specified id from {@link QuizRepository#findById(Object)}
+     * @param quizId quiz id of the quiz object to retrieve
      * @return Optional with quiz object if it was found
      */
-    public Optional<Quiz> getById(Quiz quiz){
-        return quizRepository.findById(quiz.getQuizId());
+    public QuizDTO getById(int quizId){
+        return QuizDTO.quizToDTO().apply(quizRepository.findById(quizId).orElse(null));
     }
 
     /**
-     * Create a new Quiz object
+     * Create a new Quiz object and save's into {@link QuizRepository#save(Object)}
      * @param newQuiz - the Quiz object to be persisted
      * @return new QuizDTO
      */
-    public Quiz createQuiz(NewQuizDTO newQuiz){
+    public QuizDTO createQuiz(NewQuizDTO newQuiz){
         Optional<User> optUser = userRepository.findById(newQuiz.getQuizUserId());
 
         if(!optUser.isPresent())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User not found exception");
-
 
         List<Flashcard> lf = new ArrayList<>();
 
@@ -95,12 +94,12 @@ public class QuizService implements AbstractService{
             lf.add(optionalFlashcard.get());
         });
 
-        return  quizRepository.save(new Quiz(0, optUser.get(), newQuiz.getQuizName(), lf));
+        return  QuizDTO.quizToDTO().apply(quizRepository.save(new Quiz(0, optUser.get(), newQuiz.getQuizName(), lf)));
     }
 
 
     /**
-     * Update a Quiz object
+     * Update fields of a Quiz object in {@link QuizRepository}
      * @param quizDTO - quizDTO for Quiz object being mutated
      * @return the mutated QuizDTO object
      */
@@ -134,7 +133,7 @@ public class QuizService implements AbstractService{
 
 
     /**
-     * Delete a Quiz object
+     * Delete a Quiz object in {@link QuizRepository}
      * @param id - the quizDTO id to be deleted
      */
     public void deleteQuiz(int id) {
