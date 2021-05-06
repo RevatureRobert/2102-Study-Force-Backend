@@ -10,7 +10,11 @@ import java.util.List;
 
 
 /**
- * Rest controller used to handle request for solutions to stacktrace questions
+ * Rest controller used to handle requests for {@link Solution}
+ * <p>
+ *      Requests and responses will contain {@link SolutionDTO}
+ * </p>
+ *
  * @author Joshua Swanson
  */
 @RestController
@@ -22,9 +26,14 @@ public class SolutionController {
     SolutionService solutionService;
 
     /**
-     * Given a stacktrace id, returns all solutions posted on that stacktrace
+     * Retrieves all {@link Solution Solutions} matching a Stacktrace id
+     *<p>
+     *     This method receives a request and all logic is performed by {@link SolutionService#getAllSolutionsForStacktrace(int)}
+     *</p>
+     * @param page The page to be displayed
+     * @param pageSize Size of the page that will be used to calculate offset
      * @param stackTraceId Stacktrace primary id
-     * @return  List of solutions for the given stacktrace id
+     * @return List of {@link Solution Solutions} for the given Stacktrace id
      */
     @GetMapping("/{stackTraceId}")
     public List<SolutionDTO> getAllSolutionsForStacktrace(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
@@ -34,10 +43,10 @@ public class SolutionController {
     }
 
     /**
-     * If a user has not previously posted a solution to a stacktrace, this
-     *  endpoint should be used. For updating a solution, use put method.
-     * @param solutionDTO Solution to be saved to data store
-     * @return solution
+     * Inserts a {@link Solution} into data store and returns a {@link SolutionDTO}
+     * by utilizing {@link SolutionService#submitFirstSolution(SolutionDTO)}
+     * @param solutionDTO SolutionDTO to be saved to data store
+     * @return {@link SolutionDTO} of the {@link Solution} saved
      */
     @PostMapping
     public SolutionDTO submitFirstSolution(@RequestBody SolutionDTO solutionDTO){
@@ -46,11 +55,10 @@ public class SolutionController {
 
 
     /**
-     * If a user has previously posted a solution to a stacktrace, this
-     *  endpoint should be used. Previous solution will be updated with
-     *  the body of the SolutionDTO in the request body
+     * Updates a {@link Solution} in the data store and returns a
+     * {@link SolutionDTO} by utilizing {@link SolutionService#updateSolution(SolutionDTO)}
      * @param solutionDTO Solution to be updated to data store
-     * @return solution
+     * @return {@link SolutionDTO} of the {@link Solution} updated
      */
     @PutMapping
     public SolutionDTO updateSolution(@RequestBody SolutionDTO solutionDTO){
@@ -58,11 +66,9 @@ public class SolutionController {
     }
 
     /**
-     * If a user has previously posted a solution to a stacktrace, this
-     *  endpoint should be used. Previous solution will be updated with
-     *  the body of the SolutionDTO in the request body
+     * Cascade deletes a {@link SolutionDTO} by its primary id by utilizing {@link SolutionService#deleteSolution(int)}
      * @param solutionId Solution to be deleted to data store
-     * @return solution Response Entity with 204 status(No Content success status)
+     * @return {@link SolutionDTO} of the {@link Solution} that was deleted
      */
     @DeleteMapping("/{solutionId}")
     public SolutionDTO deleteSolution(@PathVariable int solutionId){
