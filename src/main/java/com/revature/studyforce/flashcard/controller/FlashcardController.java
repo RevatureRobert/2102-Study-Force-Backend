@@ -28,12 +28,12 @@ public class FlashcardController {
     }
 
     /**
-     * Retrieves all flashcards
-     * @param page - number of offsets away from 0
-     * @param offset - number of Flashcards per page
-     * @param sortBy - column to sort by
-     * @param order - ascending or descending order
-     * @return - returns Page of paginated Flashcards
+     * Retrieves a Page of flashcards {@link FlashcardService#getAll(int, int, String, String)}
+     * @param page - number of offsets away from 0 (defaults to 0)
+     * @param offset number of elements per page [5|10|25|50|100] - defaults to 25
+     * @param sortBy - column to sort by ["difficulty"|"topic"|"created"|"resolved"] defaults to creator if sortby could not be understood
+     * @param order - order in which the Page is displayed ["ASC"|"DESC"]
+     * @return - returns a Page of Flashcards according the the given page, offset, sortBy, and order parameters
      */
     @GetMapping
     public @ResponseBody Page<FlashcardAllDTO> getAll(
@@ -45,13 +45,13 @@ public class FlashcardController {
     }
 
     /**
-     * Retrieves all flashcards with the given difficulty
-     * @param page - number of offsets away from 0
-     * @param offset - number of Flashcards per offset
-     * @param sortBy - column to sort by
-     * @param order - ascending or descending order
-     * @param difficulty - limits returned Flashcards to the given difficulty
-     * @return - returns a Page of Flashcards by difficulty
+     * Retrieves a Page of flashcards with a given difficulty {@link FlashcardService#getAllByDifficulty(int, int, String, String, int)}
+     * @param page - number of offsets away from 0 (defaults to 0)
+     * @param offset number of elements per page [5|10|25|50|100] - defaults to 25
+     * @param sortBy - column to sort by ["difficulty"|"topic"|"created"|"resolved"] defaults to creator if sortby could not be understood
+     * @param order - order in which the Page is displayed ["ASC"|"DESC"]
+     * @param difficulty - only return flashcards with the given difficulty
+     * @return - returns a Page of Flashcards according the the given page, offset, sortBy, order, and difficulty parameters
      */
     @GetMapping("/difficulty")
     public @ResponseBody Page<FlashcardAllDTO> getAllByDifficulty(
@@ -64,13 +64,13 @@ public class FlashcardController {
     }
 
     /**
-     * Retrieves all flashcards with the given topic
-     * @param page - number of offsets away from 0
-     * @param offset - number of Flashcards per offset
-     * @param sortBy - column to sort by
-     * @param order - ascending or descending order
-     * @param topicName - limits returned Flashcards to the given topic
-     * @return - returns a Page of Flashcards by topic
+     * Retrieves a Page of flashcards with a given topicName {@link FlashcardService#getAllByTopic(int, int, String, String, String)}
+     * @param page - number of offsets away from 0 (defaults to 0)
+     * @param offset number of elements per page [5|10|25|50|100] - defaults to 25
+     * @param sortBy - column to sort by ["difficulty"|"topic"|"created"|"resolved"] defaults to creator if sortby could not be understood
+     * @param order - order in which the Page is displayed ["ASC"|"DESC"]
+     * @param topicName - only return flashcards with the given topic name
+     * @return - returns a Page of Flashcards according the the given page, offset, sortBy, order, and topicName parameters
      */
     @GetMapping("/topics")
     public @ResponseBody Page<FlashcardAllDTO> getAllByTopic(
@@ -83,13 +83,13 @@ public class FlashcardController {
     }
 
     /**
-     * Retrieves all flashcards with the given resolved status (boolean)
-     * @param page - number of offsets away from 0
-     * @param offset - number of Flashcards per offset
-     * @param sortBy - column to sort by
-     * @param order - ascending or descending order
-     * @param resolved - limits returned Flashcards to the given resolved boolean
-     * @return - returns a Page of Flashcards by resolved status
+     * Retrieves a Page of flashcards with a given resolved status (boolean) {@link FlashcardService#getAllByIsResolved(int, int, String, String, boolean)}
+     * @param page - number of offsets away from 0 (defaults to 0)
+     * @param offset number of elements per page [5|10|25|50|100] - defaults to 25
+     * @param sortBy - column to sort by ["difficulty"|"topic"|"created"|"resolved"] defaults to creator if sortby could not be understood
+     * @param order - order in which the Page is displayed ["ASC"|"DESC"]
+     * @param resolved - only return flashcards with the given resolved status [true|false]
+     * @return - returns a Page of Flashcards according the the given page, offset, sortBy, order, and resolved parameters
      */
     @GetMapping("/resolved")
     public @ResponseBody Page<FlashcardAllDTO> getAllByIsResolved(
@@ -102,7 +102,7 @@ public class FlashcardController {
     }
 
     /**
-     * Retrieves flashcard by id
+     * Retrieves flashcard with the given id {@link FlashcardService#getById(int)}
      * @param id - limits returned Flashcard to the given id
      * @return - returns Flashcard with the given id
      */
@@ -112,7 +112,7 @@ public class FlashcardController {
     }
 
     /**
-     * Persists flashcard (uses NewFlashcardDTO)
+     * Persists flashcard (uses NewFlashcardDTO) {@link FlashcardService#save(NewFlashcardDTO)}
      * @param flashcard - Flashcard object to persist
      * @return - returns persisted Flashcard
      */
@@ -122,7 +122,7 @@ public class FlashcardController {
     }
 
     /**
-     * Updates existing flashcard
+     * Updates existing flashcard {@link FlashcardService#update(Flashcard)}
      * @param flashcard - new Flashcard to replace original in database
      * @return - returns updated Flashcard
      */
@@ -132,7 +132,7 @@ public class FlashcardController {
     }
 
     /**
-     * Deletes existing flashcard with given id
+     * Deletes existing flashcard with given id {@link FlashcardService#delete(int)}
      * @param id - Flashcard to be deleted from the database
      * @return - returns deletion success boolean
      */
