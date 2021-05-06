@@ -7,6 +7,8 @@ import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
 import com.revature.studyforce.user.dto.UserNameDTO;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ public class SolutionService {
     private final SolutionRepository solutionRepository;
     private final StacktraceRepository stacktraceRepository;
     private final UserRepository userRepository;
+    private final int defaultPageSize;
 
     @Autowired
     public SolutionService(SolutionRepository solutionRepository,
@@ -31,6 +34,7 @@ public class SolutionService {
         this.solutionRepository =solutionRepository;
         this.stacktraceRepository = stacktraceRepository;
         this.userRepository = userRepository;
+        this.defaultPageSize = 5;
     }
 
     /**
@@ -39,15 +43,11 @@ public class SolutionService {
      * @param stackTraceId Primary id of stacktrace
      * @return All solutions posted for the given stacktrace
      */
-    public List<SolutionDTO> getAllSolutionsForStacktrace(int stackTraceId){
-        List<Solution> solutions = solutionRepository.findByStackTraceId(stackTraceId);
-        List<SolutionDTO> solutionDTOS = new ArrayList<>();
-
-        for(Solution solution : solutions){
-            solutionDTOS.add(SolutionDTO.solutionToDTO().apply(solution));
-        }
-
-        return solutionDTOS;
+    public Page<SolutionDTO> getAllSolutionsForStacktrace(int stackTraceId, int page, int pageSize){
+        page = validatePage(page);
+        pageSize = validatePageSize(pageSize);
+        Page<Solution> solutions = solutionRepository.findByStackTraceId_stacktraceId(stackTraceId, PageRequest.of(page, pageSize));
+        return solutions.map(SolutionDTO.solutionToDTO());
     }
 
     /**
@@ -121,5 +121,27 @@ public class SolutionService {
                 solution.getAdminSelected(),
                 solution.getCreationTime()
         );
+    }
+
+    /**
+     * Validates the size of pages
+     * @param pageSize size of a page
+     * @return valid page size
+     */
+    public int validatePageSize(int pageSize){
+        if(pageSize == 5 || pageSize == 10 || pageSize == 20)
+            return pageSize;
+        return defaultPageSize;
+    }
+
+    /**
+     * validates page is not negative
+     * @param page page number
+     * @return valid page number
+     */
+    public int validatePage(int page){
+        if(page < 0)
+            page = 0;
+        return page;
     }
 }

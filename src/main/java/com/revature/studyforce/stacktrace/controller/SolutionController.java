@@ -4,6 +4,7 @@ import com.revature.studyforce.stacktrace.dto.SolutionDTO;
 import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.service.SolutionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,18 +29,18 @@ public class SolutionController {
     /**
      * Retrieves all {@link Solution Solutions} matching a Stacktrace id
      *<p>
-     *     This method receives a request and all logic is performed by {@link SolutionService#getAllSolutionsForStacktrace(int)}
+     *     This method receives a request and all logic is performed by {@link SolutionService#getAllSolutionsForStacktrace(int, int, int)} )}
      *</p>
      * @param page The page to be displayed
      * @param pageSize Size of the page that will be used to calculate offset
      * @param stackTraceId Stacktrace primary id
-     * @return List of {@link Solution Solutions} for the given Stacktrace id
+     * @return Page of {@link Solution Solutions} for the given Stacktrace id
      */
     @GetMapping("/{stackTraceId}")
-    public List<SolutionDTO> getAllSolutionsForStacktrace(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
-                                                          @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+    public Page<SolutionDTO> getAllSolutionsForStacktrace(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                          @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize,
                                                           @PathVariable int stackTraceId){
-        return solutionService.getAllSolutionsForStacktrace(stackTraceId);
+        return solutionService.getAllSolutionsForStacktrace(stackTraceId, page, pageSize);
     }
 
     /**

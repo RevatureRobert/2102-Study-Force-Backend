@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
@@ -60,11 +62,11 @@ class SolutionControllerTest {
      */
     @Test
     void getAllSolutionsForStacktraceTest() throws Exception {
-        Mockito.doReturn(testSolutionDTOList).when(solutionService).getAllSolutionsForStacktrace(1);
+        Mockito.doReturn(testSolutionDTOList).when(solutionService).getAllSolutionsForStacktrace(1, 1, 1);
         mockMvc.perform(MockMvcRequestBuilders.get("/stacktrace/solution/{stackTraceId}", 1)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
-        verify(solutionService, times(1)).getAllSolutionsForStacktrace(1);
+        verify(solutionService, times(1)).getAllSolutionsForStacktrace(1, 1, 1);
     }
 
     /**
