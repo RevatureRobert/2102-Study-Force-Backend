@@ -1,3 +1,4 @@
+
 version: 0.2
 
 
@@ -7,8 +8,8 @@ phases:
       - mvn clean install
       - echo Logging in to Amazon ECR...
       - aws --version
-      - $(aws ecr get-login-password | docker login --username AWS --password-stdin 868071628547.dkr.ecr.us-east-1.amazonaws.com)
-      - REPOSITORY_URI=868071628547.dkr.ecr.us-east-1.amazonaws.com/hello-repository
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - REPOSITORY_URI=967240801169.dkr.ecr.us-east-1.amazonaws.com/rsf-ecr-repo
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
   build:
