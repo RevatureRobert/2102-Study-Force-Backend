@@ -8,6 +8,8 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -22,8 +24,9 @@ class TopicServiceTest {
     private TopicService topicService;
 
     @Test
-    void getAllTest() {
-        List<Topic> topicList = new LinkedList();
+    void whenGetAll() {
+
+        List<Topic> topicList = new ArrayList<>();
         topicList.add(new Topic(1, "1"));
         topicList.add(new Topic(2, "2"));
         topicList.add(new Topic(3, "3"));

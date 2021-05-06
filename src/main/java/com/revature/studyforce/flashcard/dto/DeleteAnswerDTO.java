@@ -14,7 +14,6 @@ import javax.validation.constraints.Positive;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DeleteAnswerDTO {
-    @NotNull
     @Positive
     private int answerId;
 }

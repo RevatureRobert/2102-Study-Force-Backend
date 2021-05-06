@@ -1,6 +1,5 @@
 package com.revature.studyforce.flashcard.integration;
 
-import com.google.gson.Gson;
 import com.revature.studyforce.flashcard.controller.FlashcardController;
 import com.revature.studyforce.flashcard.dto.FlashcardDTO;
 import com.revature.studyforce.flashcard.dto.NewFlashcardDTO;
@@ -80,7 +79,6 @@ class FlashcardIntegrationTest {
         System.out.println(userRepository.save(user));
         System.out.println(topicRepository.save(topic));
         System.out.println(flashcardRepository.save(flashcard));
-        System.out.println(new Gson().toJson(flashcard));
     }
 
     @Test

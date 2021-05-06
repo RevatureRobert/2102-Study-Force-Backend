@@ -39,15 +39,13 @@ class VoteIntegrationTest {
     private UserRepository userRepository;
     @Autowired
     private AnswerRepository answerRepository;
-
     @Autowired
     private VoteService voteService;
-
     @Autowired
     private FlashcardRepository flashcardRepository;
-
     @Autowired
     private VoteController controller;
+
 
     @Test
     void givenVoteDTO_whenCreateAnswerVote_shouldReturnVote() throws Exception {

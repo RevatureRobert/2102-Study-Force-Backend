@@ -31,9 +31,7 @@ public class Flashcard {
     private Topic topic;
     @Column(nullable = false)
     private String question;
-    @NotNull
     private int questionDifficultyTotal = 0;
-    @NotNull
     private int questionDifficultyAverage = 0;
     @NotNull
     private Timestamp createdTime = Timestamp.valueOf(LocalDateTime.now());
