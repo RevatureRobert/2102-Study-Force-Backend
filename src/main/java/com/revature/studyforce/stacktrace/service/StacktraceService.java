@@ -1,19 +1,17 @@
 package com.revature.studyforce.stacktrace.service;
 
 import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
-import com.revature.studyforce.stacktrace.model.Solution;
+import com.revature.studyforce.stacktrace.dto.StacktraceUserDTO;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
+import com.revature.studyforce.stacktrace.repository.TechnologyRepository;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
-import java.time.Instant;
+
 import java.util.List;
 import java.util.Optional;
-import java.util.Stack;
 import java.util.stream.Collectors;
 
 /**
@@ -25,11 +23,14 @@ import java.util.stream.Collectors;
 public class StacktraceService {
     private final StacktraceRepository stacktraceRepo;
     private final UserRepository userRepository;
+    private final TechnologyRepository technologyRepository;
 
     @Autowired
-    public StacktraceService(StacktraceRepository stacktraceRepo, UserRepository userRepository){
+    public StacktraceService(StacktraceRepository stacktraceRepo,
+                             UserRepository userRepository, TechnologyRepository technologyRepository){
         this.stacktraceRepo = stacktraceRepo;
         this.userRepository = userRepository;
+        this.technologyRepository =technologyRepository;
     }
 
     /**
@@ -53,7 +54,7 @@ public class StacktraceService {
      * @param stacktraceId The customer id of the stacktrace being requested
      * @return Data transfer object representation of Stacktrace object converted using {@link StacktraceDTO#stacktraceToDTO()}
      */
-    public StacktraceDTO getStacktraceById(int stacktraceId){
+    public StacktraceDTO getStackTraceById(int stacktraceId){
         Optional<Stacktrace> requested = stacktraceRepo.findById(stacktraceId);
         return requested.map(stacktrace -> StacktraceDTO.stacktraceToDTO().apply(stacktrace)).orElse(null);
     }
@@ -62,8 +63,19 @@ public class StacktraceService {
      * Deletes a Stacktrace by the primary id passed as parameter
      * @param stacktraceId primary id of Stacktrace
      */
-    public void deleteStackTraceById(int stacktraceId){
-        stacktraceRepo.deleteById(stacktraceId);
+    public StacktraceDTO deleteStackTraceById(int stacktraceId){
+        Stacktrace stacktrace = stacktraceRepo.findById(stacktraceId).orElse(null);
+        if(stacktrace == null){
+            return null;
+        }
+        stacktraceRepo.delete(stacktrace);
+        return new StacktraceDTO(
+                stacktrace.getStacktraceId(),
+                StacktraceUserDTO.userToDTO().apply(stacktrace.getUserId()),
+                stacktrace.getTitle(),
+                stacktrace.getBody(),
+                stacktrace.getTechnology(),
+                stacktrace.getCreationTime());
     }
 
   /**
@@ -72,11 +84,15 @@ public class StacktraceService {
    * @param stacktraceDTO The DTO representation of stacktrace
    */
   public StacktraceDTO submitStackTrace(StacktraceDTO stacktraceDTO) {
-//      Stacktrace stacktrace = new Stacktrace(
-//              stacktraceDTO.getStacktraceId(),
-//              userRepository.findById(stacktraceDTO.getCreator().getUserId()).orElse(null),
-//              stacktraceDTO.getBody());
-        return null;
+      Stacktrace stacktrace = new Stacktrace(
+              stacktraceDTO.getStacktraceId(),
+              userRepository.findById(stacktraceDTO.getCreator().getUserId()).orElse(null),
+              stacktraceDTO.getTitle(),
+              stacktraceDTO.getBody(),
+              technologyRepository.findById(stacktraceDTO.getTechnology().getTechnologyId()).orElse(null),
+              stacktraceDTO.getCreationTime(),
+              null);
+      stacktraceRepo.save(stacktrace);
+        return stacktraceDTO;
     }
-
 }

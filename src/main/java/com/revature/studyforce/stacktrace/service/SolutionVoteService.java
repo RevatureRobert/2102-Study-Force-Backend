@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Service used to handle requests for voting on a solution.
+ * Service used to handle requests for voting on a solution using {@link SolutionVoteRepository}
  * @author Joey Elmblad
  */
 @Service
@@ -31,7 +31,7 @@ public class SolutionVoteService {
     }
 
     /**
-     *  The controller used to return all votes for a given solution.
+     *  The controller used to return all votes for a given solution using {@link SolutionVoteRepository#}
      * @param solutionId the value that will bring back every vote for a given solution.
      * @return will return a list of votes on a given solution.
      */
@@ -45,7 +45,6 @@ public class SolutionVoteService {
             solutionVoteDTO.setSolutionId(solutionVote.getSolutionId().getSolutionId());
             solutionVoteDTO.setUserId(solutionVote.getUserId().getUserId());
             solutionVoteDTO.setValue(solutionVote.getValue());
-            BeanUtils.copyProperties(solutionVote,solutionVoteDTO);
             solutionVoteDTOS.add(solutionVoteDTO);
         }
 

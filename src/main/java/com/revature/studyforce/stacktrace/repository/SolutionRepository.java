@@ -23,10 +23,4 @@ public interface SolutionRepository extends JpaRepository<Solution,Integer> {
 
     Page<Solution> findByStackTraceId_stacktraceId(int stacktraceId, Pageable pageable);
 
-    @Transactional
-    @Modifying
-    @Query("delete from Solution where solution_id = :solutionId")
-    void deleteBySolutionId(@Param("solutionId") int solutionId);
-
-    Solution findBySolutionId(@Param("solutionId") int solutionId);
 }

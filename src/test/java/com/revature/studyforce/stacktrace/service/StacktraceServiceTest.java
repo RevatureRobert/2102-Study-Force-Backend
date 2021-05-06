@@ -91,7 +91,7 @@ class StacktraceServiceTest {
         Mockito.when(stacktraceRepository.findById(0)).thenReturn(stacktrace);
         Mockito.when(stacktraceRepository.findById(255)).thenReturn(Optional.empty());
 
-        StacktraceDTO response = stacktraceService.getStacktraceById(0);
+        StacktraceDTO response = stacktraceService.getStackTraceById(0);
         assertNotNull(response);
         assertEquals(0, response.getStacktraceId());
         assertEquals(0, response.getCreator().getUserId());
@@ -105,7 +105,7 @@ class StacktraceServiceTest {
 
         System.out.println(response);
 
-        response = stacktraceService.getStacktraceById(255);
+        response = stacktraceService.getStackTraceById(255);
         assertNull(response);
         System.out.println(response);
     }
