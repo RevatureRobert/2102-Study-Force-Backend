@@ -24,6 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
+/**
+ * @author Brandon Pinkerton
+ * {@link SubscriptionService}
+ * {@link SubscriptionRepository}
+ */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test-application.properties")
