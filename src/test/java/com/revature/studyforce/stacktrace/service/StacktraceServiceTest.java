@@ -31,7 +31,7 @@ import static org.mockito.Mockito.verify;
  */
 
 @SpringBootTest
-@TestPropertySource(locations = "classpath: test-application.properties")
+@TestPropertySource(locations = "classpath:test-application.properties")
 class StacktraceServiceTest {
 
     List<Stacktrace> stacktraceArrayList;
