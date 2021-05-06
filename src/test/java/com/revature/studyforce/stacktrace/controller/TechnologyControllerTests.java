@@ -1,6 +1,6 @@
 package com.revature.studyforce.stacktrace.controller;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.studyforce.stacktrace.dto.TechnologyDTO;
 import com.revature.studyforce.stacktrace.model.Technology;
 import com.revature.studyforce.stacktrace.repository.TechnologyRepository;
@@ -43,9 +43,12 @@ class TechnologyControllerTests {
     @Autowired
     private TechnologyRepository technologyRepository;
 
+    ObjectMapper objectMapper;
+
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(technologyController).build();
+        objectMapper = new ObjectMapper();
     }
 
     @Test
@@ -62,9 +65,10 @@ class TechnologyControllerTests {
     }
     @Test
     void whenAddTechnology_ThenTechnologyReturned() throws Exception {
+        String content = objectMapper.writeValueAsString(new TechnologyDTO(0,"TestTechAdd"));
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/stacktrace/technology")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(new TechnologyDTO(0,"TestTechAdd"))))
+                .content(content))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
