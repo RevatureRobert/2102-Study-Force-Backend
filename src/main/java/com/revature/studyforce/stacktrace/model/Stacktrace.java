@@ -59,7 +59,7 @@ public class Stacktrace {
      */
     @ManyToOne(
             fetch = FetchType.EAGER,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinColumn(name = "technology_id", referencedColumnName = "technology_id")
     @JsonIgnore
     private Technology technology;

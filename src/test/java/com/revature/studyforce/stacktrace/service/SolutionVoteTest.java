@@ -81,7 +81,6 @@ class SolutionVoteTest {
         SolutionVoteDTO solutionVoteDTO = solutionVoteService.submitVote(testSolutionVoteDTO);
         assertEquals(solutionVoteDTO.getSolutionVoteId(), testSolutionVoteDTO.getSolutionVoteId());
         assertEquals(solutionVoteDTO.getSolutionId(), testSolutionVoteDTO.getSolutionId());
-        assertEquals(solutionVoteDTO.getSolutionVoteId(), testSolutionVoteDTO.getSolutionVoteId());
         assertEquals(solutionVoteDTO.getUserId(), testSolutionVoteDTO.getUserId());
         assertEquals(solutionVoteDTO.getValue(), testSolutionVoteDTO.getValue());
     }

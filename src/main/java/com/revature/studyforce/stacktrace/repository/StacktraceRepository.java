@@ -23,4 +23,5 @@ public interface StacktraceRepository extends JpaRepository<Stacktrace, Integer>
     @Query(value = "select * from stacktrace where stacktrace_id = :stacktraceId ;", nativeQuery = true)
     List<Stacktrace> findByStacktraceId(@Param("stacktraceId") int stacktraceId);
 
+
 }
