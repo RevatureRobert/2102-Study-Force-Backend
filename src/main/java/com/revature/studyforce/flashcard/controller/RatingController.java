@@ -33,7 +33,7 @@ public class RatingController {
     }
 
     @GetMapping
-    public RatingDTO getRating(@PathVariable int flashcardId, @PathVariable int userID){
-        return ratingService.getRating(flashcardId,userID);
+    public RatingDTO getRating(@RequestParam int flashcardId, @RequestParam int userId){
+        return ratingService.getRating(flashcardId,userId);
     }
 }
