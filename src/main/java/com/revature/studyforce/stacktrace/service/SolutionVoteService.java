@@ -31,7 +31,7 @@ public class SolutionVoteService {
     }
 
     /**
-     *  The controller used to return all votes for a given solution using {@link SolutionVoteRepository#}
+     *  The controller used to return all votes for a given solution using {@link SolutionVoteRepository#findBySolutionId(int)}
      * @param solutionId the value that will bring back every vote for a given solution.
      * @return will return a list of votes on a given solution.
      */
@@ -52,9 +52,9 @@ public class SolutionVoteService {
     }
 
     /**
-     * This will save a vote for a specific solution, should only be able to vote on a comment once.
+     * This will save a vote for a specific solution, should only be able to vote on a comment once using {@link SolutionRepository#save}
      * @param solutionVoteDTO The solution object that will hold the users vote information.
-     * @return will return a solutionVote for a given user, with a given solution.
+     * @return will return a solutionVoteDTO for a given user, with a given solution.
      */
     public SolutionVoteDTO submitVote(SolutionVoteDTO solutionVoteDTO){
 
