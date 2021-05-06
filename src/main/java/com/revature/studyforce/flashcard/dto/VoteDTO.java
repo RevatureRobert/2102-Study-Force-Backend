@@ -17,9 +17,6 @@ import java.util.function.Function;
 @ToString
 public class VoteDTO {
 
-    /**
-     * Fields used in UI layer
-     */
     private int answerId;
     private int userId;
     private int value;

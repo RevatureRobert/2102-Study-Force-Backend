@@ -41,7 +41,7 @@ class VoteServiceTest {
     private VoteService voteService;
 
     @Test
-    void addVoteTest() {
+    void givenVoteDTOWithMatchingUserAndAnswer_whenAddVote_shouldPersistAndReturnVote() {
         User u = new User(0,"jesus.christ@revature.com","password","Jesus","Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,u,null,"how is your day",1,1,null,null,false);
 

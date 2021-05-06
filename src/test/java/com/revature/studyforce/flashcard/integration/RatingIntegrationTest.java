@@ -55,7 +55,7 @@ class RatingIntegrationTest {
         flashcardRepository.save(flashcard);
 
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(ratingController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/rate/")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/ratings/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"flashcardId\":\"2\",\"userId\":\"1\",\"ratingScore\":\"2\"}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -81,7 +81,7 @@ class RatingIntegrationTest {
         ratingRepository.save(rating);
 
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(ratingController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/rate?flashcardId=2&userId=1")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/ratings?flashcardId=2&userId=1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

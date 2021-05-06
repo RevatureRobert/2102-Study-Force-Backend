@@ -62,7 +62,7 @@ class AnswerIntegrationTest {
         answerService.createAnswer(aDTO2);
 
         mockMvc = MockMvcBuilders.standaloneSetup(answerController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/answers/flashcard-id/3?page=0&offset=50&sortby=\"creator\"&order=\"DESC\"")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/answers/3?page=0&offset=50&sortby=\"creator\"&order=\"DESC\"")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -105,7 +105,7 @@ class AnswerIntegrationTest {
         answerService.createAnswer(aDTO);
 
         mockMvc = MockMvcBuilders.standaloneSetup(answerController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/flashcards/answers/")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/answers/3")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"answerId\":\"3\"}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -114,7 +114,7 @@ class AnswerIntegrationTest {
         System.out.println(result.getResponse().getContentAsString());
         System.out.println(result.getResponse().getStatus());
 
-         result = mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/answers/flashcard-id/3")
+         result = mockMvc.perform(MockMvcRequestBuilders.get("/answers/3")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -134,7 +134,7 @@ class AnswerIntegrationTest {
         flashcard = flashcardRepo.save(flashcard);
 
         mockMvc = MockMvcBuilders.standaloneSetup(answerController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/answers/")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/answers/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"userId\":\"1\",\"flashcardId\":\"2\",\"answer\":\"tcs filename\"}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
