@@ -56,6 +56,7 @@ class UserServiceTest {
         Assertions.assertEquals("Daniel", response.getContent().get(0).getName());
         Assertions.assertEquals(t2, response.getContent().get(0).getLastLogin());
 
+
     }
 
     @Test

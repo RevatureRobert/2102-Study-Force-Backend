@@ -62,8 +62,10 @@ class BatchIntegrationTest {
         AdminList.add(Admin);
         StudentList.add(student);
         Batch batch = new Batch(0, "2102 Enterprise2", AdminList, StudentList, lastLoginTime);
+        Batch batch2 = new Batch(0, "2103 Enterprise3", AdminList, StudentList, lastLoginTime);
         System.out.println(batch.toString());
         batchRepository.save(batch);
+        batchRepository.save(batch2);
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
         mockMvc.perform(MockMvcRequestBuilders.get("/batches")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -71,7 +73,10 @@ class BatchIntegrationTest {
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].batchId").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name").value("2102 Enterprise2"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name").value("2102 Enterprise2"))
+
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].batchId").value(2))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].name").value("2103 Enterprise3"));
     }
 
     @Test

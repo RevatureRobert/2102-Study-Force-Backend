@@ -1,17 +1,25 @@
 package com.revature.studyforce.user.service;
 
+import com.revature.studyforce.user.dto.CreateUpdateBatchDTO;
 import com.revature.studyforce.user.model.Batch;
+import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.BatchRepository;
+import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Service Layer for Batch using {@link BatchRepository}
@@ -22,10 +30,12 @@ import java.util.Locale;
 public class BatchService {
 
     private final BatchRepository batchRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public BatchService(BatchRepository batchRepository){
+    public BatchService(BatchRepository batchRepository, UserRepository userRepository){
         this.batchRepository = batchRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -89,6 +99,96 @@ public class BatchService {
             batchPage = batchRepository.findByCreationTimeAfter(timestamp, PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
         return batchPage;
     }
+
+
+    public Batch createBatch(CreateUpdateBatchDTO createBatch){
+       Optional<Batch> checkBatchName = Optional.ofNullable(batchRepository.findByNameContainingIgnoreCase(createBatch.getName()));
+       Timestamp timestamp = Timestamp.from(Instant.now());
+
+        if(checkBatchName.isPresent()){
+            return null;
+        }
+
+        Set<User> users = new HashSet<>();
+        Set<User> instructors = new HashSet<>();
+
+        createBatch.getInstructors().forEach(email -> {
+            Optional <User> instructor = userRepository.findByEmail(email);
+            if(!instructor.isPresent()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Instructor does not exist");
+            }
+
+            instructors.add(instructor.get());
+
+        });
+
+        createBatch.getUsers().forEach(email -> {
+            Optional <User> user = userRepository.findByEmail(email);
+            if(!user.isPresent()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User does not exist");
+            }
+
+            users.add(user.get());
+
+        });
+
+        Batch batch = new Batch(
+                createBatch.getBatchID(),
+                createBatch.getName(),
+                instructors,
+                users,
+                timestamp
+                );
+
+        batchRepository.save(batch);
+        return batch;
+
+    }
+
+    public Batch updateBatch(CreateUpdateBatchDTO createBatch){
+        Optional<Batch> checkBatchId = batchRepository.findById(createBatch.getBatchID());
+
+        if(!checkBatchId.isPresent()){
+            System.out.println("Throw No batch found exception");
+            return null;
+        }
+
+        Set<User> users = new HashSet<>();
+        Set<User> instructors = new HashSet<>();
+
+        createBatch.getInstructors().forEach(email -> {
+            Optional <User> instructor = userRepository.findByEmail(email);
+            if(!instructor.isPresent()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Instructor does not exist");
+            }
+
+            instructors.add(instructor.get());
+
+        });
+
+        createBatch.getUsers().forEach(email -> {
+            Optional <User> user = userRepository.findByEmail(email);
+            if(!user.isPresent()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User does not exist");
+            }
+
+            users.add(user.get());
+
+        });
+
+        Batch batch = new Batch(
+                createBatch.getBatchID(),
+                createBatch.getName(),
+                instructors,
+                users,
+                checkBatchId.get().getCreationTime()
+        );
+
+        batchRepository.save(batch);
+        return batch;
+
+    }
+
 
     /**
      * guarantees a sort field is selected if user provides one, userID as default for invalid inputs

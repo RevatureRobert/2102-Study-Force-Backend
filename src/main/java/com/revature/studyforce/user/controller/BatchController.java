@@ -1,5 +1,6 @@
 package com.revature.studyforce.user.controller;
 
+import com.revature.studyforce.user.dto.CreateUpdateBatchDTO;
 import com.revature.studyforce.user.model.Batch;
 import com.revature.studyforce.user.service.BatchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +76,23 @@ public class BatchController {
     @GetMapping("/{batchId}")
     public Batch getBatchByBatchId(@PathVariable(name = "batchId") int batchId){
         return batchService.getBatchById(batchId);
+    }
+
+    @PostMapping("/create")
+    public @ResponseBody Batch createBatch(@RequestBody CreateUpdateBatchDTO createDTO){
+
+        System.out.println(createDTO.toString());
+        return batchService.createBatch(createDTO);
+
+    }
+
+    @PutMapping("/update")
+    public @ResponseBody Batch updateBatch(@RequestBody CreateUpdateBatchDTO updateDTO){
+//        System.out.println(updateDTO.getBatchID());
+//        System.out.println(updateDTO.toString());
+        updateDTO.setBatchID(1);
+        return batchService.updateBatch(updateDTO);
+
     }
 
 
