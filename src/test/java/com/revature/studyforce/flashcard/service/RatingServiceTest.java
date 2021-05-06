@@ -63,4 +63,23 @@ class RatingServiceTest {
 
         System.out.println(res);
     }
+
+    @Test
+    void givenFlashcardIdAndUserId_whenGetRating_shouldReturnRating(){
+        User user = new User(0,"edson@revature.com","password","Edson","Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
+        Rating rating = new Rating(0,flashcard,user, Difficulty.EASY);
+
+        Mockito.when(flashcardRepository.findById(0)).thenReturn(Optional.of(flashcard));
+        Mockito.when(userRepository.findById(0)).thenReturn(Optional.of(user));
+        Mockito.when(ratingRepository.findByFlashcard_idAndUser_userId(0,0)).thenReturn(Optional.of(rating));
+
+        RatingDTO ratingDTO = ratingService.getRating(0,0);
+
+        assertNotNull(ratingDTO);
+        assertEquals(user.getUserId(),ratingDTO.getUserId());
+        assertEquals(flashcard.getId(),ratingDTO.getFlashcardId());
+        assertEquals(rating.getRatingValue().difficultyValue,ratingDTO.getRatingScore());
+
+    }
 }
