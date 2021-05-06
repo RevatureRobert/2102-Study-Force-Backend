@@ -17,7 +17,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Joshua Swanson
  */
 @SpringBootTest
-@TestPropertySource(locations = "classpath: test-test-application.properties")
+@TestPropertySource(locations = "classpath:test-application.properties")
+
 class StacktraceUserDTOTest {
 
     User testUser;

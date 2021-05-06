@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -33,7 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@TestPropertySource(locations = "classpath: test-test-application.properties")
+@TestPropertySource(locations = "classpath:test-application.properties")
+
 @AutoConfigureMockMvc
 class SolutionControllerTest {
 
@@ -63,12 +65,12 @@ class SolutionControllerTest {
      * @throws Exception (for mockMvc.perform())
      */
     @Test
-    void getAllSolutionsForStacktraceTest() throws Exception {
-        Mockito.doReturn(testSolutionDTOList).when(solutionService).getAllSolutionsForStacktrace(1, 1, 1);
+    void whenGivenAStackTraceId_getAllSolutionsForStacktraceTest() throws Exception {
+        Mockito.doReturn(new PageImpl<>(testSolutionDTOList)).when(solutionService).getAllSolutionsForStacktrace(1, 1, 1);
         mockMvc.perform(MockMvcRequestBuilders.get("/stacktrace/solution/{stackTraceId}", 1)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
-        verify(solutionService, times(1)).getAllSolutionsForStacktrace(1, 1, 1);
+        verify(solutionService, times(1)).getAllSolutionsForStacktrace(1, 0, 5);
     }
 
     /**
@@ -76,7 +78,7 @@ class SolutionControllerTest {
      * @throws Exception (for mockMvc.perform())
      */
     @Test
-    void submitFirstSolutionTest() throws Exception{
+    void whenAPostIsCalled_CallSubmitFirstSolution() throws Exception{
         Mockito.doReturn(testSolutionDTO).when(solutionService).submitFirstSolution(testSolutionDTO);
         mockMvc.perform(MockMvcRequestBuilders.post("/stacktrace/solution")
                 .content(objectMapper.writeValueAsString(testSolutionDTO))
@@ -90,7 +92,7 @@ class SolutionControllerTest {
      * @throws Exception (for mockMvc.perform())
      */
     @Test
-    void updateSolutionTest() throws Exception{
+    void WhenAValidSolutionExistsWithinDatabase() throws Exception{
         Mockito.doReturn(testSolutionDTO).when(solutionService).updateSolution(testSolutionDTO);
         mockMvc.perform(MockMvcRequestBuilders.put("/stacktrace/solution")
                 .content(objectMapper.writeValueAsString(testSolutionDTO))
