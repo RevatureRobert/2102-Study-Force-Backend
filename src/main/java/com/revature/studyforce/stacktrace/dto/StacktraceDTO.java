@@ -2,6 +2,7 @@ package com.revature.studyforce.stacktrace.dto;
 
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.model.Technology;
+import com.revature.studyforce.user.dto.UserDTO;
 import lombok.*;
 
 import java.sql.Timestamp;
@@ -25,7 +26,7 @@ public class StacktraceDTO {
     /**
      * User who created stacktrace
      */
-    private StacktraceUserDTO creator;
+    private UserDTO creator;
 
     /**
      * the title a user gives to a stacktrace
@@ -50,7 +51,7 @@ public class StacktraceDTO {
     public static Function<Stacktrace, StacktraceDTO> stacktraceToDTO() {
     return stacktrace -> new StacktraceDTO(
           stacktrace.getStacktraceId(),
-          StacktraceUserDTO.userToDTO().apply(stacktrace.getUserId()),
+          UserDTO.userToDTO().apply(stacktrace.getUserId()),
           stacktrace.getTitle(),
           stacktrace.getBody(),
           stacktrace.getTechnology(),

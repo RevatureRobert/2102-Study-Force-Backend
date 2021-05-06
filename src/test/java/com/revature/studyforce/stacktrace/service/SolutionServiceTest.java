@@ -1,10 +1,10 @@
 package com.revature.studyforce.stacktrace.service;
 
 import com.revature.studyforce.stacktrace.dto.SolutionDTO;
-import com.revature.studyforce.stacktrace.dto.StacktraceUserDTO;
 import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.repository.SolutionRepository;
+import com.revature.studyforce.user.dto.UserDTO;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,9 +48,9 @@ class SolutionServiceTest {
 
     @BeforeEach
     public void setUp(){
-        testUser = new User(1, "test.test.com", "TestPassword", "Test", "Test", false, true, true, Authority.USER, null, null);
+        testUser = new User(1, "test.test.com", "Testname",  false, true, true, Authority.USER, null, null);
         testStacktrace = new Stacktrace(1, testUser, "Test Title", "Test Body", null, null, null);
-        testSolutionDTO = new SolutionDTO(1, 1, new StacktraceUserDTO(1, "Test", "Test"), "Test Body", false, null);
+        testSolutionDTO = new SolutionDTO(1, 1, new UserDTO(), "Test Body", false, null);
         testSolution = new Solution(1, testStacktrace, testUser, "Test Body", false, null, null);
         testNullSolution = null;
         testSolutionDTOList = new ArrayList<>();

@@ -1,5 +1,6 @@
 package com.revature.studyforce.stacktrace.dto;
 
+import com.revature.studyforce.user.dto.UserDTO;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,26 +16,25 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Joshua Swanson
  */
 @SpringBootTest
-class StacktraceUserDTOTest {
+class UserDTOTest {
 
     User testUser;
-    StacktraceUserDTO testStacktraceUserDTO;
+    UserDTO testStacktraceUserDTO;
 
     @BeforeEach
     public void setup(){
-        testUser = new User(1, "test.test.com", "TestPassword", "firstname", "lastname", false, true, true, Authority.USER, null, null);
+        testUser = new User(1, "test.test.com", "TestName",  false, true, true, Authority.USER, null, null);
     }
 
     @Test
     void userToDTO_UserSuccessfullyParsedTest(){
-        StacktraceUserDTO stacktraceUserDTO = StacktraceUserDTO.userToDTO().apply(testUser);
+        UserDTO stacktraceUserDTO = UserDTO.userToDTO().apply(testUser);
         assertEquals(testUser.getUserId(), stacktraceUserDTO.getUserId());
-        assertEquals(testUser.getFirstName(), stacktraceUserDTO.getFirstName());
-        assertEquals(testUser.getLastName(), stacktraceUserDTO.getLastName());
+        assertEquals(testUser.getName(), stacktraceUserDTO.getName());
     }
 
     @Test
     void userToDTO_NullUserPassedAndCorrectExceptionThrownTest(){
-        assertThrows(IllegalArgumentException.class, () -> StacktraceUserDTO.userToDTO().apply(null));
+        assertThrows(IllegalArgumentException.class, () -> UserDTO.userToDTO().apply(null));
     }
 }
