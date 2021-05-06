@@ -27,9 +27,10 @@ public class Flashcard {
     @NotNull
     @ManyToOne
     private User creator;
+    @NotNull
     @ManyToOne
     private Topic topic;
-    @Column(nullable = false)
+    @NotNull
     private String question;
     private int questionDifficultyTotal = 0;
     private int questionDifficultyAverage = 0;
