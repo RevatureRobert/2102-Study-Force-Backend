@@ -74,7 +74,8 @@ class StacktraceSubscriptionIntegrationTest {
 
     @Test
     void givenStacktraceIdAndUserId_whenCreateNewStacktraceSubscription_ShouldReturnStacktraceSubscription() throws Exception {
-        User user = new User(0,"edson@revature.com","password","Edson","Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson",true,false,false,
+                Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Technology tech = new Technology(0,"java");
         Stacktrace stacktrace = new Stacktrace(0,user,"Title","body", tech,Timestamp.valueOf(LocalDateTime.now()));
         technologyRepository.save(tech);
