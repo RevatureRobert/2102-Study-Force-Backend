@@ -1,17 +1,16 @@
 package com.revature.studyforce.stacktrace.service;
 
 import com.revature.studyforce.stacktrace.dto.SolutionDTO;
-import com.revature.studyforce.stacktrace.dto.StacktraceUserDTO;
 import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.repository.SolutionRepository;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
+import com.revature.studyforce.user.dto.UserNameDTO;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -61,7 +60,7 @@ public class SolutionService {
         Solution solution = new Solution(
                 solutionDTO.getSolutionId(),
                 stacktraceRepository.findById(solutionDTO.getStackTraceId()).orElse(null),
-                userRepository.findById(solutionDTO.getUser().getUserId()).orElse(null),
+                userRepository.findById(solutionDTO.getUserId()).orElse(null),
                 solutionDTO.getBody(),
                 solutionDTO.getAdminSelected(),
                 solutionDTO.getCreationTime(),
@@ -89,7 +88,7 @@ public class SolutionService {
             Solution newSolution = new Solution(
                     solutionDTO.getSolutionId(),
                     stacktraceRepository.findById(solutionDTO.getStackTraceId()).orElse(null),
-                    userRepository.findById(solutionDTO.getUser().getUserId()).orElse(null),
+                    userRepository.findById(solutionDTO.getUserId()).orElse(null),
                     solutionDTO.getBody(),
                     solutionDTO.getAdminSelected(),
                     solutionDTO.getCreationTime(),
@@ -113,8 +112,9 @@ public class SolutionService {
         solutionRepository.delete(solution);
         return new SolutionDTO(
                 solution.getSolutionId(),
+                solution.getUserId().getUserId(),
                 solution.getStackTraceId().getStacktraceId(),
-                StacktraceUserDTO.userToDTO().apply(solution.getUserId()),
+                solution.getUserId().getName(),
                 solution.getBody(),
                 solution.getAdminSelected(),
                 solution.getCreationTime()

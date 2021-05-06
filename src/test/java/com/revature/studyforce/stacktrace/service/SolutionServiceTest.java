@@ -1,10 +1,10 @@
 package com.revature.studyforce.stacktrace.service;
 
 import com.revature.studyforce.stacktrace.dto.SolutionDTO;
-import com.revature.studyforce.stacktrace.dto.StacktraceUserDTO;
 import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.repository.SolutionRepository;
+import com.revature.studyforce.user.dto.UserNameDTO;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,9 +48,10 @@ class SolutionServiceTest {
 
     @BeforeEach
     public void setUp(){
+
         testUser = new User(1, "test.test.com", "TestName", false, true, true, Authority.USER, null, null);
         testStacktrace = new Stacktrace(1, testUser, "Test Title", "Test Body", null, null, null);
-        testSolutionDTO = new SolutionDTO(1, 1, new StacktraceUserDTO(1, "Test", "Test"), "Test Body", false, null);
+        testSolutionDTO = new SolutionDTO(1, 1,1, "Test", "Test Body", false, null);
         testSolution = new Solution(1, testStacktrace, testUser, "Test Body", false, null, null);
         testNullSolution = null;
         testSolutionDTOList = new ArrayList<>();
@@ -62,6 +63,7 @@ class SolutionServiceTest {
     /**
      * Tests getAllSolutionsForStackTrace() by checking size and contents of returned SolutionDTO
      */
+
 //    @Test
 //    void getAllSolutionsForStackTraceTest(){
 //        Mockito.doReturn(testSolutionList).when(solutionRepository).findByStackTraceId(1);
@@ -69,12 +71,13 @@ class SolutionServiceTest {
 //        assertEquals(1, solutionDTOS.size());
 //        assertEquals(solutionDTOS.get(0).getSolutionId(), testSolutionDTO.getSolutionId());
 //        assertEquals(solutionDTOS.get(0).getStackTraceId(), testSolutionDTO.getStackTraceId());
-//        assertEquals(solutionDTOS.get(0).getUser().getUserId(), testSolutionDTO.getUser().getUserId());
+//        assertEquals(solutionDTOS.get(0).getUserName(), testSolutionDTO.getUserName());
 //        assertEquals(solutionDTOS.get(0).getBody(), testSolutionDTO.getBody());
 //        assertEquals(solutionDTOS.get(0).getCreationTime(), testSolutionDTO.getCreationTime());
 //        assertEquals(solutionDTOS.get(0).getAdminSelected(), testSolutionDTO.getAdminSelected());
 //        verify(solutionRepository, times(1)).findByStackTraceId(1);
 //    }
+
 
     /**
      * Tests submitFirstSolution()
@@ -85,7 +88,7 @@ class SolutionServiceTest {
         SolutionDTO solutionDTO = solutionService.submitFirstSolution(testSolutionDTO);
         assertEquals(solutionDTO.getSolutionId(), testSolutionDTO.getSolutionId());
         assertEquals(solutionDTO.getStackTraceId(), testSolutionDTO.getStackTraceId());
-        assertEquals(solutionDTO.getUser().getUserId(), testSolutionDTO.getUser().getUserId());
+        assertEquals(solutionDTO.getUserName(), testSolutionDTO.getUserName());
         assertEquals(solutionDTO.getBody(), testSolutionDTO.getBody());
         assertEquals(solutionDTO.getCreationTime(), testSolutionDTO.getCreationTime());
         assertEquals(solutionDTO.getAdminSelected(), testSolutionDTO.getAdminSelected());
@@ -102,7 +105,7 @@ class SolutionServiceTest {
         SolutionDTO solutionDTO = solutionService.updateSolution(testSolutionDTO);
         assertEquals(solutionDTO.getSolutionId(), testSolutionDTO.getSolutionId());
         assertEquals(solutionDTO.getStackTraceId(), testSolutionDTO.getStackTraceId());
-        assertEquals(solutionDTO.getUser().getUserId(), testSolutionDTO.getUser().getUserId());
+        assertEquals(solutionDTO.getUserName(), testSolutionDTO.getUserName());
         assertEquals(solutionDTO.getBody(), testSolutionDTO.getBody());
         assertEquals(solutionDTO.getCreationTime(), testSolutionDTO.getCreationTime());
         assertEquals(solutionDTO.getAdminSelected(), testSolutionDTO.getAdminSelected());
@@ -121,7 +124,7 @@ class SolutionServiceTest {
         SolutionDTO solutionDTO = solutionService.updateSolution(testSolutionDTO);
         assertEquals(solutionDTO.getSolutionId(), testSolutionDTO.getSolutionId());
         assertEquals(solutionDTO.getStackTraceId(), testSolutionDTO.getStackTraceId());
-        assertEquals(solutionDTO.getUser().getUserId(), testSolutionDTO.getUser().getUserId());
+        assertEquals(solutionDTO.getUserName(), testSolutionDTO.getUserName());
         assertEquals(solutionDTO.getBody(), testSolutionDTO.getBody());
         assertEquals(solutionDTO.getCreationTime(), testSolutionDTO.getCreationTime());
         assertEquals(solutionDTO.getAdminSelected(), testSolutionDTO.getAdminSelected());

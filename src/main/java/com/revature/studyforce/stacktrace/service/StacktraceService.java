@@ -1,10 +1,10 @@
 package com.revature.studyforce.stacktrace.service;
 
 import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
-import com.revature.studyforce.stacktrace.dto.StacktraceUserDTO;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
 import com.revature.studyforce.stacktrace.repository.TechnologyRepository;
+import com.revature.studyforce.user.dto.UserNameDTO;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * The StackService allows for communication with {@link StacktraceRepository} and enforces data constraints on requests to repository
+ * The StackService allows for communication with {@link StacktraceRepository}
+ * and enforces data constraints on requests to repository
  * @author John Stone
  * @author Joshua Swanson
  */
@@ -34,7 +35,7 @@ public class StacktraceService {
     }
 
     /**
-     * Gets all Stacktraces
+     * Gets all Stacktraces using {@link StacktraceRepository#findAll()}
      * @return A list of Stacktraces
      */
     public List<StacktraceDTO> getAllStacktraces() {
@@ -42,8 +43,9 @@ public class StacktraceService {
     }
 
     /**
-     * Gets all Stacktraces
-     * @return A list of Stacktraces
+     * Gets Stacktraces with the given technology name using {@link StacktraceRepository#findById(Object)}
+     * @param name the name of the technology to search for
+     * @return A list of Stacktraces exactly matching the given technology name
      */
     public List<StacktraceDTO> getAllStacktracesOfTechnologyName(String name) {
         return stacktraceRepo.findByTechnologyTechnologyName(name).stream().map(StacktraceDTO.stacktraceToDTO()).collect(Collectors.toList());
@@ -51,8 +53,9 @@ public class StacktraceService {
 
     /**
      * Gets a stacktrace by stacktrace id using {@link StacktraceRepository#findById(Object)}
-     * @param stacktraceId The customer id of the stacktrace being requested
-     * @return Data transfer object representation of Stacktrace object converted using {@link StacktraceDTO#stacktraceToDTO()}
+     * @param stacktraceId The id of the stacktrace being requested
+     * @return Data transfer object representation of Stacktrace object converted
+     * using {@link StacktraceDTO#stacktraceToDTO()}
      */
     public StacktraceDTO getStackTraceById(int stacktraceId){
         Optional<Stacktrace> requested = stacktraceRepo.findById(stacktraceId);
@@ -61,7 +64,9 @@ public class StacktraceService {
 
     /**
      * Deletes a Stacktrace by the primary id passed as parameter
+     * using {@link StacktraceRepository#findById(Object)}
      * @param stacktraceId primary id of Stacktrace
+     * @return Data Transfer Object of the deleted Stacktrace
      */
     public StacktraceDTO deleteStackTraceById(int stacktraceId){
         Stacktrace stacktrace = stacktraceRepo.findById(stacktraceId).orElse(null);
@@ -71,25 +76,28 @@ public class StacktraceService {
         stacktraceRepo.delete(stacktrace);
         return new StacktraceDTO(
                 stacktrace.getStacktraceId(),
-                StacktraceUserDTO.userToDTO().apply(stacktrace.getUserId()),
+                stacktrace.getUserId().getUserId(),
+                stacktrace.getUserId().getName(),
                 stacktrace.getTitle(),
                 stacktrace.getBody(),
-                stacktrace.getTechnology(),
+                stacktrace.getTechnology().getTechnologyId(),
+                stacktrace.getTechnology().getTechnologyName(),
                 stacktrace.getCreationTime());
     }
 
   /**
-   * Saves a stacktrace, takes in StacktraceDTO as a parameter * Uses repo to save it
-   *
+   * Saves a stacktrace, takes in StacktraceDTO as a parameter
+   * using {@link StacktraceRepository#findById(Object)}
    * @param stacktraceDTO The DTO representation of stacktrace
+   * @return Data Transfer Object of the created Stacktrace
    */
   public StacktraceDTO submitStackTrace(StacktraceDTO stacktraceDTO) {
       Stacktrace stacktrace = new Stacktrace(
               stacktraceDTO.getStacktraceId(),
-              userRepository.findById(stacktraceDTO.getCreator().getUserId()).orElse(null),
+              userRepository.findById(stacktraceDTO.getUserId()).orElse(null),
               stacktraceDTO.getTitle(),
               stacktraceDTO.getBody(),
-              technologyRepository.findById(stacktraceDTO.getTechnology().getTechnologyId()).orElse(null),
+              technologyRepository.findById(stacktraceDTO.getTechnologyId()).orElse(null),
               stacktraceDTO.getCreationTime(),
               null);
       stacktraceRepo.save(stacktrace);
