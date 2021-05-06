@@ -20,6 +20,12 @@ import static org.mockito.ArgumentMatchers.any;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * @author Brandon Pinkerton
+ * {@link SubscriptionService}
+ * {@link SubscriptionRepository}
+ */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test-application.properties")
@@ -58,7 +64,7 @@ public class SubscriptionServiceTest {
     }
 
     @Test
-    void createSubscriptionTest(){
+    void createSubscriptionByUserIdAndEndpointAndP256dhAndAuthTest(){
         Mockito.doReturn(subscription).when(subscriptionRepository).save(any(Subscription.class));
         Subscription result = subscriptionService.createSubscription(subscription);
         Assertions.assertNotNull(result);
@@ -70,7 +76,7 @@ public class SubscriptionServiceTest {
     }
 
     @Test
-    void deleteSubscriptionTest(){
+    void deleteSubscriptionBySubscriptionId(){
         Mockito.doReturn(subscription).when(subscriptionRepository).findByUser_UserId(user.getUserId());
         Subscription result = subscriptionService.deleteSubscriptionByUserId(1);
         Assertions.assertNotNull(result);
