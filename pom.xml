@@ -56,6 +56,14 @@
 <!--			<artifactId>spring-boot-starter-tomcat</artifactId>-->
 <!--			<scope>provided</scope>-->
 <!--		</dependency>-->
+		<!-- https://mvnrepository.com/artifact/org.junit.platform/junit-platform-runner -->
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-runner</artifactId>
+			<version>1.7.1</version>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>

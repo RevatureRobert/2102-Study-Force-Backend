@@ -7,7 +7,11 @@ import com.revature.studyforce.notification.repository.NotificationRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
@@ -21,14 +25,18 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 
 public class NotificationServiceTest {
-    @Autowired
-    private NotificationService notificationService;
 
     @MockBean
     private NotificationRepository notificationRepository;
+
+    @Autowired
+    private NotificationService notificationService;
 
     List<Notification> notificationList = new ArrayList<>();
     Page<Notification> notificationPage;
@@ -52,7 +60,7 @@ public class NotificationServiceTest {
     @Test
     void findAllTest(){
         Mockito.doReturn(notificationPage).when(notificationRepository).findAll(any(PageRequest.class));
-        Page<NotificationDto> dtos = notificationService.findAll();
+        Page<NotificationDto> dtos = notificationService.findByUserId(1, 0);
         NotificationDto dto = dtos.getContent().get(0);
         Assertions.assertNotNull(dto);
         Assertions.assertEquals(0, dto.getId());
@@ -109,7 +117,13 @@ public class NotificationServiceTest {
 
     @Test
     void deleteTest(){
-        Mockito.doReturn(notification).when(notificationRepository).findById(1);
-        NotificationDto dto = notificationService.delete(notificationDto);
+        notificationService.delete(notificationDto);
+        verify(notificationRepository, times(1)).delete(notification);
+    }
+
+    @Test
+    void deleteByUserIdTest(){
+        notificationService.deleteByUserId(1);
+        verify(notificationRepository, times(1)).deleteById(1);
     }
 }

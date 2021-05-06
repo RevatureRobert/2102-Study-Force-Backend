@@ -3,6 +3,7 @@ package com.revature.studyforce.notification.service;
 import com.revature.studyforce.notification.dto.NotificationDto;
 import com.revature.studyforce.notification.model.Notification;
 import com.revature.studyforce.notification.repository.NotificationRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +25,7 @@ import java.util.Optional;
 public class NotificationService {
 
     @Autowired
-    NotificationRepository notificationRepository;
+    private NotificationRepository notificationRepository;
 
     /***
      * Grab and return the {@link Notification} based on the id passed
@@ -99,23 +100,16 @@ public class NotificationService {
      * Delete a {@link Notification}
      * @param notificationDto The {@link NotificationDto notificationDto} parameter represents the notification to be deleted
      */
-    public NotificationDto delete(NotificationDto notificationDto){
+    public void delete(NotificationDto notificationDto){
         notificationRepository.delete(new Notification(notificationDto));
-        return notificationDto;
-    }
-
-    /***
-     * Delete a {@link Notification} based on the id passed
-     * @param id The id parameter represents the unique id of the notification
-     */
-    public void deleteById(Integer id){
-        notificationRepository.deleteById(id);
     }
 
     /***
      * Delete all {@link Notification notifications} that belong to a particular user
      * @param userId The userId parameter is used to find all notifications that belong to a particular user
      */
-    public void deleteByUserId(Integer userId){ notificationRepository.deleteByApplicationUserId(userId); }
+    public void deleteByUserId(Integer userId){
+        notificationRepository.deleteByApplicationUserId(userId);
+    }
 
 }

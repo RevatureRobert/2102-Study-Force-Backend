@@ -69,9 +69,18 @@ public class NotificationController {
     public ResponseEntity<NotificationDto> addNotification(@RequestBody NotificationDto notificationDto){
         if(notificationDto != null){
             notificationDto = notificationService.save(notificationDto);
-            return new ResponseEntity<>(notificationDto, HttpStatus.CREATED);
+            return new ResponseEntity<>(notificationDto, HttpStatus.OK);
         }
         return ResponseEntity.unprocessableEntity().build();
+    }
+
+    @PutMapping
+    public ResponseEntity<NotificationDto> updateNotification(@RequestBody NotificationDto notificationDto){
+        notificationDto = notificationService.update(notificationDto);
+        if(notificationDto != null){
+            return new ResponseEntity<>(notificationDto, HttpStatus.OK);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     /***
