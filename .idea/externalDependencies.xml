@@ -4,5 +4,6 @@
     <plugin id="Lombook Plugin" />
     <plugin id="google-java-format" />
     <plugin id="org.sonarlint.idea" />
+    <plugin id="some.awesome" />
   </component>
 </project>
