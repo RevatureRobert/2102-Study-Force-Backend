@@ -95,5 +95,4 @@ public class StacktraceService {
       stacktraceRepo.save(stacktrace);
         return stacktraceDTO;
     }
-
 }
