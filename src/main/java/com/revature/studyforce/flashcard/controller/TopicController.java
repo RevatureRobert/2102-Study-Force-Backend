@@ -27,7 +27,7 @@ public class TopicController {
         this.topicService = topicService;
     }
 
-    /**
+    /**GET mapping for getAllTopic in {@link TopicService#getAllTopic()}
      * Get a list of all topic in json format
      * @return list of topic array
      */
@@ -37,7 +37,7 @@ public class TopicController {
         return topicService.getAllTopic();
     }
 
-    /**
+    /**GET mapping for /{id} in {@link TopicService#getTopicById(int)}
      * Get a specific id
      * @param id The id of the topic to get
      * @return Topic of the specified id
@@ -53,7 +53,7 @@ public class TopicController {
         return topic;
     }
 
-    /**
+    /**POST mapping for addTopic in {@link TopicService#addTopic(String)}
      * Add a topic to database (need to add auth for admin only)
      * @param topicDTO DTO with just the name of the topic
      * @return The topic object to be stored
@@ -64,7 +64,7 @@ public class TopicController {
         return topicService.addTopic(topicDTO.getTopic());
     }
 
-    /**
+    /**Delete mapping for /{id} in {@link TopicService#deleteTopic(int)}
      * Delete an topic from database (need to add auth for admin only)
      * @param id The id you want to remove
      * @return The topic that was removed

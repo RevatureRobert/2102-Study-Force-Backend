@@ -25,7 +25,7 @@ public class AnswerController {
     }
 
     /**
-     * Method used to retrieve a collection of answers with pagination
+     * GET request for 'getAllByFlashcardId' in AnswerService {@link AnswerService#deleteAnswerById(int)}
      * @param id The id of the flashcard from which the answers are being fetched
      * @param page The page to be selected defaults to 0 if page could not be understood
      * @param offset The number of elements per page [5|10|25|50|100] defaults to 25 if offset could not be understood
@@ -44,7 +44,7 @@ public class AnswerController {
     }
 
     /**
-     * Deletes an answer by its answerId
+     * DELETE request for 'deleteAnswerById' in AnswerService {@link AnswerService#deleteAnswerById(int)}
      * @param deleteAnswerDTO the data transfer object that contains the id of the answer to delete
      * @return a confirmation message if the object was deleted
      */
@@ -55,7 +55,7 @@ public class AnswerController {
     }
 
     /**
-     * Method used to create a new Answer
+     * POST request for 'createAnswer' in AnswerService {@link AnswerService#createAnswer(AnswerDTO)}
      * @param answerDTO The dta transfer object with the information required to create a new answer {@link AnswerDTO}
      * @return The newly created answer object
      */
