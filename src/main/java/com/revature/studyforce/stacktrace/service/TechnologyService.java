@@ -26,7 +26,7 @@ public class TechnologyService {
     }
 
     /**
-     * Gets all Technologies as a List of {@link TechnologyDTO TechnologyDTOs}
+     * Gets all Technologies as a List of {@link TechnologyDTO TechnologyDTOs} using {@link TechnologyRepository#findAll}
      * @return A List of All Technologies in the Database
      */
     public List<TechnologyDTO> getAllTechnologies() {
@@ -35,7 +35,7 @@ public class TechnologyService {
 
     /**
      * Adds a new Technology to the Databse
-     * <p>Converts a {@link TechnologyDTO} into a {@link Technology} and saves it to the {@link TechnologyRepository}</p>
+     * <p>Converts a {@link TechnologyDTO} into a {@link Technology} and saves it using {@link TechnologyRepository#save}</p>
      * @param technologyDTO The Data Transfer Object to be converted to a {@link Technology}
      * @return A {@link TechnologyDTO} matching the {@link Technology} created
      */
@@ -45,7 +45,7 @@ public class TechnologyService {
 
     /**
      * Deletes {@link Technology} with the given id
-     * <p>Searches the {@link TechnologyRepository} for a {@link Technology} that matches technologyId</p>
+     * <p>Searches using {@link TechnologyRepository#findById} to find a {@link Technology} that matches technologyId</p>
      * @param technologyId Primary id of the {@link Technology} to be deleted
      * @return A copy of {@link Technology}
      */
@@ -59,9 +59,9 @@ public class TechnologyService {
 
     /**
      * Updates a technology by its ID. If the technology doesn't exist it will be created.
-     * <p>Searches he {@link TechnologyRepository} for a {@link Technology} that that matches the input.
-     * If it exists, the {@link Technology} is update.
-     * If it doesn't exist, a new {@link Technology} is created.</p>
+     * <p>Searches using {@link TechnologyRepository#findById} to find a {@link Technology} that that matches the input.
+     * If it exists, the {@link Technology} is updated.
+     * If it doesn't exist, a new {@link Technology} is created. Both cases utilize {@link TechnologyRepository#save}.</p>
      * @param technologyDTO Data transfer object of the {@link Technology} to be updated
      * @return The technologyDTO parameter is returned without modification
      */
