@@ -1,6 +1,7 @@
 package com.revature.studyforce.stacktrace.service;
 
 import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
+import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
 import com.revature.studyforce.user.repository.UserRepository;
@@ -12,6 +13,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 /**
@@ -69,26 +71,12 @@ public class StacktraceService {
    *
    * @param stacktraceDTO The DTO representation of stacktrace
    */
-  @Transactional
-  public void save(StacktraceDTO stacktraceDTO) {
-        Stacktrace stacktrace = mapFromDtoToStacktrace(stacktraceDTO);
-        stacktraceRepo.save(stacktrace);
+  public StacktraceDTO submitStackTrace(StacktraceDTO stacktraceDTO) {
+//      Stacktrace stacktrace = new Stacktrace(
+//              stacktraceDTO.getStacktraceId(),
+//              userRepository.findById(stacktraceDTO.getCreator().getUserId()).orElse(null),
+//              stacktraceDTO.getBody());
+        return null;
     }
 
-    /**
-     * Maps from the DTO to a Stacktrace , takes the fields of DTO to Stacktrace
-     * Needed for saving
-     * @param stacktraceDTO
-     * @return
-     */
-    private Stacktrace mapFromDtoToStacktrace(StacktraceDTO stacktraceDTO) {
-        Stacktrace stacktrace= new Stacktrace();
-        stacktrace.setStacktraceId(stacktraceDTO.getStacktraceId());
-        stacktrace.setUserId(userRepository.findById(stacktraceDTO.getCreator().getUserId()).orElse(null));
-        stacktrace.setTitle(stacktraceDTO.getTitle());
-        stacktrace.setBody(stacktraceDTO.getBody());
-        stacktrace.setTechnology(stacktraceDTO.getTechnology());
-        stacktrace.setCreationTime(Timestamp.from(Instant.now()));
-        return  stacktrace;
-    }
 }

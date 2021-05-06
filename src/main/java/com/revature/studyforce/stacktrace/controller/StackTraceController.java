@@ -59,9 +59,9 @@ public class StackTraceController {
      * @param stacktraceDTO the DTO of stacktrace as an object
      * @return Http status for the Response Entity
      */
-    @PostMapping
-    public ResponseEntity createStacktrace(@RequestBody StacktraceDTO stacktraceDTO) {
-        stacktraceService.save(stacktraceDTO);
-        return new ResponseEntity(HttpStatus.OK);
-    }
+//    @PostMapping
+//    public ResponseEntity createStacktrace(@RequestBody StacktraceDTO stacktraceDTO) {
+//        stacktraceService.save(stacktraceDTO);
+//        return new ResponseEntity(HttpStatus.OK);
+//    }
 }
