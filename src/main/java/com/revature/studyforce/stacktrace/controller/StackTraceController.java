@@ -75,8 +75,8 @@ public class StackTraceController {
      * @return Page of matching {@link StacktraceDTO StacktraceDTOs} according to pagesize
      */
     @GetMapping("/search")
-    public Page<StacktraceDTO> getAllStackTracesMatchingTitleOrBodyOrTechnologyId(@RequestParam(value = "title", defaultValue = "", required = false) String title,
-                                                                                  @RequestParam(value = "body", defaultValue = "", required = false) String body,
+    public Page<StacktraceDTO> getAllStackTracesMatchingTitleOrBodyOrTechnologyId(@RequestParam(value = "title", defaultValue = "_________________________________________________________________", required = false) String title,
+                                                                                  @RequestParam(value = "body", defaultValue = "_________________________________________________________________", required = false) String body,
                                                                                   @RequestParam(value = "technologyId", defaultValue = "-1", required = false) String techologyIdString,
                                                                                   @RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                                  @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize) {
