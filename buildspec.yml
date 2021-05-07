@@ -32,4 +32,4 @@ phases:
 artifacts:
   files:
    - imagedefinitions.json
-   - target/order-service.jar
+   #- target/order-service.jar
