@@ -4,6 +4,8 @@ import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.service.StacktraceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,12 +25,21 @@ public class StackTraceController {
     private StacktraceService stacktraceService;
 
     /**
-     * Gets all Stacktraces using {@link StacktraceService#getAllStacktraces()}
+     *
+     * @param page
+     * @param pageSize
+     * @param stackTraceId
+     * @return
+     */
+
+    /**
+     * Gets all Stacktraces using {@link StacktraceService#getAllStacktraces(int, int)}
      * @return A list of Stacktraces
      */
     @GetMapping()
-    public List<StacktraceDTO> getAllStackTraces() {
-        return stacktraceService.getAllStacktraces();
+    public Page<StacktraceDTO> getAllStackTraces(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                 @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize) {
+        return stacktraceService.getAllStacktraces(page, pageSize);
     }
 
     /**

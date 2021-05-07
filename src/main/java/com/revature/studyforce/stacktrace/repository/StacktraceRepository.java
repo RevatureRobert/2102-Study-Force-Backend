@@ -1,6 +1,8 @@
 package com.revature.studyforce.stacktrace.repository;
 
 import com.revature.studyforce.stacktrace.model.Stacktrace;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -23,5 +25,5 @@ public interface StacktraceRepository extends JpaRepository<Stacktrace, Integer>
     @Query(value = "select * from stacktrace where stacktrace_id = :stacktraceId ;", nativeQuery = true)
     List<Stacktrace> findByStacktraceId(@Param("stacktraceId") int stacktraceId);
 
-
+    Page<Stacktrace> findAll(Pageable pageable);
 }

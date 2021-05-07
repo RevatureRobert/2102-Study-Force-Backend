@@ -7,6 +7,8 @@ import com.revature.studyforce.stacktrace.repository.TechnologyRepository;
 import com.revature.studyforce.user.dto.UserNameDTO;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 
@@ -25,6 +27,7 @@ public class StacktraceService {
     private final StacktraceRepository stacktraceRepo;
     private final UserRepository userRepository;
     private final TechnologyRepository technologyRepository;
+    private int defaultPageSize;
 
     @Autowired
     public StacktraceService(StacktraceRepository stacktraceRepo,
@@ -32,14 +35,25 @@ public class StacktraceService {
         this.stacktraceRepo = stacktraceRepo;
         this.userRepository = userRepository;
         this.technologyRepository =technologyRepository;
+        defaultPageSize = 5;
     }
 
     /**
      * Gets all Stacktraces using {@link StacktraceRepository#findAll()}
      * @return A list of Stacktraces
      */
-    public List<StacktraceDTO> getAllStacktraces() {
-        return stacktraceRepo.findAll().stream().map(StacktraceDTO.stacktraceToDTO()).collect(Collectors.toList());
+
+    /**
+     * Retrieves a page of {@link Stacktrace Stacktraces}
+     * @param page The page to be displayed
+     * @param pageSize Number of {@link Stacktrace Stacktraces} to be displayed
+     * @return Page of {@link Stacktrace Stacktraces} dependent on provided page, pageSize
+     */
+    public Page<StacktraceDTO> getAllStacktraces(int page, int pageSize) {
+        pageSize = validatePageSize(pageSize);
+        page = validatePage(page);
+
+        return stacktraceRepo.findAll(PageRequest.of(page, pageSize)).map(StacktraceDTO.stacktraceToDTO());
     }
 
     /**
@@ -102,5 +116,27 @@ public class StacktraceService {
               null);
       stacktraceRepo.save(stacktrace);
         return stacktraceDTO;
+    }
+
+    /**
+     * validates page is not negative
+     * @param page page number
+     * @return valid page number
+     */
+    int validatePage(int page){
+      if(page < 0)
+          return 0;
+      return page;
+    }
+
+    /**
+     * Validates the size of pages
+     * @param pageSize size of a page
+     * @return valid page size
+     */
+    int validatePageSize(int pageSize){
+      if(pageSize == 5 || pageSize == 10 || pageSize == 15)
+          return pageSize;
+      return defaultPageSize;
     }
 }
