@@ -25,4 +25,6 @@ public interface StacktraceRepository extends JpaRepository<Stacktrace, Integer>
     List<Stacktrace> findByStacktraceId(@Param("stacktraceId") int stacktraceId);
 
     Page<Stacktrace> findAll(Pageable pageable);
+
+    Page<Stacktrace> findByTitleContaining(String title, Pageable pageable);
 }

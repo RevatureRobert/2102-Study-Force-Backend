@@ -6,9 +6,13 @@ import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
 import com.revature.studyforce.stacktrace.service.StacktraceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Rest controller to handle stacktrace requests
@@ -17,7 +21,7 @@ import java.util.List;
  * @author Joshua Swanson
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RequestMapping
 public class StackTraceController {
 
@@ -41,15 +45,48 @@ public class StackTraceController {
 
 
     @GetMapping("/stacktrace")
-    public List<Stacktrace> getStacktraces() {
-        return (List<Stacktrace>) stacktraceRepository.findAll();
+    public ResponseEntity<Map<String, Object>> getAllStacktraces(
+            @RequestParam(required = false) String title,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size
+    ) {
+
+        try {
+            List<Stacktrace> stacktraces = new ArrayList<Stacktrace>();
+            Pageable paging = PageRequest.of(page, size);
+
+            Page<Stacktrace> pageStack;
+            if (title == null)
+                pageStack = stacktraceRepository.findAll(paging);
+            else
+                pageStack = stacktraceRepository.findByTitleContaining(title, paging);
+
+            stacktraces = pageStack.getContent();
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("stacktraces",stacktraces);
+            response.put("currentPage", pageStack.getNumber());
+            response.put("totalItems", pageStack.getTotalElements());
+            response.put("totalPages", pageStack.getTotalPages());
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
+
+
+
+
+
     /**
      * Gets stacktrace who's id matches provided id using {@link StacktraceService#getStackTraceById(int)}
      * @param id The id of the stacktrace requested
      * @return The data transfer representation of the requested Stacktrace
      */
-    @GetMapping("/{stacktraceId}")
+    @CrossOrigin
+    @GetMapping("/stacktrace/{stacktraceId}")
     public StacktraceDTO getStacktraceById(@PathVariable(name = "stacktraceId") int id){
         return stacktraceService.getStackTraceById(id);
     }
@@ -59,7 +96,8 @@ public class StackTraceController {
      * @param stacktraceId id of stacktrace to be deleted
      * @return The data transfer representation of the deleted Stacktrace
      */
-    @DeleteMapping("/{stacktraceId}")
+    @CrossOrigin
+    @DeleteMapping("/stacktrace/{stacktraceId}")
     public StacktraceDTO deleteStacktraceById(@PathVariable("stacktraceId") int stacktraceId){
         return stacktraceService.deleteStackTraceById(stacktraceId);
     }
@@ -74,4 +112,7 @@ public class StackTraceController {
     public StacktraceDTO createStacktrace(@RequestBody StacktraceDTO stacktraceDTO) {
         return stacktraceService.submitStackTrace(stacktraceDTO);
     }
+
+
+
 }
