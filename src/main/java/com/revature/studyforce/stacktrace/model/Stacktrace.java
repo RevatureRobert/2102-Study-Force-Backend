@@ -12,6 +12,13 @@ import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Set;
 
+/**
+ * This model represents a Stacktrace which a user could submit
+ * as a problem for other users to submit solutions to solve.
+ * @author Joey Elmblad
+ * @author Joshua Swanson
+ */
+
 @Entity
 @Table(name = "stacktrace")
 @AllArgsConstructor

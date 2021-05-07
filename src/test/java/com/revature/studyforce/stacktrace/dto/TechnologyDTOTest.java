@@ -8,6 +8,15 @@ import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Tests for TechnologyDTOTest
+ * When given a Technology convert to a TechnologyDTO and
+ * given a TechnologyDTO convert to Technology
+ * {@link TechnologyDTO#dtoToTechnology()}
+ * {@link TechnologyDTO#technologyToDTO()}
+ * @author Joshua Swanson
+ */
+
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test-application.properties")
 
