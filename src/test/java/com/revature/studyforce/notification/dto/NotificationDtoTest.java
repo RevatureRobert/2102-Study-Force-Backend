@@ -53,11 +53,11 @@ class NotificationDtoTest {
         Notification notification = NotificationDto.convertFromDto().apply(notificationDto);
 
         Assertions.assertEquals(id, notification.getNotificationId());
-        Assertions.assertEquals(message, notification.getNotificationMessage());
+        Assertions.assertEquals(message, notification.getBody());
         Assertions.assertEquals(isRead, notification.isRead());
         Assertions.assertEquals(timeToLive, notification.getTimeToLive());
         Assertions.assertEquals(createdTime, notification.getCreatedTime());
         Assertions.assertEquals(featureArea, notification.getFeatureArea());
-        Assertions.assertEquals(userId, notification.getApplicationUserId());
+        Assertions.assertEquals(userId, notification.getUserId());
     }
 }

@@ -3,6 +3,7 @@ package com.revature.studyforce.notification.controller;
 import com.revature.studyforce.notification.model.Notification;
 import com.revature.studyforce.notification.dto.NotificationDto;
 import com.revature.studyforce.notification.service.NotificationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -24,18 +25,31 @@ import java.util.Objects;
 @RequestMapping(path="/notifications", produces="application/json")
 @CrossOrigin(origins="*")
 public class NotificationController {
+
+    private final NotificationService notificationService;
+
     @Autowired
-    private NotificationService notificationService;
+    public NotificationController(NotificationService notificationService){
+        this.notificationService = notificationService;
+    }
 
     /***
      *  Retrieves a Page of {@link NotificationDto notifications} from all of the notifications that exist
+     * @param page Default value of page is 0 so if no page number is passed as an argument, we start with the very first page.
+     *             Also the default size of the page is 5.
+     * @param offset Default value of offset is 5 so we will only have 5 elements on our page
+     *               unless a value is passed in
      * @return Returns either a page of notifications from the database with the http ok status
      *     or if there are no notifications it returns a not found http response
      */
 
     @GetMapping
-    public ResponseEntity<Page<NotificationDto>> getAllNotifications(){
-        Page<NotificationDto> notificationDtoPage = notificationService.findAll();
+    public ResponseEntity<Page<NotificationDto>> getAllNotifications(
+            @RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
+            @RequestParam(name = "offset", defaultValue = "5", required = false) Integer offset
+            )
+    {
+        Page<NotificationDto> notificationDtoPage = notificationService.findAll(page, offset);
         if(notificationDtoPage != null){
             return ResponseEntity.ok(notificationDtoPage);
         }
@@ -50,8 +64,12 @@ public class NotificationController {
      * @return Returns a page of notifications (specifically NotificationDtos), if there are no notifications then we return an Http Response with status of Not Found
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Page<NotificationDto>> getNotificationsByUserId(@PathVariable("id") Integer userId, @RequestParam(name="page", defaultValue = "0") String page){
-        Page<NotificationDto> notificationDtoPage = notificationService.findByUserId(userId, Integer.parseInt(page));
+    public ResponseEntity<Page<NotificationDto>> getNotificationsByUserId(
+            @PathVariable("id") Integer userId,
+            @RequestParam(name="page", defaultValue = "0", required=false) Integer page
+            )
+    {
+        Page<NotificationDto> notificationDtoPage = notificationService.findByUserId(userId, page);
         if(notificationDtoPage != null){
             return ResponseEntity.ok(notificationDtoPage);
         }
@@ -69,7 +87,7 @@ public class NotificationController {
     public ResponseEntity<NotificationDto> addNotification(@RequestBody NotificationDto notificationDto){
         if(notificationDto != null){
             notificationDto = notificationService.save(notificationDto);
-            return new ResponseEntity<>(notificationDto, HttpStatus.OK);
+            return new ResponseEntity<>(notificationDto, HttpStatus.CREATED);
         }
         return ResponseEntity.unprocessableEntity().build();
     }
@@ -111,14 +129,12 @@ public class NotificationController {
      * @return Returns an Http Response with Status No Content when the notifications are successfully deleted,
      *          Otherwise returns an Http Response with status Not Found
      */
-    @DeleteMapping("/users/{id}")
-    public ResponseEntity<?> deleteAllNotificationsByUserId(@PathVariable("id") Integer userId){
-        try{
-            notificationService.deleteByUserId(userId);
+    @DeleteMapping("/users/{user-id}")
+    public ResponseEntity<?> deleteAllNotificationsByUserId(@PathVariable("user-id") String userId){
+        if(userId != null){
+            notificationService.deleteByUserId(Integer.parseInt(userId));
             return ResponseEntity.noContent().build();
         }
-        catch(EmptyResultDataAccessException e){
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.notFound().build();
     }
 }

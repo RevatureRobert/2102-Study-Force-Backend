@@ -24,8 +24,12 @@ import java.util.Optional;
 @Service
 public class NotificationService {
 
+    private final NotificationRepository notificationRepository;
+
     @Autowired
-    private NotificationRepository notificationRepository;
+    public NotificationService(NotificationRepository notificationRepository){
+        this.notificationRepository = notificationRepository;
+    }
 
     /***
      * Grab and return the {@link Notification} based on the id passed
@@ -40,10 +44,12 @@ public class NotificationService {
 
     /***
      * Grab a page of {@link Notification Notifications}
+     * @param page page represents the page number that we want to return
+     * @param offset offset is the amount of elements we want on our page
      * @return Returns a page of notifications
      */
-    public Page<NotificationDto> findAll(){
-        Page<Notification> notificationPage = notificationRepository.findAll(PageRequest.of(0, 10));
+    public Page<NotificationDto> findAll(Integer page, Integer offset){
+        Page<Notification> notificationPage = notificationRepository.findAll(PageRequest.of(page, offset));
         try{
             return notificationPage.map(Objects.requireNonNull(NotificationDto.convertToDto()));
         }
@@ -63,7 +69,7 @@ public class NotificationService {
      */
     public Page<NotificationDto> findByUserId(Integer userId, Integer page){
         // We can change the page request parameters later
-        Page<Notification> notificationPage = notificationRepository.findByApplicationUserId(userId, PageRequest.of(page, 5, Sort.by("notificationId").descending()));
+        Page<Notification> notificationPage = notificationRepository.findByUserId(userId, PageRequest.of(page, 5, Sort.by("isRead").descending().and(Sort.by("createdTime").descending())));
         try{
             return notificationPage.map(Objects.requireNonNull(NotificationDto.convertToDto()));
         }
@@ -117,7 +123,7 @@ public class NotificationService {
      * @param userId The userId parameter is used to find all notifications that belong to a particular user
      */
     public void deleteByUserId(Integer userId){
-        notificationRepository.deleteByApplicationUserId(userId);
+        notificationRepository.deleteByUserId(userId);
     }
 
 }

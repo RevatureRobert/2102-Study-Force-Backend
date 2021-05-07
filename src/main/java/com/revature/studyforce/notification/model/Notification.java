@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -21,8 +22,8 @@ public class Notification {
     @Column(name = "notification_id")
     private Integer notificationId;
 
-    @Column(name = "notification_message")
-    private String notificationMessage;
+    @Column(name = "body")
+    private String body;
 
     @Column(name = "is_read")
     private boolean isRead;
@@ -30,6 +31,7 @@ public class Notification {
     @Column(name = "time_to_live")
     private Timestamp timeToLive;
 
+    @CreationTimestamp
     @Column(name = "created_time")
     private Timestamp createdTime;
 
@@ -37,7 +39,7 @@ public class Notification {
     @Enumerated
     private FeatureArea featureArea;
 
-    @Column(name = "application_user_id")
-    private int applicationUserId;
+    @Column(name = "user_id")
+    private Integer userId;
 
 }

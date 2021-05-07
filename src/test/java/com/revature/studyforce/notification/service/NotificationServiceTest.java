@@ -77,7 +77,7 @@ class NotificationServiceTest {
     void findAllTest(){
 //        Page<Notification> page = new PageRequest();
         Mockito.doReturn(notificationPage).when(notificationRepository).findAll(any(PageRequest.class));
-        Page<NotificationDto> dtos = notificationService.findAll();
+        Page<NotificationDto> dtos = notificationService.findAll(0, 5);
         NotificationDto dto = dtos.getContent().get(0);
         Assertions.assertNotNull(dto);
         Assertions.assertEquals(0, dto.getId());
@@ -93,7 +93,7 @@ class NotificationServiceTest {
     @Test
     void findByUserIdTest(){
 //        when(notificationRepository.findAll()).thenReturn();
-        Mockito.doReturn(notificationPage).when(notificationRepository).findByApplicationUserId(eq(notification.getApplicationUserId()), any(PageRequest.class));
+        Mockito.doReturn(notificationPage).when(notificationRepository).findByUserId(eq(notification.getUserId()), any(PageRequest.class));
         Page<NotificationDto> dtos = notificationService.findByUserId(1, 0);
         NotificationDto dto = dtos.getContent().get(0);
         Assertions.assertNotNull(dto);
@@ -145,8 +145,14 @@ class NotificationServiceTest {
     }
 
     @Test
+    void deleteByNotificationIdTest(){
+        notificationService.deleteByNotificationId(notificationDto.getId());
+        verify(notificationRepository, times(1)).deleteById(notificationDto.getId());
+    }
+
+    @Test
     void deleteByUserIdTest(){
         notificationService.deleteByUserId(1);
-        verify(notificationRepository, times(1)).deleteByApplicationUserId(1);
+        verify(notificationRepository, times(1)).deleteByUserId(1);
     }
 }

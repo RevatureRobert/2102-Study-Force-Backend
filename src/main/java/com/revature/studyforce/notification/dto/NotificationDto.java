@@ -5,6 +5,7 @@ import com.revature.studyforce.notification.model.Notification;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.util.Assert;
 
 import java.sql.Timestamp;
 import java.util.function.Function;
@@ -22,37 +23,35 @@ public class NotificationDto {
     private Integer userId;
 
     public static Function<Notification, NotificationDto> convertToDto(){
-        try{
-            return (Notification) -> new NotificationDto(
-                    Notification.getNotificationId(),
-                    Notification.getNotificationMessage(),
-                    Notification.isRead(),
-                    Notification.getTimeToLive(),
-                    Notification.getCreatedTime(),
-                    Notification.getFeatureArea(),
-                    Notification.getApplicationUserId()
-            );
-        }
-        catch(NullPointerException e){
-            e.printStackTrace();
-            return null;
-        }
+
+        return notification -> {
+            Assert.notNull(notification, "Notification is null");
+
+            return new NotificationDto(
+                    notification.getNotificationId(),
+                    notification.getBody(),
+                    notification.isRead(),
+                    notification.getTimeToLive(),
+                    notification.getCreatedTime(),
+                    notification.getFeatureArea(),
+                    notification.getUserId());
+        };
+
     }
     public static Function<NotificationDto, Notification> convertFromDto(){
-        try{
-            return (NotificationDto) -> new Notification(
-                    NotificationDto.getId(),
-                    NotificationDto.getMessage(),
-                    NotificationDto.isRead(),
-                    NotificationDto.getTimeToLive(),
-                    NotificationDto.getCreatedTime(),
-                    NotificationDto.getFeatureArea(),
-                    NotificationDto.getUserId()
+
+        return notificationDto -> {
+            Assert.notNull(notificationDto, "NotificationDTO is null");
+
+            return new Notification(
+                    notificationDto.getId(),
+                    notificationDto.getMessage(),
+                    notificationDto.isRead(),
+                    notificationDto.getTimeToLive(),
+                    notificationDto.getCreatedTime(),
+                    notificationDto.getFeatureArea(),
+                    notificationDto.getUserId()
             );
-        }
-        catch(NullPointerException e){
-            e.printStackTrace();
-            return null;
-        }
+        };
     }
 }
