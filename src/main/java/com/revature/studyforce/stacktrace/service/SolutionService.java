@@ -62,7 +62,9 @@ public class SolutionService {
                 userRepository.findById(solutionDTO.getUserId()).orElse(null),
                 solutionDTO.getBody(),
                 solutionDTO.getAdminSelected(),
+                solutionDTO.getUserSelected(),
                 solutionDTO.getCreationTime(),
+                solutionDTO.getTotalVote(),
                 null);
 
         return SolutionDTO.solutionToDTO().apply(solutionRepository.save(solution));
@@ -90,7 +92,9 @@ public class SolutionService {
                     userRepository.findById(solutionDTO.getUserId()).orElse(null),
                     solutionDTO.getBody(),
                     solutionDTO.getAdminSelected(),
+                    solutionDTO.getUserSelected(),
                     solutionDTO.getCreationTime(),
+                    solutionDTO.getTotalVote(),
                     null);
 
             return SolutionDTO.solutionToDTO().apply(solutionRepository.save(newSolution));
@@ -116,7 +120,9 @@ public class SolutionService {
                 solution.getUserId().getName(),
                 solution.getBody(),
                 solution.getAdminSelected(),
-                solution.getCreationTime()
+                solution.getUserSelected(),
+                solution.getCreationTime(),
+                solution.getTotalVote()
         );
     }
 
@@ -140,5 +146,17 @@ public class SolutionService {
         if(page < 0)
             page = 0;
         return page;
+    }
+
+    /**
+     * Update total votes for any given solution using
+     * {@link SolutionRepository#updateSolutionTotalVotesBySolutionId(int)}
+     * @param solutionId The solutionId used to update any given solution total votes
+     * @return will return a solution with updated total votes on solution table
+     */
+    public SolutionDTO updateSolutionTotalVotes(int solutionId){
+        solutionRepository.updateSolutionTotalVotesBySolutionId(solutionId);
+        Solution solution = solutionRepository.findById(solutionId).orElse(null);
+        return SolutionDTO.solutionToDTO().apply(solution);
     }
 }

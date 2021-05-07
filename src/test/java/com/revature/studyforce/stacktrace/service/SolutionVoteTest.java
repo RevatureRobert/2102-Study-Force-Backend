@@ -54,7 +54,7 @@ class SolutionVoteTest {
         User user = new User(1,"Test@mail.com","Bob",true,true,true, Authority.USER,new Timestamp(0),new Timestamp(0));
         Technology technology = new Technology(1, "Java");
         Stacktrace stacktrace = new Stacktrace(1, user, "stuff for title", "stuff for body", technology, new Timestamp(0),null);
-        Solution solution = new Solution(1, stacktrace, user, "Test Body", false, null,null);
+        Solution solution = new Solution(1, stacktrace, user, "Test Body", false, false, null, 0, null);
         testSolutionVoteDTO = new SolutionVoteDTO(1, 1, 1, -1);
         testSolutionVote = new SolutionVote(1, user, solution, -1);
         testNullSolutionVote = null;

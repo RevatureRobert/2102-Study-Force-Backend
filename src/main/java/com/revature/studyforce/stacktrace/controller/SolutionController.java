@@ -72,4 +72,15 @@ public class SolutionController {
     public SolutionDTO deleteSolution(@PathVariable int solutionId){
         return solutionService.deleteSolution(solutionId);
     }
+
+    /**
+     * When ever a solution vote is submitted this endpoint should
+     * be called to tally the total votes for a given solution using {@link SolutionService#updateSolutionTotalVotes(int)}
+     * @param solutionId This is the primary key for the Solution table that is connected to SolutionVote table
+     * @return This returns the updated Solution table with the total votes for any given Solution Id
+     */
+    @PutMapping("/update-vote/{solutionId}")
+    public SolutionDTO updateSolutionTotalVote(@PathVariable int solutionId){
+        return solutionService.updateSolutionTotalVotes(solutionId);
+    }
 }

@@ -27,4 +27,9 @@ public interface SolutionRepository extends JpaRepository<Solution,Integer> {
     @Query("delete from Solution where solution_id = :solutionId")
     void deleteSolutionById(@Param("solutionId") int solutionId);
 
+    @Transactional
+    @Modifying
+    @Query(value = "update solution set total_vote = (select SUM(value) from solution_vote where solution_id = :solutionId) where solution_id = :solutionId", nativeQuery = true)
+    void updateSolutionTotalVotesBySolutionId(@Param("solutionId") int solutionId);
+
 }
