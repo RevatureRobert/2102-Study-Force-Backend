@@ -76,6 +76,4 @@ public class BatchController {
     public Batch getBatchByBatchId(@PathVariable(name = "batchId") int batchId){
         return batchService.getBatchById(batchId);
     }
-
-
 }

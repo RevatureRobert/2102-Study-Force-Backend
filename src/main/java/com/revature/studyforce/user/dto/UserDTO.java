@@ -14,6 +14,7 @@ import java.util.function.Function;
  * @author Lok Kan Kung
  * @author Daniel Bernier
  */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -53,11 +54,11 @@ public class UserDTO {
                     user.getEmail(),
                     user.getName(),
                     user.isActive(),
-                    user.isSubscribedFlashcard(),
-                    user.isSubscribedStacktrace(),
-                    user.getAuthority(),
-                    user.getRegistrationTime(),
-                    user.getLastLogin()
+                    user.isSubscribedFlashcard (),
+                    user.isSubscribedStacktrace (),
+                    user.getAuthority (),
+                    user.getRegistrationTime (),
+                    user.getLastLogin ()
             );
         };
     }

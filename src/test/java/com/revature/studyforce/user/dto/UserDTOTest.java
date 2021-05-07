@@ -64,16 +64,12 @@ class UserDTOTest {
     @Test
     void attemptToConvertNullObjectToUserDTO_ThrowsIllegalArgumentException(){
         Function<User,UserDTO> function = UserDTO.userToDTO();
-        Assertions.assertThrows (IllegalArgumentException.class,() ->{
-            function.apply (null);
-        });
+        Assertions.assertThrows (IllegalArgumentException.class,() -> function.apply (null));
     }
 
     @Test
     void attemptToConvertNullObjectToUser_ThrowsIllegalArgumentException(){
         Function<UserDTO,User> function = UserDTO.dtoToUser ();
-        Assertions.assertThrows (IllegalArgumentException.class,() ->{
-            function.apply (null);
-        });
+        Assertions.assertThrows (IllegalArgumentException.class,() -> function.apply (null));
     }
 }
