@@ -19,5 +19,4 @@ public interface BatchRepository extends JpaRepository<Batch,Integer> {
     Page<Batch> findByCreationTimeAfter(Timestamp creation, Pageable pageable);
 
     Batch findByNameContainingIgnoreCase(String name);
-
 }
