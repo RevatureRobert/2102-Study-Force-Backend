@@ -56,8 +56,8 @@ public class User {
     /*
     make .STRING AND USER FOR LOCAL DATABASE
      */
-    @Enumerated(EnumType.STRING)
-    @ColumnDefault ("USER")
+    @Enumerated(EnumType.ORDINAL)
+    @ColumnDefault ("1")
     @JoinColumn(name = "authority_id", referencedColumnName = "authority_id")
     @NotNull
     private Authority authority;
