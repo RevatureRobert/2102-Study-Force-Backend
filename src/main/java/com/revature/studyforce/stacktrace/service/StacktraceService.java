@@ -12,9 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * The StackService allows for communication with {@link StacktraceRepository}
@@ -53,7 +51,7 @@ public class StacktraceService {
     }
 
     /**
-     * Gets all stack traces by {@link StacktraceRepository#findByTitleContainingIgnoreCaseOrBodyContainingIgnoreCaseOrTechnology_TechnologyId(String, String, int, Pageable)}
+     * Gets all stack traces by {@link StacktraceRepository#findByTitleContainingIgnoreCaseOrBodyContainingIgnoreCaseOrTechnologyTechnologyId(String, String, int, Pageable)}
      * who's name contains the given name or who's body contains the given body or
      * who's technology id matches the given technology id
      * @param title the title substring to search for
@@ -67,7 +65,7 @@ public class StacktraceService {
     public Page<StacktraceDTO> getAllStacktracesByTitleOrBodyOrTechnologyId(String title, String body, int technologyId, int page, int pageSize) {
         pageSize = validatePageSize(pageSize);
         page = validatePage(page);
-        return stacktraceRepo.findByTitleContainingIgnoreCaseOrBodyContainingIgnoreCaseOrTechnology_TechnologyId(title,body,technologyId,PageRequest.of(page,pageSize)).map(StacktraceDTO.stacktraceToDTO());
+        return stacktraceRepo.findByTitleContainingIgnoreCaseOrBodyContainingIgnoreCaseOrTechnologyTechnologyId(title,body,technologyId,PageRequest.of(page,pageSize)).map(StacktraceDTO.stacktraceToDTO());
     }
 
     /**
