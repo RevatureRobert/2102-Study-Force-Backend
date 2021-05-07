@@ -108,6 +108,6 @@ class StackTraceControllerTest {
                 "TestTitle", "TestBody", t, new Timestamp(0), null));
         mockMvc.perform(MockMvcRequestBuilders.delete("/stacktrace/{id}", 1)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk());
     }
 }
