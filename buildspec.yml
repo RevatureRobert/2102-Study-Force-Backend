@@ -27,7 +27,7 @@ phases:
       #- docker push $REPOSITORY_URI:latest
       #- docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
-      - printf '[{"name":"order-service","imageUri":"%s"}]' $REPOSITORY_URI:pleasework:latest> imagedefinitions.json
+      - printf '[{"name":"pleasework","imageUri":"868071628547.dkr.ecr.us-east-1.amazonaws.com/pleasework"}]' > imagedefinitions.json
       - cat imagedefinitions.json
 artifacts:
   files:
