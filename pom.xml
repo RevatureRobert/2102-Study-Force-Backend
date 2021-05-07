@@ -18,6 +18,7 @@
 		<sonar.projectKey>RevatureRobert_2102-Study-Force-Backend</sonar.projectKey>
 		<sonar.organization>revaturerobert</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<maven.test.skip>true</maven.test.skip>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
