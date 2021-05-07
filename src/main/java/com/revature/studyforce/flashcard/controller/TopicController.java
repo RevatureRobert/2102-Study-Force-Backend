@@ -8,26 +8,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 
-/**
- * Controller for the Topic resource handling using TopicService {@link TopicService}
- * @author Kevin Wang
- */
 @Controller
-@CrossOrigin
-@RequestMapping("/topics")
+@RequestMapping("/topic")
 public class TopicController {
 
-
-    private final TopicService topicService;
-
     @Autowired
-    public TopicController(TopicService topicService){
-        this.topicService = topicService;
-    }
+    private TopicService topicService;
 
-    /**GET mapping for getAllTopic in {@link TopicService#getAllTopic()}
+    /**
      * Get a list of all topic in json format
      * @return list of topic array
      */
@@ -37,11 +28,11 @@ public class TopicController {
         return topicService.getAllTopic();
     }
 
-    /**GET mapping for /{id} in {@link TopicService#getTopicById(int)}
+    /**
      * Get a specific id
      * @param id The id of the topic to get
      * @return Topic of the specified id
-     * @exception ResponseStatusException if topic not found
+     * @exception throw 404 if topic not found
      */
     @GetMapping("/{id}")
     @ResponseBody
@@ -53,7 +44,7 @@ public class TopicController {
         return topic;
     }
 
-    /**POST mapping for addTopic in {@link TopicService#addTopic(String)}
+    /**
      * Add a topic to database (need to add auth for admin only)
      * @param topicDTO DTO with just the name of the topic
      * @return The topic object to be stored
@@ -64,11 +55,11 @@ public class TopicController {
         return topicService.addTopic(topicDTO.getTopic());
     }
 
-    /**Delete mapping for /{id} in {@link TopicService#deleteTopic(int)}
+    /**
      * Delete an topic from database (need to add auth for admin only)
      * @param id The id you want to remove
      * @return The topic that was removed
-     * @exception ResponseStatusException if topic not found
+     * @exception throw 404 if topic not found
      */
     @DeleteMapping("/{id}")
     @ResponseBody

@@ -1,12 +1,14 @@
 package com.revature.studyforce.flashcard.dto;
 
+import com.revature.studyforce.flashcard.model.Flashcard;
 import com.revature.studyforce.flashcard.model.Quiz;
+import com.revature.studyforce.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
+
 import javax.validation.constraints.PositiveOrZero;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -21,28 +23,40 @@ public class QuizDTO {
 
     @PositiveOrZero
     private int quizId;
-    private int quizUserId;
+    private User quizUser;
     private String quizName;
-    private List<FlashcardAllDTO> flashcards;
+    private List<Flashcard> flashcards;
 
-    /**
-     * Creates a function that will convert a Quiz into a QuizDTO
-     * @return the function that will convert a Quiz into a QuizDTO
-     */
+
     public static Function<Quiz,QuizDTO> quizToDTO(){
-        return quiz -> {
+        return (quiz) -> {
+            Assert.notNull(quiz.getQuizId(), "Quiz id is null...");
             Assert.notNull(quiz.getQuizUser(), "Quiz has no associated user...");
             Assert.notNull(quiz.getQuizName(), "Quiz has no name...");
 
-            List<FlashcardAllDTO> newList = new ArrayList<>();
-            quiz.getFlashcards().forEach((flashcard -> newList.add(FlashcardAllDTO.convertToDTO().apply(flashcard))));
-
             return new QuizDTO(
                     quiz.getQuizId(),
-                    quiz.getQuizUser().getUserId(),
+                    quiz.getQuizUser(),
                     quiz.getQuizName(),
-                    newList
+                    quiz.getFlashcards()
             );
         };
     }
+
+    /**
+     * Supplies a function that converts a quizDTO to a Quiz object
+     * @return a function
+     */
+    public static Function<QuizDTO,Quiz> DTOToQuiz(){
+        return (quizDTO) -> {
+            Assert.notNull(quizDTO, "quizDTO is null");
+
+            return new Quiz(
+                    quizDTO.getQuizId(),
+                    quizDTO.getQuizUser(),
+                    quizDTO.getQuizName(),
+                    quizDTO.getFlashcards());
+        };
+    }
+
 }

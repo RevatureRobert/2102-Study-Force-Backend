@@ -1,79 +1,65 @@
 package com.revature.studyforce.flashcard.service;
 
-import com.revature.studyforce.flashcard.dto.FlashcardAllDTO;
-import com.revature.studyforce.flashcard.dto.FlashcardDTO;
-import com.revature.studyforce.flashcard.dto.NewFlashcardDTO;
-import com.revature.studyforce.flashcard.model.Difficulty;
-import com.revature.studyforce.flashcard.model.Flashcard;
-import com.revature.studyforce.flashcard.model.Topic;
 import com.revature.studyforce.flashcard.repository.FlashcardRepository;
-import com.revature.studyforce.flashcard.repository.TopicRepository;
-import com.revature.studyforce.user.model.User;
-import com.revature.studyforce.user.repository.UserRepository;
+import com.revature.studyforce.flashcard.dto.FlashcardDTO;
+import com.revature.studyforce.flashcard.model.Flashcard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Locale;
-import java.util.Optional;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Locale;
 /**
- * Services for the Flashcard repository {@link FlashcardRepository}
- * @author Luke Mohr
+ * Services for the Flashcard repository
+ * @author Luke
  */
 @Service
-public class FlashcardService implements AbstractService {
+public class FlashcardService extends AbstractService {
 
     private final FlashcardRepository flashcardRepository;
-    private final TopicRepository topicRepository;
-    private final UserRepository userRepository;
 
     @Autowired
-    public FlashcardService(TopicRepository topicRepository, FlashcardRepository flashcardRepository, UserRepository userRepository){
+    public FlashcardService(FlashcardRepository flashcardRepository){
         this.flashcardRepository =flashcardRepository;
-        this.userRepository = userRepository;
-        this.topicRepository = topicRepository;
     }
 
     /**
-     * Retrieves a Page of flashcards
-     * @param page - number of offsets away from 0 (defaults to 0)
-     * @param offset number of elements per page [5|10|25|50|100] - defaults to 25
-     * @param sortBy - column to sort by ["difficulty"|"topic"|"created"|"resolved"] defaults to creator if sortby could not be understood
-     * @param order - order in which the Page is displayed ["ASC"|"DESC"]
-     * @return - returns a Page of Flashcards according the the given page, offset, sortBy, and order parameters
+     * getAll() method mapped to HTTP GET requests ("/all")
+     * @param page - number of offsets away from 0
+     * @param offset - number of Flashcards per page
+     * @param sortBy - column to sort by
+     * @param order - ascending or descending order
+     * @return - returns Page of paginated Flashcards
      */
-    public Page<FlashcardAllDTO> getAll(int page, int offset, String sortBy, String order){
+    public Page<FlashcardDTO> getAll(int page, int offset, String sortBy, String order){
         page = validatePage(page);
         offset = validateOffset(offset);
         sortBy = validateSortBy(sortBy);
 
         Page<Flashcard> flashcards;
 
-        if (order.equalsIgnoreCase("DESC")) {
-            flashcards = flashcardRepository.findAll(PageRequest.of(page, offset, Sort.by(sortBy).descending()));
-        } else {
-            flashcards = flashcardRepository.findAll(PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
-        }
+    if (order.equalsIgnoreCase("DESC")) {
+      flashcards = flashcardRepository.findAll(PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+    } else {
+      flashcards = flashcardRepository.findAll(PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
+    }
 
-        return flashcards.map(FlashcardAllDTO.convertToDTO());
+        return flashcards.map(FlashcardDTO.convertToDTO());
     }
 
     /**
-     * Retrieves a Page of flashcards with a given difficulty
-     * @param page - number of offsets away from 0 (defaults to 0)
-     * @param offset number of elements per page [5|10|25|50|100] - defaults to 25
-     * @param sortBy - column to sort by ["difficulty"|"topic"|"created"|"resolved"] defaults to creator if sortby could not be understood
-     * @param order - order in which the Page is displayed ["ASC"|"DESC"]
-     * @param difficulty - only return flashcards with the given difficulty
-     * @return - returns a Page of Flashcards according the the given page, offset, sortBy, order, and difficulty parameters
+     * getAllByDifficulty() method mapped to HTTP GET requests ("/difficulty")
+     * @param page - number of offsets away from 0
+     * @param offset - number of Flashcards per offset
+     * @param sortBy - column to sort by
+     * @param order - ascending or descending order
+     * @param difficulty - limits returned Flashcards to the given difficulty
+     * @return - returns a List of paginated Flashcards sorted by difficulty
      */
-    public Page<FlashcardAllDTO> getAllByDifficulty(int page, int offset, String sortBy, String order, int difficulty) {
+    public Page<FlashcardDTO> getAllByDifficulty(int page, int offset, String sortBy, String order, int difficulty) {
         page = validatePage(page);
         offset = validateOffset(offset);
         sortBy = validateSortBy(sortBy);
@@ -86,19 +72,19 @@ public class FlashcardService implements AbstractService {
             flashcards = flashcardRepository.findAllByQuestionDifficultyTotal(difficulty, PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
         }
 
-        return flashcards.map(FlashcardAllDTO.convertToDTO());
+        return flashcards.map(FlashcardDTO.convertToDTO());
     }
 
     /**
-     * Retrieves a Page of flashcards with a given topicName
-     * @param page - number of offsets away from 0 (defaults to 0)
-     * @param offset number of elements per page [5|10|25|50|100] - defaults to 25
-     * @param sortBy - column to sort by ["difficulty"|"topic"|"created"|"resolved"] defaults to creator if sortby could not be understood
-     * @param order - order in which the Page is displayed ["ASC"|"DESC"]
-     * @param topicName - only return flashcards with the given topic name
-     * @return - returns a Page of Flashcards according the the given page, offset, sortBy, order, and topicName parameters
+     * getAllByTopic() method mapped to HTTP GET requests ("/difficulty")
+     * @param page - number of offsets away from 0
+     * @param offset - number of Flashcards per offset
+     * @param sortBy - column to sort by
+     * @param order - ascending or descending order
+     * @param topicName - limits returned Flashcards to the given topic
+     * @return - returns a List of paginated Flashcards sorted by topic
      */
-    public Page<FlashcardAllDTO> getAllByTopic(int page, int offset, String sortBy, String order, String topicName) {
+    public Page<FlashcardDTO> getAllByTopic(int page, int offset, String sortBy, String order, String topicName) {
         page = validatePage(page);
         offset = validateOffset(offset);
         sortBy = validateSortBy(sortBy);
@@ -111,19 +97,19 @@ public class FlashcardService implements AbstractService {
             flashcards = flashcardRepository.findAllByTopicTopicName(topicName, PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
         }
 
-        return flashcards.map(FlashcardAllDTO.convertToDTO());
+        return flashcards.map(FlashcardDTO.convertToDTO());
     }
 
     /**
-     * Retrieves a Page of flashcards with a given resolved status (boolean)
-     * @param page - number of offsets away from 0 (defaults to 0)
-     * @param offset number of elements per page [5|10|25|50|100] - defaults to 25
-     * @param sortBy - column to sort by ["difficulty"|"topic"|"created"|"resolved"] defaults to creator if sortby could not be understood
-     * @param order - order in which the Page is displayed ["ASC"|"DESC"]
-     * @param resolved - only return flashcards with the given resolved status [true|false]
-     * @return - returns a Page of Flashcards according the the given page, offset, sortBy, order, and resolved parameters
+     * getAllByIsResolved() method mapped to HTTP GET requests ("/difficulty")
+     * @param page - number of offsets away from 0
+     * @param offset - number of Flashcards per offset
+     * @param sortBy - column to sort by
+     * @param order - ascending or descending order
+     * @param resolved - limits returned Flashcards to the given resolved status
+     * @return - returns a List of paginated Flashcards sorted by resolved status
      */
-    public Page<FlashcardAllDTO> getAllByIsResolved(int page, int offset, String sortBy, String order, boolean resolved) {
+    public Page<FlashcardDTO> getAllByIsResolved(int page, int offset, String sortBy, String order, boolean resolved) {
         page = validatePage(page);
         offset = validateOffset(offset);
         sortBy = validateSortBy(sortBy);
@@ -136,76 +122,57 @@ public class FlashcardService implements AbstractService {
             flashcards = flashcardRepository.findAllByIsResolved(resolved, PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
         }
 
-        return flashcards.map(FlashcardAllDTO.convertToDTO());
+        return flashcards.map(FlashcardDTO.convertToDTO());
     }
 
     /**
-     * Retrieves flashcard with the given id
+     * getById() method mapped to HTTP GET requests ("/id/{id}")
      * @param id - limits returned Flashcard to the given id
      * @return - returns Flashcard with the given id
      */
-    public FlashcardAllDTO getById(int id) {
-        return FlashcardAllDTO.convertToDTO().apply(flashcardRepository.findById(id).orElse(null));
+    public FlashcardDTO getById(int id) {
+        return FlashcardDTO.convertToDTO().apply(flashcardRepository.findById(id).orElse(null));
     }
 
     /**
-     * Persists flashcard (uses NewFlashcardDTO)
+     * save() method mapped to HTTP POST requests
      * @param flashcard - Flashcard object to persist
      * @return - returns persisted Flashcard
      */
-    public FlashcardDTO save(NewFlashcardDTO flashcard) {
-        Optional<User> optUser = userRepository.findById(flashcard.getUserId());
-        Optional<Topic> optTopic = topicRepository.findById(flashcard.getTopicId());
-        Difficulty difficulty = Difficulty.fromInteger(flashcard.getDifficulty());
-
-        if(!optUser.isPresent())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User not found exception");
-        if(!optTopic.isPresent())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Topic not found exception");
-        if(difficulty==null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Difficulty should be a number from 1 to 3");
-
-        Flashcard f = new Flashcard(0,
-                optUser.get(),
-                optTopic.get(),
-                flashcard.getQuestion(),
-                difficulty.ordinal(),
-                difficulty.ordinal(),
-                Timestamp.valueOf(LocalDateTime.now()),
-                null,
-                false);
-        return FlashcardDTO.convertToDTO().apply(flashcardRepository.save(f));
+    public FlashcardDTO save(Flashcard flashcard) {
+        return FlashcardDTO.convertToDTO().apply(flashcardRepository.save(flashcard));
     }
 
     /**
-     * Updates existing flashcard
+     * update() method mapped to HTTP PUT requests
      * @param flashcard - new Flashcard to replace original in database
      * @return - returns updated Flashcard
      */
     public FlashcardDTO update(Flashcard flashcard) {
         Flashcard original = flashcardRepository.findById(flashcard.getId()).orElse(null);
 
-        if (original == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Flashcard not found exception");
+        if (original != null) {
+            int id = original.getId();
+            original = flashcard;
+            original.setId(id);
         }
-
-        int id = original.getId();
-        original = flashcard;
-        original.setId(id);
-
+        assert original != null;
         return FlashcardDTO.convertToDTO().apply(flashcardRepository.save(original));
     }
 
     /**
      * delete() method mapped to HTTP DELETE requests
-     * @param id - Flashcard id to be deleted from the database
+     * @param flashcard - Flashcard to be deleted from the database
+     * @return - returns deleted Flashcard
      */
-    public void delete(int id) {
-        flashcardRepository.deleteById(id);
+    public @ResponseBody
+    FlashcardDTO delete(@RequestBody Flashcard flashcard) {
+        flashcardRepository.delete(flashcard);
+        return FlashcardDTO.convertToDTO().apply(flashcard);
     }
 
     @Override
-    public String validateSortBy(String sortBy){
+    String validateSortBy(String sortBy){
         switch (sortBy.toLowerCase(Locale.ROOT)) {
             case "difficulty":
                 return "questionDifficultyTotal";

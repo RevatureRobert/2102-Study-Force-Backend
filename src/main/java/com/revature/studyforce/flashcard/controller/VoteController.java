@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.*;
  * @author Elizabeth Ye
  */
 @RestController
-@CrossOrigin
-@RequestMapping("/flashcards/votes")
+@RequestMapping("/flashcards/vote")
 public class VoteController {
 
     @Autowired
@@ -24,13 +23,12 @@ public class VoteController {
     }
 
     /**
-     * POST mapping for '/votes' in {@link VoteService#addVote(VoteDTO)}
      * Adds a new answer vote to the database
-     * @param voteDTO A DTO for a vote object that has the information to be persisted
+     * @param vote A DTO for a vote object that has the information to be persisted
      * @return The vote that was added
      */
     @PostMapping
-    public Vote createAnswerVote(@RequestBody VoteDTO voteDTO) {
-        return voteService.addVote(voteDTO);
+    public Vote createAnswerVote(@RequestBody VoteDTO vote) {
+        return voteService.addVote(vote);
     }
 }

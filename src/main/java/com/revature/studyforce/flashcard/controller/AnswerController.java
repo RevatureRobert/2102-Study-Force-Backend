@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.*;
  * @author Edson Rodriguez
  */
 @RestController
-@CrossOrigin
-@RequestMapping("/answers")
+@RequestMapping("/flashcards/answers")
 public class AnswerController {
 
-    private final AnswerService answerService;
+    private AnswerService answerService;
 
     @Autowired
     public AnswerController(AnswerService answerService){
@@ -25,7 +24,7 @@ public class AnswerController {
     }
 
     /**
-     * GET request for 'getAllByFlashcardId' in AnswerService {@link AnswerService#deleteAnswerById(int)}
+     * Method used to retrieve a collection of answers with pagination
      * @param id The id of the flashcard from which the answers are being fetched
      * @param page The page to be selected defaults to 0 if page could not be understood
      * @param offset The number of elements per page [5|10|25|50|100] defaults to 25 if offset could not be understood
@@ -33,7 +32,7 @@ public class AnswerController {
      * @param order The order in which the list is displayed ["ASC"|"DESC"]
      * @return a Page of answers that match the Flashcard id with pagination and sorting applied
      */
-    @GetMapping("/{flashcardId}")
+    @GetMapping("/flashcard-id/{flashcardId}")
     public Page<Answer> getAllAnswersByFlashcardId(
             @PathVariable(name = "flashcardId") int id,
             @RequestParam(value="page", required = false, defaultValue = "0") int page,
@@ -44,18 +43,18 @@ public class AnswerController {
     }
 
     /**
-     * DELETE request for 'deleteAnswerById' in AnswerService {@link AnswerService#deleteAnswerById(int)}
+     * Deletes an answer by its answerId
      * @param deleteAnswerDTO the data transfer object that contains the id of the answer to delete
      * @return a confirmation message if the object was deleted
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/")
     public String deleteAnswerById(@RequestBody DeleteAnswerDTO deleteAnswerDTO){
         answerService.deleteAnswerById(deleteAnswerDTO.getAnswerId());
         return "Deleted answer with id:" + deleteAnswerDTO.getAnswerId();
     }
 
     /**
-     * POST request for 'createAnswer' in AnswerService {@link AnswerService#createAnswer(AnswerDTO)}
+     * Method used to create a new Answer
      * @param answerDTO The dta transfer object with the information required to create a new answer {@link AnswerDTO}
      * @return The newly created answer object
      */

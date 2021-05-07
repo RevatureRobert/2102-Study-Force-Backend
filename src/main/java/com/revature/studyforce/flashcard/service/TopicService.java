@@ -1,16 +1,12 @@
 package com.revature.studyforce.flashcard.service;
 
-import com.revature.studyforce.flashcard.model.Topic;
 import com.revature.studyforce.flashcard.repository.TopicRepository;
+import com.revature.studyforce.flashcard.model.Topic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
-
-/**
- * Service class for the TopicRepository {@link TopicRepository}
- * @author Kevin wang
- */
 @Service
 public class TopicService {
 
@@ -28,7 +24,7 @@ public class TopicService {
     /**
      * Retrieve topic of the specified id
      * @param id The id given to the topic element on the database
-     * @return the Topic matching the given Id
+     * @return
      */
     public Topic getTopicById(int id) {
         return topicRepository.findById(id).orElse(null);

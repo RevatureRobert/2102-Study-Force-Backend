@@ -1,144 +1,100 @@
 package com.revature.studyforce.flashcard.controller;
 
-import com.revature.studyforce.flashcard.dto.FlashcardAllDTO;
-import com.revature.studyforce.flashcard.dto.FlashcardDTO;
-import com.revature.studyforce.flashcard.dto.NewFlashcardDTO;
 import com.revature.studyforce.flashcard.model.Flashcard;
-import com.revature.studyforce.flashcard.service.FlashcardService;
+import com.revature.studyforce.flashcard.repository.FlashcardRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
+import java.util.List;
+
 /**
- * Controller for handling Flashcards using {@link FlashcardService}
- * @author Luke Mohr
+ * Controller for handling Flashcards
+ * @author Luke
  */
 @Controller
 @CrossOrigin
 @RequestMapping("/flashcards")
 public class FlashcardController {
 
-
-    private final FlashcardService flashcardService;
-
     @Autowired
-    public FlashcardController(FlashcardService flashcardService){
-        this.flashcardService = flashcardService;
-    }
+    FlashcardRepo repo;
 
     /**
-     * Retrieves a Page of flashcards {@link FlashcardService#getAll(int, int, String, String)}
-     * @param page - number of offsets away from 0 (defaults to 0)
-     * @param offset - number of elements per page [5|10|25|50|100] - defaults to 10
-     * @param sortBy - column to sort by ["difficulty"|"topic"|"created"|"resolved"] defaults to creator if sortby could not be understood
-     * @param order - order in which the Page is displayed ["ASC"|"DESC"]
-     * @return - returns a Page of Flashcards according the the given page, offset, sortBy, and order parameters
+     * getAll() method mapped to HTTP GET requests ("/all")
+     * @param page - number of offsets away from 0
+     * @param offset - number of Flashcards per page
+     * @return - returns Page of paginated Flashcards
      */
-    @GetMapping
-    public @ResponseBody Page<FlashcardAllDTO> getAll(
+    @GetMapping("/all")
+    public @ResponseBody Page<Flashcard> getAll(
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,
-            @RequestParam(name = "offset", defaultValue = "10", required = false) int offset,
-            @RequestParam(name = "sortby", defaultValue = "id", required = false) String sortBy,
-            @RequestParam(name = "order", defaultValue = "desc", required = false) String order) {
-        return flashcardService.getAll(page, offset, sortBy, order);
+            @RequestParam(name = "offset", defaultValue = "10", required = false) int offset) {
+        return repo.findAll(PageRequest.of(page, offset));
     }
 
     /**
-     * Retrieves a Page of flashcards with a given difficulty {@link FlashcardService#getAllByDifficulty(int, int, String, String, int)}
-     * @param page - number of offsets away from 0 (defaults to 0)
-     * @param offset - number of elements per page [5|10|25|50|100] - defaults to 10
-     * @param sortBy - column to sort by ["difficulty"|"topic"|"created"|"resolved"] defaults to creator if sortby could not be understood
-     * @param order - order in which the Page is displayed ["ASC"|"DESC"]
-     * @param difficulty - only return flashcards with the given difficulty
-     * @return - returns a Page of Flashcards according the the given page, offset, sortBy, order, and difficulty parameters
+     * getAllByDifficulty() method mapped to HTTP GET requests ("/difficulty")
+     * @param page - number of offsets away from 0
+     * @param offset - number of Flashcards per offset
+     * @param difficulty - limits returned Flashcards to the given difficulty
+     * @return - returns a List of paginated Flashcards sorted by difficulty
      */
     @GetMapping("/difficulty")
-    public @ResponseBody Page<FlashcardAllDTO> getAllByDifficulty(
+    public @ResponseBody List<Flashcard> getAllByDifficulty(
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,
             @RequestParam(name = "offset", defaultValue = "10", required = false) int offset,
-            @RequestParam(name = "sortby", defaultValue = "id", required = false) String sortBy,
-            @RequestParam(name = "order", defaultValue = "desc", required = false) String order,
-            @RequestParam(name = "difficulty", required = false) Integer difficulty) {
-        return flashcardService.getAllByDifficulty(page, offset, sortBy, order, difficulty);
+            @RequestParam(name = "difficulty", required = true) int difficulty) {
+        return repo.findALlByQuestionDifficultyTotal(difficulty, PageRequest.of(page, offset));
     }
 
     /**
-     * Retrieves a Page of flashcards with a given topicName {@link FlashcardService#getAllByTopic(int, int, String, String, String)}
-     * @param page - number of offsets away from 0 (defaults to 0)
-     * @param offset - number of elements per page [5|10|25|50|100] - defaults to 10
-     * @param sortBy - column to sort by ["difficulty"|"topic"|"created"|"resolved"] defaults to creator if sortby could not be understood
-     * @param order - order in which the Page is displayed ["ASC"|"DESC"]
-     * @param topicName - only return flashcards with the given topic name
-     * @return - returns a Page of Flashcards according the the given page, offset, sortBy, order, and topicName parameters
-     */
-    @GetMapping("/topics")
-    public @ResponseBody Page<FlashcardAllDTO> getAllByTopic(
-            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
-            @RequestParam(name = "offset", defaultValue = "10", required = false) int offset,
-            @RequestParam(name = "sortby", defaultValue = "id", required = false) String sortBy,
-            @RequestParam(name = "order", defaultValue = "desc", required = false) String order,
-            @RequestParam(name = "topicName", required = false) String topicName) {
-        return flashcardService.getAllByTopic(page, offset, sortBy, order, topicName);
-    }
-
-    /**
-     * Retrieves a Page of flashcards with a given resolved status (boolean) {@link FlashcardService#getAllByIsResolved(int, int, String, String, boolean)}
-     * @param page - number of offsets away from 0 (defaults to 0)
-     * @param offset - number of elements per page [5|10|25|50|100] - defaults to 10
-     * @param sortBy - column to sort by ["difficulty"|"topic"|"created"|"resolved"] defaults to creator if sortby could not be understood
-     * @param order - order in which the Page is displayed ["ASC"|"DESC"]
-     * @param resolved - only return flashcards with the given resolved status [true|false]
-     * @return - returns a Page of Flashcards according the the given page, offset, sortBy, order, and resolved parameters
-     */
-    @GetMapping("/resolved")
-    public @ResponseBody Page<FlashcardAllDTO> getAllByIsResolved(
-            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
-            @RequestParam(name = "offset", defaultValue = "10", required = false) int offset,
-            @RequestParam(name = "sortby", defaultValue = "id", required = false) String sortBy,
-            @RequestParam(name = "order", defaultValue = "desc", required = false) String order,
-            @RequestParam(name = "resolved", required = false) Boolean resolved) {
-        return flashcardService.getAllByIsResolved(page, offset, sortBy, order, resolved);
-    }
-
-    /**
-     * Retrieves flashcard with the given id {@link FlashcardService#getById(int)}
+     * getById() method mapped to HTTP GET requests ("/id/{id}")
      * @param id - limits returned Flashcard to the given id
      * @return - returns Flashcard with the given id
      */
-    @GetMapping("/{id}")
-    public @ResponseBody FlashcardAllDTO getById(@PathVariable("id") Integer id) {
-        return flashcardService.getById(id);
+    @GetMapping("/id/{id}")
+    public @ResponseBody Flashcard getById(@PathParam("id") int id) {
+        return repo.findById(id).get();
     }
 
     /**
-     * Persists flashcard (uses NewFlashcardDTO) {@link FlashcardService#save(NewFlashcardDTO)}
+     * save() method mapped to HTTP POST requests
      * @param flashcard - Flashcard object to persist
      * @return - returns persisted Flashcard
      */
     @PostMapping
-    public @ResponseBody FlashcardDTO save(@RequestBody NewFlashcardDTO flashcard) {
-        return flashcardService.save(flashcard);
+    public @ResponseBody Flashcard save(@RequestBody Flashcard flashcard) {
+        return repo.save(flashcard);
     }
 
     /**
-     * Updates existing flashcard {@link FlashcardService#update(Flashcard)}
+     * update() method mapped to HTTP PUT requests
      * @param flashcard - new Flashcard to replace original in database
      * @return - returns updated Flashcard
      */
     @PutMapping
-    public @ResponseBody FlashcardDTO update(@RequestBody Flashcard flashcard) {
-        return flashcardService.update(flashcard);
+    public @ResponseBody Flashcard update(@RequestBody Flashcard flashcard) {
+        Flashcard original = repo.getOne(flashcard.getId());
+
+        int id = original.getId();
+        original = flashcard;
+        original.setId(id);
+
+        return repo.save(original);
     }
 
     /**
-     * Deletes existing flashcard with given id {@link FlashcardService#delete(int)}
-     * @param id - Flashcard to be deleted from the database
-     * @return - returns deletion success boolean
+     * delete() method mapped to HTTP DELETE requests
+     * @param flashcard - Flashcard to be deleted from the database
+     * @return - returns deleted Flashcard
      */
-    @DeleteMapping("/{id}")
-    public @ResponseBody Boolean delete(@PathVariable("id") Integer id) {
-        flashcardService.delete(id);
-        return true;
+    @DeleteMapping
+    public @ResponseBody Flashcard delete(@RequestBody Flashcard flashcard) {
+        repo.delete(flashcard);
+        return flashcard;
     }
 }
