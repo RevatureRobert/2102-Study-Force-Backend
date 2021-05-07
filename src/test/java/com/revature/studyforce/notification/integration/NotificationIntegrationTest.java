@@ -7,6 +7,7 @@ import com.revature.studyforce.notification.dto.NotificationDto;
 import com.revature.studyforce.notification.model.FeatureArea;
 import com.revature.studyforce.notification.model.Notification;
 import com.revature.studyforce.notification.repository.NotificationRepository;
+import com.revature.studyforce.notification.service.NotificationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ import org.springframework.test.context.TestPropertySource;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
+
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,6 +37,9 @@ class NotificationIntegrationTest{
 
     @Autowired
     private NotificationController notificationController;
+
+    @Autowired
+    private NotificationService notificationService;
     @Autowired
     private NotificationRepository notificationRepository;
 
@@ -45,8 +52,12 @@ class NotificationIntegrationTest{
     public void setup(){
         notification = new Notification(0, "Message", false,
                 Timestamp.valueOf(now.plusDays(3)), Timestamp.valueOf(now), featureArea, 1);
+
         notificationDto = new NotificationDto(0, "Hello", true,
-                Timestamp.valueOf(now.plusDays(3)), Timestamp.valueOf(now), FeatureArea.STACKTRACE, 1);
+                null, null, FeatureArea.STACKTRACE, 1);
+        notificationDto.setCreatedTime(null);
+        notificationDto.setTimeToLive(null);
+
         notification = notificationRepository.save(notification);
         mockMvc = MockMvcBuilders.standaloneSetup(notificationController).build();
     }
@@ -83,8 +94,6 @@ class NotificationIntegrationTest{
 
     @Test
     void addNotificationTest() throws Exception{
-//        notificationDto.setId(2);
-        System.out.println(new Gson().toJson(notificationDto));
         mockMvc.perform(MockMvcRequestBuilders.post("/notifications")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new Gson().toJson(notificationDto)))
@@ -94,7 +103,7 @@ class NotificationIntegrationTest{
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").isString())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.read").isBoolean())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.timeToLive").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.timeToLive").doesNotExist())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.createdTime").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.featureArea").isString())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.userId").isNumber());
@@ -104,6 +113,8 @@ class NotificationIntegrationTest{
     void updateNotificationTest() throws Exception{
         notificationDto = NotificationDto.convertToDto().apply(notification);
         notificationDto.setMessage("Whatever");
+        notificationDto.setTimeToLive(null);
+        notificationDto.setCreatedTime(null);
         mockMvc.perform(MockMvcRequestBuilders.put("/notifications")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new Gson().toJson(notificationDto)))
@@ -113,10 +124,32 @@ class NotificationIntegrationTest{
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").isString())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.read").isBoolean())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.timeToLive").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.createdTime").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.timeToLive").doesNotExist())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.createdTime").doesNotExist())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.featureArea").isString())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.userId").isNumber());
     }
 
+//    @Test
+//    void deleteByNotificationIdTest() throws Exception{
+//        notificationDto = NotificationDto.convertToDto().apply(notification);
+//        mockMvc.perform(MockMvcRequestBuilders.delete("/notifications/" + notificationDto.getId()));
+////                .andExpect(MockMvcResultMatchers.status().isNoContent())
+////                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+////                .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
+////                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
+////                .andExpect(MockMvcResultMatchers.jsonPath("$.message").isString())
+////                .andExpect(MockMvcResultMatchers.jsonPath("$.read").isBoolean())
+////                .andExpect(MockMvcResultMatchers.jsonPath("$.timeToLive").isNumber())
+////                .andExpect(MockMvcResultMatchers.jsonPath("$.createdTime").isNumber())
+////                .andExpect(MockMvcResultMatchers.jsonPath("$.featureArea").isString())
+////                .andExpect(MockMvcResultMatchers.jsonPath("$.userId").isNumber());
+//
+//        verify(notificationService, times(1)).deleteByNotificationId(notificationDto.getId());
+//    }
+
+//    @Test
+//    void deleteNotificationByUserIdTest() throws Exception{
+//
+//    }
 }

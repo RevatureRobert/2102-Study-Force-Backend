@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 /***
@@ -115,10 +116,10 @@ public class NotificationController {
      */
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteByNotificationId(@PathVariable("id") Integer notificationId){
+    public ResponseEntity<NotificationDto> deleteByNotificationId(@PathVariable("id") Integer notificationId){
         if(notificationId != null){
-            notificationService.deleteByNotificationId(notificationId);
-            return ResponseEntity.noContent().build();
+            NotificationDto notificationDto = notificationService.deleteByNotificationId(notificationId);
+            return new ResponseEntity<>(notificationDto, HttpStatus.NO_CONTENT);
         }
         return ResponseEntity.notFound().build();
     }
@@ -130,10 +131,10 @@ public class NotificationController {
      *          Otherwise returns an Http Response with status Not Found
      */
     @DeleteMapping("/users/{user-id}")
-    public ResponseEntity<?> deleteAllNotificationsByUserId(@PathVariable("user-id") String userId){
+    public ResponseEntity<List<NotificationDto>> deleteAllNotificationsByUserId(@PathVariable("user-id") String userId){
         if(userId != null){
-            notificationService.deleteByUserId(Integer.parseInt(userId));
-            return ResponseEntity.noContent().build();
+            List<NotificationDto> notificationDtoList = notificationService.deleteByUserId(Integer.parseInt(userId));
+            return new ResponseEntity<>(notificationDtoList, HttpStatus.NO_CONTENT);
         }
         return ResponseEntity.notFound().build();
     }

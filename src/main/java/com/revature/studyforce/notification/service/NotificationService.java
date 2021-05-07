@@ -10,8 +10,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /***
  * Service which processes various requests relating to {@link Notification Notifications}
@@ -113,17 +115,25 @@ public class NotificationService {
     /***
      * Delete a {@link Notification}
      * @param id The parameter id is the id of the Notification we want to delete
+     * @return We return the deleted notification
      */
-    public void deleteByNotificationId(Integer id){
-        notificationRepository.deleteById(id);
+    public NotificationDto deleteByNotificationId(Integer id){
+        Optional<Notification> checkNotification = notificationRepository.findById(id);
+        if(checkNotification.isPresent()){
+            notificationRepository.deleteById(id);
+            return NotificationDto.convertToDto().apply(checkNotification.get());
+        }
+        return null;
     }
 
     /***
      * Delete all {@link Notification notifications} that belong to a particular user
      * @param userId The userId parameter is used to find all notifications that belong to a particular user
+     * @return We return a List of the deleted notifications
      */
-    public void deleteByUserId(Integer userId){
-        notificationRepository.deleteByUserId(userId);
+    public List<NotificationDto> deleteByUserId(Integer userId){
+        List<Notification> notificationList = notificationRepository.deleteByUserId(userId);
+        return notificationList.stream().map(NotificationDto.convertToDto()).collect(Collectors.toList());
     }
 
 }

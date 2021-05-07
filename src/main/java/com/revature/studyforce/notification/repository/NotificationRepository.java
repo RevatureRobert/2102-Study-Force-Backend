@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 
 
 @Repository
@@ -17,5 +18,5 @@ public interface NotificationRepository extends JpaRepository<Notification, Inte
     Page<Notification> findByUserId(@RequestParam("id") Integer id, Pageable pageable);
     @Transactional
     @Modifying
-    void deleteByUserId(Integer id);
+    List<Notification> deleteByUserId(Integer id);
 }
