@@ -41,9 +41,6 @@ class SolutionServiceTest {
     @MockBean
     private SolutionRepository solutionRepository;
 
-    @MockBean
-    private SolutionService solutionServiceMock;
-
     @Autowired
     SolutionService solutionService;
 
@@ -76,11 +73,9 @@ class SolutionServiceTest {
     @Test
     void returnAPageOfSolutionDTOs_WhenAValidStacktraceIdIsPassed(){
         Page<Solution> solutionPage = new PageImpl<>(testSolutionList);
-        Mockito.doReturn(0).when(solutionServiceMock).validatePage(0);
-        Mockito.doReturn(5).when(solutionServiceMock).validatePageSize(0);
         Mockito.doReturn(solutionPage).when(solutionRepository).findByStackTraceId_stacktraceId(1, PageRequest.of(0,5));
-        Page<SolutionDTO> solutionDTOS = solutionService.getAllSolutionsForStacktrace(1, 0, 5);
-        solutionDTOS = solutionPage.map(SolutionDTO.solutionToDTO());
+        Page<SolutionDTO> solutionDTOS = solutionPage.map(SolutionDTO.solutionToDTO());
+        assertNotNull(solutionService.getAllSolutionsForStacktrace(1, 0, 5));
         assertEquals(1, solutionDTOS.getContent().size());
         assertEquals(solutionDTOS.getContent().get(0).getSolutionId(), testSolutionDTO.getSolutionId());
         assertEquals(solutionDTOS.getContent().get(0).getStackTraceId(), testSolutionDTO.getStackTraceId());
@@ -152,5 +147,25 @@ class SolutionServiceTest {
         Mockito.doNothing().when(solutionRepository).delete(any(Solution.class));
         solutionService.deleteSolution(1);
         verify(solutionRepository, times(1)).delete(any(Solution.class));
+    }
+
+    @Test
+    void ReturnValidPageSize_WhenInvalidPageSizeIsPassed(){
+        assertEquals(5, solutionService.validatePageSize(500));
+    }
+
+    @Test
+    void ReturnPassedPageSize_WhenValidPageSizeIsPassed(){
+        assertEquals(5, solutionService.validatePageSize(5));
+    }
+
+    @Test
+    void ReturnValidPageNumber_WhenInvalidPageNumberIsPassed(){
+        assertEquals(0, solutionService.validatePage(-1));
+    }
+
+    @Test
+    void ReturnPassedPageNumber_WhenValidPageNumberIsPassed(){
+        assertEquals(1, solutionService.validatePage(1));
     }
 }
