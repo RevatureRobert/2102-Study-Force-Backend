@@ -53,7 +53,7 @@ public class AOP {
     }
 
 
-    @Pointcut("execution (* com.revature.studyforce.stacktrace.repository.Soultion.save(..)")
+    @Pointcut("execution (* com.revature.studyforce.stacktrace.repository.SolutionRepository.save(..))")
     public void SolutionPostPointCut(){}
 
 
@@ -81,11 +81,11 @@ public class AOP {
      * After a new answer is posted we will then have to find all the subscriptions tied to that
      * flashcard and send out a notification that a new answer is posted
      * @param jp
-     * @param anwser
+     * @param answer
      */
     @AfterReturning(value = "AnswerPostPointCut()", returning = "answer")
-    public void solutionUpdateSendNotifications(JoinPoint jp , Answer anwser){
-        List<FlashcardSubscription> subs = this.flashcardSubscriptionService.getAllSubscribersByFlashcardId(anwser.getFlashcard().getId());
+    public void solutionUpdateSendNotifications(JoinPoint jp , Answer answer){
+        List<FlashcardSubscription> subs = this.flashcardSubscriptionService.getAllSubscribersByFlashcardId(answer.getFlashcard().getId());
         for(FlashcardSubscription flashcardsub : subs){
 
             Subscription temp = this.subscriptionService.getSubscriptionById(flashcardsub.getFlashcardSubscriptionId().getSubscription()).get();
@@ -103,23 +103,23 @@ public class AOP {
      * @param stacktraceSubscription
      * @return status code if the notification went through
      */
-    @AfterReturning(value = "AnswerPostPointCut()", returning = "stacktracesubscription")
+    @AfterReturning(value = "AnswerPostPointCut()", returning = "stacktraceSubscription")
     public void StackTraceSubscriptionPostPointCut(JoinPoint jp , StacktraceSubscription stacktraceSubscription){
         this.sendNotificationService.send(stacktraceSubscription.getSubscription() , 1);
     }
 
-    @Pointcut("execution (* com.revature.studyforce.notification.repository.flashcardSubscriptionRepository.save(..))")
+    @Pointcut("execution (* com.revature.studyforce.notification.repository.FlashcardSubscriptionRepository.save(..))")
     public void FlashcardSubscriptionPostPointCut(){}
 
     /**
      * After a user subscribes to a flashcard they will get a notification
      * @param jp
-     * @param stacktraceSubscription
+     * @param flashcardSubscription
      * @return status code if the notification went through
      */
-    @AfterReturning(value = "FlashcardSubscriptionPostPointCut()", returning = "flashcardsubscription")
-    public void StackTraceSubscriptionPostPointCut(JoinPoint jp , FlashcardSubscription stacktraceSubscription){
-        this.sendNotificationService.send(stacktraceSubscription.getSubscription() , 2);
+    @AfterReturning(value = "FlashcardSubscriptionPostPointCut()", returning = "flashcardSubscription")
+    public void StackTraceSubscriptionPostPointCut(JoinPoint jp , FlashcardSubscription flashcardSubscription){
+        this.sendNotificationService.send(flashcardSubscription.getSubscription() , 2);
     }
 
 
