@@ -62,7 +62,7 @@ class QuizIntegrationTest {
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(quizController).build();
-        User mscott = new User(0,"mscott@dunder.com","password","Michael","Scott",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User mscott = new User(0,"mscott@dunder.com","Michael Scott",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(mscott);
 
         Topic t = new Topic(0,"java");
@@ -78,7 +78,6 @@ class QuizIntegrationTest {
         deck.add(flashcard2);
 
         Quiz testingQuiz = new Quiz(0,mscott,"demoQuiz",deck);
-        System.out.println(testingQuiz);
         quizRepository.save(testingQuiz);
     }
 
@@ -99,12 +98,11 @@ class QuizIntegrationTest {
                 .andReturn();
 
 
-    System.out.println(result);
     }
 
     @Test
     void givenQuiz_whenCreateQuiz_NewQuizIsRetrieved() throws Exception {
-        User dwight = new User(0,"dshrute@dunder.com","password","Dwight","Schrute",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User dwight = new User(0,"dshrute@dunder.com","Dwight Schrute",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(dwight);
 
         Topic t = new Topic(0,"farming");
@@ -120,7 +118,6 @@ class QuizIntegrationTest {
         deck.add(flashcard4.getId());
 
         NewQuizDTO testingQuiz2 = new NewQuizDTO(dwight.getUserId(),"demoQuiz2",deck);
-        System.out.println(new ObjectMapper().writeValueAsString(testingQuiz2));
 
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/quiz")
@@ -130,7 +127,6 @@ class QuizIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.quizName").value("demoQuiz2"))
                 .andReturn();
 
-        System.out.println(result.getResponse().getContentAsString());
     }
 
     @Test
@@ -156,12 +152,11 @@ class QuizIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.quizName").value("this a new name"))
                 .andReturn();
 
-        System.out.println(result.getResponse().getContentAsString());
     }
 
     @Test
     void givenQuizId_DeleteQuiz() throws Exception {
-        User dwight = new User(0,"dshrute@dunder.com","password","Dwight","Schrute",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User dwight = new User(0,"dshrute@dunder.com","Dwight Schrute",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(dwight);
 
         Topic t = new Topic(0,"farming");

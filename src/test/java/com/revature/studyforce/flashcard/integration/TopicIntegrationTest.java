@@ -54,7 +54,6 @@ class TopicIntegrationTest {
                     .andExpect(MockMvcResultMatchers.jsonPath("$.topicName").value(topicDTO.getTopic()))
                     .andReturn();
 
-            System.out.println(result.getResponse().getContentAsString());
         }
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/topics"))
@@ -84,7 +83,6 @@ class TopicIntegrationTest {
                     .andExpect(MockMvcResultMatchers.jsonPath("$.topicName").value(topicDTO.getTopic()))
                     .andReturn();
 
-            System.out.println(result.getResponse().getContentAsString());
         }
 
         for (Topic topic : topicList) {
@@ -116,7 +114,6 @@ class TopicIntegrationTest {
                     .andExpect(MockMvcResultMatchers.jsonPath("$.topicName").value(topicDTO.getTopic()))
                     .andReturn();
 
-            System.out.println(result.getResponse().getContentAsString());
         }
 
         for (Topic topic : topicList) {

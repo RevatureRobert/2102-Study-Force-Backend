@@ -68,7 +68,7 @@ class FlashcardIntegrationTest {
     public void setUp() throws JsonProcessingException {
         mockMvc = MockMvcBuilders.standaloneSetup(flashcardController).build();
         flashcardDTO = new FlashcardDTO();
-        user = new User(0,"a@b.c","pw","fn","ln",true,false,false, Authority.USER, null,null);
+        user = new User(0,"a@b.c","fn ln",true,false,false, Authority.USER, null,null);
         user.setLastLogin(null);
         user.setRegistrationTime(null);
         topic = new Topic();
@@ -81,10 +81,6 @@ class FlashcardIntegrationTest {
         flashcardPage = new PageImpl<>(flashcardList);
         newFlashcardDTO = new NewFlashcardDTO(1, 2, flashcard.getQuestion(), flashcard.getQuestionDifficultyTotal());
 
-        System.out.println(userRepository.save(user));
-        System.out.println(topicRepository.save(topic));
-        System.out.println(flashcardRepository.save(flashcard));
-        System.out.println(new ObjectMapper().writeValueAsString(newFlashcardDTO));
     }
 
     @Test

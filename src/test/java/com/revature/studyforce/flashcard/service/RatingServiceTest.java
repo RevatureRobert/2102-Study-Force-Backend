@@ -46,7 +46,7 @@ class RatingServiceTest {
     @Test
     void givenRatingDTO_whenCreateRating_shouldReturnRatingResponseDTO(){
         List<Rating> rList = new ArrayList<>();
-        User user = new User(0,"edson@revature.com","password","Edson","Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
         Rating rating = new Rating(0,flashcard,user, Difficulty.EASY);
         rList.add(rating);
@@ -61,12 +61,11 @@ class RatingServiceTest {
         assertEquals(1, res.getRating());
         assertTrue(res.getTotalRatings()>0);
 
-        System.out.println(res);
     }
 
     @Test
     void givenFlashcardIdAndUserId_whenGetRating_shouldReturnRating(){
-        User user = new User(0,"edson@revature.com","password","Edson","Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
         Rating rating = new Rating(0,flashcard,user, Difficulty.EASY);
 

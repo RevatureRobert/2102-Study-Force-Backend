@@ -34,17 +34,9 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @NotNull
-    @Column(nullable = false)
-    private String password;
-
     @Size(max = 255)
-    @Column(name = "first_name")
+    @Column(name = "name")
     private String firstName;
-
-    @Size(max = 255)
-    @Column(name = "last_name")
-    private String lastName;
 
     @Column(name = "is_active")
     private boolean isActive;
@@ -58,7 +50,7 @@ public class User {
     private boolean isSubscribedStacktrace;
 
     @Enumerated(EnumType.ORDINAL)
-    @ColumnDefault ("0")
+    @ColumnDefault ("1")
     @JoinColumn(name = "authority_id", referencedColumnName = "authority_id")
     private Authority authority;
 

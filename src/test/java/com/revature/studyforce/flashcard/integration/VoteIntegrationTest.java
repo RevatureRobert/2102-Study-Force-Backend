@@ -53,7 +53,7 @@ class VoteIntegrationTest {
 
     @Test
     void givenVoteDTO_whenCreateAnswerVote_shouldReturnVote() throws Exception {
-        User u = new User(0,"jesus.christ@revature.com","password","Jesus","Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User u = new User(0,"jesus.christ@revature.com","Jesus Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(u);
 
         Flashcard flashcard = new Flashcard(0,u,null,"how is your day",1,1,null,null,false);
@@ -67,7 +67,6 @@ class VoteIntegrationTest {
                 + "\"userId\" : \"1\","
                 + "\"value\" : \"1\""
                 + "}";
-        System.out.println(string);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/votes/")
                 .content(string)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -75,13 +74,11 @@ class VoteIntegrationTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        System.out.println(result.getResponse().getContentAsString());
-        System.out.println(result.getResponse().getStatus());
     }
 
     @Test
     void givenVoteWithBadValue_whenCreateAnswerVote_shouldThrowException() throws Exception {
-        User u = new User(0,"jesus.christ@revature.com","password","Jesus","Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User u = new User(0,"jesus.christ@revature.com","Jesus Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(u);
 
         Flashcard flashcard = new Flashcard(0,u,null,"how is your day",1,1,null,null,false);
@@ -95,7 +92,6 @@ class VoteIntegrationTest {
                 + "\"userId\" : \"1\","
                 + "\"value\" : \"33\""
                 + "}";
-        System.out.println(string);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/votes/")
                 .content(string)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -108,7 +104,7 @@ class VoteIntegrationTest {
 
     @Test
     void givenVoteWithBadUserId_whenCreateAnswerVote_shouldThrowException() throws Exception {
-        User u = new User(0,"jesus.christ@revature.com","password","Jesus","Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User u = new User(0,"jesus.christ@revature.com","Jesus Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(u);
 
         Flashcard flashcard = new Flashcard(0,u,null,"how is your day",1,1,null,null,false);
@@ -122,7 +118,6 @@ class VoteIntegrationTest {
                 + "\"userId\" : \"20\","
                 + "\"value\" : \"1\""
                 + "}";
-        System.out.println(string);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/votes/")
                 .content(string)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -135,7 +130,7 @@ class VoteIntegrationTest {
 
     @Test
     void givenVoteWithBadAnswerId_whenCreateAnswerVote_shouldThrowException() throws Exception {
-        User u = new User(0,"jesus.christ@revature.com","password","Jesus","Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User u = new User(0,"jesus.christ@revature.com","Jesus Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(u);
 
         Flashcard flashcard = new Flashcard(0,u,null,"how is your day",1,1,null,null,false);
@@ -149,7 +144,6 @@ class VoteIntegrationTest {
                 + "\"userId\" : \"1\","
                 + "\"value\" : \"1\""
                 + "}";
-        System.out.println(string);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/votes/")
                 .content(string)
                 .contentType(MediaType.APPLICATION_JSON))
