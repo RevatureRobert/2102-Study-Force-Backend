@@ -62,10 +62,6 @@ class SolutionServiceTest {
         testSolutionList.add(testSolution);
     }
 
-    /**
-     * Tests getAllSolutionsForStackTrace() by checking size and contents of returned SolutionDTO
-     */
-
 //    @Test
 //    void getAllSolutionsForStackTraceTest(){
 //        Mockito.doReturn(testSolutionList).when(solutionRepository).findByStackTraceId(1);
@@ -80,9 +76,6 @@ class SolutionServiceTest {
 //        verify(solutionRepository, times(1)).findByStackTraceId(1);
 //    }
 
-    /**
-     * Tests submitFirstSolution()
-     */
     @Test
     void submitFirstSolutionTest(){
         Mockito.doReturn(testSolution).when(solutionRepository).save(any(Solution.class));
@@ -96,9 +89,7 @@ class SolutionServiceTest {
         verify(solutionRepository, times(1)).save(any(Solution.class));
     }
 
-    /**
-     * Tests updateSolution() with a solution that can be found in the data store
-     */
+
     @Test
     void updateSolutionWithSolutionInDBTest(){
         Mockito.doReturn(Optional.of(testSolution)).when(solutionRepository).findById(any(Integer.class));
@@ -114,10 +105,7 @@ class SolutionServiceTest {
         verify(solutionRepository, times(1)).save(any(Solution.class));
     }
 
-    /**
-     * Tests updateSolution() with a Solution that is not stored in DB
-     *  Should persist new solution
-     */
+
     @Test
     void updateSolutionWithNoSolutionInDBTest(){
         Mockito.doReturn(Optional.ofNullable(testNullSolution)).when(solutionRepository).findById(any(Integer.class));
@@ -133,9 +121,6 @@ class SolutionServiceTest {
         verify(solutionRepository, times(1)).save(any(Solution.class));
     }
 
-    /**
-     * Tests deleteSolution() to verify repository invokes correct method
-     */
     @Test
     void whenDeleteSolutionCalled_ThenDeleteAndReturnSolution(){
         Mockito.doReturn(Optional.of(testSolution)).when(solutionRepository).findById(1);
