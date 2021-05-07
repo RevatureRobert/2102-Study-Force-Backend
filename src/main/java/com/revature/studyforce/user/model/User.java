@@ -26,7 +26,7 @@ import java.util.Collections;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
-public class User  implements UserDetails {
+public class User {
 
     @Id
     @GeneratedValue()
@@ -53,6 +53,9 @@ public class User  implements UserDetails {
     @Column(name = "is_subscribed_stacktrace")
     private boolean isSubscribedStacktrace;
 
+    /*
+    make .STRING AND USER FOR LOCAL DATABASE
+     */
     @Enumerated(EnumType.ORDINAL)
     @ColumnDefault ("1")
     @JoinColumn(name = "authority_id", referencedColumnName = "authority_id")
@@ -66,49 +69,4 @@ public class User  implements UserDetails {
     @Column(name = "last_login")
     private Timestamp lastLogin;
 
-    public User(String email, String name){
-        this.email = email;
-        this.name= name;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(Authority.toAuthorities().apply(authority));
-    }
-
-    @Override
-    public String getPassword() {
-        throw new UnsupportedOperationException("StudyForce does not retain password information.");
-    }
-
-    /**
-     *
-     * @return true always.
-     * Due to the nature of StudyForce as a stateless authenticated app,
-     * possessing user details implies a non-expired token was received.
-     */
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return isAccountNonLocked();
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return isEnabled();
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return isActive;
-    }
 }
