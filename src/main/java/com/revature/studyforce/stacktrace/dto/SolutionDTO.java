@@ -27,7 +27,9 @@ public class SolutionDTO {
     private String userName;
     private String body;
     private Boolean adminSelected;
+    private Boolean userSelected;
     private Date creationTime;
+    private int totalVote;
 
     /**
      * Returns a function used to converts Solution to SolutionDTO
@@ -45,7 +47,9 @@ public class SolutionDTO {
                     solution.getUserId().getName(),
                     solution.getBody(),
                     solution.getAdminSelected(),
-                    solution.getCreationTime()
+                    solution.getUserSelected(),
+                    solution.getCreationTime(),
+                    solution.getTotalVote()
             );
         };
     }

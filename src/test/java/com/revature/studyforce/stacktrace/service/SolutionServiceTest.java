@@ -57,8 +57,8 @@ class SolutionServiceTest {
 
         testUser = new User(1, "test.test.com", "TestName", false, true, true, Authority.USER, null, null);
         testStacktrace = new Stacktrace(1, testUser, "Test Title", "Test Body", null, null, null);
-        testSolutionDTO = new SolutionDTO(1, 1,1, "TestName", "Test Body", false, null);
-        testSolution = new Solution(1, testStacktrace, testUser, "Test Body", false, null, null);
+        testSolutionDTO = new SolutionDTO(1, 1,1, "TestName", "Test Body", false, false, null, 0);
+        testSolution = new Solution(1, testStacktrace, testUser, "Test Body", false, false, null, 0, null);
         testNullSolution = null;
         testSolutionDTOList = new ArrayList<>();
         testSolutionDTOList.add(testSolutionDTO);

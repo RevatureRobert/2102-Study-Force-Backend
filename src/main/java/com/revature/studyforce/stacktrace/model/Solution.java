@@ -72,10 +72,23 @@ public class Solution {
     private Boolean adminSelected;
 
     /**
+     * This is the boolean used to give the user the ability to pick a solution.
+     */
+    @Column(name = "user_selected")
+    private Boolean userSelected;
+
+    /**
      * This is a timestamp of the time a solution was supplied.
      */
     @Column(name = "creation_time")
     private Date creationTime;
+
+    /**
+     * This will be the sum of votes for any given solution
+     */
+    @Column(name = "total_vote", nullable = false, columnDefinition = "int default 0")
+    private int totalVote;
+
 
     /**
      * Bidirectional relationship needed to cascade delete SolutionVotes
