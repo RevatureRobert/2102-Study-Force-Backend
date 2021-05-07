@@ -62,4 +62,30 @@ public class StackTraceController {
     public StacktraceDTO createStacktrace(@RequestBody StacktraceDTO stacktraceDTO) {
         return stacktraceService.submitStackTrace(stacktraceDTO);
     }
+
+    /**
+     * Gets stacktraces using {@link StacktraceService#getAllStacktracesByTitleOrBodyOrTechnologyId(String, String, int, int, int)}
+     * whose title contains the given title string or whose body contains the given body string
+     * or who's technology matches the given technology ID, applies pagination and sorting
+     * @param title Title String to search for
+     * @param body Body String to search for
+     * @param techologyIdString technology ID to search for, will be converted to an integer
+     * @param page Page number of {@link StacktraceDTO StacktraceDTOs} to be displayed
+     * @param pageSize Number of {@link StacktraceDTO StacktraceDTOs} to be returned
+     * @return Page of matching {@link StacktraceDTO StacktraceDTOs} according to pagesize
+     */
+    @GetMapping("/search")
+    public Page<StacktraceDTO> getAllStackTracesMatchingTitleOrBodyOrTechnologyId(@RequestParam(value = "title", defaultValue = "", required = false) String title,
+                                                                                  @RequestParam(value = "body", defaultValue = "", required = false) String body,
+                                                                                  @RequestParam(value = "technologyId", defaultValue = "-1", required = false) String techologyIdString,
+                                                                                  @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                 @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize) {
+        int technologyId;
+        try {
+            technologyId = Integer.parseInt(techologyIdString);
+        } catch (NumberFormatException e) {
+            technologyId = -1;
+        }
+        return stacktraceService.getAllStacktracesByTitleOrBodyOrTechnologyId(title,body,technologyId,page, pageSize);
+    }
 }

@@ -12,6 +12,8 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 
@@ -70,24 +72,24 @@ class StacktraceServiceTest {
         );
     }
 
-//    @Test
-//    void whenGetAllStackTraces_thenAllStackTracesRetrieved() {
-//        Mockito.when(stacktraceRepository.findAll()).thenReturn(stacktraceArrayList);
-//        Page<StacktraceDTO> returnedStacktraceList = new PageImpl<>(stacktraceDTOArrayList);
-//        stacktraceService.getAllStacktraces(0,0);
-//        for(int i = 0; i < returnedStacktraceList.getContent().size(); i++){
-//            assertEquals(returnedStacktraceList.getContent().get(i).getStacktraceId(),stacktraceArrayList.get(i).getStacktraceId());
-//        }
-//    }
+/*    @Test
+    void whenGetAllStackTraces_thenAllStackTracesRetrieved() {
+        Mockito.when(stacktraceRepository.findAll()).thenReturn(stacktraceArrayList);
+        Page<StacktraceDTO> returnedStacktraceList = new PageImpl<>(stacktraceDTOArrayList);
+        stacktraceService.getAllStacktraces(0,0);
+        for(int i = 0; i < returnedStacktraceList.getContent().size(); i++){
+            assertEquals(returnedStacktraceList.getContent().get(i).getStacktraceId(),stacktraceArrayList.get(i).getStacktraceId());
+        }
+    }
 
-//    @Test
-//    void whenGetAllStackTracesByTechnologyId_thenStackTracesRetrieved() {
-//        Mockito.when(stacktraceRepository.findByTechnologyTechnologyName("TestTech")).thenReturn(stacktraceArrayList);
-//        List<StacktraceDTO> returnedStacktraceList = stacktraceService.getAllStacktraces(0,0);
-//        for(int i = 0; i < returnedStacktraceList.size(); i++){
-//            assertEquals(returnedStacktraceList.get(i).getStacktraceId(),stacktraceArrayList.get(i).getStacktraceId());
-//        }
-//    }
+    @Test
+    void whenGetAllStackTracesByTitleOrBodyOrTechnologyId_thenStackTracesRetrieved() {
+        Mockito.when(stacktraceRepository.findByTechnologyTechnologyName("TestTech")).thenReturn(stacktraceArrayList);
+        Page<StacktraceDTO> returnedStacktraceList = stacktraceService.getAllStacktraces(0,0);
+        for(int i = 0; i < returnedStacktraceList.getContent().size(); i++){
+            assertEquals(returnedStacktraceList.getContent().get(i).getStacktraceId(),stacktraceArrayList.get(i).getStacktraceId());
+        }
+    }*/
 
     @Test
     void whenGetStacktraceById_callRepository_getsCorrectStacktrace(){
