@@ -78,7 +78,7 @@ public class StackTraceController {
     //TODO: Change this to a different endpoint if desired
     public Page<StacktraceDTO> getAllStackTracesMatchingTitleOrBodyOrTechnologyId(@RequestParam(value = "title", defaultValue = "", required = false) String title,
                                                                                   @RequestParam(value = "body", defaultValue = "", required = false) String body,
-                                                                                  @RequestParam(value = "technologyId", defaultValue = "1", required = false) String techologyIdString,
+                                                                                  @RequestParam(value = "technologyId", defaultValue = "-1", required = false) String techologyIdString,
                                                                                   @RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                                  @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize) {
         int technologyId;
