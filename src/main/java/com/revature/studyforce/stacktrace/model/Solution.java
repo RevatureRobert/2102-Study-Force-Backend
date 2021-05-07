@@ -21,7 +21,7 @@ import com.revature.studyforce.user.model.User;
  */
 
 @Entity
-@Table(name = "solution",uniqueConstraints= @UniqueConstraint(columnNames = {"stacktrace_id", "admin_selected"}) )
+@Table(name = "solution")
 @Getter
 @Setter
 @NoArgsConstructor
