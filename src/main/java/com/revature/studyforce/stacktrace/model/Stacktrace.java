@@ -20,10 +20,7 @@ import java.util.Set;
 @Setter
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Stacktrace {
-    /**
-     * Primary key
-     * @author : Noel Shaji
-     */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "stacktrace_id")

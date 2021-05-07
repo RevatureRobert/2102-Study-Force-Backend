@@ -1,12 +1,10 @@
 package com.revature.studyforce.stacktrace.controller;
 
 import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
-import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.service.StacktraceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Rest controller to handle stacktrace requests
@@ -23,12 +21,15 @@ public class StackTraceController {
     private StacktraceService stacktraceService;
 
     /**
-     * Gets all Stacktraces using {@link StacktraceService#getAllStacktraces()}
-     * @return A list of Stacktraces
+     * Gets all Stacktraces using {@link StacktraceService#getAllStacktraces(int, int)}
+     * @param page Page number of {@link StacktraceDTO StacktraceDTOs} to be displayed
+     * @param pageSize Number of {@link StacktraceDTO StacktraceDTOs} to be returned
+     * @return Page of {@link StacktraceDTO StacktraceDTOs} according to pagesize
      */
     @GetMapping()
-    public List<StacktraceDTO> getAllStackTraces() {
-        return stacktraceService.getAllStacktraces();
+    public Page<StacktraceDTO> getAllStackTraces(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                 @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize) {
+        return stacktraceService.getAllStacktraces(page, pageSize);
     }
 
     /**
