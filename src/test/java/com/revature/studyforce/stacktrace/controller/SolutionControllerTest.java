@@ -44,8 +44,12 @@ class SolutionControllerTest {
     @MockBean
     private SolutionService solutionService;
 
+    private final SolutionController solutionController;
+
     @Autowired
-    SolutionController solutionController;
+    SolutionControllerTest(SolutionController solutionController){
+        this.solutionController = solutionController;
+    }
 
     List<SolutionDTO> testSolutionDTOList;
     SolutionDTO testSolutionDTO;
@@ -60,23 +64,6 @@ class SolutionControllerTest {
         objectMapper = new ObjectMapper();
     }
 
-    /**
-     * Test for getAllSolutionsForStacktrace
-     * @throws Exception (for mockMvc.perform())
-     */
-    @Test
-    void whenGivenAStackTraceId_getAllSolutionsForStacktraceTest() throws Exception {
-        Mockito.doReturn(new PageImpl<>(testSolutionDTOList)).when(solutionService).getAllSolutionsForStacktrace(1, 1, 1);
-        mockMvc.perform(MockMvcRequestBuilders.get("/stacktrace/solution/{stackTraceId}", 1)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-        verify(solutionService, times(1)).getAllSolutionsForStacktrace(1, 0, 5);
-    }
-
-    /**
-     * Test for submitFirstSolution
-     * @throws Exception (for mockMvc.perform())
-     */
     @Test
     void whenAPostIsCalled_CallSubmitFirstSolution() throws Exception{
         Mockito.doReturn(testSolutionDTO).when(solutionService).submitFirstSolution(testSolutionDTO);
@@ -87,10 +74,6 @@ class SolutionControllerTest {
                 .andExpect(status().isOk());
     }
 
-    /**
-     * Test for updateSolutionTest
-     * @throws Exception (for mockMvc.perform())
-     */
     @Test
     void WhenAValidSolutionExistsWithinDatabase() throws Exception{
         Mockito.doReturn(testSolutionDTO).when(solutionService).updateSolution(testSolutionDTO);
@@ -100,16 +83,4 @@ class SolutionControllerTest {
                 .andExpect(status().isOk());
     }
 
-    /**
-     * Test for deleteSolutionTest
-     * @throws Exception (for mockMvc.perform())
-     */
-    @Test
-    void deleteSolutionTest() throws Exception{
-        Mockito.doNothing().when(solutionService).deleteSolution(1);
-        mockMvc.perform(MockMvcRequestBuilders.delete("/stacktrace/solution/{id}", 1)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
-        verify(solutionService, times(1)).deleteSolution(1);
-    }
 }
