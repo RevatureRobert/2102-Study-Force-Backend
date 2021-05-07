@@ -30,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * Test class for SolutionController. Uses MockMvc to build requests and match responses
+ * {@link SolutionController}
  * @author Joshua Swanson
  */
 @SpringBootTest
