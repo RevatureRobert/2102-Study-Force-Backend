@@ -13,6 +13,10 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 
@@ -37,6 +41,9 @@ class SolutionServiceTest {
     @MockBean
     private SolutionRepository solutionRepository;
 
+    @MockBean
+    private SolutionService solutionServiceMock;
+
     @Autowired
     SolutionService solutionService;
 
@@ -53,7 +60,7 @@ class SolutionServiceTest {
 
         testUser = new User(1, "test.test.com", "TestName", false, true, true, Authority.USER, null, null);
         testStacktrace = new Stacktrace(1, testUser, "Test Title", "Test Body", null, null, null);
-        testSolutionDTO = new SolutionDTO(1, 1,1, "Test", "Test Body", false, null);
+        testSolutionDTO = new SolutionDTO(1, 1,1, "TestName", "Test Body", false, null);
         testSolution = new Solution(1, testStacktrace, testUser, "Test Body", false, null, null);
         testNullSolution = null;
         testSolutionDTOList = new ArrayList<>();
@@ -66,26 +73,29 @@ class SolutionServiceTest {
      * Tests getAllSolutionsForStackTrace() by checking size and contents of returned SolutionDTO
      */
 
-//    @Test
-//    void getAllSolutionsForStackTraceTest(){
-//        Mockito.doReturn(testSolutionList).when(solutionRepository).findByStackTraceId(1);
-//        List<SolutionDTO> solutionDTOS = solutionService.getAllSolutionsForStacktrace(1);
-//        assertEquals(1, solutionDTOS.size());
-//        assertEquals(solutionDTOS.get(0).getSolutionId(), testSolutionDTO.getSolutionId());
-//        assertEquals(solutionDTOS.get(0).getStackTraceId(), testSolutionDTO.getStackTraceId());
-//        assertEquals(solutionDTOS.get(0).getUserName(), testSolutionDTO.getUserName());
-//        assertEquals(solutionDTOS.get(0).getBody(), testSolutionDTO.getBody());
-//        assertEquals(solutionDTOS.get(0).getCreationTime(), testSolutionDTO.getCreationTime());
-//        assertEquals(solutionDTOS.get(0).getAdminSelected(), testSolutionDTO.getAdminSelected());
-//        verify(solutionRepository, times(1)).findByStackTraceId(1);
-//    }
+    @Test
+    void returnAPageOfSolutionDTOs_WhenAValidStacktraceIdIsPassed(){
+        Page<Solution> solutionPage = new PageImpl<>(testSolutionList);
+        Mockito.doReturn(0).when(solutionServiceMock).validatePage(0);
+        Mockito.doReturn(5).when(solutionServiceMock).validatePageSize(0);
+        Mockito.doReturn(solutionPage).when(solutionRepository).findByStackTraceId_stacktraceId(1, PageRequest.of(0,5));
+        Page<SolutionDTO> solutionDTOS = solutionService.getAllSolutionsForStacktrace(1, 0, 5);
+        solutionDTOS = solutionPage.map(SolutionDTO.solutionToDTO());
+        assertEquals(1, solutionDTOS.getContent().size());
+        assertEquals(solutionDTOS.getContent().get(0).getSolutionId(), testSolutionDTO.getSolutionId());
+        assertEquals(solutionDTOS.getContent().get(0).getStackTraceId(), testSolutionDTO.getStackTraceId());
+        assertEquals(solutionDTOS.getContent().get(0).getUserName(), testSolutionDTO.getUserName());
+        assertEquals(solutionDTOS.getContent().get(0).getBody(), testSolutionDTO.getBody());
+        assertEquals(solutionDTOS.getContent().get(0).getCreationTime(), testSolutionDTO.getCreationTime());
+        assertEquals(solutionDTOS.getContent().get(0).getAdminSelected(), testSolutionDTO.getAdminSelected());
+    }
 
 
     /**
      * Tests submitFirstSolution()
      */
     @Test
-    void submitFirstSolutionTest(){
+    void whenASolutionDTOIsPassed_SaveAndReturnThatSolution(){
         Mockito.doReturn(testSolution).when(solutionRepository).save(any(Solution.class));
         SolutionDTO solutionDTO = solutionService.submitFirstSolution(testSolutionDTO);
         assertEquals(solutionDTO.getSolutionId(), testSolutionDTO.getSolutionId());
@@ -143,5 +153,4 @@ class SolutionServiceTest {
         solutionService.deleteSolution(1);
         verify(solutionRepository, times(1)).delete(any(Solution.class));
     }
-
 }
