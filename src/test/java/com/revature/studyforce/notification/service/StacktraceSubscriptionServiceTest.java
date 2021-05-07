@@ -24,6 +24,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * @author Brandon Pinkerton
+ * @author Daniel Kopeloff
+ * {@link StacktraceSubscriptionService}
+ * {@link StacktraceSubscriptionRepository}
+ * * {@link StacktraceRepository}
+ *  * {@link SubscriptionService}
+ */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test-application.properties")

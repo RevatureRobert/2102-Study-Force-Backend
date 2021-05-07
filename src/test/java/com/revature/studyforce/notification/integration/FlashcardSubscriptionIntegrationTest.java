@@ -28,6 +28,17 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+
+/**
+ * @author Brandon Pinkerton
+ * {@link SubscriptionController }
+ * {@link SubscriptionService}
+ * {@link SubscriptionRepository}
+ * {@link FlashcardSubscriptionService}
+ * {@link FlashcardSubscriptionRepository}
+ * {@link FlashcardRepository}
+ * {@link UserRepository}
+ */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @AutoConfigureMockMvc
