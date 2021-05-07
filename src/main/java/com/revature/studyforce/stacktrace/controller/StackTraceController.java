@@ -1,5 +1,6 @@
 package com.revature.studyforce.stacktrace.controller;
 
+import com.revature.studyforce.stacktrace.dto.SolutionDTO;
 import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
 import com.revature.studyforce.stacktrace.service.StacktraceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,5 +88,19 @@ public class StackTraceController {
             technologyId = -1;
         }
         return stacktraceService.getAllStacktracesByTitleOrBodyOrTechnologyId(title,body,technologyId,page, pageSize);
+    }
+
+    /**
+     * This method should return the updated stacktrace that picks a solutionId and assigns it to chosenSolution
+     * using {@link StacktraceService#updateStacktraceChosenSolutionBySolutionAndStacktraceId(int, int)}
+     * @param solutionId The id to be assigned to the stacktrace chosenSolution field
+     * @param stacktraceId the primary key for the stacktrace table
+     * @return should return the updated stacktrace with a solutionId assigned to the chosenSolution column on the
+     * stacktrace table
+     */
+    @PutMapping("/chosen-solution")
+    public StacktraceDTO updateStacktraceChosenSolutionBySolutionIdAndStacktraceId(@RequestParam(value = "solutionId") int solutionId,
+                                                                   @RequestParam(value= "stacktraceId") int stacktraceId){
+        return stacktraceService.updateStacktraceChosenSolutionBySolutionAndStacktraceId(solutionId,stacktraceId);
     }
 }

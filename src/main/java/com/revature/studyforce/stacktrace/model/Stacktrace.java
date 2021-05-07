@@ -76,6 +76,12 @@ public class Stacktrace {
     private Timestamp creationTime;
 
     /**
+     * The solutionId picked by the user or overruled by the admin
+     */
+    @Column(name = "chosen_solution")
+    private int chosenSolution;
+
+    /**
      * Bidirectional relationship needed to cascade delete solutions
      */
     @JsonIgnoreProperties("stackTraceId")
