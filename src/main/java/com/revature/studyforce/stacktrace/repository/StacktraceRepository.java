@@ -21,4 +21,6 @@ public interface StacktraceRepository extends JpaRepository<Stacktrace, Integer>
     List<Stacktrace> findByTechnologyTechnologyName(String technologyName);
 
     Page<Stacktrace> findAll(Pageable pageable);
+
+    Page<Stacktrace> findByTitleContainingIgnoreCaseOrBodyContainingIgnoreCaseOrTechnology_TechnologyId(String title, String body, int technologyId, Pageable pageable);
 }

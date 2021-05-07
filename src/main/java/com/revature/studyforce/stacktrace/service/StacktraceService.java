@@ -8,6 +8,7 @@ import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
@@ -52,12 +53,21 @@ public class StacktraceService {
     }
 
     /**
-     * Gets Stacktraces with the given technology name using {@link StacktraceRepository#findById(Object)}
-     * @param name the name of the technology to search for
-     * @return A list of Stacktraces exactly matching the given technology name
+     * Gets all stack traces by {@link StacktraceRepository#findByTitleContainingIgnoreCaseOrBodyContainingIgnoreCaseOrTechnology_TechnologyId(String, String, int, Pageable)}
+     * who's name contains the given name or who's body contains the given body or
+     * who's technology id matches the given technology id
+     * @param title the title substring to search for
+     * @param body the body substring to search for
+     * @param technologyId the technology id to search for
+     * @param page the page to be displayed
+     * @param pageSize Number of {@link Stacktrace Stacktraces} to be displayed
+     * @return Page of matching {@link Stacktrace Stacktraces} dependent on provided page, pageSize
      */
-    public List<StacktraceDTO> getAllStacktracesOfTechnologyName(String name) {
-        return stacktraceRepo.findByTechnologyTechnologyName(name).stream().map(StacktraceDTO.stacktraceToDTO()).collect(Collectors.toList());
+
+    public Page<StacktraceDTO> getAllStacktracesByTitleOrBodyOrTechnologyId(String title, String body, int technologyId, int page, int pageSize) {
+        pageSize = validatePageSize(pageSize);
+        page = validatePage(page);
+        return stacktraceRepo.findByTitleContainingIgnoreCaseOrBodyContainingIgnoreCaseOrTechnology_TechnologyId(title,body,technologyId,PageRequest.of(page,pageSize)).map(StacktraceDTO.stacktraceToDTO());
     }
 
     /**
