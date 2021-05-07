@@ -168,7 +168,7 @@ public class BatchService {
 
         updateBatch.getInstructors().forEach(email -> {
             Optional <User> instructor = userRepository.findByEmail(email);
-            if(!instructor.isPresent() || !instructor.get().getAuthority().authorityName.equals("ADMIN")){
+            if(!instructor.isPresent()){
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Instructor does not exist");
             }
 
