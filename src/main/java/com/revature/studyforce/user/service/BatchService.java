@@ -121,7 +121,7 @@ public class BatchService {
         createBatch.getInstructors().forEach(email -> {
             Optional <User> instructor = userRepository.findByEmail(email);
             if(!instructor.isPresent() ){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"____Instructor does not exist or does not have Admin privileges!!____");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Instructor does not exist or does not have Admin privileges!!");
             }
 
             instructors.add(instructor.get());
@@ -157,11 +157,10 @@ public class BatchService {
      * @param updateBatch Data transfer object with batchId, name, array of instructor emails and array of user emails
      * @return updated batch or exception if no batch matching batchId exist
      */
-
     public Batch updateBatch(CreateUpdateBatchDTO updateBatch){
         Optional<Batch> checkBatchId = batchRepository.findById(updateBatch.getBatchId());
         if(!checkBatchId.isPresent()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"___Not Batch found___");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Not Batch found");
         }
 
         Set<User> users = new HashSet<>();

@@ -29,6 +29,7 @@ class BatchServiceCreateTest {
 
     @MockBean
     private BatchRepository batchRepository;
+
     @MockBean
     private UserRepository userRepository;
 
@@ -60,11 +61,7 @@ class BatchServiceCreateTest {
         StudentList.add(student);
         StudentList.add(student2);
 
-    System.out.println(instructor.toString());
-    System.out.println(users.toString());
-
         CreateUpdateBatchDTO batch = new CreateUpdateBatchDTO(0, "2102 Enterprise", instructor, users);
-    System.out.println(batch.toString());
 
         Mockito.when(userRepository.findByEmail("user@gmail.com")).thenReturn(Optional.of(student));
         Mockito.when(userRepository.findByEmail("user2@gmail.com")).thenReturn(Optional.of(student2));
@@ -74,12 +71,11 @@ class BatchServiceCreateTest {
 
         Batch response = batchService.createBatch(batch);
 
-
         Assertions.assertNotNull(response);
-//        Assertions.assertEquals(1, response.getBatchId());
-//        Assertions.assertEquals("2102 Enterprise", response.getName());
-//        Assertions.assertEquals(AdminList, response.getInstructors());
-//        Assertions.assertEquals(StudentList, response.getUsers());
+        Assertions.assertEquals(0, response.getBatchId());
+        Assertions.assertEquals("2102 Enterprise", response.getName());
+        Assertions.assertEquals(AdminList, response.getInstructors());
+        Assertions.assertEquals(StudentList, response.getUsers());
 
     }
 
@@ -121,8 +117,6 @@ class BatchServiceCreateTest {
         Mockito.when(batchRepository.findById(1)).thenReturn(Optional.of(batch1));
 
         Batch response = batchService.createBatch(batch);
-        System.out.println(response.toString());
-
 
         batch.setName("1403 Enterprise V2");
         User student3 = new User(0 , "user3@gmail.com", "Nicholas", true, true, true, userAuth, t2, t2);
@@ -136,14 +130,7 @@ class BatchServiceCreateTest {
         updatedStudentList.add(student3);
         Mockito.when(userRepository.findByEmail("user3@gmail.com")).thenReturn(Optional.of(student3));
 
-    //        System.out.println(batch.toString());
-
-    System.out.println(updatedAdminList.toString());
-    System.out.println(updatedStudentList);
-
         Batch updateResponse = batchService.updateBatch(batch);
-
-        System.out.println(updateResponse.toString());
 
         Assertions.assertNotNull(response);
         Assertions.assertEquals(0, response.getBatchId());
