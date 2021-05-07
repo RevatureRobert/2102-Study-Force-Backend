@@ -116,7 +116,7 @@ class StacktraceServiceTest {
      * Test for deleteStackTraceById()
      */
     @Test
-    void deleteStackTraceByIdTest(){
+    void whenDeleteStacktraceCalled_ThenDeleteAndReturnStacktrace(){
         Mockito.doReturn(Optional.of(stacktraceArrayList.get(0))).when(stacktraceRepository).findById(1);
         Mockito.doNothing().when(stacktraceRepository).deleteById(1);
         stacktraceService.deleteStackTraceById(1);
@@ -124,7 +124,7 @@ class StacktraceServiceTest {
     }
 
     @Test
-    void deleteStackTraceByIdTest1(){
+    void whenDeleteStacktraceCalledWithNullParameter_ThenReturnNull(){
         Mockito.doReturn(Optional.ofNullable(null)).when(stacktraceRepository).findById(1);
         assertNull(stacktraceService.deleteStackTraceById(1));
     }

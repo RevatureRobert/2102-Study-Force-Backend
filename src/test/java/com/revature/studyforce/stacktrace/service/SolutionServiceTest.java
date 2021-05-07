@@ -66,10 +66,6 @@ class SolutionServiceTest {
         testSolutionList.add(testSolution);
     }
 
-    /**
-     * Tests getAllSolutionsForStackTrace() by checking size and contents of returned SolutionDTO
-     */
-
     @Test
     void returnAPageOfSolutionDTOs_WhenAValidStacktraceIdIsPassed(){
         Page<Solution> solutionPage = new PageImpl<>(testSolutionList);
@@ -85,10 +81,6 @@ class SolutionServiceTest {
         assertEquals(solutionDTOS.getContent().get(0).getAdminSelected(), testSolutionDTO.getAdminSelected());
     }
 
-
-    /**
-     * Tests submitFirstSolution()
-     */
     @Test
     void whenASolutionDTOIsPassed_SaveAndReturnThatSolution(){
         Mockito.doReturn(testSolution).when(solutionRepository).save(any(Solution.class));
@@ -102,9 +94,7 @@ class SolutionServiceTest {
         verify(solutionRepository, times(1)).save(any(Solution.class));
     }
 
-    /**
-     * Tests updateSolution() with a solution that can be found in the data store
-     */
+
     @Test
     void updateSolutionWithSolutionInDBTest(){
         Mockito.doReturn(Optional.of(testSolution)).when(solutionRepository).findById(any(Integer.class));
@@ -120,10 +110,7 @@ class SolutionServiceTest {
         verify(solutionRepository, times(1)).save(any(Solution.class));
     }
 
-    /**
-     * Tests updateSolution() with a Solution that is not stored in DB
-     *  Should persist new solution
-     */
+
     @Test
     void updateSolutionWithNoSolutionInDBTest(){
         Mockito.doReturn(Optional.ofNullable(testNullSolution)).when(solutionRepository).findById(any(Integer.class));
@@ -139,14 +126,23 @@ class SolutionServiceTest {
         verify(solutionRepository, times(1)).save(any(Solution.class));
     }
 
-    /**
-     * Tests deleteSolution() to verify repository invokes correct method
-     */
     @Test
-    void deleteSolutionTest(){
-        Mockito.doNothing().when(solutionRepository).delete(any(Solution.class));
-        solutionService.deleteSolution(1);
-        verify(solutionRepository, times(1)).delete(any(Solution.class));
+    void whenDeleteSolutionCalled_ThenDeleteAndReturnSolution(){
+        Mockito.doReturn(Optional.of(testSolution)).when(solutionRepository).findById(1);
+        Mockito.doNothing().when(solutionRepository).delete(testSolution);
+        assertEquals(testSolutionDTO.getSolutionId(), solutionService.deleteSolution(1).getSolutionId());
+        assertEquals(testSolutionDTO.getUserId(), solutionService.deleteSolution(1).getUserId());
+        assertEquals(testSolutionDTO.getStackTraceId(), solutionService.deleteSolution(1).getStackTraceId());
+        assertEquals(testSolutionDTO.getBody(), solutionService.deleteSolution(1).getBody());
+        assertEquals(testSolutionDTO.getAdminSelected(), solutionService.deleteSolution(1).getAdminSelected());
+        assertEquals(testSolutionDTO.getUserName(), solutionService.deleteSolution(1).getUserName());
+        assertEquals(testSolutionDTO.getCreationTime(), solutionService.deleteSolution(1).getCreationTime());
+    }
+  
+    @Test
+    void whenDeleteSolutionCalledWithNullParameter_ThenReturnNull(){
+        Mockito.doReturn(Optional.ofNullable(null)).when(solutionRepository).findById(1);
+        assertNull(solutionService.deleteSolution(1));
     }
 
     @Test

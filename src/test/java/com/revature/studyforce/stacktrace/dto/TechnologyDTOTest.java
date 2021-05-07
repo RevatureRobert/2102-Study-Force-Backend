@@ -21,23 +21,16 @@ class TechnologyDTOTest {
         testTechnology = new Technology(1, "TestTech");
     }
 
-    /**
-     * Test that a Technology can correctly return a TechnologyDTO
-     */
     @Test
-    void TechnologyToDTOTest(){
+    void getTechnologyDTO_whenGivenTechnology(){
         TechnologyDTO technologyDTO = TechnologyDTO.technologyToDTO().apply(testTechnology);
         assertEquals(technologyDTO.getClass(), TechnologyDTO.class);
         assertEquals(technologyDTO.getTechnologyId(), testTechnology.getTechnologyId());
         assertEquals(technologyDTO.getTechnologyName(),testTechnology.getTechnologyName());
     }
 
-
-    /**
-     * Test that a TechnologyDTO can correctly return a Technology
-     */
     @Test
-    void DTOToTechnologyTest(){
+    void getTechnology_whenGivenTechnologyDTO(){
         Technology Technology = TechnologyDTO.dtoToTechnology().apply(testTechnologyDTO);
         assertEquals(Technology.getClass(), Technology.class);
         assertEquals(Technology.getTechnologyId(), testTechnologyDTO.getTechnologyId());
