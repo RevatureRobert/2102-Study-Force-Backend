@@ -5,7 +5,6 @@ import com.revature.studyforce.stacktrace.model.SolutionVote;
 import com.revature.studyforce.stacktrace.repository.SolutionRepository;
 import com.revature.studyforce.stacktrace.repository.SolutionVoteRepository;
 import com.revature.studyforce.user.repository.UserRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

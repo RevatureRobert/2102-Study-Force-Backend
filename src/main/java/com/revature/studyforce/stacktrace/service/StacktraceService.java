@@ -4,7 +4,6 @@ import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
 import com.revature.studyforce.stacktrace.repository.TechnologyRepository;
-import com.revature.studyforce.user.dto.UserNameDTO;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,21 +26,17 @@ public class StacktraceService {
     private final StacktraceRepository stacktraceRepo;
     private final UserRepository userRepository;
     private final TechnologyRepository technologyRepository;
-    private int defaultPageSize;
+    private final int defaultPageSize;
 
     @Autowired
     public StacktraceService(StacktraceRepository stacktraceRepo,
                              UserRepository userRepository, TechnologyRepository technologyRepository){
         this.stacktraceRepo = stacktraceRepo;
         this.userRepository = userRepository;
-        this.technologyRepository =technologyRepository;
+        this.technologyRepository = technologyRepository;
         defaultPageSize = 5;
     }
 
-    /**
-     * Gets all Stacktraces using {@link StacktraceRepository#findAll()}
-     * @return A list of Stacktraces
-     */
 
     /**
      * Retrieves a page of {@link Stacktrace Stacktraces}

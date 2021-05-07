@@ -1,8 +1,6 @@
 package com.revature.studyforce.stacktrace.dto;
 
 import com.revature.studyforce.stacktrace.model.Stacktrace;
-import com.revature.studyforce.stacktrace.model.Technology;
-import com.revature.studyforce.user.dto.UserNameDTO;
 import lombok.*;
 
 import java.sql.Timestamp;

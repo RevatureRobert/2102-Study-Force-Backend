@@ -4,18 +4,15 @@ import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.model.Technology;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
-import com.revature.studyforce.user.dto.UserNameDTO;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 
 import java.sql.Timestamp;
@@ -35,6 +32,7 @@ import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test-application.properties")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class StacktraceServiceTest {
 
     List<Stacktrace> stacktraceArrayList;
@@ -44,7 +42,7 @@ class StacktraceServiceTest {
     @MockBean
     private StacktraceRepository stacktraceRepository;
 
-    @InjectMocks
+    @Autowired
     private StacktraceService stacktraceService;
 
     @BeforeEach
@@ -113,7 +111,6 @@ class StacktraceServiceTest {
 
         response = stacktraceService.getStackTraceById(255);
         assertNull(response);
-        System.out.println(response);
     }
 
     /**
