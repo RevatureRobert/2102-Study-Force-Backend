@@ -59,6 +59,7 @@ class TechnologyServiceTests {
         assertEquals(0,technologyDTO.getTechnologyId());
         assertEquals("TestTech",technologyDTO.getTechnologyName());
     }
+
     @Test
     void whenDeleteTechnologyCalled_ThenDeleteAndReturnTechnology() {
         Mockito.doReturn(Optional.of(testTech)).when(technologyRepository).findById(1);

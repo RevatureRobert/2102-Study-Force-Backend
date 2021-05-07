@@ -53,7 +53,7 @@ class SolutionServiceTest {
 
         testUser = new User(1, "test.test.com", "TestName", false, true, true, Authority.USER, null, null);
         testStacktrace = new Stacktrace(1, testUser, "Test Title", "Test Body", null, null, null);
-        testSolutionDTO = new SolutionDTO(1, 1,1, "Test", "Test Body", false, null);
+        testSolutionDTO = new SolutionDTO(1, 1,1, "TestName", "Test Body", false, null);
         testSolution = new Solution(1, testStacktrace, testUser, "Test Body", false, null, null);
         testNullSolution = null;
         testSolutionDTOList = new ArrayList<>();
@@ -79,7 +79,6 @@ class SolutionServiceTest {
 //        assertEquals(solutionDTOS.get(0).getAdminSelected(), testSolutionDTO.getAdminSelected());
 //        verify(solutionRepository, times(1)).findByStackTraceId(1);
 //    }
-
 
     /**
      * Tests submitFirstSolution()
@@ -138,10 +137,21 @@ class SolutionServiceTest {
      * Tests deleteSolution() to verify repository invokes correct method
      */
     @Test
-    void deleteSolutionTest(){
-        Mockito.doNothing().when(solutionRepository).delete(any(Solution.class));
-        solutionService.deleteSolution(1);
-        verify(solutionRepository, times(1)).delete(any(Solution.class));
+    void whenDeleteSolutionCalled_ThenDeleteAndReturnSolution(){
+        Mockito.doReturn(Optional.of(testSolution)).when(solutionRepository).findById(1);
+        Mockito.doNothing().when(solutionRepository).delete(testSolution);
+        assertEquals(testSolutionDTO.getSolutionId(), solutionService.deleteSolution(1).getSolutionId());
+        assertEquals(testSolutionDTO.getUserId(), solutionService.deleteSolution(1).getUserId());
+        assertEquals(testSolutionDTO.getStackTraceId(), solutionService.deleteSolution(1).getStackTraceId());
+        assertEquals(testSolutionDTO.getBody(), solutionService.deleteSolution(1).getBody());
+        assertEquals(testSolutionDTO.getAdminSelected(), solutionService.deleteSolution(1).getAdminSelected());
+        assertEquals(testSolutionDTO.getUserName(), solutionService.deleteSolution(1).getUserName());
+        assertEquals(testSolutionDTO.getCreationTime(), solutionService.deleteSolution(1).getCreationTime());
     }
 
+    @Test
+    void whenDeleteSolutionCalledWithNullParameter_ThenReturnNull(){
+        Mockito.doReturn(Optional.ofNullable(null)).when(solutionRepository).findById(1);
+        assertNull(solutionService.deleteSolution(1));
+    }
 }
