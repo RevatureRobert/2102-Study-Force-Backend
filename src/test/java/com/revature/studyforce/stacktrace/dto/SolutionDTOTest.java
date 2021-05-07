@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test class for SolutionsDTO
  *  There has to be a problem with testing like this. These tests are not
  *  meaningful but we need code coverage
+ *  {@link SolutionDTO#solutionToDTO()}
  * @author Joshua Swanson
  */
 @SpringBootTest

@@ -13,6 +13,14 @@ import java.sql.Timestamp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Test class for StacktraceDTO
+ *  When given a stacktrace you can
+ *  convert it into a stacktraceDTO.
+ *
+ * @author Joshua Swanson
+ */
+
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test-application.properties")
 
