@@ -33,11 +33,25 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+
+/**
+ * @author Brandon Pinkerton
+ * @author Daniel Kopeloff
+ *
+ * {@link SubscriptionController}
+ * {@link SubscriptionService}
+ * {@link SubscriptionRepository}
+ * {@link StacktraceSubscriptionService}
+ * {@link StacktraceSubscriptionRepository}
+ * {@link StacktraceRepository}
+ * {@link UserRepository}
+ * {@link TechnologyRepository}
+ */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:test-application.properties")
-public class StacktraceSubscriptionIntegrationTest {
+class StacktraceSubscriptionIntegrationTest {
 
     private MockMvc mockMvc;
 
@@ -100,6 +114,8 @@ public class StacktraceSubscriptionIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.stacktraceSubscriptionId.stacktrace").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.stacktraceSubscriptionId.subscription").value(2))
                 .andReturn();
         System.out.println("GET");
         System.out.println(result.getResponse().getContentAsString());

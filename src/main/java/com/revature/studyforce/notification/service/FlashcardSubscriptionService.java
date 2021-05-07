@@ -17,9 +17,9 @@ import java.util.Objects;
 @Service
 public class FlashcardSubscriptionService {
 
-    private FlashcardSubscriptionRepository flashcardSubscriptionRepository;
-    private SubscriptionService subscriptionService;
-    private FlashcardRepository flashcardRepository;
+    private final FlashcardSubscriptionRepository flashcardSubscriptionRepository;
+    private final SubscriptionService subscriptionService;
+    private final FlashcardRepository flashcardRepository;
 
     @Autowired
     public FlashcardSubscriptionService(FlashcardSubscriptionRepository flashcardSubscriptionRepository,

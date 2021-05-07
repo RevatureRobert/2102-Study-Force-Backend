@@ -2,14 +2,13 @@ package com.revature.studyforce.notification.repository;
 
 import com.revature.studyforce.notification.model.FlashcardSubscription;
 import com.revature.studyforce.notification.model.FlashcardSubscriptionId;
-import com.revature.studyforce.user.model.Batch;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
- * Reposiotry for Flashcard Subscriptiosn {@link FlashcardSubscription}
+ * Repository for Flashcard Subscriptions {@link FlashcardSubscription}
  * @author Brandon Pinkerton
  */
 @Repository

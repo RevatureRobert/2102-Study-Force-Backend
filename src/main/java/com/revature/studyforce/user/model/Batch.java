@@ -14,7 +14,6 @@ import java.util.Set;
  * @author Daniel Bernier
  * @author Sam Daniel
  */
-
 @Entity
 @Data
 @NoArgsConstructor
