@@ -71,11 +71,11 @@ class BatchIntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].batchId").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name").value("2102 Enterprise2"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].batchId").value(4))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name").value("2103 Enterprise3"))
 
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].batchId").value(2))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].name").value("2103 Enterprise3"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].batchId").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].name").value("2102 Enterprise2"));
     }
 
     @Test

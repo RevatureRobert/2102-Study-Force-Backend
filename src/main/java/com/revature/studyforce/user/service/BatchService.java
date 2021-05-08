@@ -16,10 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Service Layer for Batch using {@link BatchRepository}
@@ -230,6 +227,20 @@ public class BatchService {
             batchRepository.deleteById(batchId);
         }
         return batch;
+    }
+
+    /**
+     * Gets all Batches that user belongs to using {@link BatchRepository#findAllByInstructors_UserId(int)}
+     * @param userId of user or instructor
+     * @return List of Batches user or instructor belongs to.
+     */
+    public List<Batch> findByUserOrInstructorId(int userId){
+
+        List<Batch> batches = batchRepository.findAllByInstructors_UserId(userId);
+        List<Batch> batches2 = batchRepository.findAllByUsers_UserId(userId);
+        List<Batch> allBatches = batches;
+        allBatches.addAll(batches2);
+        return allBatches;
     }
 
 

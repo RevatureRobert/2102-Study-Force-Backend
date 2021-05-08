@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Batch Controller for Batch Repo {@link BatchService}
  * @author Daniel Reyes
@@ -107,8 +109,8 @@ public class BatchController {
      * @param batchId of Batch that needs to be deactivated.
      * @return Batch updated to show deactivated users
      */
-    @PutMapping("/deactivateBatch")
-    public @ResponseBody Batch deactivateBatch(@RequestBody int batchId){
+    @PutMapping("/deactivateBatch/{batchId}")
+    public @ResponseBody Batch deactivateBatch(@PathVariable("batchId") int batchId){
 
         return batchService.deactivateBatch(batchId);
 
@@ -122,6 +124,17 @@ public class BatchController {
     @DeleteMapping("/{batchId}")
     public @ResponseBody Batch deleteBatch(@PathVariable int id){
         return batchService.deleteBatch(id);
+    }
+
+    /**
+     * GET Mapping, Finds Batches that users belong to using {@link BatchService#findByUserOrInstructorId(int)}
+     * @param id userID of instructor or user.
+     * @return List of Batches user belongs to
+     */
+    @GetMapping("/batches/{id}")
+    public @ResponseBody
+    List<Batch> findByInstructorOrUserId(@PathVariable("id") int id){
+        return batchService.findByUserOrInstructorId(id);
     }
 
 }

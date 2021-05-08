@@ -27,6 +27,7 @@ import java.util.Set;
 
 /**
  * tests for integration of Batch Controller {@link BatchController}
+ * Include Deactivate, Create, ANd findByUsersInBatches
  * @author Daniel Reyes
  */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -109,18 +110,64 @@ class BatchCreateAndUpdateIntegrationTest {
         userRepository.save(student2);
 
         Batch batch = new Batch(0, "2102 Enterprise2", AdminList, StudentList, t2);
+        batchRepository.save(batch);
+
+    System.out.println(batch.toString());
 
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
-        mockMvc.perform(MockMvcRequestBuilders.put("/batches/0")
+        mockMvc.perform(MockMvcRequestBuilders.put("/batches/deactivateBatch/5")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.users[0].isActive").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.instructors[0].isActive").value(true))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.users[1].isActive").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.instructors[1].isActive").value(true));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.users[0].active").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.instructors[0].active").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.users[1].active").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.instructors[1].active").value(true));
 
+    }
+
+    @Test
+    void givenUserId_whenGetAllBatchesUserBelongsTo_theReturnALlBatches() throws Exception {
+
+        Set<User> AdminList = new HashSet<>();
+        Set<User> StudentList = new HashSet<>();
+
+        Authority authority = Authority.ADMIN;
+        Authority userAuth = Authority.USER;
+        Instant instant = Instant.now();
+        long epochMilli = Date.from(instant).getTime();
+        Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(epochMilli));
+        User Admin = new User(0, "admin@gmail.com", "Robert", true, true, true, authority, t2, t2);
+        User student = new User(0, "c@gmail.com", "Daniel", true, true, true, userAuth, t2, t2);
+        User Admin2 = new User(0, "admin2@gmail.com", "Richard", true, true, true, authority, t2, t2);
+        User student2 = new User(0, "user2@gmail.com", "Danny", true, true, true, userAuth, t2, t2);
+
+        AdminList.add(Admin);
+        StudentList.add(student);
+        AdminList.add(Admin2);
+        StudentList.add(student2);
+
+        userRepository.save(Admin);
+        userRepository.save(Admin2);
+        userRepository.save(student);
+        userRepository.save(student2);
+
+        Batch batch = new Batch(0, "2102 Enterprise2", AdminList, StudentList, t2);
+        batchRepository.save(batch);
+
+        System.out.println(batch.toString());
+
+
+        mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
+        mockMvc.perform(MockMvcRequestBuilders.get("/batches/batches/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0]").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].batchId").value(5))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].name").value("2102 Enterprise2"));
     }
 
 

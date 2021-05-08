@@ -78,7 +78,8 @@ public class User  implements UserDetails {
 
     @Override
     public String getPassword() {
-        throw new UnsupportedOperationException("StudyForce does not retain password information.");
+        //throw new UnsupportedOperationException("StudyForce does not retain password information.");
+        return null;
     }
 
     /**
