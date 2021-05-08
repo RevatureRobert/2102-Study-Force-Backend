@@ -65,7 +65,7 @@ class FlashcardIntegrationTest {
     Topic topic;
 
     @BeforeEach
-    public void setUp() throws JsonProcessingException {
+    public void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(flashcardController).build();
         flashcardDTO = new FlashcardDTO();
         user = new User(0,"a@b.c","fn ln",true,false,false, Authority.USER, null,null);
@@ -148,6 +148,20 @@ class FlashcardIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.question").isString())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.difficulty").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.resolved").isBoolean());
+
+    }
+
+    @Test
+    void givenUserId_whenGetByUserId_shouldReturnAllFlashcardDTOWithMatchingUserId() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/by-user/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].creatorId").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].question").isString())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].difficulty").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].resolved").isBoolean());
 
     }
 
