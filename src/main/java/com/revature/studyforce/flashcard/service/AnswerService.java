@@ -116,4 +116,21 @@ public class AnswerService  implements AbstractService{
                 return "creator";
         }
     }
+
+    /**
+     * Update the answer to be answered
+     * @param id The id of the answer element
+     * @return The updated answer
+     */
+    public Answer updateAnswerToCorrect(int id) {
+        Answer answer = answerRepository.findById(id).orElse(null);
+
+        if (answer != null) {
+            answer.setSelectedAnswer(true);
+            answer.setTrainerSelected(true);
+            answer = answerRepository.saveAndFlush(answer);
+        }
+
+        return answer;
+    }
 }
