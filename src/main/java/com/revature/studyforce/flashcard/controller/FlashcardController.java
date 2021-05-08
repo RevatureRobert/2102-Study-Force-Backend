@@ -112,6 +112,16 @@ public class FlashcardController {
     }
 
     /**
+     * Retrieves flashcards with the given user id {@link FlashcardService#getByUserId(int)}
+     * @param id - the id of the user
+     * @return - returns Flashcards with the given user id
+     */
+    @GetMapping("by-user/{userId}")
+    public @ResponseBody Page<FlashcardAllDTO> getByUserId(@PathVariable("userId") Integer id) {
+        return flashcardService.getByUserId(id);
+    }
+
+    /**
      * Persists flashcard (uses NewFlashcardDTO) {@link FlashcardService#save(NewFlashcardDTO)}
      * @param flashcard - Flashcard object to persist
      * @return - returns persisted Flashcard

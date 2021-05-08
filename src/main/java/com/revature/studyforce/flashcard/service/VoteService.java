@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Service class for the VoteRepository {@link VoteRepository}
@@ -83,5 +84,19 @@ public class VoteService {
       throw new ResponseStatusException(
           HttpStatus.GONE, "User vote not found for this flashcard answer");
       }
+    }
+
+    /**
+     * Retrieves a List of all Votes for the given Answer
+     * @param answerId - the answer for which to return all Votes
+     * @return - returns a List of Votes according the the answerId
+     */
+    public List<VoteDTO> getAll(int answerId){
+        Optional<Answer> answer = answerRepository.findById(answerId);
+        if (!answer.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ANSWER_EXCEPTION);
+        }
+
+        return voteRepository.findByAnswerAnswerId(answer.get().getAnswerId()).stream().map(VoteDTO.convertVoteToDto()).collect(Collectors.toList());
     }
 }
