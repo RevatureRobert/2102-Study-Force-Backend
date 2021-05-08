@@ -29,7 +29,7 @@ import java.util.Collections;
 public class User  implements UserDetails {
 
     @Id
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
     private int userId;
 

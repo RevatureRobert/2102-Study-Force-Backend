@@ -46,7 +46,7 @@ class UserServiceTest {
         User user = new User(1 , "dan@gmail.com", "Daniel", true, true, true, authority, t2, t2);
         userList.add(user);
         Page<User> userPage = new PageImpl<>(userList);
-
+        System.out.println(user.toString());
         Mockito.when(userRepository.findAll(org.mockito.ArgumentMatchers.isA(Pageable.class))).thenReturn(userPage);
 
         Page<UserDTO> response = userService.getAllUsers(0, 5, "userId", "DESC");
@@ -55,6 +55,7 @@ class UserServiceTest {
         Assertions.assertEquals("dan@gmail.com", response.getContent().get(0).getEmail());
         Assertions.assertEquals("Daniel", response.getContent().get(0).getName());
         Assertions.assertEquals(t2, response.getContent().get(0).getLastLogin());
+
 
     }
 

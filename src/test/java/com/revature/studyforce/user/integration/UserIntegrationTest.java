@@ -114,8 +114,10 @@ class UserIntegrationTest {
     void givenBatch_whenGetUserByName_theUserRetrieved() throws Exception {
         Authority authority = Authority.USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
-        User user = new User(1 , "dan@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
+        User user = new User(0 , "dan@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
+        User user2 = new User(0 , "danrey@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
         userRepository.save(user);
+        userRepository.save(user2);
 
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
         mockMvc.perform(MockMvcRequestBuilders.get("/users/name?name=daniel")
@@ -129,6 +131,15 @@ class UserIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].subscribedFlashcard").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].subscribedStacktrace").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].authority").value("USER"))
+
+
+        .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].userId").value(2))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].email").value("danrey@gmail.com"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].name").value("Daniel"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].active").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].subscribedFlashcard").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].subscribedStacktrace").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].authority").value("USER"))
                 .andReturn();
     }
 
