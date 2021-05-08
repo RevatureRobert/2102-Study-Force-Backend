@@ -2,6 +2,7 @@ package com.revature.studyforce.flashcard.integration;
 
 import com.revature.studyforce.flashcard.controller.AnswerController;
 import com.revature.studyforce.flashcard.dto.AnswerDTO;
+import com.revature.studyforce.flashcard.model.Answer;
 import com.revature.studyforce.flashcard.model.Flashcard;
 import com.revature.studyforce.flashcard.repository.FlashcardRepository;
 import com.revature.studyforce.flashcard.service.AnswerService;
@@ -25,7 +26,7 @@ import java.time.LocalDateTime;
 
 /**
  * Test class for the AnswerController {@link AnswerController}
- * @author Edson Rodriguez
+ * @author Edson Rodriguez, Kevin Wang
  */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
@@ -144,6 +145,32 @@ class AnswerIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.creationTime").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.resolutionTime").isEmpty())
                 .andReturn();
+
+    }
+
+    @Test
+    void givenPut_AnswerId_Should_ReturnUpdatedAnswer_404IfNotFindId() throws Exception {
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
+
+        userRepository.save(user);
+        flashcardRepo.save(flashcard);
+
+        AnswerDTO aDTO = new AnswerDTO(1,2,"tcs filename");
+        Answer answer = answerService.createAnswer(aDTO);
+
+        mockMvc = MockMvcBuilders.standaloneSetup(answerController).build();
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/answers/3"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.selectedAnswer").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.trainerSelected").value(true))
+                .andReturn();
+
+        result = mockMvc.perform(MockMvcRequestBuilders.put("/answers/4")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andReturn();
+
 
     }
 }
