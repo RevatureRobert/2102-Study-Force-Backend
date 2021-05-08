@@ -6,6 +6,8 @@ import com.revature.studyforce.flashcard.service.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Controller for handling the vote service {@link VoteService}
  * @author Elizabeth Ye
@@ -32,5 +34,16 @@ public class VoteController {
     @PostMapping
     public Vote createAnswerVote(@RequestBody VoteDTO voteDTO) {
         return voteService.addVote(voteDTO);
+    }
+
+    /**
+     * GET request for 'getVote' in RatingService {@link VoteService#findVote(int, int)}
+     * @param answerId The answer id you want to get the rating from
+     * @param userId The user id of the user who submitted the vote
+     * @return The vote if there is a match, BAD.REQUEST if it wasn't found.
+     */
+    @GetMapping
+    public VoteDTO getVote(@RequestParam int answerId, @RequestParam int userId){
+        return voteService.findVote(answerId,userId);
     }
 }
