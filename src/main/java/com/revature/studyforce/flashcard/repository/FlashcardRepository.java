@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
+import java.util.List;
+
 /**
  * Repository for Flashcard model {@link Flashcard}
  * @author Luke Mohr
@@ -21,4 +23,6 @@ public interface FlashcardRepository extends JpaRepository<Flashcard, Integer> {
     Page<Flashcard> findAllByTopicTopicName(String topicName, Pageable pageable);
 
     List<Flashcard> findAllByCreator_userId(final int userId);
+  
+    List<Flashcard> findAllByTopicId(int topicId);
 }

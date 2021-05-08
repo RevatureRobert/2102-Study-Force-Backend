@@ -6,7 +6,9 @@ import com.revature.studyforce.flashcard.model.Answer;
 import com.revature.studyforce.flashcard.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  * Controller for the Answer resource handling using {@link AnswerService}
@@ -64,5 +66,17 @@ public class AnswerController {
         return answerService.createAnswer(answerDTO);
     }
 
+    /**
+     * PUT request for 'updateAnswerToCorrect' in AnswerService {@link AnswerService#updateAnswerToCorrect(int)}
+     * @param id The id of the Answer object
+     * @return The updated answer
+     */
+    @PutMapping("/{id}")
+    public Answer updateAnswerToCorrect(@PathVariable int id) {
+        Answer answer = answerService.updateAnswerToCorrect(id);
+        if (answer == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Answer doesn't exist");
 
+        return answer;
+    }
 }
