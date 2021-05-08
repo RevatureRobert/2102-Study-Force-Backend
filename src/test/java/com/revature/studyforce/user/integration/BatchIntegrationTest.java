@@ -96,7 +96,7 @@ class BatchIntegrationTest {
         Batch batch = new Batch(0, "2102 Enterprise2", AdminList, StudentList, lastLoginTime);
         batchRepository.save(batch);
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
-        mockMvc.perform(MockMvcRequestBuilders.get("/batches/3")
+        mockMvc.perform(MockMvcRequestBuilders.get("/batches/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

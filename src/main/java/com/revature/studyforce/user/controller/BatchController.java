@@ -102,5 +102,23 @@ public class BatchController {
 
     }
 
+    /**
+     * @param
+     * @return Batch
+     */
+    @PutMapping("/deactivateBatch")
+    public @ResponseBody Batch deactivateBatch(@RequestBody int batchId){
+
+        return batchService.deactivateBatch(batchId);
+
+    }
+    /*
+    Select * from Users, Batches where user.id = batch.
+     */
+
+    @DeleteMapping("/{batchId}")
+    public @ResponseBody Batch deleteBatch(@PathVariable int id){
+        return batchService.deleteBatch(id);
+    }
 
 }

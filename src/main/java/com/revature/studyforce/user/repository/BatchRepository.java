@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
+import java.util.Optional;
 
 /**
  * Basic repository for {@link Batch}
@@ -19,4 +20,5 @@ public interface BatchRepository extends JpaRepository<Batch,Integer> {
     Page<Batch> findByCreationTimeAfter(Timestamp creation, Pageable pageable);
 
     Batch findByNameContainingIgnoreCase(String name);
+
 }

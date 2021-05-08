@@ -199,6 +199,32 @@ public class BatchService {
 
     }
 
+    public Batch deactivateBatch(int batchId){
+        Batch batch = batchRepository.findById(batchId).orElse(null);
+
+        if(batch == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Not Batch found");
+        }
+
+        batch.getUsers().forEach(userD -> {
+            userD.setActive(false);
+
+        });
+
+        return batch;
+    }
+
+    public Batch deleteBatch(int batchId){
+
+        Batch batch = batchRepository.findById(batchId).orElse(null);
+        if(batch == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"No Batch found");
+        }else{
+            batchRepository.deleteById(batchId);
+        }
+        return batch;
+    }
+
 
     /**
      * guarantees a sort field is selected if user provides one, userID as default for invalid inputs
