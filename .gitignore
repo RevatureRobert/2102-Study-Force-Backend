@@ -16,7 +16,10 @@ buildNumber.properties
 
 .idea/*
 !.idea/externalDependencies.xml
+!.idea/.gitignore
 *.iml
 out
 gen
+test.mv.db
 
+/src/main/resources/env.properties

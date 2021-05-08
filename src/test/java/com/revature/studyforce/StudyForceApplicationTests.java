@@ -1,4 +1,4 @@
-package com.revature.StudyForce;
+package com.revature.studyforce;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
