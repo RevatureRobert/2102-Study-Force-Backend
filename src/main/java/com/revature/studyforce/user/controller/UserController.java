@@ -1,15 +1,23 @@
 package com.revature.studyforce.user.controller;
 
+import com.revature.studyforce.cognito.CognitoService;
 import com.revature.studyforce.user.dto.*;
 import com.revature.studyforce.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.security.RolesAllowed;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * User Controller for Users {@link UserService}
  * @author Daniel Reyes
  * @author Daniel Bernier
+ * @author Nick Wickham
  */
 
 @CrossOrigin(origins = "*")
@@ -18,10 +26,12 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final CognitoService cognitoService;
 
     @Autowired
-    public UserController(UserService userService){
+    public UserController(UserService userService, CognitoService cognitoService){
         this.userService = userService;
+        this.cognitoService = cognitoService;
     }
 
     /**
@@ -79,6 +89,16 @@ public class UserController {
     }
 
     /**
+     * GET request getting user based on security context {@link com.revature.studyforce.cognito.CognitoAccessTokenConverter}
+     * @param email email found in access token.
+     * @return single user with matching email
+     */
+    @GetMapping("/me")
+    public UserDTO getUserByContext(@AuthenticationPrincipal String email){
+        return userService.getUserByEmail(email);
+    }
+
+    /**
      * GET mapping for '/getUserByCreationTime' in {@link UserService#getUserByCreationTime(long, int, int, String, String)}
      * @param timestamp timestamp to check
      * @param sortBy field to be sorted by ["id" | "registration" | "email" | "authority" | "active" | "lastlogin"]  case insensitive defaults to userId
@@ -94,6 +114,10 @@ public class UserController {
                                         @RequestParam(value = "sort", required = false, defaultValue = "userId") String sortBy,
                                         @RequestParam(value = "order", required = false, defaultValue = "ASC") String order){
         return userService.getUserByCreationTime(timestamp, page,offset,sortBy,order);
+    }
+    @PostMapping("/bulk")@RolesAllowed({"USER", "SUPER-ADMIN"})@ResponseStatus(HttpStatus.CREATED)
+    public String bulkCreateUsers(@RequestBody List<BulkCreateUsersDTO> usersFromCsv) throws IOException, InterruptedException {
+        return cognitoService.bulkCreateUsers(usersFromCsv);
     }
 
     /**

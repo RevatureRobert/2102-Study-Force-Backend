@@ -7,7 +7,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminGetUserRequest;
@@ -28,7 +27,8 @@ class CognitoServiceTest {
 
 
     @Autowired
-    @InjectMocks CognitoService cognitoService;
+    @InjectMocks
+    CognitoService cognitoService;
 
     @Test
     void whenGetUserEmailFromUserPool_callCognitoClient_retrieveUserEmail() {
