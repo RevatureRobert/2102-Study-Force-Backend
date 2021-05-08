@@ -128,7 +128,7 @@ public class AnswerService  implements AbstractService{
         if (answer != null) {
             answer.setSelectedAnswer(true);
             answer.setTrainerSelected(true);
-            answer.setResolutionTime(new Timestamp(System.currentTimeMillis()));
+            answer.setResolutionTime(Timestamp.valueOf(LocalDateTime.now()));
             answer = answerRepository.save(answer);
         }
 
