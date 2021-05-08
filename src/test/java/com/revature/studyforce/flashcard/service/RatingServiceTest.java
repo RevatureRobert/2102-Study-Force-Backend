@@ -79,6 +79,5 @@ class RatingServiceTest {
         assertEquals(user.getUserId(),ratingDTO.getUserId());
         assertEquals(flashcard.getId(),ratingDTO.getFlashcardId());
         assertEquals(rating.getRatingValue().difficultyValue,ratingDTO.getRatingScore());
-
     }
 }
