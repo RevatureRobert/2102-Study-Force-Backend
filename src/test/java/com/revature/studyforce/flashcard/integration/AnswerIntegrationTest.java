@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 
 /**
  * Test class for the AnswerController {@link AnswerController}
- * @author Edson Rodriguez
+ * @author Edson Rodriguez, Kevin Wang
  */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
@@ -149,7 +149,7 @@ class AnswerIntegrationTest {
     }
 
     @Test
-    void testTheUpdateController() throws Exception {
+    void givenPut_AnswerId_Should_ReturnUpdatedAnswer_404IfNotFindId() throws Exception {
         User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
 
