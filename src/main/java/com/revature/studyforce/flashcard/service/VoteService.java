@@ -64,7 +64,7 @@ public class VoteService {
    * @param userId id of the user of the vote we want
    * @return the vote associated with the user and answer
    */
-  public VoteDTO findVote(int answerId, int userId) {
+  public VoteDTO getVote(int answerId, int userId) {
     Optional<Answer> answer = answerRepository.findById(answerId);
     Optional<User> user = userRepository.findById(userId);
     if (!user.isPresent()){
@@ -81,7 +81,7 @@ public class VoteService {
       return VoteDTO.convertVoteToDto().apply(vote.get());
     } else {
       throw new ResponseStatusException(
-          HttpStatus.BAD_REQUEST, "User vote not found for this flashcard answer");
+          HttpStatus.GONE, "User vote not found for this flashcard answer");
       }
     }
 }
