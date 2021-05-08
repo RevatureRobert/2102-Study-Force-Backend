@@ -1,6 +1,5 @@
 package com.revature.studyforce.flashcard.repository;
 
-import com.revature.studyforce.flashcard.model.Rating;
 import com.revature.studyforce.flashcard.model.Vote;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -13,6 +12,6 @@ import java.util.Optional;
  */
 public interface VoteRepository extends JpaRepository<Vote, Integer> {
     List<Vote> findByUser_userId(final int id);
-    List<Vote> findByAnswer_answerId(final int id);
+    List<Vote> findByAnswerAnswerId(final int id);
     Optional<Vote> findByAnswer_answerIdAndUser_userId(final int answerId, final int userId);
 }

@@ -38,12 +38,22 @@ public class VoteController {
 
     /**
      * GET request for 'getVote' in VoteService {@link VoteService#getVote(int, int)}
-     * @param answerId The answer id you want to get the rating from
+     * @param answerId The answer id you want to get the vote from
      * @param userId The user id of the user who submitted the vote
      * @return The vote if there is a match, BAD.REQUEST if it wasn't found.
      */
     @GetMapping
     public VoteDTO getVote(@RequestParam int answerId, @RequestParam int userId){
         return voteService.getVote(answerId,userId);
+    }
+
+    /**
+     * GET request for 'getVote' in VoteService {@link }
+     * @param answerId The answer id you want to get the rating from
+     * @return The vote if there is a match, BAD.REQUEST if it wasn't found.
+     */
+    @GetMapping("/all")
+    public List<VoteDTO> getAllVotes(@RequestParam int answerId){
+        return voteService.getAll(answerId);
     }
 }
