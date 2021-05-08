@@ -23,7 +23,7 @@ public interface StacktraceRepository extends JpaRepository<Stacktrace, Integer>
 
     Page<Stacktrace> findAll(Pageable pageable);
 
-    Page<Stacktrace> findByTitleContainingIgnoreCaseAndBodyContainingIgnoreCaseAndTechnologyTechnologyId(String title, String body, int technologyId, Pageable pageable);
+    Page<Stacktrace> findByTitleContainingIgnoreCaseAndTechnologyTechnologyId(String title, int technologyId, Pageable pageable);
 
     @Transactional
     @Modifying

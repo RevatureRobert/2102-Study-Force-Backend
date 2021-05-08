@@ -53,21 +53,20 @@ public class StacktraceService {
     }
 
     /**
-     * Gets all stack traces by {@link StacktraceRepository#findByTitleContainingIgnoreCaseAndBodyContainingIgnoreCaseAndTechnologyTechnologyId(String, String, int, Pageable)}
+     * Gets all stack traces by {@link StacktraceRepository#findByTitleContainingIgnoreCaseAndTechnologyTechnologyId(String, int, Pageable)}
      * who's name contains the given name or who's body contains the given body or
      * who's technology id matches the given technology id
      * @param title the title substring to search for
-     * @param body the body substring to search for
      * @param technologyId the technology id to search for
      * @param page the page to be displayed
      * @param pageSize Number of {@link Stacktrace Stacktraces} to be displayed
      * @return Page of matching {@link Stacktrace Stacktraces} dependent on provided page, pageSize
      */
 
-    public Page<StacktraceDTO> getAllStacktracesByTitleOrBodyOrTechnologyId(String title, String body, int technologyId, int page, int pageSize) {
+    public Page<StacktraceDTO> getAllStacktracesByTitleOrBodyOrTechnologyId(String title, int technologyId, int page, int pageSize) {
         pageSize = validatePageSize(pageSize);
         page = validatePage(page);
-        return stacktraceRepo.findByTitleContainingIgnoreCaseAndBodyContainingIgnoreCaseAndTechnologyTechnologyId(title,body,technologyId,PageRequest.of(page,pageSize, Sort.by(Sort.Direction.DESC, "creationTime"))).map(StacktraceDTO.stacktraceToDTO());
+        return stacktraceRepo.findByTitleContainingIgnoreCaseAndTechnologyTechnologyId(title, technologyId,PageRequest.of(page,pageSize, Sort.by(Sort.Direction.DESC, "creationTime"))).map(StacktraceDTO.stacktraceToDTO());
     }
 
     /**

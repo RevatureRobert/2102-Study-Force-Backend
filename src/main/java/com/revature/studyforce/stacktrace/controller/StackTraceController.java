@@ -65,11 +65,11 @@ public class StackTraceController {
     }
 
     /**
-     * Gets stacktraces using {@link StacktraceService#getAllStacktracesByTitleOrBodyOrTechnologyId(String, String, int, int, int)}
+     * Gets stacktraces using {@link StacktraceService#getAllStacktracesByTitleOrBodyOrTechnologyId(String, int, int, int)}
      * whose title contains the given title string or whose body contains the given body string
      * or who's technology matches the given technology ID, applies pagination and sorting
+     * a title/body/technologyId required to be in url call or nothing will match
      * @param title Title String to search for
-     * @param body Body String to search for
      * @param techologyIdString technology ID to search for, will be converted to an integer
      * @param page Page number of {@link StacktraceDTO StacktraceDTOs} to be displayed
      * @param pageSize Number of {@link StacktraceDTO StacktraceDTOs} to be returned
@@ -77,7 +77,6 @@ public class StackTraceController {
      */
     @GetMapping("/search")
     public Page<StacktraceDTO> getAllStackTracesMatchingTitleOrBodyOrTechnologyId(@RequestParam(value = "title", defaultValue = "_________________________________________________________________", required = false) String title,
-                                                                                  @RequestParam(value = "body", defaultValue = "_________________________________________________________________", required = false) String body,
                                                                                   @RequestParam(value = "technologyId", defaultValue = "-1", required = false) String techologyIdString,
                                                                                   @RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                                  @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize) {
@@ -87,7 +86,7 @@ public class StackTraceController {
         } catch (NumberFormatException e) {
             technologyId = -1;
         }
-        return stacktraceService.getAllStacktracesByTitleOrBodyOrTechnologyId(title,body,technologyId,page, pageSize);
+        return stacktraceService.getAllStacktracesByTitleOrBodyOrTechnologyId(title,technologyId,page, pageSize);
     }
 
     /**
