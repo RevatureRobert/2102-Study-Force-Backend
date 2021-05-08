@@ -27,7 +27,7 @@ import java.util.Set;
 
 /**
  * tests for integration of Batch Controller {@link BatchController}
- * Include Deactivate, Create, ANd findByUsersInBatches
+ * Include Deactivate, Create, and findByUsersInBatches
  * @author Daniel Reyes
  */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -69,7 +69,7 @@ class BatchCreateAndUpdateIntegrationTest {
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/batches/create")
+            MockMvcRequestBuilders.post("/batches")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                     "{ \"batchId\" : 1, \"name\" : \"2102 Enterprise\", \"instructors\" : [\"admin@gmail.com\"], \"users\" : [\"c@gmail.com\"] }"))
@@ -160,7 +160,7 @@ class BatchCreateAndUpdateIntegrationTest {
 
 
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
-        mockMvc.perform(MockMvcRequestBuilders.get("/batches/batches/1")
+        mockMvc.perform(MockMvcRequestBuilders.get("/batches/userid/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -169,6 +169,4 @@ class BatchCreateAndUpdateIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].batchId").value(5))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].name").value("2102 Enterprise2"));
     }
-
-
 }

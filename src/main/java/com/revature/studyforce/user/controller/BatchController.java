@@ -85,7 +85,7 @@ public class BatchController {
      * @param createDTO Data Transfer Object with batchId, name, array of instructors and array of users
      * @return Batch
      */
-    @PostMapping("/create")
+    @PostMapping
     public @ResponseBody Batch createBatch(@RequestBody CreateUpdateBatchDTO createDTO){
         
         return batchService.createBatch(createDTO);
@@ -97,7 +97,7 @@ public class BatchController {
      * @param updateDTO Data Transfer Object with batchId, name, array of instructors and array of users
      * @return Batch
      */
-    @PutMapping("/update")
+    @PutMapping
     public @ResponseBody Batch updateBatch(@RequestBody CreateUpdateBatchDTO updateDTO){
         
         return batchService.updateBatch(updateDTO);
@@ -131,7 +131,7 @@ public class BatchController {
      * @param id userID of instructor or user.
      * @return List of Batches user belongs to
      */
-    @GetMapping("/batches/{id}")
+    @GetMapping("/userid/{id}")
     public @ResponseBody
     List<Batch> findByInstructorOrUserId(@PathVariable("id") int id){
         return batchService.findByUserOrInstructorId(id);
