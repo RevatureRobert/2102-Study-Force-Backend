@@ -63,7 +63,6 @@ class BatchIntegrationTest {
         StudentList.add(student);
         Batch batch = new Batch(0, "2102 Enterprise2", AdminList, StudentList, lastLoginTime);
         Batch batch2 = new Batch(0, "2103 Enterprise3", AdminList, StudentList, lastLoginTime);
-        System.out.println(batch.toString());
         batchRepository.save(batch);
         batchRepository.save(batch2);
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
@@ -96,7 +95,7 @@ class BatchIntegrationTest {
         Batch batch = new Batch(0, "2102 Enterprise2", AdminList, StudentList, lastLoginTime);
         batchRepository.save(batch);
         mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
-        mockMvc.perform(MockMvcRequestBuilders.get("/batches/1")
+        mockMvc.perform(MockMvcRequestBuilders.get("/batches/3")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

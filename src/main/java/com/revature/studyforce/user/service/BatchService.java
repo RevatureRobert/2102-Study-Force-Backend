@@ -199,6 +199,11 @@ public class BatchService {
 
     }
 
+    /**
+     * Deactivate Batch using {@link BatchRepository#findById(Object)}
+     * @param batchId of Batch
+     * @return Batch with updated users.
+     */
     public Batch deactivateBatch(int batchId){
         Batch batch = batchRepository.findById(batchId).orElse(null);
 
@@ -206,14 +211,16 @@ public class BatchService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Not Batch found");
         }
 
-        batch.getUsers().forEach(userD -> {
-            userD.setActive(false);
-
-        });
+        batch.getUsers().forEach(userD ->  userD.setActive(false) );
 
         return batch;
     }
 
+    /**
+     * Delete Batch using {@link BatchRepository#deleteById(Object)}
+     * @param batchId of Batch that should be deleted
+     * @return Batch of Batch that was Deleted.
+     */
     public Batch deleteBatch(int batchId){
 
         Batch batch = batchRepository.findById(batchId).orElse(null);

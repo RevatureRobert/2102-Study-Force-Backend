@@ -103,8 +103,9 @@ public class BatchController {
     }
 
     /**
-     * @param
-     * @return Batch
+     * PUT request for 'deactivatedBatch' in {@link BatchService#deactivateBatch(int)}
+     * @param batchId of Batch that needs to be deactivated.
+     * @return Batch updated to show deactivated users
      */
     @PutMapping("/deactivateBatch")
     public @ResponseBody Batch deactivateBatch(@RequestBody int batchId){
@@ -112,10 +113,12 @@ public class BatchController {
         return batchService.deactivateBatch(batchId);
 
     }
-    /*
-    Select * from Users, Batches where user.id = batch.
-     */
 
+    /**
+     * DELETE Mapping for deleteBatch in {@link BatchService#deleteBatch(int)}
+     * @param id of Batch that should be deleted
+     * @return Batch that has been deleted.
+     */
     @DeleteMapping("/{batchId}")
     public @ResponseBody Batch deleteBatch(@PathVariable int id){
         return batchService.deleteBatch(id);
