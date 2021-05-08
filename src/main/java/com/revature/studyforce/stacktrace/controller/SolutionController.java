@@ -76,11 +76,22 @@ public class SolutionController {
     /**
      * When ever a solution vote is submitted this endpoint should
      * be called to tally the total votes for a given solution using {@link SolutionService#updateSolutionTotalVotes(int)}
-     * @param solutionId This is the primary key for the Solution table that is connected to SolutionVote table
+     * @param solutionId This is the primary key for the Solution table used to find any given solution
      * @return This returns the updated Solution table with the total votes for any given Solution Id
      */
     @PutMapping("/update-vote/{solutionId}")
     public SolutionDTO updateSolutionTotalVote(@PathVariable int solutionId){
         return solutionService.updateSolutionTotalVotes(solutionId);
+    }
+
+    /**
+     * When ever a solution vote is submitted this endpoint should
+     * be called to tally the total votes for a given solution using {@link SolutionService#updateSolutionSelectedByAdmin(int)}
+     * @param solutionId This is the primary key for the Solution table
+     * @return This returns the updated Solution table with the adminSelected marked as true for any given Solution Id
+     */
+    @PutMapping("/admin-selected/{solutionId}")
+    public SolutionDTO updateSolutionSelectedByAdmin(@PathVariable int solutionId){
+        return solutionService.updateSolutionSelectedByAdmin(solutionId);
     }
 }

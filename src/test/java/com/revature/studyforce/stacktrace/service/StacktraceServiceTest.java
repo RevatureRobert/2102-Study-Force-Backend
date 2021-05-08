@@ -57,6 +57,7 @@ class StacktraceServiceTest {
                         "TestBody",
                         new Technology(0, "TestTech"),
                         new Timestamp(0),
+                        0,
                         null)
         );
         stacktraceDTOArrayList = new ArrayList<>();
@@ -68,6 +69,7 @@ class StacktraceServiceTest {
                         "TestBody",
                         0,
                         "TestTech",
+                        0,
                         new Timestamp(0))
         );
     }
@@ -95,7 +97,7 @@ class StacktraceServiceTest {
     void whenGetStacktraceById_callRepository_getsCorrectStacktrace(){
         Optional<Stacktrace> stacktrace = Optional.of(new Stacktrace(0,
                 new User(0,"Test@mail.com","Bob",true,true,true, Authority.USER,new Timestamp(0),new Timestamp(0)),
-                "TestTitle", "TestBody", new Technology(0, "TestTech"), new Timestamp(0), null));
+                "TestTitle", "TestBody", new Technology(0, "TestTech"), new Timestamp(0), 0, null));
         Mockito.when(stacktraceRepository.findById(0)).thenReturn(stacktrace);
         Mockito.when(stacktraceRepository.findById(255)).thenReturn(Optional.empty());
 

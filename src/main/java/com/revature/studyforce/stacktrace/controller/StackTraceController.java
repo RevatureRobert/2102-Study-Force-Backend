@@ -1,5 +1,6 @@
 package com.revature.studyforce.stacktrace.controller;
 
+import com.revature.studyforce.stacktrace.dto.SolutionDTO;
 import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
 import com.revature.studyforce.stacktrace.service.StacktraceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,8 +76,8 @@ public class StackTraceController {
      * @return Page of matching {@link StacktraceDTO StacktraceDTOs} according to pagesize
      */
     @GetMapping("/search")
-    public Page<StacktraceDTO> getAllStackTracesMatchingTitleOrBodyOrTechnologyId(@RequestParam(value = "title", defaultValue = "", required = false) String title,
-                                                                                  @RequestParam(value = "body", defaultValue = "", required = false) String body,
+    public Page<StacktraceDTO> getAllStackTracesMatchingTitleOrBodyOrTechnologyId(@RequestParam(value = "title", defaultValue = "_________________________________________________________________", required = false) String title,
+                                                                                  @RequestParam(value = "body", defaultValue = "_________________________________________________________________", required = false) String body,
                                                                                   @RequestParam(value = "technologyId", defaultValue = "-1", required = false) String techologyIdString,
                                                                                   @RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                                  @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize) {
@@ -87,5 +88,19 @@ public class StackTraceController {
             technologyId = -1;
         }
         return stacktraceService.getAllStacktracesByTitleOrBodyOrTechnologyId(title,body,technologyId,page, pageSize);
+    }
+
+    /**
+     * This method should return the updated stacktrace that picks a solutionId and assigns it to chosenSolution
+     * using {@link StacktraceService#updateStacktraceChosenSolutionBySolutionAndStacktraceId(int, int)}
+     * @param solutionId The id to be assigned to the stacktrace chosenSolution field
+     * @param stacktraceId the primary key for the stacktrace table
+     * @return should return the updated stacktrace with a solutionId assigned to the chosenSolution column on the
+     * stacktrace table
+     */
+    @PutMapping("/chosen-solution")
+    public StacktraceDTO updateStacktraceChosenSolutionBySolutionIdAndStacktraceId(@RequestParam(value = "solutionId") int solutionId,
+                                                                   @RequestParam(value= "stacktraceId") int stacktraceId){
+        return stacktraceService.updateStacktraceChosenSolutionBySolutionAndStacktraceId(solutionId,stacktraceId);
     }
 }
