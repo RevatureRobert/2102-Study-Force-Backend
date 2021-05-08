@@ -90,10 +90,10 @@ public class AnswerService  implements AbstractService{
 
         Page<Answer> answers;
 
-        if(order.equalsIgnoreCase("DESC"))
-            answers = answerRepository.findByFlashcard_id(flashcardId, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
-        else
+        if(order.equalsIgnoreCase("ASC"))
             answers = answerRepository.findByFlashcard_id(flashcardId, PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
+        else
+            answers = answerRepository.findByFlashcard_id(flashcardId, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
 
         return answers;
     }
@@ -106,14 +106,14 @@ public class AnswerService  implements AbstractService{
     @Override
     public String validateSortBy(String sortBy){
         switch (sortBy.toLowerCase(Locale.ROOT)) {
-            case "answerscore":
-                return "answerScore";
+            case "creator":
+                return "creator";
             case "creationtime":
                 return "creationTime";
             case "resolutiontime":
                 return "resolutionTime";
             default:
-                return "creator";
+                return "answerScore";
         }
     }
 }

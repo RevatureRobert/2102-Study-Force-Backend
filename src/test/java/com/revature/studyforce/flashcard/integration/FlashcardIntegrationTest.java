@@ -80,7 +80,9 @@ class FlashcardIntegrationTest {
         flashcardList.add(flashcard);
         flashcardPage = new PageImpl<>(flashcardList);
         newFlashcardDTO = new NewFlashcardDTO(1, 2, flashcard.getQuestion(), flashcard.getQuestionDifficultyTotal());
-
+        userRepository.save(user);
+        topicRepository.save(topic);
+        flashcardRepository.save(flashcard);
     }
 
     @Test

@@ -67,20 +67,20 @@ class AnswerIntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].answerId").value(4))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].creator.userId").value(user.getUserId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].answerId").value(5))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].creator.userId").value(user2.getUserId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].flashcard.id").value(flashcard.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].answerText").value("tcs filename"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].answerText").value("xml filename"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].answerScore").value(0))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].selectedAnswer").value(false))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].trainerSelected").value(false))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].creationTime").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].resolutionTime").isEmpty())
 
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].answerId").value(5))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].creator.userId").value(user2.getUserId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].answerId").value(4))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].creator.userId").value(user.getUserId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].flashcard.id").value(flashcard.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].answerText").value("xml filename"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].answerText").value("tcs filename"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].answerScore").value(0))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].selectedAnswer").value(false))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].trainerSelected").value(false))
@@ -103,7 +103,7 @@ class AnswerIntegrationTest {
         answerService.createAnswer(aDTO);
 
         mockMvc = MockMvcBuilders.standaloneSetup(answerController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/answers/3")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/answers")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"answerId\":\"3\"}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -128,7 +128,7 @@ class AnswerIntegrationTest {
         flashcard = flashcardRepo.save(flashcard);
 
         mockMvc = MockMvcBuilders.standaloneSetup(answerController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/answers/")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/answers")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"userId\":\"1\",\"flashcardId\":\"2\",\"answer\":\"tcs filename\"}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())

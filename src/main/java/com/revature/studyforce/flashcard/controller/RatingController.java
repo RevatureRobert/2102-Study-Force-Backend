@@ -27,7 +27,7 @@ public class RatingController {
      * @param rating the data transfer object that contains the flashcardId, userId and difficulty rating to save the new rating record
      * @return A data transfer object that represents the newly created rating object
      */
-    @PostMapping("/")
+    @PostMapping
     public RatingResponseDTO createRating(@RequestBody RatingDTO rating ){
         return ratingService.createRating(rating);
     }

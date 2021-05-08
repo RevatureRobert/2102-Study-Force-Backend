@@ -39,7 +39,7 @@ public class AnswerController {
             @RequestParam(value="page", required = false, defaultValue = "0") int page,
             @RequestParam(value = "offset", required = false, defaultValue = "25") int offset,
             @RequestParam(value = "sortby", required = false, defaultValue = "answerScore") String sortBy,
-            @RequestParam(value = "order", required = false, defaultValue = "ASC") String order){
+            @RequestParam(value = "order", required = false, defaultValue = "DESC") String order){
         return answerService.getAllByFlashcardId(id,page,offset,sortBy,order);
     }
 
@@ -48,7 +48,7 @@ public class AnswerController {
      * @param deleteAnswerDTO the data transfer object that contains the id of the answer to delete
      * @return a confirmation message if the object was deleted
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     public String deleteAnswerById(@RequestBody DeleteAnswerDTO deleteAnswerDTO){
         answerService.deleteAnswerById(deleteAnswerDTO.getAnswerId());
         return "Deleted answer with id:" + deleteAnswerDTO.getAnswerId();
@@ -59,7 +59,7 @@ public class AnswerController {
      * @param answerDTO The dta transfer object with the information required to create a new answer {@link AnswerDTO}
      * @return The newly created answer object
      */
-    @PostMapping("/")
+    @PostMapping
     public Answer createNewAnswer(@RequestBody AnswerDTO answerDTO){
         return answerService.createAnswer(answerDTO);
     }
