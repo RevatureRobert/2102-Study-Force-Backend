@@ -28,11 +28,22 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+
+/**
+ * @author Brandon Pinkerton
+ * {@link SubscriptionController }
+ * {@link SubscriptionService}
+ * {@link SubscriptionRepository}
+ * {@link FlashcardSubscriptionService}
+ * {@link FlashcardSubscriptionRepository}
+ * {@link FlashcardRepository}
+ * {@link UserRepository}
+ */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:test-application.properties")
-public class FlashcardSubscriptionIntegrationTest {
+class FlashcardSubscriptionIntegrationTest {
 
     private MockMvc mockMvc;
 
@@ -89,6 +100,8 @@ public class FlashcardSubscriptionIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.flashcardSubscriptionId.flashcard").value(2))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.flashcardSubscriptionId.subscription").value(3))
                 .andReturn();
         System.out.println("GET");
         System.out.println(result.getResponse().getContentAsString());

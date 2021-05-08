@@ -1,4 +1,5 @@
 package com.revature.studyforce.flashcard.service;
+
 import com.revature.studyforce.flashcard.dto.VoteDTO;
 import com.revature.studyforce.flashcard.model.Answer;
 import com.revature.studyforce.flashcard.model.Flashcard;
@@ -20,6 +21,10 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Test class for VoteService {@link VoteService}
+ * @author Nick Zimmerman
+ */
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @TestPropertySource(locations = "classpath:test-application.properties")
@@ -36,8 +41,8 @@ class VoteServiceTest {
     private VoteService voteService;
 
     @Test
-    void addVoteTest() {
-        User u = new User(0,"jesus.christ@revature.com","password","Jesus","Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+    void givenVoteDTOWithMatchingUserAndAnswer_whenAddVote_shouldPersistAndReturnVote() {
+        User u = new User(0,"jesus.christ@revature.com","Jesus Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,u,null,"how is your day",1,1,null,null,false);
 
         Answer a = new Answer(0,u,flashcard,"check stackoverflow",5,false,false,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
@@ -52,5 +57,8 @@ class VoteServiceTest {
         assertEquals(1, res.getVoteValue());
         assertEquals(a,res.getAnswer());
         assertEquals(u,res.getUser());
+
+
     }
+
 }

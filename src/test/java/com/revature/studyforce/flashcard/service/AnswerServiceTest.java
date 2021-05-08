@@ -26,6 +26,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
+ * Test class for AnswerService {@link AnswerService}
  * @author Edson Rodriguez
  */
 @SpringBootTest
@@ -46,8 +47,8 @@ class AnswerServiceTest {
     private AnswerService answerService;
 
     @Test
-    void whenCreateAnswer(){
-        User user = new User(0,"edson@revature.com","password","Edson","Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+    void givenAnswer_whenCreateAnswer_shouldReturnAnswerDTO(){
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
         Answer a = new Answer(0,user,flashcard,"tcs filename",0,false,false,Timestamp.valueOf(LocalDateTime.now()), null);
         AnswerDTO aDTO = new AnswerDTO(0,0,"tcs filename");
@@ -68,20 +69,19 @@ class AnswerServiceTest {
         assertFalse(res.isTrainerSelected());
         assertNotNull(res.getCreationTime());
         assertNull(res.getResolutionTime());
-
     }
 
     @Test
-    void whenDeleteAnswerById(){
+    void givenAnswerId_whenDeleteAnswerById_shouldDeleteAnswer(){
         answerService.deleteAnswerById(1);
         Mockito.verify(answerRepository, Mockito.times(1)).deleteById(1);
     }
 
     @Test
-    void whenGetAllByFlashcardId(){
+    void givenFlashcardId_whenGetAllByFlashcardId_shouldReturnPageOfAnswersWithPagination(){
         List<Answer> answers = new ArrayList<>();
-        User user = new User(0,"edson@revature.com","password","Edson","Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
-        User user2 = new User(1,"edson2@revature.com","password2","Edson2","Rodriguez2",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user2 = new User(1,"edson2@revature.com","Edson2 Rodriguez2",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
 
         Answer a = new Answer(0,user,flashcard,"good, thanks",0,false,false,Timestamp.valueOf(LocalDateTime.now()), null);

@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * Repository for Flashcard model
- * @author Luke
+ * Repository for Flashcard model {@link Flashcard}
+ * @author Luke Mohr
  */
 @Repository
 public interface FlashcardRepository extends JpaRepository<Flashcard, Integer> {

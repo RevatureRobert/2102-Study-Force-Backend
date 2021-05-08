@@ -24,6 +24,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /**
+ * Test class for the AnswerController {@link AnswerController}
  * @author Edson Rodriguez
  */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -48,8 +49,8 @@ class AnswerIntegrationTest {
 
     @Test
     void givenFlashcardId_whenGetAllAnswersByFlashcardId_shouldReturnAnswerWithPagination() throws Exception {
-        User user = new User(0,"edson@revature.com","password","Edson","Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
-        User user2 = new User(0,"edson2@revature.com","password2","Edson2","Rodriguez2",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user2 = new User(0,"edson2@revature.com","Edson2 Rodriguez2",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         user = userRepository.save(user);
         user2 = userRepository.save(user2);
 
@@ -61,7 +62,7 @@ class AnswerIntegrationTest {
         answerService.createAnswer(aDTO2);
 
         mockMvc = MockMvcBuilders.standaloneSetup(answerController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/answers/flashcard-id/3?page=0&offset=50&sortby=\"creator\"&order=\"DESC\"")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/answers/3?page=0&offset=50&sortby=\"creator\"&order=\"DESC\"")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -88,13 +89,11 @@ class AnswerIntegrationTest {
 
                 .andReturn();
 
-        System.out.println(result.getResponse().getContentAsString());
-        System.out.println(result.getResponse().getStatus());
     }
 
     @Test
     void givenAnswerId_whenDeleteAnswerById_shouldReturnString() throws Exception {
-        User user = new User(0,"edson@revature.com","password","Edson","Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
 
         userRepository.save(user);
@@ -104,36 +103,32 @@ class AnswerIntegrationTest {
         answerService.createAnswer(aDTO);
 
         mockMvc = MockMvcBuilders.standaloneSetup(answerController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/flashcards/answers/")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/answers/3")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"answerId\":\"3\"}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
                 .andReturn();
-        System.out.println(result.getResponse().getContentAsString());
-        System.out.println(result.getResponse().getStatus());
 
-         result = mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/answers/flashcard-id/3")
+         result = mockMvc.perform(MockMvcRequestBuilders.get("/answers/3")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content").isEmpty())
                  .andReturn();
 
-        System.out.println(result.getResponse().getContentAsString());
-        System.out.println(result.getResponse().getStatus());
     }
 
     @Test
     void givenAnswerDTO_whenCreateNewAnswer_ShouldReturnAnswer() throws Exception {
-        User user = new User(0,"edson@revature.com","password","Edson","Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
 
         user = userRepository.save(user);
         flashcard = flashcardRepo.save(flashcard);
 
         mockMvc = MockMvcBuilders.standaloneSetup(answerController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/answers/")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/answers/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"userId\":\"1\",\"flashcardId\":\"2\",\"answer\":\"tcs filename\"}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -150,7 +145,5 @@ class AnswerIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.resolutionTime").isEmpty())
                 .andReturn();
 
-        System.out.println(result.getResponse().getContentAsString());
-        System.out.println(result.getResponse().getStatus());
     }
 }

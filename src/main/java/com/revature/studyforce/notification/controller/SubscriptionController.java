@@ -2,6 +2,7 @@ package com.revature.studyforce.notification.controller;
 
 import com.revature.studyforce.notification.dto.FlashcardSubscriptionDTO;
 import com.revature.studyforce.notification.dto.StacktraceSubscriptionDTO;
+import com.revature.studyforce.notification.dto.SubscriptionDTO;
 import com.revature.studyforce.notification.model.FlashcardSubscription;
 import com.revature.studyforce.notification.service.FlashcardSubscriptionService;
 import com.revature.studyforce.notification.service.StacktraceSubscriptionService;
@@ -22,9 +23,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/subscriptions")
 public class SubscriptionController {
-    private SubscriptionService subscriptionService;
-    private FlashcardSubscriptionService flashcardSubscriptionService;
-    private StacktraceSubscriptionService stacktraceSubscriptionService;
+    private final SubscriptionService subscriptionService;
+    private final FlashcardSubscriptionService flashcardSubscriptionService;
+    private final StacktraceSubscriptionService stacktraceSubscriptionService;
 
     @Autowired
     public SubscriptionController(SubscriptionService subscriptionService,
@@ -36,15 +37,12 @@ public class SubscriptionController {
     }
 
     /**
-     * Processes POST request on '/subscriptions' to create a user subscription {@link SubscriptionService#createSubscription(Subscription)}}
-     * @param subscription The subscription information
+     * Processes POST request on '/subscriptions' to create a user subscription {@link SubscriptionService#createSubscription(SubscriptionDTO)}}
+     * @param subscription The subscriptionDTO information
      * @return The created subscription
      */
-    //TODO: create a subscription DTO
     @PostMapping
-    @CrossOrigin(origins = {"*"})
-    public @ResponseBody Subscription createSubscription(@RequestBody Subscription subscription){
-        System.out.println("Is this being hit");
+    public Subscription createSubscription(@RequestBody SubscriptionDTO subscription){
         return subscriptionService.createSubscription(subscription);
     }
 
@@ -54,7 +52,7 @@ public class SubscriptionController {
      * @return The users subscription
      */
     @GetMapping("/{user-id}")
-    public @ResponseBody Subscription getUserSubscription(@PathVariable("user-id") String id){
+    public Subscription getUserSubscription(@PathVariable("user-id") String id){
         return subscriptionService.getSubscriptionByUserId(Integer.parseInt(id));
     }
 
@@ -64,7 +62,7 @@ public class SubscriptionController {
      * @return The users subscription that was deleted
      */
     @DeleteMapping("/{user-id}")
-    public @ResponseBody Subscription deleteUserSubscription(@PathVariable("user-id") String id){
+    public Subscription deleteUserSubscription(@PathVariable("user-id") String id){
         return subscriptionService.deleteSubscriptionByUserId(Integer.parseInt(id));
     }
 
@@ -74,8 +72,7 @@ public class SubscriptionController {
      * @return The created subscription
      */
     @PostMapping("/flashcards")
-    public @ResponseBody
-    FlashcardSubscription createFlashcardSubscription(@RequestBody FlashcardSubscriptionDTO subscriptionRequest){
+    public FlashcardSubscription createFlashcardSubscription(@RequestBody FlashcardSubscriptionDTO subscriptionRequest){
         return flashcardSubscriptionService.createFlashcardSubscription(
                 subscriptionRequest.getFlashcardId(),
                 subscriptionRequest.getUserId());
@@ -88,8 +85,7 @@ public class SubscriptionController {
      * @return The users flashcard subscription
      */
     @GetMapping("/flashcards")
-    public @ResponseBody
-    FlashcardSubscription getFlashcardSubscription(@RequestParam("flashcard-id") String flashcardId,
+    public FlashcardSubscription getFlashcardSubscription(@RequestParam("flashcard-id") String flashcardId,
                                                    @RequestParam("user-id") String userId){
         return flashcardSubscriptionService.getFlashcardSubscriptionByFlashcardAndUserId(
                 Integer.parseInt(flashcardId),
@@ -103,8 +99,7 @@ public class SubscriptionController {
      * @return The users flashcard subscription that was deleted
      */
     @DeleteMapping("/flashcards")
-    public @ResponseBody
-    FlashcardSubscription deleteFlashcardSubscription(@RequestBody FlashcardSubscriptionDTO subscriptionRequest){
+    public FlashcardSubscription deleteFlashcardSubscription(@RequestBody FlashcardSubscriptionDTO subscriptionRequest){
         return flashcardSubscriptionService.deleteFlashcardSubscription(
                 subscriptionRequest.getFlashcardId(),
                 subscriptionRequest.getUserId()
@@ -117,8 +112,7 @@ public class SubscriptionController {
      * @return The created subscription
      */
     @PostMapping("/stacktraces")
-    public @ResponseBody
-    StacktraceSubscription createStacktraceSubscription(@RequestBody StacktraceSubscriptionDTO subscriptionRequest){
+    public StacktraceSubscription createStacktraceSubscription(@RequestBody StacktraceSubscriptionDTO subscriptionRequest){
         return stacktraceSubscriptionService.createStacktraceSubscription(
                 subscriptionRequest.getStacktraceId(),
                 subscriptionRequest.getUserId());
@@ -131,8 +125,7 @@ public class SubscriptionController {
      * @return The users stacktrace subscription
      */
     @GetMapping("/stacktraces")
-    public @ResponseBody
-    StacktraceSubscription getStacktraceSubscription(@RequestParam("stacktrace-id") String stacktraceId,
+    public StacktraceSubscription getStacktraceSubscription(@RequestParam("stacktrace-id") String stacktraceId,
                                                      @RequestParam("user-id") String userId){
         return stacktraceSubscriptionService.getStacktraceSubscriptionByStacktraceAndUserId(
                 Integer.parseInt(stacktraceId),
@@ -146,8 +139,7 @@ public class SubscriptionController {
      * @return The users stacktrace subscription that was deleted
      */
     @DeleteMapping("/stacktraces")
-    public @ResponseBody
-    StacktraceSubscription deleteStacktraceSubscription(@RequestBody StacktraceSubscriptionDTO subscriptionRequest){
+    public StacktraceSubscription deleteStacktraceSubscription(@RequestBody StacktraceSubscriptionDTO subscriptionRequest){
         return stacktraceSubscriptionService.deleteStacktraceSubscription(
                 subscriptionRequest.getStacktraceId(),
                 subscriptionRequest.getUserId()

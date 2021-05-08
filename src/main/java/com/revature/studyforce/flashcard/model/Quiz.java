@@ -1,17 +1,16 @@
 package com.revature.studyforce.flashcard.model;
 
+
 import com.revature.studyforce.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
  * Quiz model
- *
  * @author Edson Rodriguez
  */
 @Entity
@@ -30,6 +29,7 @@ public class Quiz {
     @NotNull
     @Column(name = "quiz_name")
     private String quizName;
+    @NotNull
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Flashcard> flashcards;
 
