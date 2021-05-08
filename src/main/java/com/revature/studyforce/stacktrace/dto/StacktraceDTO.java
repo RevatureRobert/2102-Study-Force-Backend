@@ -54,6 +54,11 @@ public class StacktraceDTO {
     private String technologyName;
 
     /**
+     * the solutionId that is picked by the user or admin
+     */
+    private int chosenSolution;
+
+    /**
      * The timestamp of when the stacktrace was created
      */
     private Timestamp creationTime;
@@ -67,6 +72,7 @@ public class StacktraceDTO {
           stacktrace.getBody(),
           stacktrace.getTechnology().getTechnologyId(),
           stacktrace.getTechnology().getTechnologyName(),
+          stacktrace.getChosenSolution(),
           stacktrace.getCreationTime());
     }
 }

@@ -1,7 +1,6 @@
 package com.revature.studyforce.notification.integration;
 
-import com.google.gson.Gson;
-import com.jayway.jsonpath.JsonPath;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.studyforce.notification.controller.NotificationController;
 import com.revature.studyforce.notification.dto.NotificationDto;
 import com.revature.studyforce.notification.model.FeatureArea;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -24,9 +22,9 @@ import org.springframework.test.context.TestPropertySource;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.times;
-
+/**
+ * @author Patrick Gonzalez
+ */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -47,6 +45,7 @@ class NotificationIntegrationTest{
     FeatureArea featureArea = FeatureArea.FLASHCARD;
     Notification notification;
     NotificationDto notificationDto;
+    ObjectMapper mapper = new ObjectMapper();
 
     @BeforeEach
     public void setup(){
@@ -96,7 +95,7 @@ class NotificationIntegrationTest{
     void addNotificationTest() throws Exception{
         mockMvc.perform(MockMvcRequestBuilders.post("/notifications")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(notificationDto)))
+                .content(mapper.writeValueAsString(notificationDto)))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
@@ -117,7 +116,7 @@ class NotificationIntegrationTest{
         notificationDto.setCreatedTime(null);
         mockMvc.perform(MockMvcRequestBuilders.put("/notifications")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(notificationDto)))
+                .content(mapper.writeValueAsString(notificationDto)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())

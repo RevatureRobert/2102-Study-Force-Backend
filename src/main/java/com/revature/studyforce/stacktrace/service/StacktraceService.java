@@ -1,7 +1,10 @@
 package com.revature.studyforce.stacktrace.service;
 
+import com.revature.studyforce.stacktrace.dto.SolutionDTO;
 import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
+import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
+import com.revature.studyforce.stacktrace.repository.SolutionRepository;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
 import com.revature.studyforce.stacktrace.repository.TechnologyRepository;
 import com.revature.studyforce.user.repository.UserRepository;
@@ -99,6 +102,7 @@ public class StacktraceService {
                 stacktrace.getBody(),
                 stacktrace.getTechnology().getTechnologyId(),
                 stacktrace.getTechnology().getTechnologyName(),
+                stacktrace.getChosenSolution(),
                 stacktrace.getCreationTime());
     }
 
@@ -116,6 +120,7 @@ public class StacktraceService {
               stacktraceDTO.getBody(),
               technologyRepository.findById(stacktraceDTO.getTechnologyId()).orElse(null),
               stacktraceDTO.getCreationTime(),
+              stacktraceDTO.getChosenSolution(),
               null);
       stacktraceRepo.save(stacktrace);
         return stacktraceDTO;
@@ -141,5 +146,26 @@ public class StacktraceService {
       if(pageSize == 5 || pageSize == 10 || pageSize == 15)
           return pageSize;
       return defaultPageSize;
+    }
+
+    /**
+
+     * {@link SolutionRepository#updateSolutionSelectedByAdminBySolutionId(int)}
+     * @param solutionId
+     * @return will return a solutionDTO with updated adminSelected as true
+     */
+
+    /**
+     * Update the Stacktrace chosenSolution with targeted SolutionId, which should be displayed above
+     * every other comment unless admin picks a solution.
+     * using {@link StacktraceRepository#updateStacktraceUserSelectedSolution(int, int)}
+     * @param solutionId primary key for the solution table
+     * @param stacktraceId primary key for the stacktrace table
+     * @return will return a updated stacktrace with a chosenSolution solutionId
+     */
+    public StacktraceDTO updateStacktraceChosenSolutionBySolutionAndStacktraceId(int solutionId, int stacktraceId){
+        stacktraceRepo.updateStacktraceUserSelectedSolution(solutionId, stacktraceId);
+        Stacktrace stacktrace = stacktraceRepo.findById(stacktraceId).orElse(null);
+        return StacktraceDTO.stacktraceToDTO().apply(stacktrace);
     }
 }

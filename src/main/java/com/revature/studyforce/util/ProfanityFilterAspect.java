@@ -35,12 +35,9 @@ public class ProfanityFilterAspect {
 
 
     @Around("postAction() || putAction()")
-    public void runFilterOnPostOrPut(ProceedingJoinPoint joinPoint, @AuthenticationPrincipal String email) throws Throwable {
+    public void runFilterOnPostOrPut(ProceedingJoinPoint joinPoint) throws Throwable {
         String content = getPayload(joinPoint);
         if(filter.isBad(content)){
-            HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-            request.getHeader("Authorization");
-            System.out.println(email);
             HttpServletResponse response = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getResponse();
             assert response != null;
             response.sendError(HttpStatus.BAD_REQUEST.value(), "Profanity was detected.");
