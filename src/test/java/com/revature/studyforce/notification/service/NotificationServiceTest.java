@@ -7,22 +7,16 @@ import com.revature.studyforce.notification.repository.NotificationRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -32,15 +26,12 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
-import org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.times;
 
-/***
+/**
  * Tests for {@link NotificationService}
- *
- * author: Patrick Gonzalez
+ * @author Patrick Gonzalez
  */
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -75,7 +66,6 @@ class NotificationServiceTest {
 
     @Test
     void findAllTest(){
-//        Page<Notification> page = new PageRequest();
         Mockito.doReturn(notificationPage).when(notificationRepository).findAll(any(PageRequest.class));
         Page<NotificationDto> dtos = notificationService.findAll(0, 5);
         NotificationDto dto = dtos.getContent().get(0);
@@ -92,7 +82,6 @@ class NotificationServiceTest {
 
     @Test
     void findByUserIdTest(){
-//        when(notificationRepository.findAll()).thenReturn();
         Mockito.doReturn(notificationPage).when(notificationRepository).findByUserId(eq(notification.getUserId()), any(PageRequest.class));
         Page<NotificationDto> dtos = notificationService.findByUserId(1, 0);
         NotificationDto dto = dtos.getContent().get(0);
@@ -143,24 +132,4 @@ class NotificationServiceTest {
         notificationService.delete(notificationDto);
         verify(notificationRepository, times(1)).delete(notification);
     }
-
-//    @Test
-//    void deleteByNotificationIdTest(){
-//        Mockito.when(notificationRepository.save(ArgumentMatchers.isA(Notification.class))).thenReturn(notification);
-//        NotificationDto dto = notificationService.deleteByNotificationId(notificationDto.getId());
-//        Assertions.assertNotNull(dto);
-//        Assertions.assertEquals(0, dto.getId());
-//        Assertions.assertFalse(dto.isRead());
-//        Assertions.assertEquals("Flashcard Solution", dto.getMessage());
-//        Assertions.assertEquals(Timestamp.valueOf(now.plusDays(3)), dto.getTimeToLive());
-//        Assertions.assertEquals(Timestamp.valueOf(now), dto.getCreatedTime());
-//        Assertions.assertEquals(1, dto.getUserId());
-//        Assertions.assertEquals(featureArea, dto.getFeatureArea());
-//    }
-
-//    @Test
-//    void deleteByUserIdTest(){
-//        notificationService.deleteByUserId(1);
-//        verify(notificationRepository, times(1)).deleteByUserId(1);
-//    }
 }
