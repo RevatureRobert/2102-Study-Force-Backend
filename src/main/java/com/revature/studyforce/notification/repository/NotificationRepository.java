@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Integer> {
+    Page<Notification> findAllByUserId(@RequestParam("id") Integer id, Pageable pageable);
     Page<Notification> findByUserId(@RequestParam("id") Integer id, Pageable pageable);
     @Transactional
     @Modifying

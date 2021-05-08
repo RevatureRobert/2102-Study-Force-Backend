@@ -126,4 +126,23 @@ public class NotificationService {
         notificationRepository.deleteByUserId(userId);
     }
 
+    /***
+     * Find all {@link Notification Notifications} that belong to a particular user
+     * and return a page of those notifications
+     * @param userId We use the userId in order to find and get all of the notifications corresponding to this user
+     * @param page The page parameter determines what page number we are returning
+     * The default size of the page is 5
+     * @return Returns a Page of Notifications
+     */
+    public Page<NotificationDto> findAllByUserId(Integer userId, Integer page){
+        // We can change the page request parameters later
+        Page<Notification> notificationPage = notificationRepository.findAllByUserId(userId, PageRequest.of(page, 1000, Sort.by("isRead").descending().and(Sort.by("createdTime").descending())));
+        try{
+            return notificationPage.map(Objects.requireNonNull(NotificationDto.convertToDto()));
+        }
+        catch(NullPointerException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

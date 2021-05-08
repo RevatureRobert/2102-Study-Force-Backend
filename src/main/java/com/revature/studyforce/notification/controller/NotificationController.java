@@ -63,7 +63,7 @@ public class NotificationController {
      *             Also the default size of the page is 5.
      * @return Returns a page of notifications (specifically NotificationDtos), if there are no notifications then we return an Http Response with status of Not Found
      */
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<Page<NotificationDto>> getNotificationsByUserId(
             @PathVariable("id") Integer userId,
             @RequestParam(name="page", defaultValue = "0", required=false) Integer page
@@ -134,6 +134,27 @@ public class NotificationController {
         if(userId != null){
             notificationService.deleteByUserId(Integer.parseInt(userId));
             return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    /***
+     * Get a page of {@link NotificationDto notifications} for a particular user based on the user id passed.
+     * @param userId userId is the id of the user that we are grabbing the page for
+     * @param page Default value of page is 0 so if no page number is passed as an argument, we start with the very first page.
+     *             Also the default size of the page is 5.
+     * @return Returns a page of notifications (specifically NotificationDtos), if there are no notifications then we return an Http Response with status of Not Found
+     */
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Page<NotificationDto>> getAllNotificationsByUserId(
+            @PathVariable("id") Integer userId,
+            @RequestParam(name="page", defaultValue = "0", required=false) Integer page
+    )
+    {
+        Page<NotificationDto> notificationDtoPage = notificationService.findAllByUserId(userId, page);
+        if(notificationDtoPage != null){
+            return ResponseEntity.ok(notificationDtoPage);
         }
         return ResponseEntity.notFound().build();
     }
