@@ -27,7 +27,6 @@ public class SolutionDTO {
     private String userName;
     private String body;
     private Boolean adminSelected;
-    private Boolean userSelected;
     private Date creationTime;
     private int totalVote;
 
@@ -47,7 +46,6 @@ public class SolutionDTO {
                     solution.getUserId().getName(),
                     solution.getBody(),
                     solution.getAdminSelected(),
-                    solution.getUserSelected(),
                     solution.getCreationTime(),
                     solution.getTotalVote()
             );
