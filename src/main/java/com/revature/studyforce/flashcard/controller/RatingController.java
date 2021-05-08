@@ -33,7 +33,7 @@ public class RatingController {
     }
 
     /**
-     * POST request for 'getRating' in RatingService {@link RatingService#getRating(int, int)}
+     * GET request for 'getRating' in RatingService {@link RatingService#getRating(int, int)}
      * @param flashcardId The flashcard id you want to get the rating from
      * @param userId The user id of the user who submitted the rating
      * @return The ratingDTO if there is a match, BAD.REQUEST if it wasn't found.
