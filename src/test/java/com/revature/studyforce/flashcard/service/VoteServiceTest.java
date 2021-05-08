@@ -7,7 +7,6 @@ import com.revature.studyforce.flashcard.repository.VoteRepository;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.constraints.AssertTrue;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -73,7 +71,7 @@ class VoteServiceTest {
         Mockito.when(userRepository.findById(4)).thenReturn(Optional.of(u));
         Mockito.when(voteRepository.findByAnswer_answerIdAndUser_userId(0,4)).thenReturn(Optional.of(vote));
 
-        VoteDTO this_vote = voteService.findVote(0,4);
+        VoteDTO this_vote = voteService.getVote(0,4);
 
         assertNotNull(this_vote);
         assertEquals(u.getUserId(),this_vote.getUserId());
@@ -93,7 +91,7 @@ class VoteServiceTest {
         Mockito.when(voteRepository.findByAnswer_answerIdAndUser_userId(0,4)).thenReturn(Optional.of(vote));
 
         assertThrows(ResponseStatusException.class, () -> {
-            VoteDTO voteDto = voteService.findVote(10,4);
+            VoteDTO voteDto = voteService.getVote(10,4);
         });
     }
 
@@ -110,7 +108,7 @@ class VoteServiceTest {
         Mockito.when(voteRepository.findByAnswer_answerIdAndUser_userId(0,4)).thenReturn(Optional.of(vote));
 
         assertThrows(ResponseStatusException.class, () -> {
-            VoteDTO voteDto = voteService.findVote(0,10);
+            VoteDTO voteDto = voteService.getVote(0,10);
         });
     }
 }
