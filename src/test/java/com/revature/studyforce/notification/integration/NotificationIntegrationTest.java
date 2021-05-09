@@ -7,6 +7,7 @@ import com.revature.studyforce.notification.model.FeatureArea;
 import com.revature.studyforce.notification.model.Notification;
 import com.revature.studyforce.notification.repository.NotificationRepository;
 import com.revature.studyforce.notification.service.NotificationService;
+import com.revature.studyforce.user.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +50,14 @@ class NotificationIntegrationTest{
 
     @BeforeEach
     public void setup(){
+        User user = new User("patrick@revature.net", "Patrick");
+        user.setActive(true);
+        user.setUserId(1);
         notification = new Notification(0, "Message", false,
-                Timestamp.valueOf(now.plusDays(3)), Timestamp.valueOf(now), featureArea, 1 , 0);
+                Timestamp.valueOf(now.plusDays(3)), Timestamp.valueOf(now), featureArea, user);
 
         notificationDto = new NotificationDto(0, "Hello", true,
-                null, null, FeatureArea.STACKTRACE, 1 , 0);
+                null, null, FeatureArea.STACKTRACE, 1);
         notificationDto.setCreatedTime(null);
         notificationDto.setTimeToLive(null);
 
