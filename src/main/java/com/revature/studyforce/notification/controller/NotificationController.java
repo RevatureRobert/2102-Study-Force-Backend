@@ -146,9 +146,9 @@ public class NotificationController {
      * @return Returns a page of notifications (specifically NotificationDtos), if there are no notifications then we return an Http Response with status of Not Found
      */
 
-    @GetMapping("/{id}")
+    @GetMapping("/{user-id}")
     public ResponseEntity<Page<NotificationDto>> getAllNotificationsByUserId(
-            @PathVariable("id") Integer userId,
+            @PathVariable("user-id") Integer userId,
             @RequestParam(name="page", defaultValue = "0", required=false) Integer page
     )
     {

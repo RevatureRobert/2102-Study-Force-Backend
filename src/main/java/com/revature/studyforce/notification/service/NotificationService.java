@@ -136,7 +136,7 @@ public class NotificationService {
      */
     public Page<NotificationDto> findAllByUserId(Integer userId, Integer page){
         // We can change the page request parameters later
-        Page<Notification> notificationPage = notificationRepository.findAllByUserId(userId, PageRequest.of(page, 1000, Sort.by("isRead").descending().and(Sort.by("createdTime").descending())));
+        Page<Notification> notificationPage = notificationRepository.findAllByUserId(userId, PageRequest.of(page, 10, Sort.by("isRead").descending().and(Sort.by("createdTime").descending())));
         try{
             return notificationPage.map(Objects.requireNonNull(NotificationDto.convertToDto()));
         }
