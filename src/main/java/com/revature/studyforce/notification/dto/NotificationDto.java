@@ -2,9 +2,12 @@ package com.revature.studyforce.notification.dto;
 
 import com.revature.studyforce.notification.model.FeatureArea;
 import com.revature.studyforce.notification.model.Notification;
+import com.revature.studyforce.user.repository.UserRepository;
+import com.revature.studyforce.user.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
 import java.sql.Timestamp;
@@ -29,6 +32,7 @@ public class NotificationDto {
 
     public static Function<Notification, NotificationDto> convertToDto(){
 
+
         return notification -> {
             Assert.notNull(notification, "Notification is null");
 
@@ -39,28 +43,32 @@ public class NotificationDto {
                     notification.getTimeToLive(),
                     notification.getCreatedTime(),
                     notification.getFeatureArea(),
-                    notification.getUserId(),
+                    notification.getUser().getUserId(),
                     notification.getReferenceId()
             );
         };
 
     }
-    public static Function<NotificationDto, Notification> convertFromDto(){
-
-        return notificationDto -> {
-            Assert.notNull(notificationDto, "NotificationDTO is null");
-
-            return new Notification(
-                    notificationDto.getId(),
-                    notificationDto.getMessage(),
-                    notificationDto.isRead(),
-                    notificationDto.getTimeToLive(),
-                    notificationDto.getCreatedTime(),
-                    notificationDto.getFeatureArea(),
-                    notificationDto.getUserId() ,
-                    notificationDto.getReferenceId()
-            );
-
-        };
-    }
+//    public static Function<NotificationDto, Notification> convertFromDto(){
+//
+//        UserService userRepository = new UserService() {
+//        };
+//
+//        return notificationDto -> {
+//            Assert.notNull(notificationDto, "NotificationDTO is null");
+//
+//            return new Notification(
+//                    notificationDto.getId(),
+//                    notificationDto.getMessage(),
+//                    notificationDto.isRead(),
+//                    notificationDto.getTimeToLive(),
+//                    notificationDto.getCreatedTime(),
+//                    notificationDto.getFeatureArea(),
+//                    notificationDto.getReferenceId(),
+//                    userRepository.getUserById(notificationDto.getUserId())
+//
+//            );
+//
+//        };
+//    }
 }

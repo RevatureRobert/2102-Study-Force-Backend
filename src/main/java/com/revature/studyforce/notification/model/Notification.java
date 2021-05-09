@@ -32,14 +32,12 @@ public class Notification {
     @Column(name = "time_to_live")
     private Timestamp timeToLive;
 
-    @CreationTimestamp
     @Column(name = "created_time")
     private Timestamp createdTime;
 
     @Column(name = "feature_area_id")
     @Enumerated
     private FeatureArea featureArea;
-
 
     @Column(name = "reference_id")
     private int referenceId;
