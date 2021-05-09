@@ -47,8 +47,8 @@ public class NotificationController {
     @GetMapping
     public ResponseEntity<Page<NotificationDto>> getAllNotifications(
             @RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
-            @RequestParam(name = "offset", defaultValue = "5", required = false) Integer offset
-            )
+            @RequestParam(name = "offset", defaultValue = "10", required = false) Integer offset
+    )
     {
         Page<NotificationDto> notificationDtoPage = notificationService.findAll(page, offset);
         if(notificationDtoPage != null){
@@ -64,13 +64,14 @@ public class NotificationController {
      *             Also the default size of the page is 5.
      * @return Returns a page of notifications (specifically NotificationDtos), if there are no notifications then we return an Http Response with status of Not Found
      */
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<Page<NotificationDto>> getNotificationsByUserId(
             @PathVariable("id") Integer userId,
-            @RequestParam(name="page", defaultValue = "0", required=false) Integer page
-            )
+            @RequestParam(name="page", defaultValue = "0", required=false) Integer page,
+            @RequestParam(name="offset", defaultValue="10", required=false) Integer offset
+    )
     {
-        Page<NotificationDto> notificationDtoPage = notificationService.findByUserId(userId, page);
+        Page<NotificationDto> notificationDtoPage = notificationService.findByUserId(userId, page, offset);
         if(notificationDtoPage != null){
             return ResponseEntity.ok(notificationDtoPage);
         }
