@@ -5,6 +5,7 @@ import com.revature.studyforce.user.model.Batch;
 import com.revature.studyforce.user.service.BatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
  */
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/batches")
+@RequestMapping("/batches")@Secured("ROLE_USER")
 public class BatchController {
 
     private final BatchService batchService;
@@ -85,7 +86,7 @@ public class BatchController {
      * @param createDTO Data Transfer Object with batchId, name, array of instructors and array of users
      * @return Batch
      */
-    @PostMapping
+    @PostMapping @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     public @ResponseBody Batch createBatch(@RequestBody CreateUpdateBatchDTO createDTO){
         
         return batchService.createBatch(createDTO);
@@ -97,7 +98,7 @@ public class BatchController {
      * @param updateDTO Data Transfer Object with batchId, name, array of instructors and array of users
      * @return Batch
      */
-    @PutMapping
+    @PutMapping @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     public @ResponseBody Batch updateBatch(@RequestBody CreateUpdateBatchDTO updateDTO){
         
         return batchService.updateBatch(updateDTO);
@@ -109,7 +110,7 @@ public class BatchController {
      * @param batchId of Batch that needs to be deactivated.
      * @return Batch updated to show deactivated users
      */
-    @PutMapping("/deactivateBatch/{batchId}")
+    @PutMapping("/deactivateBatch/{batchId}") @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     public @ResponseBody Batch deactivateBatch(@PathVariable("batchId") int batchId){
 
         return batchService.deactivateBatch(batchId);
@@ -121,7 +122,7 @@ public class BatchController {
      * @param id of Batch that should be deleted
      * @return Batch that has been deleted.
      */
-    @DeleteMapping("/{batchId}")
+    @DeleteMapping("/{batchId}") @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     public @ResponseBody Batch deleteBatch(@PathVariable int id){
         return batchService.deleteBatch(id);
     }

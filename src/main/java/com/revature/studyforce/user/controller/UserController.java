@@ -6,6 +6,7 @@ import com.revature.studyforce.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/users")@Secured("ROLE_USER")
 public class UserController {
 
     private final UserService userService;
@@ -153,7 +154,7 @@ public class UserController {
      * @param userAuthorityDTO A data transfer object containing the user's id and their new authority
      * @return The data transfer representation of the updated user
      */
-    @PutMapping("/authority")
+    @PutMapping("/authority")@Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     public UserDTO updateUserAuthority(@RequestBody UserAuthorityDTO userAuthorityDTO){
         return userService.updateUserAuthority(userAuthorityDTO);
     }
@@ -163,7 +164,7 @@ public class UserController {
      * @param userIsActiveDTO A data transfer object containing the user's id and their new active status
      * @return The data transfer representation of the updated user
      */
-    @PutMapping("/active")
+    @PutMapping("/active")@Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     public UserDTO updateUserIsActive(@RequestBody UserIsActiveDTO userIsActiveDTO){
         return userService.updateUserIsActive(userIsActiveDTO);
     }
