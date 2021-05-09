@@ -9,10 +9,12 @@ import com.revature.studyforce.notification.model.FlashcardSubscription;
 import com.revature.studyforce.notification.model.StacktraceSubscription;
 import com.revature.studyforce.notification.model.Subscription;
 import com.revature.studyforce.notification.service.*;
+import com.revature.studyforce.stacktrace.dto.SolutionDTO;
 import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.user.model.User;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -195,7 +197,36 @@ public class AOP {
     }
 
     @Pointcut("execution (* com.revature.studyforce.stacktrace.repository.SolutionRepository.updateSolutionSelectedByAdminBySolutionId(..))")
+    public void adminSubmitSolution(){}
+
+    @AfterReturning(value = "adminSubmitSolution()" ,returning = "solutionDTO")
+    public void adminSubmitSolNotify(JoinPoint jp , SolutionDTO solutionDTO){
+        List<StacktraceSubscription> subs = this.stracktraceSubscriptionService.getAllSubscribersByStacktraceId(solutionDTO.getStackTraceId());
+        for(StacktraceSubscription stacktracesub : subs){
+            User temp = stacktracesub.getSubscription().getUser();
+            if(temp.isActive() && temp.isSubscribedStacktrace()){
+                subs.remove(stacktracesub);
+            }
+
+        }
+        this.massSendStackraceotifications(subs , "New Solution from Admin");
+    }
+
+    @Pointcut("execution (* com.revature.studyforce.flashcard.service.AnswerService.updateAnswerToCorrect(..))")
     public void adminSubmitStacktrace(){}
+
+    @AfterReturning(value = "adminSubmitStacktrace()" ,returning = "answer")
+    public void adminSubmitAnwsNotifty(JoinPoint jp , Answer answer){
+        List<FlashcardSubscription> subs = this.flashcardSubscriptionService.getAllSubscribersByFlashcardId(answer.getFlashcard().getId());
+        for(FlashcardSubscription flashcardSubscription : subs){
+            User temp = flashcardSubscription.getSubscription().getUser();
+            if(temp.isActive() && temp.isSubscribedStacktrace()){
+                subs.remove(flashcardSubscription);
+            }
+
+        }
+        this.massSendFlashCardNotifications(subs , "New Answer from Admin");
+    }
 
     /**
      * A method that takes in a list of flashcard subscriptions and sends them out
