@@ -59,14 +59,14 @@ public class AOP {
          * This will check if the notification was successfully sent
          * The System.currentTimeMillis should created  TTL that is three days after the creation
          */
-        if(this.sendNotificationService.send(subscription , 4 , "You are now subscribed").equals("201")){
+        if(this.sendNotificationService.send(subscription , 4 , "Welcome to Study Force").equals("201")){
 
             Timestamp timestamp = new Timestamp(new Date().getTime());
             System.out.println(timestamp);
-            Timestamp timestamp1 = new Timestamp(timestamp.getTime() + ((1000L * 60 * 60 )));
+            Timestamp timestamp1 = new Timestamp(timestamp.getTime() + ((1000L * 60 * 60 *24 *3)));
             System.out.println(timestamp1);
 
-            NotificationDto notificationDto = new NotificationDto(0,"\"You are now subscribed\"",false , timestamp ,
+            NotificationDto notificationDto = new NotificationDto(0,"Welcome to Study Force",false , timestamp ,
                     timestamp1  , FeatureArea.CONFIRMATION  , subscription.getUser().getUserId() , 0 );
             this.notificationService.save(notificationDto);
         };
@@ -137,7 +137,7 @@ public class AOP {
         if(this.sendNotificationService.send(stacktraceSubscription.getSubscription() , 1 , "You have subscribed").equals("201")){
             Timestamp timestamp = new Timestamp(new Date().getTime());
             System.out.println(timestamp);
-            Timestamp timestamp1 = new Timestamp(timestamp.getTime() + ((1000L * 60 * 60 )));
+            Timestamp timestamp1 = new Timestamp(timestamp.getTime() + ((1000L * 60 * 60 *24 *3 )));
             System.out.println(timestamp1);
             NotificationDto notificationDto = new NotificationDto(0,"\"You are now subscribed\"",false , timestamp ,
                     timestamp1  , FeatureArea.CONFIRMATION  , stacktraceSubscription.getSubscription().getUser().getUserId() , stacktraceSubscription.getStacktrace().getStacktraceId() );
@@ -160,7 +160,7 @@ public class AOP {
         if(this.sendNotificationService.send(flashcardSubscription.getSubscription() , 2 ,"You have subscribed").equals("201")){
             Timestamp timestamp = new Timestamp(new Date().getTime());
             System.out.println(timestamp);
-            Timestamp timestamp1 = new Timestamp(timestamp.getTime() + ((1000L * 60 * 60 )));
+            Timestamp timestamp1 = new Timestamp(timestamp.getTime() + ((1000L * 60 * 60 *24 *3)));
             System.out.println(timestamp1);
             NotificationDto notificationDto = new NotificationDto(0,"\"You are now subscribed\"",false , timestamp ,
                     timestamp1  , FeatureArea.CONFIRMATION  , flashcardSubscription.getSubscription().getUser().getUserId() , flashcardSubscription.getFlashcard().getId() );
@@ -182,7 +182,6 @@ public class AOP {
     public void subscribingFlashcardCreator(JoinPoint jp , Flashcard flashcard){
        Subscription temp = this.subscriptionService.getSubscriptionByUserId(flashcard.getCreator().getUserId());
        this.flashcardSubscriptionService.createFlashcardSubscription(flashcard.getId(), flashcard.getCreator().getUserId());
-//       this.sendNotificationService.send(temp ,2 , "Your flashcard has been created");
 
     }
 
@@ -202,8 +201,8 @@ public class AOP {
 
     }
 
-//    @Pointcut("execution (* com.revature.studyforce.stacktrace.repository.SolutionRepository.updateSolutionSelectedByAdminBySolutionId(..))")
-//    public void adminSubmitStacktrace(){}
+    @Pointcut("execution (* com.revature.studyforce.stacktrace.repository.SolutionRepository.updateSolutionSelectedByAdminBySolutionId(..))")
+    public void adminSubmitStacktrace(){}
 
     /**
      * A method that takes in a list of flashcard subscriptions and sends them out
@@ -213,13 +212,13 @@ public class AOP {
     public boolean massSendFlashCardNotifications(List<FlashcardSubscription> subscriptions , String message){
         Timestamp timestamp = new Timestamp(new Date().getTime());
         System.out.println(timestamp);
-        Timestamp timestamp1 = new Timestamp(timestamp.getTime() + ((1000L * 60 * 60 )));
+        Timestamp timestamp1 = new Timestamp(timestamp.getTime() + ((1000L * 60 * 60 *24 * 3)));
         System.out.println(timestamp1);
 
 
         for (FlashcardSubscription flashcardsub: subscriptions) {
             if(this.sendNotificationService.send(flashcardsub.getSubscription() , 2 , message).equals("201")){
-                NotificationDto notificationDto = new NotificationDto(0,"\"You are now subscribed\"",false , timestamp ,
+                NotificationDto notificationDto = new NotificationDto(0,message,false , timestamp ,
                         timestamp1  , FeatureArea.CONFIRMATION  , flashcardsub.getSubscription().getUser().getUserId() , flashcardsub.getFlashcard().getId() );
                 this.notificationService.save(notificationDto);
             };
@@ -236,13 +235,13 @@ public class AOP {
     public boolean massSendStackraceotifications(List<StacktraceSubscription> subscriptions ,String message ){
         Timestamp timestamp = new Timestamp(new Date().getTime());
         System.out.println(timestamp);
-        Timestamp timestamp1 = new Timestamp(timestamp.getTime() + ((1000L * 60 * 60 )));
+        Timestamp timestamp1 = new Timestamp(timestamp.getTime() + ((1000L * 60 * 60 *24 *3)));
         System.out.println(timestamp1);
 
 
         for (StacktraceSubscription stacktracesub: subscriptions) {
             if(this.sendNotificationService.send(stacktracesub.getSubscription() , 1 , message).equals("201")){
-                NotificationDto notificationDto = new NotificationDto(0,"\"You are now subscribed\"",false , timestamp ,
+                NotificationDto notificationDto = new NotificationDto(0,message,false , timestamp ,
                         timestamp1  , FeatureArea.CONFIRMATION  , stacktracesub.getSubscription().getUser().getUserId() , stacktracesub.getStacktrace().getStacktraceId() );
                 this.notificationService.save(notificationDto);
             };

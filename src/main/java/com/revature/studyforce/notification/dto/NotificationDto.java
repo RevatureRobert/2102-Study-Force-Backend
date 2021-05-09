@@ -39,28 +39,30 @@ public class NotificationDto {
                     notification.getTimeToLive(),
                     notification.getCreatedTime(),
                     notification.getFeatureArea(),
-                    notification.getUserId(),
-                    notification.getReferenceId()
+                    notification.getReferenceId(),
+                    notification.getUser().getUserId()
+
             );
         };
 
     }
-    public static Function<NotificationDto, Notification> convertFromDto(){
-
-        return notificationDto -> {
-            Assert.notNull(notificationDto, "NotificationDTO is null");
-
-            return new Notification(
-                    notificationDto.getId(),
-                    notificationDto.getMessage(),
-                    notificationDto.isRead(),
-                    notificationDto.getTimeToLive(),
-                    notificationDto.getCreatedTime(),
-                    notificationDto.getFeatureArea(),
-                    notificationDto.getUserId() ,
-                    notificationDto.getReferenceId()
-            );
-
-        };
-    }
+//    public static Function<NotificationDto, Notification> convertFromDto(){
+//
+//        return notificationDto -> {
+//            Assert.notNull(notificationDto, "NotificationDTO is null");
+//
+//            return new Notification(
+//                    notificationDto.getId(),
+//                    notificationDto.getMessage(),
+//                    notificationDto.isRead(),
+//                    notificationDto.getTimeToLive(),
+//                    notificationDto.getCreatedTime(),
+//                    notificationDto.getFeatureArea(),
+//                    notificationDto.getReferenceId(),
+//                    notificationDto.
+//
+//            );
+//
+//        };
+//    }
 }

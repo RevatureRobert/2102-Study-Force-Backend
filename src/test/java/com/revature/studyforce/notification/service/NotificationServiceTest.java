@@ -54,16 +54,18 @@ class NotificationServiceTest {
     Timestamp timeToLive;
     FeatureArea featureArea;
     NotificationDto notificationDto;
+    User user ;
 
     @BeforeEach
     public void setUp(){
         now = LocalDateTime.now();
         timeToLive = Timestamp.valueOf(now.plusDays(3));
         featureArea = FeatureArea.FLASHCARD;
+        user = new User("patrick@revature.net", "Patrick");
 
-        notification = new Notification(0, "Flashcard Solution", false, timeToLive, Timestamp.valueOf(now), featureArea, 1 , 0);
+        notification = new Notification(0, "Flashcard Solution", false, timeToLive, Timestamp.valueOf(now), featureArea, 1 ,user );
 
-        User user = new User("patrick@revature.net", "Patrick");
+
         user.setActive(true);
         user.setUserId(1);
       

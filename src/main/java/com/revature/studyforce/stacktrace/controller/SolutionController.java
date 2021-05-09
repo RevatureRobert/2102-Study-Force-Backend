@@ -39,29 +39,29 @@ public class SolutionController {
                                                           @PathVariable int stackTraceId){
         return solutionService.getAllSolutionsForStacktrace(stackTraceId, page, pageSize);
     }
-//
-//    /**
-//     * Inserts a {@link Solution} into data store and returns a {@link SolutionDTO}
-//     * by utilizing {@link SolutionService#submitFirstSolution(SolutionDTO)}
-//     * @param solutionDTO SolutionDTO to be saved to data store
-//     * @return {@link SolutionDTO} of the {@link Solution} saved
-//     */
-//    @PostMapping
-//    public SolutionDTO submitFirstSolution(@RequestBody SolutionDTO solutionDTO){
-//        return solutionService.submitFirstSolution(solutionDTO);
-//    }
+
+    /**
+     * Inserts a {@link Solution} into data store and returns a {@link SolutionDTO}
+     * by utilizing {@link SolutionService#submitFirstSolution(SolutionDTO)}
+     * @param solutionDTO SolutionDTO to be saved to data store
+     * @return {@link SolutionDTO} of the {@link Solution} saved
+     */
+    @PostMapping
+    public SolutionDTO submitFirstSolution(@RequestBody SolutionDTO solutionDTO){
+        return solutionService.submitFirstSolution(solutionDTO);
+    }
 
 
-//    /**
-//     * Updates a {@link Solution} in the data store and returns a
-//     * {@link SolutionDTO} by utilizing {@link SolutionService#updateSolution(SolutionDTO)}
-//     * @param solutionDTO Solution to be updated to data store
-//     * @return {@link SolutionDTO} of the {@link Solution} updated
-//     */
-//    @PutMapping
-//    public SolutionDTO updateSolution(@RequestBody SolutionDTO solutionDTO){
-//        return solutionService.updateSolution(solutionDTO);
-//    }
+    /**
+     * Updates a {@link Solution} in the data store and returns a
+     * {@link SolutionDTO} by utilizing {@link SolutionService#updateSolution(SolutionDTO)}
+     * @param solutionDTO Solution to be updated to data store
+     * @return {@link SolutionDTO} of the {@link Solution} updated
+     */
+    @PutMapping
+    public SolutionDTO updateSolution(@RequestBody SolutionDTO solutionDTO){
+        return solutionService.updateSolution(solutionDTO);
+    }
 
     /**
      * Cascade deletes a {@link SolutionDTO} by its primary id by utilizing {@link SolutionService#deleteSolution(int)}
@@ -84,14 +84,14 @@ public class SolutionController {
         return solutionService.updateSolutionTotalVotes(solutionId);
     }
 
-//    /**
-//     * When ever a solution vote is submitted this endpoint should
-//     * be called to tally the total votes for a given solution using {@link SolutionService#updateSolutionSelectedByAdmin(int)}
-//     * @param solutionId This is the primary key for the Solution table
-//     * @return This returns the updated Solution table with the adminSelected marked as true for any given Solution Id
-//     */
-//    @PutMapping("/admin-selected/{solutionId}")
-//    public SolutionDTO updateSolutionSelectedByAdmin(@PathVariable int solutionId){
-//        return solutionService.updateSolutionSelectedByAdmin(solutionId);
-//    }
+    /**
+     * When ever a solution vote is submitted this endpoint should
+     * be called to tally the total votes for a given solution using {@link SolutionService#updateSolutionSelectedByAdmin(int)}
+     * @param solutionId This is the primary key for the Solution table
+     * @return This returns the updated Solution table with the adminSelected marked as true for any given Solution Id
+     */
+    @PutMapping("/admin-selected/{solutionId}")
+    public SolutionDTO updateSolutionSelectedByAdmin(@PathVariable int solutionId){
+        return solutionService.updateSolutionSelectedByAdmin(solutionId);
+    }
 }
