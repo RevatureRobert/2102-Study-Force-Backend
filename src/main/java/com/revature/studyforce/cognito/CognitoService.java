@@ -1,5 +1,6 @@
 package com.revature.studyforce.cognito;
 import com.revature.studyforce.user.dto.BulkCreateUsersDTO;
+import com.revature.studyforce.user.model.Authority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
@@ -129,7 +130,23 @@ public class CognitoService {
                 .username(username).build());
 
         return "USER";
+    }
 
+    /**
+     * Updates a user's authority
+     * @param email The email of the user being updated
+     * @param authority The user's new authority
+     * @return Returns the user's new authority
+     */
+    public String updateAuthority(String email, Authority authority){
+        AdminUpdateUserAttributesResponse updatedAuthority = cognitoClient.adminUpdateUserAttributes(AdminUpdateUserAttributesRequest.builder()
+                .userPoolId(userPool)
+                .userAttributes(AttributeType
+                        .builder().name("custom:role")
+                        .value(authority.authorityName).build())
+                .username(email).build());
+
+        return updatedAuthority.toString();
     }
 
     /**

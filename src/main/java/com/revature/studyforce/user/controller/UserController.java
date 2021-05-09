@@ -39,7 +39,7 @@ public class UserController {
      * @param sortBy field to be sorted by ["id" | "registration" | "email" | "authority" | "active" | "lastlogin"] case insensitive defaults to userId
      * @param order type of order to sort users [asc | desc] case insensitive - defaults to asc
      * @param page page to be displayed [page >= 0] defaults to 0
-     * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 10 if invalid
+     * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 25 if invalid
      * @return page of Users dependent on provided page , offset, sort, and order
      */
     @GetMapping
@@ -66,7 +66,7 @@ public class UserController {
      * @param sortBy field to be sorted by ["id" | "registration" | "email" | "authority" | "active" | "lastlogin"]  case insensitive defaults to userId
      * @param order type of order to sort users [asc | desc] case insensitive - defaults to asc
      * @param page page to be displayed [page >= 0] defaults to 0
-     * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 10 if invalid
+     * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 25 if invalid
      * @return page of Users dependent on provided page , offset, sort, and order
      */
     @GetMapping("/name")
@@ -94,7 +94,7 @@ public class UserController {
      * @param sortBy field to be sorted by ["id" | "registration" | "email" | "authority" | "active" | "lastlogin"]  case insensitive defaults to userId
      * @param order type of order to sort users [asc | desc] case insensitive - defaults to asc
      * @param page page to be displayed [page >= 0] defaults to 0
-     * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 10 if invalid
+     * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 25 if invalid
      * @return A page of data transfer representation of users searched by
      */
     @GetMapping("/search")
@@ -122,7 +122,7 @@ public class UserController {
      * @param sortBy field to be sorted by ["id" | "registration" | "email" | "authority" | "active" | "lastlogin"]  case insensitive defaults to userId
      * @param order type of order to sort users [asc | desc] case insensitive - defaults to asc
      * @param page page to be displayed [page >= 0] defaults to 0
-     * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 10 if invalid
+     * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 25 if invalid
      * @return page of Users dependent on provided page , offset, sort, and order
      */
     @GetMapping("/time/{epochMilliseconds}")

@@ -1,6 +1,8 @@
 package com.revature.studyforce.user.service;
 
+import com.revature.studyforce.cognito.CognitoService;
 import com.revature.studyforce.user.dto.*;
+import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +30,13 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final CognitoService cognitoService;
     private static final String ID_NOT_FOUND_MESSAGE = "User matching provided userId not found, is your JSON malformed?";
 
     @Autowired
-    public UserService(UserRepository userRepository){
+    public UserService(UserRepository userRepository, CognitoService cognitoService){
         this.userRepository = userRepository;
+        this.cognitoService = cognitoService;
     }
 
     /**
@@ -174,8 +178,8 @@ public class UserService {
      * @return The data transfer representation of the updated user converted with {@link UserDTO#userToDTO()}
      */
     public UserDTO updateUserAuthority(@NotNull UserAuthorityDTO userAuthorityDTO){
-        if(userAuthorityDTO.getAuthority() == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Field authority cannot be null, is your JSON malformed?");
+        if(userAuthorityDTO.getAuthority() != Authority.USER && userAuthorityDTO.getAuthority() != Authority.ADMIN && userAuthorityDTO.getAuthority() != Authority.SUPER_ADMIN){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Field authority could not be understood, is your JSON malformed?");
         }
 
         Optional<User> userOptional = userRepository.findById(userAuthorityDTO.getUserId());
@@ -183,6 +187,13 @@ public class UserService {
 
         if(userOptional.isPresent()){
             user = userOptional.get();
+
+            try {
+                this.cognitoService.updateAuthority(user.getEmail(), userAuthorityDTO.getAuthority());
+            } catch (Exception ignored) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred when trying to update user pool.");
+            }
+
             user.setAuthority(userAuthorityDTO.getAuthority());
             return UserDTO.userToDTO().apply(userRepository.save(user));
 

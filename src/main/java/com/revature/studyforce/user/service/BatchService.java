@@ -149,7 +149,7 @@ public class BatchService {
     }
 
     /**
-     * Updates existing batch using {@link BatchRepository}
+     * Updates existing batch using {@link BatchRepository} and {@link UserRepository}
      * If array of instructors and users are included, This method will make sure the users exist before adding them to the batch.
      * @param updateBatch Data transfer object with batchId, name, array of instructor emails and array of user emails
      * @return updated batch or exception if no batch matching batchId exist
@@ -205,11 +205,14 @@ public class BatchService {
         Batch batch = batchRepository.findById(batchId).orElse(null);
 
         if(batch == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Not Batch found");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"No Batch found");
         }
 
-        batch.getUsers().forEach(userD ->  userD.setActive(false) );
-
+        batch.getUsers().forEach(user ->  {
+            user.setActive(false);
+            userRepository.save(user);
+        });
+        batchRepository.deleteById(batch.getBatchId());
         return batch;
     }
 
