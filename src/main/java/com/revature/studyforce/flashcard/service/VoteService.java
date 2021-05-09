@@ -82,7 +82,7 @@ public class VoteService {
       return VoteDTO.convertVoteToDto().apply(vote.get());
     } else {
       throw new ResponseStatusException(
-          HttpStatus.GONE, "User vote not found for this flashcard answer");
+          HttpStatus.I_AM_A_TEAPOT, "User vote not found for this flashcard answer");
       }
     }
 
