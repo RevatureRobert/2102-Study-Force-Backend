@@ -2,7 +2,9 @@ package com.revature.studyforce.flashcard.integration;
 
 import com.revature.studyforce.flashcard.controller.VoteController;
 import com.revature.studyforce.flashcard.model.Answer;
+import com.revature.studyforce.flashcard.model.Difficulty;
 import com.revature.studyforce.flashcard.model.Flashcard;
+import com.revature.studyforce.flashcard.model.Vote;
 import com.revature.studyforce.flashcard.repository.AnswerRepository;
 import com.revature.studyforce.flashcard.repository.FlashcardRepository;
 import com.revature.studyforce.flashcard.repository.VoteRepository;
@@ -29,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * Test class for VoteController {@link VoteController}
+ *
  * @author Nick Zimmerman
  */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -37,120 +40,319 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:test-application.properties")
 class VoteIntegrationTest {
 
-    @Autowired
-    private VoteRepository voteRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private AnswerRepository answerRepository;
-    @Autowired
-    private VoteService voteService;
-    @Autowired
-    private FlashcardRepository flashcardRepository;
-    @Autowired
-    private VoteController controller;
+  @Autowired private VoteRepository voteRepository;
+  @Autowired private UserRepository userRepository;
+  @Autowired private AnswerRepository answerRepository;
+  @Autowired private VoteService voteService;
+  @Autowired private FlashcardRepository flashcardRepository;
+  @Autowired private VoteController controller;
 
+  @Test
+  void givenVoteDTO_whenCreateAnswerVote_shouldReturnVote() throws Exception {
+    User u =
+        new User(
+            0,
+            "jesus.christ@revature.com",
+            "Jesus Christ",
+            true,
+            false,
+            false,
+            Authority.USER,
+            Timestamp.valueOf(LocalDateTime.now()),
+            Timestamp.valueOf(LocalDateTime.now()));
+    userRepository.save(u);
 
-    @Test
-    void givenVoteDTO_whenCreateAnswerVote_shouldReturnVote() throws Exception {
-        User u = new User(0,"jesus.christ@revature.com","Jesus Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
-        userRepository.save(u);
+    Flashcard flashcard = new Flashcard(0, u, null, "how is your day", 1, 1, null, null, false);
+    flashcardRepository.save(flashcard);
 
-        Flashcard flashcard = new Flashcard(0,u,null,"how is your day",1,1,null,null,false);
-        flashcardRepository.save(flashcard);
+    Answer a =
+        new Answer(
+            0,
+            u,
+            flashcard,
+            "check stackoverflow",
+            5,
+            false,
+            false,
+            Timestamp.valueOf(LocalDateTime.now()),
+            Timestamp.valueOf(LocalDateTime.now()));
+    answerRepository.save(a);
 
-        Answer a = new Answer(0,u,flashcard,"check stackoverflow",5,false,false,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
-        answerRepository.save(a);
+    MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+    String string = "{\"answerId\" : \"3\"," + "\"userId\" : \"1\"," + "\"value\" : \"1\"" + "}";
+    MvcResult result =
+        mockMvc
+            .perform(
+                MockMvcRequestBuilders.post("/flashcards/votes/")
+                    .content(string)
+                    .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(
+                MockMvcResultMatchers.content()
+                    .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andReturn();
+  }
 
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-        String string = "{\"answerId\" : \"3\","
-                + "\"userId\" : \"1\","
-                + "\"value\" : \"1\""
-                + "}";
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/votes/")
-                .content(string)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
+  @Test
+  void givenVoteWithBadValue_whenCreateAnswerVote_shouldThrowException() throws Exception {
+    User u =
+        new User(
+            0,
+            "jesus.christ@revature.com",
+            "Jesus Christ",
+            true,
+            false,
+            false,
+            Authority.USER,
+            Timestamp.valueOf(LocalDateTime.now()),
+            Timestamp.valueOf(LocalDateTime.now()));
+    userRepository.save(u);
 
-    }
+    Flashcard flashcard = new Flashcard(0, u, null, "how is your day", 1, 1, null, null, false);
+    flashcardRepository.save(flashcard);
 
-    @Test
-    void givenVoteWithBadValue_whenCreateAnswerVote_shouldThrowException() throws Exception {
-        User u = new User(0,"jesus.christ@revature.com","Jesus Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
-        userRepository.save(u);
+    Answer a =
+        new Answer(
+            0,
+            u,
+            flashcard,
+            "check stackoverflow",
+            5,
+            false,
+            false,
+            Timestamp.valueOf(LocalDateTime.now()),
+            Timestamp.valueOf(LocalDateTime.now()));
+    answerRepository.save(a);
 
-        Flashcard flashcard = new Flashcard(0,u,null,"how is your day",1,1,null,null,false);
-        flashcardRepository.save(flashcard);
+    MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+    String string = "{\"answerId\" : \"3\"," + "\"userId\" : \"1\"," + "\"value\" : \"33\"" + "}";
+    MvcResult result =
+        mockMvc
+            .perform(
+                MockMvcRequestBuilders.post("/flashcards/votes/")
+                    .content(string)
+                    .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(
+                MockMvcResultMatchers.status()
+                    .is4xxClientError()) // .content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+            .andReturn();
 
-        Answer a = new Answer(0,u,flashcard,"check stackoverflow",5,false,false,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
-        answerRepository.save(a);
+    Assertions.assertEquals("Invalid vote value exception", result.getResponse().getErrorMessage());
+  }
 
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-        String string = "{\"answerId\" : \"3\","
-                + "\"userId\" : \"1\","
-                + "\"value\" : \"33\""
-                + "}";
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/votes/")
-                .content(string)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError())// .content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andReturn();
+  @Test
+  void givenVoteWithBadUserId_whenCreateAnswerVote_shouldThrowException() throws Exception {
+    User u =
+        new User(
+            0,
+            "jesus.christ@revature.com",
+            "Jesus Christ",
+            true,
+            false,
+            false,
+            Authority.USER,
+            Timestamp.valueOf(LocalDateTime.now()),
+            Timestamp.valueOf(LocalDateTime.now()));
+    userRepository.save(u);
 
-        Assertions.assertEquals("Invalid vote value exception", result.getResponse().getErrorMessage());
+    Flashcard flashcard = new Flashcard(0, u, null, "how is your day", 1, 1, null, null, false);
+    flashcardRepository.save(flashcard);
 
-    }
+    Answer a =
+        new Answer(
+            0,
+            u,
+            flashcard,
+            "check stackoverflow",
+            5,
+            false,
+            false,
+            Timestamp.valueOf(LocalDateTime.now()),
+            Timestamp.valueOf(LocalDateTime.now()));
+    answerRepository.save(a);
 
-    @Test
-    void givenVoteWithBadUserId_whenCreateAnswerVote_shouldThrowException() throws Exception {
-        User u = new User(0,"jesus.christ@revature.com","Jesus Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
-        userRepository.save(u);
+    MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+    String string = "{\"answerId\" : \"3\"," + "\"userId\" : \"20\"," + "\"value\" : \"1\"" + "}";
+    MvcResult result =
+        mockMvc
+            .perform(
+                MockMvcRequestBuilders.post("/flashcards/votes/")
+                    .content(string)
+                    .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(
+                MockMvcResultMatchers.status()
+                    .is4xxClientError()) // .content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+            .andReturn();
 
-        Flashcard flashcard = new Flashcard(0,u,null,"how is your day",1,1,null,null,false);
-        flashcardRepository.save(flashcard);
+    Assertions.assertEquals("User not found exception", result.getResponse().getErrorMessage());
+  }
 
-        Answer a = new Answer(0,u,flashcard,"check stackoverflow",5,false,false,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
-        answerRepository.save(a);
+  @Test
+  void givenVoteWithBadAnswerId_whenCreateAnswerVote_shouldThrowException() throws Exception {
+    User u =
+        new User(
+            0,
+            "jesus.christ@revature.com",
+            "Jesus Christ",
+            true,
+            false,
+            false,
+            Authority.USER,
+            Timestamp.valueOf(LocalDateTime.now()),
+            Timestamp.valueOf(LocalDateTime.now()));
+    userRepository.save(u);
 
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-        String string = "{\"answerId\" : \"3\","
-                + "\"userId\" : \"20\","
-                + "\"value\" : \"1\""
-                + "}";
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/votes/")
-                .content(string)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError())// .content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andReturn();
+    Flashcard flashcard = new Flashcard(0, u, null, "how is your day", 1, 1, null, null, false);
+    flashcardRepository.save(flashcard);
 
-        Assertions.assertEquals("User not found exception", result.getResponse().getErrorMessage());
+    Answer a =
+        new Answer(
+            0,
+            u,
+            flashcard,
+            "check stackoverflow",
+            5,
+            false,
+            false,
+            Timestamp.valueOf(LocalDateTime.now()),
+            Timestamp.valueOf(LocalDateTime.now()));
+    answerRepository.save(a);
 
-    }
+    MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+    String string = "{\"answerId\" : \"33\"," + "\"userId\" : \"1\"," + "\"value\" : \"1\"" + "}";
+    MvcResult result =
+        mockMvc
+            .perform(
+                MockMvcRequestBuilders.post("/flashcards/votes/")
+                    .content(string)
+                    .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(
+                MockMvcResultMatchers.status()
+                    .is4xxClientError()) // .content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+            .andReturn();
 
-    @Test
-    void givenVoteWithBadAnswerId_whenCreateAnswerVote_shouldThrowException() throws Exception {
-        User u = new User(0,"jesus.christ@revature.com","Jesus Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
-        userRepository.save(u);
+    Assertions.assertEquals("Answer not found exception", result.getResponse().getErrorMessage());
+  }
 
-        Flashcard flashcard = new Flashcard(0,u,null,"how is your day",1,1,null,null,false);
-        flashcardRepository.save(flashcard);
+  @Test
+  void givenUserAndAnswer_whenGetVote_shouldReturnVote() throws Exception {
+      User u =
+              new User(
+                      0,
+                      "jesus.christ@revature.com",
+                      "Jesus Christ",
+                      true,
+                      false,
+                      false,
+                      Authority.USER,
+                      Timestamp.valueOf(LocalDateTime.now()),
+                      Timestamp.valueOf(LocalDateTime.now()));
+      userRepository.save(u);
+      Flashcard flashcard = new Flashcard(0, u, null, "how is your day", 1, 1, null, null, false);
+      flashcardRepository.save(flashcard);
+      Answer a =
+              new Answer(
+                      0,
+                      u,
+                      flashcard,
+                      "check stackoverflow",
+                      4,
+                      false,
+                      false,
+                      Timestamp.valueOf(LocalDateTime.now()),
+                      Timestamp.valueOf(LocalDateTime.now()));
+      answerRepository.save(a);
+      Vote v = new Vote(0, 1, a, u);
+      voteRepository.save(v);
+      MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+      MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/votes?answerId=3&userId=1")
+              .contentType(MediaType.APPLICATION_JSON))
+              .andExpect(MockMvcResultMatchers.status().isOk())
+              .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+              .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
+              .andExpect(MockMvcResultMatchers.jsonPath("$.answerId").value(3))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.userId").value(1))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.value").value(1))
+              .andReturn();
 
-        Answer a = new Answer(0,u,flashcard,"check stackoverflow",5,false,false,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
-        answerRepository.save(a);
+      System.out.println(result.getResponse().getContentAsString());
+  }
 
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-        String string = "{\"answerId\" : \"33\","
-                + "\"userId\" : \"1\","
-                + "\"value\" : \"1\""
-                + "}";
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/flashcards/votes/")
-                .content(string)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError())// .content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andReturn();
+  @Test
+  void givenBadAnswerId_whenGetVote_shouldThrowError() throws Exception {
+    User u =
+            new User(
+                    0,
+                    "jesus.christ@revature.com",
+                    "Jesus Christ",
+                    true,
+                    false,
+                    false,
+                    Authority.USER,
+                    Timestamp.valueOf(LocalDateTime.now()),
+                    Timestamp.valueOf(LocalDateTime.now()));
+    userRepository.save(u);
+    Flashcard flashcard = new Flashcard(0, u, null, "how is your day", 1, 1, null, null, false);
+    flashcardRepository.save(flashcard);
+    Answer a =
+            new Answer(
+                    0,
+                    u,
+                    flashcard,
+                    "check stackoverflow",
+                    4,
+                    false,
+                    false,
+                    Timestamp.valueOf(LocalDateTime.now()),
+                    Timestamp.valueOf(LocalDateTime.now()));
+    answerRepository.save(a);
+    Vote v = new Vote(0, 1, a, u);
+    voteRepository.save(v);
+    MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+    MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/votes?answerId=33&userId=1")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+            .andReturn();
 
-        Assertions.assertEquals("Answer not found exception", result.getResponse().getErrorMessage());
+    System.out.println(result.getResponse().getContentAsString());
+  }
 
-    }
+  @Test
+  void givenBadUserId_whenGetVote_shouldThrowError() throws Exception {
+    User u =
+            new User(
+                    0,
+                    "jesus.christ@revature.com",
+                    "Jesus Christ",
+                    true,
+                    false,
+                    false,
+                    Authority.USER,
+                    Timestamp.valueOf(LocalDateTime.now()),
+                    Timestamp.valueOf(LocalDateTime.now()));
+    userRepository.save(u);
+    Flashcard flashcard = new Flashcard(0, u, null, "how is your day", 1, 1, null, null, false);
+    flashcardRepository.save(flashcard);
+    Answer a =
+            new Answer(
+                    0,
+                    u,
+                    flashcard,
+                    "check stackoverflow",
+                    4,
+                    false,
+                    false,
+                    Timestamp.valueOf(LocalDateTime.now()),
+                    Timestamp.valueOf(LocalDateTime.now()));
+    answerRepository.save(a);
+    Vote v = new Vote(0, 1, a, u);
+    voteRepository.save(v);
+    MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+    MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/flashcards/votes?answerId=3&userId=11")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+            .andReturn();
+
+    System.out.println(result.getResponse().getContentAsString());
+  }
 }

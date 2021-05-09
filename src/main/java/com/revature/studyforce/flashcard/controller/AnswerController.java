@@ -6,7 +6,9 @@ import com.revature.studyforce.flashcard.model.Answer;
 import com.revature.studyforce.flashcard.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  * Controller for the Answer resource handling using {@link AnswerService}
@@ -39,7 +41,7 @@ public class AnswerController {
             @RequestParam(value="page", required = false, defaultValue = "0") int page,
             @RequestParam(value = "offset", required = false, defaultValue = "25") int offset,
             @RequestParam(value = "sortby", required = false, defaultValue = "answerScore") String sortBy,
-            @RequestParam(value = "order", required = false, defaultValue = "ASC") String order){
+            @RequestParam(value = "order", required = false, defaultValue = "DESC") String order){
         return answerService.getAllByFlashcardId(id,page,offset,sortBy,order);
     }
 
@@ -48,7 +50,7 @@ public class AnswerController {
      * @param deleteAnswerDTO the data transfer object that contains the id of the answer to delete
      * @return a confirmation message if the object was deleted
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     public String deleteAnswerById(@RequestBody DeleteAnswerDTO deleteAnswerDTO){
         answerService.deleteAnswerById(deleteAnswerDTO.getAnswerId());
         return "Deleted answer with id:" + deleteAnswerDTO.getAnswerId();
@@ -59,10 +61,22 @@ public class AnswerController {
      * @param answerDTO The dta transfer object with the information required to create a new answer {@link AnswerDTO}
      * @return The newly created answer object
      */
-    @PostMapping("/")
+    @PostMapping
     public Answer createNewAnswer(@RequestBody AnswerDTO answerDTO){
         return answerService.createAnswer(answerDTO);
     }
 
+    /**
+     * PUT request for 'updateAnswerToCorrect' in AnswerService {@link AnswerService#updateAnswerToCorrect(int)}
+     * @param id The id of the Answer object
+     * @return The updated answer
+     */
+    @PutMapping("/{id}")
+    public Answer updateAnswerToCorrect(@PathVariable int id) {
+        Answer answer = answerService.updateAnswerToCorrect(id);
+        if (answer == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Answer doesn't exist");
 
+        return answer;
+    }
 }
