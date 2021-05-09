@@ -152,18 +152,18 @@ public class StacktraceService {
 //     * @param solutionId
 //     * @return will return a solutionDTO with updated adminSelected as true
 //     */
-//
-//    /**
-//     * Update the Stacktrace chosenSolution with targeted SolutionId, which should be displayed above
-//     * every other comment unless admin picks a solution.
-//     * using {@link StacktraceRepository#updateStacktraceUserSelectedSolution(int, int)}
-//     * @param solutionId primary key for the solution table
-//     * @param stacktraceId primary key for the stacktrace table
-//     * @return will return a updated stacktrace with a chosenSolution solutionId
-//     */
-//    public StacktraceDTO updateStacktraceChosenSolutionBySolutionAndStacktraceId(int solutionId, int stacktraceId){
-//        stacktraceRepo.updateStacktraceUserSelectedSolution(solutionId, stacktraceId);
-//        Stacktrace stacktrace = stacktraceRepo.findById(stacktraceId).orElse(null);
-//        return StacktraceDTO.stacktraceToDTO().apply(stacktrace);
-//    }
+
+    /**
+     * Update the Stacktrace chosenSolution with targeted SolutionId, which should be displayed above
+     * every other comment unless admin picks a solution.
+     * using {@link StacktraceRepository#updateStacktraceUserSelectedSolution(int, int)}
+     * @param solutionId primary key for the solution table
+     * @param stacktraceId primary key for the stacktrace table
+     * @return will return a updated stacktrace with a chosenSolution solutionId
+     */
+    public StacktraceDTO updateStacktraceChosenSolutionBySolutionAndStacktraceId(int solutionId, int stacktraceId){
+        stacktraceRepo.updateStacktraceUserSelectedSolution(solutionId, stacktraceId);
+        Stacktrace stacktrace = stacktraceRepo.findById(stacktraceId).orElse(null);
+        return StacktraceDTO.stacktraceToDTO().apply(stacktrace);
+    }
 }
