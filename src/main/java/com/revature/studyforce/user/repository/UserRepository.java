@@ -17,9 +17,11 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User,Integer> {
 
-    Optional<User> findByEmail(String email);
+    Optional<User> findByEmail(final String email);
 
-    Page<User> findByNameContainingIgnoreCase(String firstName, Pageable pageable);
+    Page<User> findByNameContainingIgnoreCase(final String firstName, Pageable pageable);
 
     Page<User> findByRegistrationTimeAfter(Timestamp creation, Pageable pageable);
+
+    Page<User> findAllByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(final String search, final String search2, Pageable pageable);
 }

@@ -101,6 +101,28 @@ public class UserService {
     }
 
     /**
+     * Retrieves all Users whose name or email contain the search string with pagination from {@link UserRepository#findAllByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(String, String, Pageable)}
+     * @param search The string to search by
+     * @param sortBy field to be sorted by ["id" | "registration" | "email" | "authority" | "active" | "lastlogin"] case insensitive defaults to userId
+     * @param order type of order to sort users [asc | desc] case insensitive - defaults to asc
+     * @param page page to be displayed [page >= 0] defaults to 0
+     * @param offset number of Users displayed per page [5 | 10 | 25 | 50] defaults to 10 if invalid
+     * @return page of search results data transfer representation of Users with pagination
+     */
+    public Page<UserDTO> getBySearch(String search, int page, int offset, String sortBy, String order) {
+        page = pageValidation(page);
+        sortBy = sortByValidation(sortBy);
+        offset = offsetValidation(offset);
+
+        Page<User> users;
+        if(order.equalsIgnoreCase("DESC"))
+            users = userRepository.findAllByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(search, search, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+        else
+            users = userRepository.findAllByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(search, search, PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
+        return users.map(UserDTO.userToDTO());
+    }
+
+    /**
      * Retrieves all Users with pagination from{@link UserRepository#findByRegistrationTimeAfter(Timestamp, Pageable)}
      * @param epochMilli timestamp to check
      * @param sortBy field to be sorted by ["id" | "registration" | "email" | "authority" | "active" | "lastlogin"] case insensitive defaults to userId
@@ -223,7 +245,7 @@ public class UserService {
                 return "email";
             case "registration":
                 return "registrationTime";
-            case "lastLogin":
+            case "lastlogin":
                 return "lastLogin";
             case "active":
                 return "isActive";

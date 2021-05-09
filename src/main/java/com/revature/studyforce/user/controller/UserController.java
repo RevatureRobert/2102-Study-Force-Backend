@@ -79,13 +79,31 @@ public class UserController {
     }
 
     /**
-     * GET request for 'getUserByEmail' in {@link UserService#getUserByEmail(String)}
+     * GET request for '/email' using {@link UserService#getUserByEmail(String)}
      * @param email belonging to user
      * @return single user with matching email
      */
     @GetMapping("/email")
     public UserDTO getUserByEmail(@RequestParam(name = "email") String email){
         return userService.getUserByEmail(email);
+    }
+
+    /**
+     * GET request for '/search' using {@link UserService#getBySearch(String, int, int, String, String)}
+     * @param search string to search name and email by
+     * @param sortBy field to be sorted by ["id" | "registration" | "email" | "authority" | "active" | "lastlogin"]  case insensitive defaults to userId
+     * @param order type of order to sort users [asc | desc] case insensitive - defaults to asc
+     * @param page page to be displayed [page >= 0] defaults to 0
+     * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 10 if invalid
+     * @return A page of data transfer representation of users searched by
+     */
+    @GetMapping("/search")
+    public Page<UserDTO> getBySearch(@RequestParam(name = "search") String search,
+                                     @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+                                     @RequestParam(value = "offset", required = false, defaultValue = "25") int offset,
+                                     @RequestParam(value = "sort", required = false, defaultValue = "userId") String sortBy,
+                                     @RequestParam(value = "order", required = false, defaultValue = "ASC") String order){
+        return userService.getBySearch(search, page, offset, sortBy, order);
     }
 
     /**
