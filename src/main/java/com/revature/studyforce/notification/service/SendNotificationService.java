@@ -26,8 +26,8 @@ public class SendNotificationService {
 
     private static final String PUBLIC_KEY = "BEH36g-ez23QfnT8OIbnZJMmj892dDYa_LKyGz_wM2tyZbSt1YK4Jy1sRz1OyAeilAOBDrg-TnCBLFtWdVIApK8";
     private static final String PRIVATE_KEY = "VzVcwmu7b3eu55MUQD_h2pna4DAI702aluxbJnjOcxs";
-    private String SUBJECT = "";
-    private String title = "Pending";
+    private String SUBJECT = "Study Force";
+
 
 
 
@@ -44,26 +44,27 @@ public class SendNotificationService {
      * @return Http Response code for the request 
      */
     public String send(Subscription subscription, int subjectIdentifier , String message) {
+        String title;
         switch (subjectIdentifier){
             case 1 : {
-                this.SUBJECT = "Stacktrace";
+                title = "Stacktrace";
                 break;
             }
             case 2 : {
-                this.SUBJECT = "Flashcard";
+                title = "Flashcard";
                 break;
 
             }
             case 3 : {
-                this.SUBJECT = "User";
+               title = "User";
                 break;
             }
             case 4 : {
-                this.SUBJECT = "Other";
+                title = "Other";
                 break;
             }
             default:{
-                this.SUBJECT = "Not a valid Subject";
+                title = "Not a valid Subject";
             }
 
         }
@@ -83,7 +84,7 @@ public class SendNotificationService {
 
             int statusCode = httpResponse.get().getStatusCode();
 
-            System.out.println(statusCode);
+//            System.out.println(statusCode);
             return String.valueOf(statusCode);
         } catch (Exception e) {
             return ExceptionUtils.getStackTrace(e);

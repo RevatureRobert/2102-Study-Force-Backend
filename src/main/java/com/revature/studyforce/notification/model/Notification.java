@@ -40,7 +40,6 @@ public class Notification {
     @Enumerated
     private FeatureArea featureArea;
 
-
     @Column(name = "reference_id")
     private int referenceId;
 

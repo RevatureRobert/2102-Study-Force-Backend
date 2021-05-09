@@ -108,6 +108,7 @@ public class NotificationService {
         notification.setTimeToLive(Timestamp.valueOf(notification.getCreatedTime().toLocalDateTime().plusDays(3)));
         notification.setRead(notificationDto.isRead());
         notification.setFeatureArea(notificationDto.getFeatureArea());
+        notification.setReferenceId(notificationDto.getReferenceId());
         return NotificationDto.convertToDto().apply(notificationRepository.save(notification));
     }
 
@@ -129,6 +130,7 @@ public class NotificationService {
             notification.setTimeToLive(notificationDto.getTimeToLive());
             notification.setRead(notificationDto.isRead());
             notification.setFeatureArea(notificationDto.getFeatureArea());
+            notification.setReferenceId(notificationDto.getReferenceId());
             return NotificationDto.convertToDto().apply(notificationRepository.save(notification));
         }
         return null;
