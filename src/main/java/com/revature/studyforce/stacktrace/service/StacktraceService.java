@@ -1,8 +1,6 @@
 package com.revature.studyforce.stacktrace.service;
 
-import com.revature.studyforce.stacktrace.dto.SolutionDTO;
 import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
-import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.repository.SolutionRepository;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
@@ -12,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
@@ -50,25 +49,24 @@ public class StacktraceService {
         pageSize = validatePageSize(pageSize);
         page = validatePage(page);
 
-        return stacktraceRepo.findAll(PageRequest.of(page, pageSize)).map(StacktraceDTO.stacktraceToDTO());
+        return stacktraceRepo.findAll(PageRequest.of(page, pageSize, Sort.by(Sort.Direction.DESC, "creationTime"))).map(StacktraceDTO.stacktraceToDTO());
     }
 
     /**
-     * Gets all stack traces by {@link StacktraceRepository#findByTitleContainingIgnoreCaseOrBodyContainingIgnoreCaseOrTechnologyTechnologyId(String, String, int, Pageable)}
+     * Gets all stack traces by {@link StacktraceRepository#findByTitleContainingIgnoreCaseAndTechnologyTechnologyId(String, int, Pageable)}
      * who's name contains the given name or who's body contains the given body or
      * who's technology id matches the given technology id
      * @param title the title substring to search for
-     * @param body the body substring to search for
      * @param technologyId the technology id to search for
      * @param page the page to be displayed
      * @param pageSize Number of {@link Stacktrace Stacktraces} to be displayed
      * @return Page of matching {@link Stacktrace Stacktraces} dependent on provided page, pageSize
      */
 
-    public Page<StacktraceDTO> getAllStacktracesByTitleOrBodyOrTechnologyId(String title, String body, int technologyId, int page, int pageSize) {
+    public Page<StacktraceDTO> getAllStacktracesByTitleOrBodyOrTechnologyId(String title, int technologyId, int page, int pageSize) {
         pageSize = validatePageSize(pageSize);
         page = validatePage(page);
-        return stacktraceRepo.findByTitleContainingIgnoreCaseOrBodyContainingIgnoreCaseOrTechnologyTechnologyId(title,body,technologyId,PageRequest.of(page,pageSize)).map(StacktraceDTO.stacktraceToDTO());
+        return stacktraceRepo.findByTitleContainingIgnoreCaseAndTechnologyTechnologyId(title, technologyId,PageRequest.of(page,pageSize, Sort.by(Sort.Direction.DESC, "creationTime"))).map(StacktraceDTO.stacktraceToDTO());
     }
 
     /**
@@ -150,10 +148,10 @@ public class StacktraceService {
 
     /**
 
-     * {@link SolutionRepository#updateSolutionSelectedByAdminBySolutionId(int)}
-     * @param solutionId
-     * @return will return a solutionDTO with updated adminSelected as true
-     */
+//     * {@link SolutionRepository#updateSolutionSelectedByAdminBySolutionId(int)}
+//     * @param solutionId
+//     * @return will return a solutionDTO with updated adminSelected as true
+//     */
 
     /**
      * Update the Stacktrace chosenSolution with targeted SolutionId, which should be displayed above

@@ -31,7 +31,8 @@ class NotificationDtoTest {
         User user = new User("patrick@revature.net", "Patrick");
         user.setActive(true);
         user.setUserId(1);
-        Notification notification = new Notification(id, message, isRead, timeToLive, createdTime, featureArea, user);
+        Integer refernceId = 0;
+        Notification notification = new Notification(id, message, isRead, timeToLive, createdTime, featureArea, userId , refernceId);
         NotificationDto dto = NotificationDto.convertToDto().apply(notification);
 
         Assertions.assertEquals(id, dto.getId());
@@ -41,6 +42,29 @@ class NotificationDtoTest {
         Assertions.assertEquals(createdTime, dto.getCreatedTime());
         Assertions.assertEquals(featureArea, dto.getFeatureArea());
         Assertions.assertEquals(user.getUserId(), dto.getUserId());
+    }
+
+
+    @Test
+    void whenConvertFromDto_shouldReturnNotificationDto(){
+        Integer id = 0;
+        String message = "Flashcard";
+        boolean isRead = false;
+        Timestamp timeToLive = Timestamp.valueOf(LocalDateTime.now().plusDays(3));
+        Timestamp createdTime = Timestamp.valueOf(LocalDateTime.now());
+        FeatureArea featureArea = FeatureArea.FLASHCARD;
+        Integer userId = 1;
+        Integer referenceId =0;
+        NotificationDto notificationDto = new NotificationDto(id, message, isRead, timeToLive, createdTime, featureArea, userId ,referenceId);
+        Notification notification = NotificationDto.convertFromDto().apply(notificationDto);
+
+        Assertions.assertEquals(id, notification.getNotificationId());
+        Assertions.assertEquals(message, notification.getBody());
+        Assertions.assertEquals(isRead, notification.isRead());
+        Assertions.assertEquals(timeToLive, notification.getTimeToLive());
+        Assertions.assertEquals(createdTime, notification.getCreatedTime());
+        Assertions.assertEquals(featureArea, notification.getFeatureArea());
+        Assertions.assertEquals(userId, notification.getUserId());
     }
 
 }

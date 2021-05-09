@@ -40,6 +40,10 @@ public class Notification {
     @Enumerated
     private FeatureArea featureArea;
 
+
+    @Column(name = "reference_id")
+    private int referenceId;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

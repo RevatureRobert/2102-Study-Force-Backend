@@ -8,6 +8,7 @@ import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -43,7 +44,7 @@ public class SolutionService {
     public Page<SolutionDTO> getAllSolutionsForStacktrace(int stackTraceId, int page, int pageSize){
         page = validatePage(page);
         pageSize = validatePageSize(pageSize);
-        Page<Solution> solutions = solutionRepository.findByStackTraceId_stacktraceId(stackTraceId, PageRequest.of(page, pageSize));
+        Page<Solution> solutions = solutionRepository.findByStackTraceId_stacktraceId(stackTraceId, PageRequest.of(page, pageSize, Sort.by(Sort.Direction.DESC, "totalVote")));
         return solutions.map(SolutionDTO.solutionToDTO());
     }
 
@@ -55,19 +56,19 @@ public class SolutionService {
      * @return returns the solutionDTO after saving the actual solution with the
      * user of {@link SolutionDTO#solutionToDTO()}
      */
-    public SolutionDTO submitFirstSolution(SolutionDTO solutionDTO){
-        Solution solution = new Solution(
-                solutionDTO.getSolutionId(),
-                stacktraceRepository.findById(solutionDTO.getStackTraceId()).orElse(null),
-                userRepository.findById(solutionDTO.getUserId()).orElse(null),
-                solutionDTO.getBody(),
-                solutionDTO.getAdminSelected(),
-                solutionDTO.getCreationTime(),
-                solutionDTO.getTotalVote(),
-                null);
-
-        return SolutionDTO.solutionToDTO().apply(solutionRepository.save(solution));
-    }
+//    public SolutionDTO submitFirstSolution(SolutionDTO solutionDTO){
+//        Solution solution = new Solution(
+//                solutionDTO.getSolutionId(),
+//                stacktraceRepository.findById(solutionDTO.getStackTraceId()).orElse(null),
+//                userRepository.findById(solutionDTO.getUserId()).orElse(null),
+//                solutionDTO.getBody(),
+//                solutionDTO.getAdminSelected(),
+//                solutionDTO.getCreationTime(),
+//                solutionDTO.getTotalVote(),
+//                null);
+//
+//        return SolutionDTO.solutionToDTO().apply(solutionRepository.save(solution));
+//    }
 
     /**
      * If a user has previously posted a solution to a stacktrace, this
@@ -79,25 +80,25 @@ public class SolutionService {
      * @return returns the solutionDTO after saving the actual solution with the
      * user of {@link SolutionDTO#solutionToDTO()}
      */
-    public SolutionDTO updateSolution(SolutionDTO solutionDTO){
-        Optional<Solution> solution = solutionRepository.findById(solutionDTO.getSolutionId());
-        if(solution.isPresent()){
-            solution.get().setBody(solutionDTO.getBody());
-            return SolutionDTO.solutionToDTO().apply(solutionRepository.save(solution.get()));
-        }else{
-            Solution newSolution = new Solution(
-                    solutionDTO.getSolutionId(),
-                    stacktraceRepository.findById(solutionDTO.getStackTraceId()).orElse(null),
-                    userRepository.findById(solutionDTO.getUserId()).orElse(null),
-                    solutionDTO.getBody(),
-                    solutionDTO.getAdminSelected(),
-                    solutionDTO.getCreationTime(),
-                    solutionDTO.getTotalVote(),
-                    null);
-
-            return SolutionDTO.solutionToDTO().apply(solutionRepository.save(newSolution));
-        }
-    }
+//    public SolutionDTO updateSolution(SolutionDTO solutionDTO){
+//        Optional<Solution> solution = solutionRepository.findById(solutionDTO.getSolutionId());
+//        if(solution.isPresent()){
+//            solution.get().setBody(solutionDTO.getBody());
+//            return SolutionDTO.solutionToDTO().apply(solutionRepository.save(solution.get()));
+//        }else{
+//            Solution newSolution = new Solution(
+//                    solutionDTO.getSolutionId(),
+//                    stacktraceRepository.findById(solutionDTO.getStackTraceId()).orElse(null),
+//                    userRepository.findById(solutionDTO.getUserId()).orElse(null),
+//                    solutionDTO.getBody(),
+//                    solutionDTO.getAdminSelected(),
+//                    solutionDTO.getCreationTime(),
+//                    solutionDTO.getTotalVote(),
+//                    null);
+//
+//            return SolutionDTO.solutionToDTO().apply(solutionRepository.save(newSolution));
+//        }
+//    }
 
   /**
    * Deletes Solution with the given id with {@link SolutionRepository#delete}
@@ -157,16 +158,16 @@ public class SolutionService {
         return SolutionDTO.solutionToDTO().apply(solution);
     }
 
-    /**
-     * Update the solution adminSelected to true, which should be displayed above
-     * every other comment.
-     * {@link SolutionRepository#updateSolutionSelectedByAdminBySolutionId(int)}
-     * @param solutionId The solutionId used to update any given solution
-     * @return will return a solutionDTO with updated adminSelected as true
-     */
-    public SolutionDTO updateSolutionSelectedByAdmin(int solutionId){
-        solutionRepository.updateSolutionSelectedByAdminBySolutionId(solutionId);
-        Solution solution = solutionRepository.findById(solutionId).orElse(null);
-        return SolutionDTO.solutionToDTO().apply(solution);
-    }
+//    /**
+//     * Update the solution adminSelected to true, which should be displayed above
+//     * every other comment.
+//     * {@link SolutionRepository#updateSolutionSelectedByAdminBySolutionId(int)}
+//     * @param solutionId The solutionId used to update any given solution
+//     * @return will return a solutionDTO with updated adminSelected as true
+//     */
+//    public SolutionDTO updateSolutionSelectedByAdmin(int solutionId){
+//        solutionRepository.updateSolutionSelectedByAdminBySolutionId(solutionId);
+//        Solution solution = solutionRepository.findById(solutionId).orElse(null);
+//        return SolutionDTO.solutionToDTO().apply(solution);
+//    }
 }

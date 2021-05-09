@@ -89,6 +89,6 @@ public class RatingService {
         if(optRating.isPresent())
             return RatingDTO.ratingToDTO().apply(optRating.get());
         else
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User rating not found for this flashcard");
+            throw new ResponseStatusException(HttpStatus.GONE,"User rating not found for this flashcard");
     }
 }

@@ -11,14 +11,14 @@ import com.revature.studyforce.flashcard.repository.TopicRepository;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -142,11 +142,30 @@ public class FlashcardService implements AbstractService {
     /**
      * Retrieves flashcard with the given id
      * @param id - limits returned Flashcard to the given id
-     * @return - returns Flashcard with the given id
+     * @return - a data transfer object that represents the Flashcard with the given id
      */
     public FlashcardAllDTO getById(int id) {
         return FlashcardAllDTO.convertToDTO().apply(flashcardRepository.findById(id).orElse(null));
     }
+
+    /**
+     * Retrieves flashcards with the given user id {@link FlashcardRepository#findAllByCreator_userId(int)}
+     * @param id - returns Flashcard with the given user id
+     * @return - a data transfer object that represents the Flashcards with the given user id
+     */
+    public Page<FlashcardAllDTO> getByUserId(int id) {
+        Optional<User> optUser = userRepository.findById(id);
+        if(!optUser.isPresent())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User not found exception");
+
+        List<FlashcardAllDTO> list = new ArrayList<>();
+        flashcardRepository.findAllByCreator_userId(id).forEach(flashcard ->
+            list.add(FlashcardAllDTO.convertToDTO().apply(flashcard))
+        );
+
+        return new PageImpl<>(list);
+    }
+
 
     /**
      * Persists flashcard (uses NewFlashcardDTO)

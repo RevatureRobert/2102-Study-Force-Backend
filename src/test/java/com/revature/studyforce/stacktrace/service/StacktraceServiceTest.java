@@ -74,25 +74,6 @@ class StacktraceServiceTest {
         );
     }
 
-/*    @Test
-    void whenGetAllStackTraces_thenAllStackTracesRetrieved() {
-        Mockito.when(stacktraceRepository.findAll()).thenReturn(stacktraceArrayList);
-        Page<StacktraceDTO> returnedStacktraceList = new PageImpl<>(stacktraceDTOArrayList);
-        stacktraceService.getAllStacktraces(0,0);
-        for(int i = 0; i < returnedStacktraceList.getContent().size(); i++){
-            assertEquals(returnedStacktraceList.getContent().get(i).getStacktraceId(),stacktraceArrayList.get(i).getStacktraceId());
-        }
-    }
-
-    @Test
-    void whenGetAllStackTracesByTitleOrBodyOrTechnologyId_thenStackTracesRetrieved() {
-        Mockito.when(stacktraceRepository.findByTechnologyTechnologyName("TestTech")).thenReturn(stacktraceArrayList);
-        Page<StacktraceDTO> returnedStacktraceList = stacktraceService.getAllStacktraces(0,0);
-        for(int i = 0; i < returnedStacktraceList.getContent().size(); i++){
-            assertEquals(returnedStacktraceList.getContent().get(i).getStacktraceId(),stacktraceArrayList.get(i).getStacktraceId());
-        }
-    }*/
-
     @Test
     void whenGetStacktraceById_callRepository_getsCorrectStacktrace(){
         Optional<Stacktrace> stacktrace = Optional.of(new Stacktrace(0,

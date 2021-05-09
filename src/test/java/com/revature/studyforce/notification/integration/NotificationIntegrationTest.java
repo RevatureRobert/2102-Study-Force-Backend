@@ -54,10 +54,12 @@ class NotificationIntegrationTest{
         user.setActive(true);
         user.setUserId(1);
         notification = new Notification(0, "Message", false,
-                Timestamp.valueOf(now.plusDays(3)), Timestamp.valueOf(now), featureArea, user);
+
+                Timestamp.valueOf(now.plusDays(3)), Timestamp.valueOf(now), featureArea, 1 , 0);
+
 
         notificationDto = new NotificationDto(0, "Hello", true,
-                null, null, FeatureArea.STACKTRACE, 1);
+                null, null, FeatureArea.STACKTRACE, 1 , 0);
         notificationDto.setCreatedTime(null);
         notificationDto.setTimeToLive(null);
 
