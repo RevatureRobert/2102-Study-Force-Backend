@@ -10,6 +10,10 @@ import org.springframework.util.Assert;
 import java.sql.Timestamp;
 import java.util.function.Function;
 
+/**
+ * @author Ronald Lopez
+ * @author Patrick Gonzalez
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,6 +25,7 @@ public class NotificationDto {
     private Timestamp createdTime;
     private FeatureArea featureArea;
     private Integer userId;
+    private Integer referenceId;
 
     public static Function<Notification, NotificationDto> convertToDto(){
 
@@ -34,7 +39,28 @@ public class NotificationDto {
                     notification.getTimeToLive(),
                     notification.getCreatedTime(),
                     notification.getFeatureArea(),
-                    notification.getUser().getUserId());
+                    notification.getUserId(),
+                    notification.getReferenceId()
+            );
+        };
+
+    }
+    public static Function<NotificationDto, Notification> convertFromDto(){
+
+        return notificationDto -> {
+            Assert.notNull(notificationDto, "NotificationDTO is null");
+
+            return new Notification(
+                    notificationDto.getId(),
+                    notificationDto.getMessage(),
+                    notificationDto.isRead(),
+                    notificationDto.getTimeToLive(),
+                    notificationDto.getCreatedTime(),
+                    notificationDto.getFeatureArea(),
+                    notificationDto.getUserId() ,
+                    notificationDto.getReferenceId()
+            );
+
         };
     }
 }
