@@ -15,8 +15,8 @@ import java.util.List;
 
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Integer> {
-    Page<Notification> findByUserId(@RequestParam("id") Integer id, Pageable pageable);
+    Page<Notification> findByUser_UserId(@RequestParam("id") Integer id, Pageable pageable);
     @Transactional
     @Modifying
-    List<Notification> deleteByUserId(Integer id);
+    List<Notification> deleteByUser_UserId(Integer id);
 }
