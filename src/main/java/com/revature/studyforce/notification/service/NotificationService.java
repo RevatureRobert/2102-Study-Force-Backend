@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -103,8 +104,9 @@ public class NotificationService {
         notification.setUser(user.get());
         notification.setNotificationId(notificationDto.getId());
         notification.setBody(notificationDto.getMessage());
-        notification.setTimeToLive(Timestamp.valueOf(notification.getCreatedTime().toLocalDateTime()));
-        notification.setRead(false);
+        notification.setCreatedTime(Timestamp.valueOf(LocalDateTime.now()));
+        notification.setTimeToLive(Timestamp.valueOf(notification.getCreatedTime().toLocalDateTime().plusDays(3)));
+        notification.setRead(notificationDto.isRead());
         notification.setFeatureArea(notificationDto.getFeatureArea());
         return NotificationDto.convertToDto().apply(notificationRepository.save(notification));
     }
