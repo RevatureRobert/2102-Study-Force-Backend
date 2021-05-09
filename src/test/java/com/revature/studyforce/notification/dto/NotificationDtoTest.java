@@ -28,7 +28,8 @@ class NotificationDtoTest {
         Timestamp createdTime = Timestamp.valueOf(LocalDateTime.now());
         FeatureArea featureArea = FeatureArea.FLASHCARD;
         Integer userId = 1;
-        Notification notification = new Notification(id, message, isRead, timeToLive, createdTime, featureArea, userId);
+        Integer refernceId = 0;
+        Notification notification = new Notification(id, message, isRead, timeToLive, createdTime, featureArea, userId , refernceId);
         NotificationDto dto = NotificationDto.convertToDto().apply(notification);
 
         Assertions.assertEquals(id, dto.getId());
@@ -49,7 +50,8 @@ class NotificationDtoTest {
         Timestamp createdTime = Timestamp.valueOf(LocalDateTime.now());
         FeatureArea featureArea = FeatureArea.FLASHCARD;
         Integer userId = 1;
-        NotificationDto notificationDto = new NotificationDto(id, message, isRead, timeToLive, createdTime, featureArea, userId);
+        Integer referenceId =0;
+        NotificationDto notificationDto = new NotificationDto(id, message, isRead, timeToLive, createdTime, featureArea, userId ,referenceId);
         Notification notification = NotificationDto.convertFromDto().apply(notificationDto);
 
         Assertions.assertEquals(id, notification.getNotificationId());

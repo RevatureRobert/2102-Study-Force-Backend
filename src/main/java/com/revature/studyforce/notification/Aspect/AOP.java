@@ -2,20 +2,25 @@ package com.revature.studyforce.notification.Aspect;
 
 
 import com.revature.studyforce.flashcard.model.Answer;
+import com.revature.studyforce.flashcard.model.Flashcard;
+import com.revature.studyforce.notification.dto.NotificationDto;
+import com.revature.studyforce.notification.model.FeatureArea;
 import com.revature.studyforce.notification.model.FlashcardSubscription;
 import com.revature.studyforce.notification.model.StacktraceSubscription;
 import com.revature.studyforce.notification.model.Subscription;
-import com.revature.studyforce.notification.service.FlashcardSubscriptionService;
-import com.revature.studyforce.notification.service.SendNotificationService;
-import com.revature.studyforce.notification.service.StacktraceSubscriptionService;
-import com.revature.studyforce.notification.service.SubscriptionService;
+import com.revature.studyforce.notification.service.*;
 import com.revature.studyforce.stacktrace.model.Solution;
+import com.revature.studyforce.stacktrace.model.Stacktrace;
+import com.revature.studyforce.user.model.User;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -27,14 +32,16 @@ public class AOP {
     private final StacktraceSubscriptionService stracktraceSubscriptionService;
     private final SubscriptionService subscriptionService;
     private final FlashcardSubscriptionService flashcardSubscriptionService;
+    private final NotificationService notificationService;
 
     public AOP(SendNotificationService sendNotificationService, StacktraceSubscriptionService stracktraceSubscriptionService,
                SubscriptionService subscriptionService,
-               FlashcardSubscriptionService flashcardSubscriptionService) {
+               FlashcardSubscriptionService flashcardSubscriptionService, NotificationService notificationService) {
         this.sendNotificationService = sendNotificationService;
         this.stracktraceSubscriptionService = stracktraceSubscriptionService;
         this.subscriptionService = subscriptionService;
         this.flashcardSubscriptionService = flashcardSubscriptionService;
+        this.notificationService = notificationService;
     }
 
     /**
@@ -48,8 +55,22 @@ public class AOP {
 
     @AfterReturning(value = "SubscriptionPostPointCut()", returning = "subscription")
     public void confirmationSubscription(JoinPoint jp , Subscription subscription){
-        System.out.println("Hitting");
-        this.sendNotificationService.send(subscription , 4);
+        /**
+         * This will check if the notification was successfully sent
+         * The System.currentTimeMillis should created  TTL that is three days after the creation
+         */
+        if(this.sendNotificationService.send(subscription , 4 , "You are now subscribed").equals("201")){
+
+            Timestamp timestamp = new Timestamp(new Date().getTime());
+            System.out.println(timestamp);
+            Timestamp timestamp1 = new Timestamp(timestamp.getTime() + ((1000L * 60 * 60 )));
+            System.out.println(timestamp1);
+
+            NotificationDto notificationDto = new NotificationDto(0,"\"You are now subscribed\"",false , timestamp ,
+                    timestamp1  , FeatureArea.CONFIRMATION  , subscription.getUser().getUserId() , 0 );
+            this.notificationService.save(notificationDto);
+        };
+
     }
 
 
@@ -66,11 +87,15 @@ public class AOP {
     @AfterReturning(value = "SolutionPostPointCut()", returning = "solution")
     public void solutionUpdateSendNotifications(JoinPoint jp , Solution solution){
        List<StacktraceSubscription> subs = this.stracktraceSubscriptionService.getAllSubscribersByStacktraceId(solution.getStackTraceId().getStacktraceId());
+        List<StacktraceSubscription> activeUsers = new ArrayList<>();
        for(StacktraceSubscription stacktracesub : subs){
+           User temp = stacktracesub.getSubscription().getUser();
+           if(temp.isActive() && temp.isSubscribedStacktrace()){
+               subs.remove(stacktracesub);
+           }
 
-           Subscription temp = this.subscriptionService.getSubscriptionById(stacktracesub.getStacktraceSubscriptionId().getSubscription()).get();
-           this.sendNotificationService.send(temp , 1);
        }
+       this.massSendStackraceotifications(subs , "New Answer from " + solution.getStackTraceId().getBody());
     }
 
 
@@ -85,12 +110,16 @@ public class AOP {
      */
     @AfterReturning(value = "AnswerPostPointCut()", returning = "answer")
     public void solutionUpdateSendNotifications(JoinPoint jp , Answer answer){
+        System.out.println(answer);
         List<FlashcardSubscription> subs = this.flashcardSubscriptionService.getAllSubscribersByFlashcardId(answer.getFlashcard().getId());
         for(FlashcardSubscription flashcardsub : subs){
+                User temp = flashcardsub.getSubscription().getUser();
+                if(temp.isActive() && temp.isSubscribedFlashcard()){
+                    subs.remove(flashcardsub);
+                }
 
-            Subscription temp = this.subscriptionService.getSubscriptionById(flashcardsub.getFlashcardSubscriptionId().getSubscription()).get();
-            this.sendNotificationService.send(temp , 2);
         }
+        this.massSendFlashCardNotifications(subs , "New Answer from " + answer.getFlashcard().getQuestion());
     }
 
 
@@ -103,9 +132,17 @@ public class AOP {
      * @param stacktraceSubscription
      * @return status code if the notification went through
      */
-    @AfterReturning(value = "AnswerPostPointCut()", returning = "stacktraceSubscription")
+    @AfterReturning(value = "StackTraceSubscriptionPostPointCut()", returning = "stacktraceSubscription")
     public void StackTraceSubscriptionPostPointCut(JoinPoint jp , StacktraceSubscription stacktraceSubscription){
-        this.sendNotificationService.send(stacktraceSubscription.getSubscription() , 1);
+        if(this.sendNotificationService.send(stacktraceSubscription.getSubscription() , 1 , "You have subscribed").equals("201")){
+            Timestamp timestamp = new Timestamp(new Date().getTime());
+            System.out.println(timestamp);
+            Timestamp timestamp1 = new Timestamp(timestamp.getTime() + ((1000L * 60 * 60 )));
+            System.out.println(timestamp1);
+            NotificationDto notificationDto = new NotificationDto(0,"\"You are now subscribed\"",false , timestamp ,
+                    timestamp1  , FeatureArea.CONFIRMATION  , stacktraceSubscription.getSubscription().getUser().getUserId() , stacktraceSubscription.getStacktrace().getStacktraceId() );
+            this.notificationService.save(notificationDto);
+        }
     }
 
     @Pointcut("execution (* com.revature.studyforce.notification.repository.FlashcardSubscriptionRepository.save(..))")
@@ -119,7 +156,98 @@ public class AOP {
      */
     @AfterReturning(value = "FlashcardSubscriptionPostPointCut()", returning = "flashcardSubscription")
     public void StackTraceSubscriptionPostPointCut(JoinPoint jp , FlashcardSubscription flashcardSubscription){
-        this.sendNotificationService.send(flashcardSubscription.getSubscription() , 2);
+
+        if(this.sendNotificationService.send(flashcardSubscription.getSubscription() , 2 ,"You have subscribed").equals("201")){
+            Timestamp timestamp = new Timestamp(new Date().getTime());
+            System.out.println(timestamp);
+            Timestamp timestamp1 = new Timestamp(timestamp.getTime() + ((1000L * 60 * 60 )));
+            System.out.println(timestamp1);
+            NotificationDto notificationDto = new NotificationDto(0,"\"You are now subscribed\"",false , timestamp ,
+                    timestamp1  , FeatureArea.CONFIRMATION  , flashcardSubscription.getSubscription().getUser().getUserId() , flashcardSubscription.getFlashcard().getId() );
+            this.notificationService.save(notificationDto);
+        }
+
+    }
+
+    @Pointcut("execution (* com.revature.studyforce.flashcard.repository.FlashcardRepository.save(..))")
+    public void newFlashCard(){}
+
+    /**
+     * Will automatically subscribe a user to after they create a flashcard
+     * Then since there is an aspect for the Adding of a subscription the user will be notified by that aspect
+     * @param jp
+     * @param flashcard
+     */
+    @AfterReturning(value = "newFlashCard()", returning = "flashcard")
+    public void subscribingFlashcardCreator(JoinPoint jp , Flashcard flashcard){
+       Subscription temp = this.subscriptionService.getSubscriptionByUserId(flashcard.getCreator().getUserId());
+       this.flashcardSubscriptionService.createFlashcardSubscription(flashcard.getId(), flashcard.getCreator().getUserId());
+//       this.sendNotificationService.send(temp ,2 , "Your flashcard has been created");
+
+    }
+
+    @Pointcut("execution (* com.revature.studyforce.stacktrace.repository.StacktraceRepository.save(..))")
+    public void newStackTrace(){}
+
+    /**
+     * Will automatically subscribe a user to after they create a stacktrace
+     * @param jp
+     * @param stacktrace
+     */
+    @AfterReturning(value = "newStackTrace()", returning = "stacktrace")
+    public void StackTraceSubscriptionPostPointCut(JoinPoint jp , Stacktrace stacktrace){
+        Subscription temp = this.subscriptionService.getSubscriptionByUserId(stacktrace.getUserId().getUserId());
+        this.stracktraceSubscriptionService.createStacktraceSubscription(stacktrace.getStacktraceId(), stacktrace.getUserId().getUserId());
+//        this.sendNotificationService.send(temp ,1 , "Your stacktrace has been created ");
+
+    }
+
+//    @Pointcut("execution (* com.revature.studyforce.stacktrace.repository.SolutionRepository.updateSolutionSelectedByAdminBySolutionId(..))")
+//    public void adminSubmitStacktrace(){}
+
+    /**
+     * A method that takes in a list of flashcard subscriptions and sends them out
+     * @param subscriptions
+     * @return
+     */
+    public boolean massSendFlashCardNotifications(List<FlashcardSubscription> subscriptions , String message){
+        Timestamp timestamp = new Timestamp(new Date().getTime());
+        System.out.println(timestamp);
+        Timestamp timestamp1 = new Timestamp(timestamp.getTime() + ((1000L * 60 * 60 )));
+        System.out.println(timestamp1);
+
+
+        for (FlashcardSubscription flashcardsub: subscriptions) {
+            if(this.sendNotificationService.send(flashcardsub.getSubscription() , 2 , message).equals("201")){
+                NotificationDto notificationDto = new NotificationDto(0,"\"You are now subscribed\"",false , timestamp ,
+                        timestamp1  , FeatureArea.CONFIRMATION  , flashcardsub.getSubscription().getUser().getUserId() , flashcardsub.getFlashcard().getId() );
+                this.notificationService.save(notificationDto);
+            };
+        }
+        return true;
+    }
+
+
+    /**
+     * A method that takes in a list of stacktrace subscriptions and sends them out
+     * @param subscriptions
+     * @return
+     */
+    public boolean massSendStackraceotifications(List<StacktraceSubscription> subscriptions ,String message ){
+        Timestamp timestamp = new Timestamp(new Date().getTime());
+        System.out.println(timestamp);
+        Timestamp timestamp1 = new Timestamp(timestamp.getTime() + ((1000L * 60 * 60 )));
+        System.out.println(timestamp1);
+
+
+        for (StacktraceSubscription stacktracesub: subscriptions) {
+            if(this.sendNotificationService.send(stacktracesub.getSubscription() , 1 , message).equals("201")){
+                NotificationDto notificationDto = new NotificationDto(0,"\"You are now subscribed\"",false , timestamp ,
+                        timestamp1  , FeatureArea.CONFIRMATION  , stacktracesub.getSubscription().getUser().getUserId() , stacktracesub.getStacktrace().getStacktraceId() );
+                this.notificationService.save(notificationDto);
+            };
+        }
+        return true;
     }
 
 

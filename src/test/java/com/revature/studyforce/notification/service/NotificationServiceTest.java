@@ -58,7 +58,7 @@ class NotificationServiceTest {
         now = LocalDateTime.now();
         timeToLive = Timestamp.valueOf(now.plusDays(3));
         featureArea = FeatureArea.FLASHCARD;
-        notification = new Notification(0, "Flashcard Solution", false, timeToLive, Timestamp.valueOf(now), featureArea, 1);
+        notification = new Notification(0, "Flashcard Solution", false, timeToLive, Timestamp.valueOf(now), featureArea, 1 , 0);
         notificationDto = NotificationDto.convertToDto().apply(notification);
         notificationList.add(notification);
         notificationPage = new PageImpl<>(notificationList);
