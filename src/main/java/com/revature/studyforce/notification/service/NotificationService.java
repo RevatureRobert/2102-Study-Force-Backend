@@ -3,6 +3,8 @@ package com.revature.studyforce.notification.service;
 import com.revature.studyforce.notification.dto.NotificationDto;
 import com.revature.studyforce.notification.model.Notification;
 import com.revature.studyforce.notification.repository.NotificationRepository;
+import com.revature.studyforce.user.model.User;
+import com.revature.studyforce.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,10 +30,12 @@ import java.util.stream.Collectors;
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public NotificationService(NotificationRepository notificationRepository){
+    public NotificationService(NotificationRepository notificationRepository, UserRepository userRepository){
         this.notificationRepository = notificationRepository;
+        this.userRepository = userRepository;
     }
 
     /***
@@ -66,12 +71,14 @@ public class NotificationService {
      * and return a page of those notifications
      * @param userId We use the userId in order to find and get all of the notifications corresponding to this user
      * @param page The page parameter determines what page number we are returning
-     * The default size of the page is 5
+     *             default page is 0
+     * @param offset This sets the amount of elements in each page
+     *               default offset is 10
      * @return Returns a Page of Notifications
      */
-    public Page<NotificationDto> findByUserId(Integer userId, Integer page){
+    public Page<NotificationDto> findByUserId(Integer userId, Integer page, Integer offset){
         // We can change the page request parameters later
-        Page<Notification> notificationPage = notificationRepository.findByUserId(userId, PageRequest.of(page, 5, Sort.by("isRead").descending().and(Sort.by("createdTime").descending())));
+        Page<Notification> notificationPage = notificationRepository.findByUser_UserId(userId, PageRequest.of(page, offset, Sort.by("isRead").ascending().and(Sort.by("createdTime").descending())));
         try{
             return notificationPage.map(Objects.requireNonNull(NotificationDto.convertToDto()));
         }
@@ -87,8 +94,19 @@ public class NotificationService {
      * @return Returns the notification that was stored
      */
     public NotificationDto save(NotificationDto notificationDto){
-        Notification notification = notificationRepository.save(NotificationDto.convertFromDto().apply(notificationDto));
-        return NotificationDto.convertToDto().apply(notification);
+        Notification notification = new Notification();
+
+        Optional<User> user = userRepository.findById(notificationDto.getUserId());
+        if(!user.isPresent()){
+            return null;
+        }
+        notification.setUser(user.get());
+        notification.setNotificationId(notificationDto.getId());
+        notification.setBody(notificationDto.getMessage());
+        notification.setTimeToLive(Timestamp.valueOf(notification.getCreatedTime().toLocalDateTime()));
+        notification.setRead(false);
+        notification.setFeatureArea(notificationDto.getFeatureArea());
+        return NotificationDto.convertToDto().apply(notificationRepository.save(notification));
     }
 
     /***
@@ -99,7 +117,17 @@ public class NotificationService {
     public NotificationDto update(NotificationDto notificationDto){
         Optional<Notification> checkNotification = notificationRepository.findById(notificationDto.getId());
         if(checkNotification.isPresent()){
-           return NotificationDto.convertToDto().apply(notificationRepository.save(NotificationDto.convertFromDto().apply(notificationDto)));
+            Notification notification = checkNotification.get();
+            Optional<User> user = userRepository.findById(notificationDto.getUserId());
+            if(!user.isPresent()){
+                return null;
+            }
+            notification.setUser(user.get());
+            notification.setBody(notificationDto.getMessage());
+            notification.setTimeToLive(notificationDto.getTimeToLive());
+            notification.setRead(notificationDto.isRead());
+            notification.setFeatureArea(notificationDto.getFeatureArea());
+            return NotificationDto.convertToDto().apply(notificationRepository.save(notification));
         }
         return null;
     }
@@ -108,9 +136,12 @@ public class NotificationService {
      * Delete a {@link Notification}
      * @param notificationDto The {@link NotificationDto notificationDto} parameter represents the notification to be deleted
      */
-    public void delete(NotificationDto notificationDto){
-        notificationRepository.delete(NotificationDto.convertFromDto().apply(notificationDto));
-    }
+//    public void delete(NotificationDto notificationDto){
+//        Optional<User> user = userRepository.findById(notificationDto.getUserId());
+//        if(!user.isPresent()){
+//            return;
+//        }
+//    }
 
     /***
      * Delete a {@link Notification}
@@ -132,7 +163,7 @@ public class NotificationService {
      * @return We return a List of the deleted notifications
      */
     public List<NotificationDto> deleteByUserId(Integer userId){
-        List<Notification> notificationList = notificationRepository.deleteByUserId(userId);
+        List<Notification> notificationList = notificationRepository.deleteByUser_UserId(userId);
         return notificationList.stream().map(NotificationDto.convertToDto()).collect(Collectors.toList());
     }
 
