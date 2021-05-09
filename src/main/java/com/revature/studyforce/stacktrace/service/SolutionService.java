@@ -8,6 +8,7 @@ import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -43,7 +44,7 @@ public class SolutionService {
     public Page<SolutionDTO> getAllSolutionsForStacktrace(int stackTraceId, int page, int pageSize){
         page = validatePage(page);
         pageSize = validatePageSize(pageSize);
-        Page<Solution> solutions = solutionRepository.findByStackTraceId_stacktraceId(stackTraceId, PageRequest.of(page, pageSize));
+        Page<Solution> solutions = solutionRepository.findByStackTraceId_stacktraceId(stackTraceId, PageRequest.of(page, pageSize, Sort.by(Sort.Direction.DESC, "totalVote")));
         return solutions.map(SolutionDTO.solutionToDTO());
     }
 

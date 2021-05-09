@@ -78,7 +78,7 @@ public class Stacktrace {
     /**
      * The solutionId picked by the user or overruled by the admin
      */
-    @Column(name = "chosen_solution")
+    @Column(name = "chosen_solution", nullable = false, columnDefinition = "int default 0")
     private int chosenSolution;
 
     /**
