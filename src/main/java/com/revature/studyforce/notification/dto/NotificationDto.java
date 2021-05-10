@@ -39,8 +39,8 @@ public class NotificationDto {
                     notification.getTimeToLive(),
                     notification.getCreatedTime(),
                     notification.getFeatureArea(),
-                    notification.getReferenceId(),
-                    notification.getUser().getUserId()
+                    notification.getUser().getUserId(),
+                    notification.getReferenceId()
 
             );
         };
