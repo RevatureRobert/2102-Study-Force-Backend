@@ -148,7 +148,7 @@
 				<version>0.8.6</version>
 				<configuration>
 					<excludes>
-						<exclude/>
+						<exclude>src/main/java/com/revature/studyforce/configuration/**/*</exclude>
 					</excludes>
 				</configuration>
 				<executions>
