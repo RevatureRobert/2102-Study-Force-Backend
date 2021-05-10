@@ -139,6 +139,33 @@ public class FlashcardService implements AbstractService {
         return flashcards.map(FlashcardAllDTO.convertToDTO());
     }
 
+
+    /**
+     * Gets all flashcards by question containing specified string
+     * @param page - number of offsets away from 0 (defaults to 0)
+     * @param offset number of elements per page [5|10|25|50|100] - defaults to 25
+     * @param sortBy - column to sort by ["difficulty"|"topic"|"created"|"resolved"] defaults to creator if sortby could not be understood
+     * @param order - order in which the Page is displayed ["ASC"|"DESC"]
+     * @param question - only return flashcards where question text contains this parameter
+     * @return - returns a Page of Flashcards according the the given page, offset, sortBy, order, and resolved parameters
+     */
+    public Page<FlashcardAllDTO> getAllByQuestionLike(int page, int offset, String sortBy, String order, String question) {
+        page = validatePage(page);
+        offset = validateOffset(offset);
+        sortBy = validateSortBy(sortBy);
+
+        Page<Flashcard> flashcards;
+
+        if (order.equalsIgnoreCase("DESC")) {
+            flashcards = flashcardRepository.findAllByQuestionContaining(question, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+        } else {
+            flashcards = flashcardRepository.findAllByQuestionContaining(question, PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
+        }
+
+        return flashcards.map(FlashcardAllDTO.convertToDTO());
+    }
+
+
     /**
      * Retrieves flashcard with the given id
      * @param id - limits returned Flashcard to the given id
@@ -239,5 +266,6 @@ public class FlashcardService implements AbstractService {
 
         }
     }
+
 
 }

@@ -16,6 +16,8 @@ import java.util.List;
 @Repository
 public interface FlashcardRepository extends JpaRepository<Flashcard, Integer> {
 
+    Page<Flashcard> findAllByQuestionContaining(String question, Pageable pageable);
+
     Page<Flashcard> findAllByQuestionDifficultyTotal(int questionDifficultyTotal, Pageable pageable);
 
     Page<Flashcard> findAllByIsResolved(boolean resolved, Pageable pageable);
