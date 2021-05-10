@@ -2,6 +2,7 @@ package com.revature.studyforce.flashcard.service;
 
 import com.revature.studyforce.flashcard.dto.RatingDTO;
 import com.revature.studyforce.flashcard.dto.RatingResponseDTO;
+import com.revature.studyforce.flashcard.dto.VoteDTO;
 import com.revature.studyforce.flashcard.model.Difficulty;
 import com.revature.studyforce.flashcard.model.Flashcard;
 import com.revature.studyforce.flashcard.model.Rating;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Services for the Rating repository {@link RatingRepository}
@@ -61,7 +63,7 @@ public class RatingService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User already rated this flashcard");
 
         ratingRepository.save(new Rating(0,optFlashcard.get(),optUser.get(), difficulty));
-        List<Rating> ratings = ratingRepository.findByFlashcard_id(ratingDTO.getFlashcardId());
+        List<Rating> ratings = ratingRepository.findByFlashcardId(ratingDTO.getFlashcardId());
 
         double sum = 0;
         for(Rating rating : ratings){
@@ -91,4 +93,37 @@ public class RatingService {
         else
             throw new ResponseStatusException(HttpStatus.GONE,"User rating not found for this flashcard");
     }
+
+    /**
+     * Retrieves a List of all Ratings for the given Flashcard
+     * @param flashcardId - the flashcard for which to retrieve all ratings
+     * @return - returns a List of Ratings according the the flashcardId
+     */
+    public List<Rating> getAllRatings(int flashcardId){
+        Optional<Flashcard> flashcard = flashcardRepository.findById(flashcardId);
+        if (!flashcard.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Flashcard not found exception");
+        }
+
+        return ratingRepository.findByFlashcardId(flashcard.get().getId());
+    }
+
+    // (may use in the future)
+//    /**
+//     * delete() method mapped to HTTP DELETE requests
+//     * @param id - Rating id to be deleted from the database
+//     */
+//    public void delete(int id) {
+//        if (id > 0) {
+//            Rating original = ratingRepository.findById(id).get();
+//            Flashcard flashcard = flashcardRepository.findById(1000000).get();
+//            User user = userRepository.findById(1000000).get();
+////            user = userRepository.save(user);
+////            flashcard = flashcardRepository.save(flashcard);
+//            original.setUser(user);
+//            original.setFlashcard(flashcard);
+//            original = ratingRepository.save(original);
+//      System.out.println("ORIGINAL***************************: " + original);
+//        }
+//    }
 }

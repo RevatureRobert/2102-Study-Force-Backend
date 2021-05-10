@@ -63,6 +63,17 @@ public class FlashcardController {
         return flashcardService.getAllByDifficulty(page, offset, sortBy, order, difficulty);
     }
 
+
+    @GetMapping("/question")
+    public @ResponseBody Page<FlashcardAllDTO> getAllByQuestionLike(
+            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(name = "offset", defaultValue = "10", required = false) int offset,
+            @RequestParam(name = "sortby", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(name = "order", defaultValue = "desc", required = false) String order,
+            @RequestParam(name = "question", required = false) String question) {
+        return flashcardService.getAllByQuestionLike(page, offset, sortBy, order, question);
+    }
+
     /**
      * Retrieves a Page of flashcards with a given topicName {@link FlashcardService#getAllByTopic(int, int, String, String, String)}
      * @param page - number of offsets away from 0 (defaults to 0)

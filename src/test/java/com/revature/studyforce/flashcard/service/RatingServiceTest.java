@@ -2,9 +2,8 @@ package com.revature.studyforce.flashcard.service;
 
 import com.revature.studyforce.flashcard.dto.RatingDTO;
 import com.revature.studyforce.flashcard.dto.RatingResponseDTO;
-import com.revature.studyforce.flashcard.model.Difficulty;
-import com.revature.studyforce.flashcard.model.Flashcard;
-import com.revature.studyforce.flashcard.model.Rating;
+import com.revature.studyforce.flashcard.dto.VoteDTO;
+import com.revature.studyforce.flashcard.model.*;
 import com.revature.studyforce.flashcard.repository.FlashcardRepository;
 import com.revature.studyforce.flashcard.repository.RatingRepository;
 import com.revature.studyforce.user.model.Authority;
@@ -53,7 +52,7 @@ class RatingServiceTest {
 
         Mockito.when(flashcardRepository.findById(0)).thenReturn(Optional.of(flashcard));
         Mockito.when(userRepository.findById(0)).thenReturn(Optional.of(user));
-        Mockito.when(ratingRepository.findByFlashcard_id(0)).thenReturn(rList);
+        Mockito.when(ratingRepository.findByFlashcardId(0)).thenReturn(rList);
         Mockito.when(ratingRepository.save(org.mockito.ArgumentMatchers.isA(Rating.class))).thenReturn(rating);
 
         RatingResponseDTO res = ratingService.createRating(RatingDTO.ratingToDTO().apply(rating));
@@ -80,4 +79,29 @@ class RatingServiceTest {
         assertEquals(flashcard.getId(),ratingDTO.getFlashcardId());
         assertEquals(rating.getRatingValue().difficultyValue,ratingDTO.getRatingScore());
     }
+
+    @Test
+    void givenFlashcardId_whenGetAllRatings_shouldReturnListOfRatingDTO() {
+        List<Rating> ratings = new ArrayList<>();
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
+        Rating rating = new Rating(0,flashcard,user, Difficulty.EASY);
+        ratings.add(rating);
+
+        Mockito.when(flashcardRepository.findById(0)).thenReturn(Optional.of(flashcard));
+        Mockito.when(userRepository.findById(0)).thenReturn(Optional.of(user));
+        Mockito.when(ratingRepository.findByFlashcardId(0)).thenReturn(ratings);
+        Mockito.when(ratingRepository.save(org.mockito.ArgumentMatchers.isA(Rating.class))).thenReturn(rating);
+
+        List<Rating> res = ratingRepository.findByFlashcardId(flashcard.getId());
+        assertNotNull(res);
+        assertEquals(ratings, res);
+    }
+
+    // (may use in the future)
+//    @Test
+//    void givenRatingId_whenDelete_shouldDeleteRating() {
+//        ratingService.delete(0);
+//        Mockito.verify(ratingRepository, Mockito.times(0)).deleteById(0);
+//    }
 }

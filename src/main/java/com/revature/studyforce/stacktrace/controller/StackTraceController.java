@@ -97,7 +97,7 @@ public class StackTraceController {
      * @return should return the updated stacktrace with a solutionId assigned to the chosenSolution column on the
      * stacktrace table
      */
-    @PutMapping("/chosen-solution")
+    @GetMapping("/chosen-solution")
     public StacktraceDTO updateStacktraceChosenSolutionBySolutionIdAndStacktraceId(@RequestParam(value = "solutionId") int solutionId,
                                                                    @RequestParam(value= "stacktraceId") int stacktraceId){
         return stacktraceService.updateStacktraceChosenSolutionBySolutionAndStacktraceId(solutionId,stacktraceId);

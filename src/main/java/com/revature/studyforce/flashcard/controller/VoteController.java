@@ -48,7 +48,7 @@ public class VoteController {
     }
 
     /**
-     * GET request for 'getVote' in VoteService {@link }
+     * GET request for 'getVote' in VoteService {@link VoteService#getAll(int)}
      * @param answerId The answer id you want to get the rating from
      * @return The vote if there is a match, BAD.REQUEST if it wasn't found.
      */
