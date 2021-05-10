@@ -1,4 +1,4 @@
-package com.revature.studyforce.notification.Aspect;
+package com.revature.studyforce.notification.aspect;
 
 
 import com.revature.studyforce.flashcard.model.Answer;
@@ -14,14 +14,12 @@ import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.user.model.User;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +29,7 @@ import java.util.List;
 
 @Aspect
 @Component
-public class AOP {
+public class NotificationAspect {
 
     private final SendNotificationService sendNotificationService;
     private final StacktraceSubscriptionService stracktraceSubscriptionService;
@@ -39,9 +37,9 @@ public class AOP {
     private final FlashcardSubscriptionService flashcardSubscriptionService;
     private final NotificationService notificationService;
 
-    public AOP(SendNotificationService sendNotificationService, StacktraceSubscriptionService stracktraceSubscriptionService,
-               SubscriptionService subscriptionService,
-               FlashcardSubscriptionService flashcardSubscriptionService, NotificationService notificationService) {
+    public NotificationAspect(SendNotificationService sendNotificationService, StacktraceSubscriptionService stracktraceSubscriptionService,
+                              SubscriptionService subscriptionService,
+                              FlashcardSubscriptionService flashcardSubscriptionService, NotificationService notificationService) {
         this.sendNotificationService = sendNotificationService;
         this.stracktraceSubscriptionService = stracktraceSubscriptionService;
         this.subscriptionService = subscriptionService;
@@ -67,12 +65,12 @@ public class AOP {
         if(this.sendNotificationService.send(subscription , 4 , "Welcome to Study Force").equals("201")){
 
             Timestamp timestamp = new Timestamp(new Date().getTime());
-            Timestamp timestamp1 = new Timestamp(timestamp.getTime() + ((1000L * 60 * 60 *24 *3)));
+            Timestamp timestamp1 = new Timestamp(timestamp.getTime() + 1000L * 60 * 60 *24 *3);
 
             NotificationDto notificationDto = new NotificationDto(0,"Welcome to Study Force",false , timestamp ,
                     timestamp1  , FeatureArea.CONFIRMATION  , subscription.getUser().getUserId() , 0 );
             this.notificationService.save(notificationDto);
-        };
+        }
 
     }
 
@@ -137,7 +135,7 @@ public class AOP {
     public void StackTraceSubscriptionPostPointCut(JoinPoint jp , StacktraceSubscription stacktraceSubscription){
         if(this.sendNotificationService.send(stacktraceSubscription.getSubscription() , 1 , "You have subscribed").equals("201")){
             Timestamp timestamp = new Timestamp(new Date().getTime());
-            Timestamp timestamp1 = new Timestamp(timestamp.getTime() + ((1000L * 60 * 60 *24 *3 )));
+            Timestamp timestamp1 = new Timestamp(timestamp.getTime() + 1000L * 60 * 60 *24 *3 );
 
             NotificationDto notificationDto = new NotificationDto(0,"\"You are now subscribed\"",false , timestamp ,
                     timestamp1  , FeatureArea.CONFIRMATION  , stacktraceSubscription.getSubscription().getUser().getUserId() , stacktraceSubscription.getStacktrace().getStacktraceId() );
