@@ -100,14 +100,14 @@ public class SolutionService {
         }
     }
 
-  /**
-   * Deletes Solution with the given id with {@link SolutionRepository#delete}
-   *
-   * @param solutionId The primary key of a Solution used as a unique identifier
-   * @return returns a data transfer object containing the solutionId, stackTraceId,
-   * StacktraceUserDTO, body, adminSelected, and creationTime.
-   */
-  public SolutionDTO deleteSolution(int solutionId) {
+    /**
+     * Deletes Solution with the given id with {@link SolutionRepository#delete}
+     *
+     * @param solutionId The primary key of a Solution used as a unique identifier
+     * @return returns a data transfer object containing the solutionId, stackTraceId,
+     * StacktraceUserDTO, body, adminSelected, and creationTime.
+     */
+    public SolutionDTO deleteSolution(int solutionId) {
         Solution solution = solutionRepository.findById(solutionId).orElse(null);
         if(solution == null)
             return null;

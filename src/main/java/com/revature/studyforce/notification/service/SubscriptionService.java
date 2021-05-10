@@ -6,6 +6,9 @@ import com.revature.studyforce.notification.model.Subscription;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Optional;
 
 /**
  * Service Layer for Subscriptions {@link SubscriptionRepository}
@@ -37,6 +40,7 @@ public class SubscriptionService {
             subscriptionDTO.getEndpoint(),
             subscriptionDTO.getKey(),
             subscriptionDTO.getAuth());
+        System.out.println(subscription);
         return subscriptionRepository.save(subscription);
     }
 
@@ -47,6 +51,15 @@ public class SubscriptionService {
      */
     public Subscription getSubscriptionByUserId(Integer userId){
         return subscriptionRepository.findByUser_UserId(userId);
+    }
+
+    /**
+     * Retrieves a subscription by subscriptionId from {@link SubscriptionRepository#findById(Object)} }
+     * @param subscriptionId the userId of the subscription to be retrieved.
+     * @return The subscription of the user.
+     */
+    public Optional<Subscription> getSubscriptionById(Integer subscriptionId){
+        return subscriptionRepository.findById(subscriptionId);
     }
 
     /**

@@ -42,8 +42,10 @@ public class SubscriptionController {
      * @return The created subscription
      */
     @PostMapping
+    @CrossOrigin(origins = {"*"})
     public Subscription createSubscription(@RequestBody SubscriptionDTO subscription){
         return subscriptionService.createSubscription(subscription);
+
     }
 
     /**

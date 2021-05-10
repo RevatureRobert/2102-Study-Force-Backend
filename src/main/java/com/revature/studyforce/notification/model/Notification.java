@@ -1,6 +1,7 @@
 package com.revature.studyforce.notification.model;
 
 import com.revature.studyforce.notification.dto.NotificationDto;
+import com.revature.studyforce.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,7 +40,11 @@ public class Notification {
     @Enumerated
     private FeatureArea featureArea;
 
-    @Column(name = "user_id")
-    private Integer userId;
+    @Column(name = "reference_id")
+    private int referenceId;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }

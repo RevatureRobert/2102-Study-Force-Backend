@@ -148,10 +148,10 @@ public class StacktraceService {
 
     /**
 
-     * {@link SolutionRepository#updateSolutionSelectedByAdminBySolutionId(int)}
-     * @param solutionId
-     * @return will return a solutionDTO with updated adminSelected as true
-     */
+//     * {@link SolutionRepository#updateSolutionSelectedByAdminBySolutionId(int)}
+//     * @param solutionId
+//     * @return will return a solutionDTO with updated adminSelected as true
+//     */
 
     /**
      * Update the Stacktrace chosenSolution with targeted SolutionId, which should be displayed above

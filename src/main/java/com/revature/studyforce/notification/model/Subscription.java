@@ -24,7 +24,7 @@ public class Subscription {
      * the auth is the public key
      */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
     @OneToOne
@@ -35,4 +35,15 @@ public class Subscription {
     private  String key;
 
     private  String auth;
+
+    @Override
+    public String toString() {
+        return "Subscription{" +
+                "id=" + id +
+                ", user=" + user +
+                ", endpoint='" + endpoint + '\'' +
+                ", key='" + key + '\'' +
+                ", auth='" + auth + '\'' +
+                '}';
+    }
 }

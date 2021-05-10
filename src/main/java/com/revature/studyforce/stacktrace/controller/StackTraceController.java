@@ -1,5 +1,6 @@
 package com.revature.studyforce.stacktrace.controller;
 
+import com.revature.studyforce.stacktrace.dto.SolutionDTO;
 import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
 import com.revature.studyforce.stacktrace.service.StacktraceService;
 import org.springframework.beans.factory.annotation.Autowired;
