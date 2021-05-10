@@ -2,15 +2,12 @@ package com.revature.studyforce.cognito;
 import com.revature.studyforce.user.dto.BulkCreateUsersDTO;
 import com.revature.studyforce.user.model.Authority;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.core.exception.SdkClientException;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.*;
 
@@ -35,17 +32,11 @@ public class CognitoService {
 
     private static final String userPool = "us-east-1_RVt7o8200";
     private static final String cognitoLoggingArn = "arn:aws:iam::967240801169:role/enterprise-cognito-log-role";
+    private static final String cognitoUserRole = "custom:role";
 
     @Autowired
     public CognitoService(@Lazy CognitoIdentityProviderClient cognitoIdentityProviderClient) {
         this.cognitoClient = cognitoIdentityProviderClient;
-    }
-
-    @Primary @Bean
-    CognitoIdentityProviderClient cognitoIdentityProviderClientBean(){
-        return CognitoIdentityProviderClient.builder()
-                .region(Region.US_EAST_1)
-                .build();
     }
 
 
@@ -71,7 +62,7 @@ public class CognitoService {
      * @param username UserPool username
      * @return Authority level as String
      */
-    public String getAuthorityFromUserPool(String username){
+    public Authority getAuthorityFromUserPool(String username){
         AdminGetUserResponse response = cognitoClient.adminGetUser(
                 AdminGetUserRequest
                         .builder()
@@ -82,12 +73,11 @@ public class CognitoService {
         Optional<String> role = response
                 .userAttributes()
                 .stream()
-                .filter(attributeType -> attributeType.name().equals("custom:role"))
+                .filter(attributeType -> attributeType.name().equals(cognitoUserRole))
                 .map(AttributeType::value)
                 .findFirst();
 
-
-        return role.orElse(grantBasicAuthorityOnFirstLogin(username));
+        return Authority.valueOf(role.orElse(updateAuthority(username,Authority.USER)));
 
     }
     /**
@@ -115,22 +105,6 @@ public class CognitoService {
         return userName.orElse("NO_NAME_FOUND");
 
     }
-    /**
-     *Called when no role attribute (custom:role) is found in UserPool
-     * and assigns lowest authority role to that user.
-     * @param username UserPool username
-     * @return "User"
-     */
-    private String grantBasicAuthorityOnFirstLogin(String username) {
-        cognitoClient.adminUpdateUserAttributes(AdminUpdateUserAttributesRequest.builder()
-                .userPoolId(userPool)
-                .userAttributes(AttributeType
-                        .builder().name("custom:role")
-                        .value("USER").build())
-                .username(username).build());
-
-        return "USER";
-    }
 
     /**
      * Updates a user's authority
@@ -139,14 +113,13 @@ public class CognitoService {
      * @return Returns the user's new authority
      */
     public String updateAuthority(String email, Authority authority){
-        AdminUpdateUserAttributesResponse updatedAuthority = cognitoClient.adminUpdateUserAttributes(AdminUpdateUserAttributesRequest.builder()
+        cognitoClient.adminUpdateUserAttributes(AdminUpdateUserAttributesRequest.builder()
                 .userPoolId(userPool)
                 .userAttributes(AttributeType
-                        .builder().name("custom:role")
+                        .builder().name(cognitoUserRole)
                         .value(authority.authorityName).build())
                 .username(email).build());
-
-        return updatedAuthority.toString();
+        return authority.authorityName;
     }
 
     /**
@@ -186,7 +159,7 @@ public class CognitoService {
      * @return a UserImportJobType (AWS SDK DTO) containing information about the completed job.
      * @throws InterruptedException if the task is interrupted
      */
-    private UserImportJobType runBulkJobAndAwaitCompletion(String activeJobId) throws InterruptedException {
+    protected UserImportJobType runBulkJobAndAwaitCompletion(String activeJobId) throws InterruptedException {
         startUserImportJob(activeJobId);
         UserImportJobType activeImportJob = getExistingUserImportJobDetails(activeJobId);
         if (activeImportJob.completionMessage() == null)
@@ -200,7 +173,7 @@ public class CognitoService {
      * @param activeImportJob the job being inspected.
      * @throws InterruptedException if the task is interrupted
      */
-    private void waitUntilCompleted(UserImportJobType activeImportJob) throws InterruptedException {
+    protected void waitUntilCompleted(UserImportJobType activeImportJob) throws InterruptedException {
         activeImportJob = getExistingUserImportJobDetails(activeImportJob.jobId());
         if (activeImportJob.completionMessage() == null)
         {
@@ -212,10 +185,10 @@ public class CognitoService {
 
     /**
      * Extracts and simply formats job completion message.
-     * @param userImportJob the job from which the method is extracted
+     * @param userImportJob the job from which the message is extracted
      * @return the formatted message.
      */
-    private String userJobMessage(UserImportJobType userImportJob) {
+    protected String userJobMessage(UserImportJobType userImportJob) {
         return "Status: " + userImportJob.status() +"\nMessage: " +userImportJob.completionMessage();
     }
 
@@ -223,7 +196,7 @@ public class CognitoService {
      * Send a request to AWS to begin an import job
      * @param activeJobId the id of the job to start.
      */
-    private void startUserImportJob(String activeJobId) {
+    protected void startUserImportJob(String activeJobId) {
         try {
             cognitoClient.startUserImportJob(
                     StartUserImportJobRequest.builder()
@@ -241,9 +214,9 @@ public class CognitoService {
     /**
      * Makes an external call to AWS to get user import job details.
      * @param activeJobId the id of the job.
-     * @return a UserImportJobType (AWS SDK DTO) containing information about the completed job.
+     * @return a UserImportJobType (AWS SDK DTO) containing information about the specified job.
      */
-    private UserImportJobType getExistingUserImportJobDetails(String activeJobId) {
+    protected UserImportJobType getExistingUserImportJobDetails(String activeJobId) {
         return cognitoClient.describeUserImportJob(
                 DescribeUserImportJobRequest.builder()
                         .userPoolId(userPool)
@@ -291,7 +264,7 @@ public class CognitoService {
      * @return true if AWS reports upload as successful, else false.
      * @throws IOException if system is restricted from performing curl.
      */
-    private boolean postCsvToCognito(String preSignedUrl, String filePath) throws IOException{
+    protected boolean postCsvToCognito(String preSignedUrl, String filePath) throws IOException{
         String curl = "curl.exe -v -T " + filePath + " -H x-amz-server-side-encryption:aws:kms " + preSignedUrl;
         boolean isWeAreFineReceived = false;
         Process curlAttempt = Runtime.getRuntime().exec(curl);
@@ -321,9 +294,9 @@ public class CognitoService {
 
     /**
      * Sends request preparing AWS for a user import job.
-     * @return a UserImportJobType (AWS SDK DTO) containing information about the completed job.
+     * @return a UserImportJobType (AWS SDK DTO) containing information about the created job.
      */
-    private UserImportJobType createUserImportJob() {
+    public UserImportJobType createUserImportJob() {
         return cognitoClient.createUserImportJob(
                 CreateUserImportJobRequest.builder()
                         .userPoolId(userPool)

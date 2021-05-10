@@ -119,12 +119,12 @@ public class BatchController {
 
     /**
      * DELETE Mapping for deleteBatch in {@link BatchService#deleteBatch(int)}
-     * @param id of Batch that should be deleted
+     * @param batchId of Batch that should be deleted
      * @return Batch that has been deleted.
      */
     @DeleteMapping("/{batchId}") @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
-    public @ResponseBody Batch deleteBatch(@PathVariable int id){
-        return batchService.deleteBatch(id);
+    public @ResponseBody Batch deleteBatch(@PathVariable int batchId){
+        return batchService.deleteBatch(batchId);
     }
 
     /**

@@ -57,7 +57,7 @@ public class User  implements UserDetails {
     @ColumnDefault ("1")
     @JoinColumn(name = "authority_id", referencedColumnName = "authority_id")
     @NotNull
-    private Authority authority;
+    private Authority authority= Authority.USER;
 
     @CreationTimestamp
     @Column(name = "registration_time")
@@ -73,7 +73,7 @@ public class User  implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(Authority.toAuthorities().apply(authority));
+        return Collections.singleton(authority);
     }
 
     @Override

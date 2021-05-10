@@ -6,12 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.jwk.JwkTokenStore;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 
 import java.util.Collections;
 
@@ -21,6 +25,7 @@ import java.util.Collections;
  */
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled=true)
 public class CognitoSecurityConfig extends ResourceServerConfigurerAdapter {
 
     private final ResourceServerProperties resource;
@@ -46,7 +51,7 @@ public class CognitoSecurityConfig extends ResourceServerConfigurerAdapter {
      */
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests().anyRequest().authenticated()
+        http.csrf().disable().cors().and().authorizeRequests().anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
@@ -65,6 +70,17 @@ public class CognitoSecurityConfig extends ResourceServerConfigurerAdapter {
                 Collections.singletonList(resource.getJwk().getKeySetUri()),
                 new CognitoAccessTokenConverter(cognitoService, userService),
                 null);
+    }
+
+    /**
+     * Configuration bean used to configure interaction with AWS Cognito Identity Provider.
+     */
+    @Primary
+    @Bean
+    CognitoIdentityProviderClient cognitoIdentityProviderClientBean(){
+        return CognitoIdentityProviderClient.builder()
+                .region(Region.US_EAST_1)
+                .build();
     }
 
 
