@@ -32,6 +32,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 
 
 /**
@@ -74,10 +75,9 @@ class StacktraceSubscriptionIntegrationTest {
 
     @Test
     void givenStacktraceIdAndUserId_whenCreateNewStacktraceSubscription_ShouldReturnStacktraceSubscription() throws Exception {
-        User user = new User(0,"edson@revature.com","Edson",true,false,false,
-                Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Technology tech = new Technology(0,"java");
-        Stacktrace stacktrace = new Stacktrace(0,user,"Title","body", tech,Timestamp.valueOf(LocalDateTime.now()));
+        Stacktrace stacktrace = new Stacktrace(0,user,"Title","body", tech,Timestamp.valueOf(LocalDateTime.now()),new HashSet<>());
         technologyRepository.save(tech);
         userRepository.save(user);
         stacktraceRepository.save(stacktrace);
@@ -100,9 +100,9 @@ class StacktraceSubscriptionIntegrationTest {
 
     @Test
     void givenStacktraceAndUserId_whenGetSubscriptionByStacktraceIdAndUserId_ShouldReturnStacktraceSubscription() throws Exception {
-        User user = new User(0,"edson@revature.com","password","Edson","Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Technology tech = new Technology(0,"java");
-        Stacktrace stacktrace = new Stacktrace(0,user,"Title","body", tech,Timestamp.valueOf(LocalDateTime.now()));
+        Stacktrace stacktrace = new Stacktrace(0,user,"Title","body", tech,Timestamp.valueOf(LocalDateTime.now()),new HashSet<>());
         System.out.println(userRepository.save(user));
         System.out.println(technologyRepository.save(tech).getTechnologyId());
         System.out.println(stacktraceRepository.save(stacktrace).getStacktraceId());
@@ -125,9 +125,9 @@ class StacktraceSubscriptionIntegrationTest {
 
     @Test
     void givenStacktraceIdAndUserId_whenDeleteStacktraceSubscription_ShouldReturnDeletedStacktraceSubscription() throws Exception {
-        User user = new User(0,"edson@revature.com","password","Edson","Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Technology tech = new Technology(0,"java");
-        Stacktrace stacktrace = new Stacktrace(0,user,"Title","body", tech,Timestamp.valueOf(LocalDateTime.now()));
+        Stacktrace stacktrace = new Stacktrace(0,user,"Title","body", tech,Timestamp.valueOf(LocalDateTime.now()),new HashSet<>());
         userRepository.save(user);
         technologyRepository.save(tech);
         stacktraceRepository.save(stacktrace);

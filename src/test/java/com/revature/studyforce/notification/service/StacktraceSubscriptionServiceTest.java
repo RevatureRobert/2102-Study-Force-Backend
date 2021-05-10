@@ -1,11 +1,8 @@
 package com.revature.studyforce.notification.service;
 
-import com.revature.studyforce.flashcard.model.Flashcard;
-import com.revature.studyforce.flashcard.repository.FlashcardRepository;
-import com.revature.studyforce.notification.model.FlashcardSubscription;
+
 import com.revature.studyforce.notification.model.StacktraceSubscription;
 import com.revature.studyforce.notification.model.Subscription;
-import com.revature.studyforce.notification.repository.FlashcardSubscriptionRepository;
 import com.revature.studyforce.notification.repository.StacktraceSubscriptionRepository;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
