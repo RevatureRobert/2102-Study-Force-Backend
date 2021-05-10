@@ -9,8 +9,10 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 /**
- * @author John Stone
  * Model for technology
+ * A Technology can't be deleted if associated with
+ * Stacktrace but can be edited.
+ * @author John Stone
  */
 
 @Entity

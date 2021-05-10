@@ -1,6 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
 ### Maven template
 target/
+pom.xml
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -20,4 +21,6 @@ buildNumber.properties
 *.iml
 out
 gen
+test.mv.db
 
+/src/main/resources/env.properties

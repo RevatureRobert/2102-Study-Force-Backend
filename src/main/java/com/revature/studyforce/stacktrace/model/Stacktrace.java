@@ -1,26 +1,33 @@
 package com.revature.studyforce.stacktrace.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.studyforce.user.model.User;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.Set;
+
+/**
+ * This model represents a Stacktrace which a user could submit
+ * as a problem for other users to submit solutions to solve.
+ * @author Joey Elmblad
+ * @author Joshua Swanson
+ */
 
 @Entity
+@Table(name = "stacktrace")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Stacktrace {
-    /**
-     * @author : Noel Shaji
-     * Primary key
-     */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "stacktrace_id")
@@ -31,9 +38,10 @@ public class Stacktrace {
      */
     @NotNull
     @ManyToOne(
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "creator_id", referencedColumnName = "user_id")
+    @JsonIgnore
     private User userId;
 
     /**
@@ -54,10 +62,11 @@ public class Stacktrace {
      * The technology that the stacktrace is using.ex JAVA
      */
     @ManyToOne(
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "technology_id", referencedColumnName = "technology_id")
-    private Technology technologyId;
+    @JsonIgnore
+    private Technology technology;
 
     /**
      *The timestamp of when the stacktrace was created
@@ -66,4 +75,16 @@ public class Stacktrace {
     @UpdateTimestamp
     private Timestamp creationTime;
 
+    /**
+     * The solutionId picked by the user or overruled by the admin
+     */
+    @Column(name = "chosen_solution")
+    private int chosenSolution;
+
+    /**
+     * Bidirectional relationship needed to cascade delete solutions
+     */
+    @JsonIgnoreProperties("stackTraceId")
+    @OneToMany(mappedBy = "stackTraceId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Solution> solutions;
 }
