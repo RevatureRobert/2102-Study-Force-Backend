@@ -12,6 +12,7 @@ import java.sql.Date;
 import java.util.Set;
 
 import com.revature.studyforce.user.model.User;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * This model represents the solutions users will supply the Stacktrace owner.
@@ -75,6 +76,7 @@ public class Solution {
      * This is a timestamp of the time a solution was supplied.
      */
     @Column(name = "creation_time")
+    @UpdateTimestamp
     private Date creationTime;
 
     /**

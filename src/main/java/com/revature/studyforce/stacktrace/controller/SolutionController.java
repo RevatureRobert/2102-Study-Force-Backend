@@ -79,7 +79,7 @@ public class SolutionController {
      * @param solutionId This is the primary key for the Solution table used to find any given solution
      * @return This returns the updated Solution table with the total votes for any given Solution Id
      */
-    @PutMapping("/update-vote/{solutionId}")
+    @GetMapping("/update-vote/{solutionId}")
     public SolutionDTO updateSolutionTotalVote(@PathVariable int solutionId){
         return solutionService.updateSolutionTotalVotes(solutionId);
     }
