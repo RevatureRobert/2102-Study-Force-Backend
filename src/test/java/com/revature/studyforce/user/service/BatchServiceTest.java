@@ -179,6 +179,7 @@ class BatchServiceTest {
         Assertions.assertEquals(AdminList, response.getContent().get(0).getInstructors());
         Assertions.assertEquals(StudentList, response.getContent().get(0).getUsers());
         Assertions.assertEquals(t2, response.getContent().get(0).getCreationTime());
+
     }
 
     @Test

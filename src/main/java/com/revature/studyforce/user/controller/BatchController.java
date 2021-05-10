@@ -1,10 +1,14 @@
 package com.revature.studyforce.user.controller;
 
+import com.revature.studyforce.user.dto.CreateUpdateBatchDTO;
 import com.revature.studyforce.user.model.Batch;
 import com.revature.studyforce.user.service.BatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Batch Controller for Batch Repo {@link BatchService}
@@ -13,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/batches")
+@RequestMapping("/batches")@Secured("ROLE_USER")
 public class BatchController {
 
     private final BatchService batchService;
@@ -76,4 +80,62 @@ public class BatchController {
     public Batch getBatchByBatchId(@PathVariable(name = "batchId") int batchId){
         return batchService.getBatchById(batchId);
     }
+
+    /**
+     * Post request for 'createBatch' in {@link BatchService#createBatch(CreateUpdateBatchDTO)}
+     * @param createDTO Data Transfer Object with batchId, name, array of instructors and array of users
+     * @return Batch
+     */
+    @PostMapping @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
+    public @ResponseBody Batch createBatch(@RequestBody CreateUpdateBatchDTO createDTO){
+        
+        return batchService.createBatch(createDTO);
+
+    }
+
+    /**
+     * Put request for 'updateBatch' in {@link BatchService#updateBatch(CreateUpdateBatchDTO)}
+     * @param updateDTO Data Transfer Object with batchId, name, array of instructors and array of users
+     * @return Batch
+     */
+    @PutMapping @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
+    public @ResponseBody Batch updateBatch(@RequestBody CreateUpdateBatchDTO updateDTO){
+        
+        return batchService.updateBatch(updateDTO);
+
+    }
+
+    /**
+     * PUT request for 'deactivatedBatch' in {@link BatchService#deactivateBatch(int)}
+     * @param batchId of Batch that needs to be deactivated.
+     * @return Batch updated to show deactivated users
+     */
+    @PutMapping("/deactivateBatch/{batchId}") @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
+    public @ResponseBody Batch deactivateBatch(@PathVariable("batchId") int batchId){
+
+        return batchService.deactivateBatch(batchId);
+
+    }
+
+    /**
+     * DELETE Mapping for deleteBatch in {@link BatchService#deleteBatch(int)}
+     * @param batchId of Batch that should be deleted
+     * @return Batch that has been deleted.
+     */
+    @DeleteMapping("/{batchId}") @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
+    public @ResponseBody Batch deleteBatch(@PathVariable int batchId){
+        return batchService.deleteBatch(batchId);
+    }
+
+    /**
+     * GET Mapping, Finds Batches that users belong to using {@link BatchService#findByUserOrInstructorId(int)}
+     * @param id userID of instructor or user.
+     * @return List of Batches user belongs to
+     */
+    @GetMapping("/userid/{id}")
+    public @ResponseBody
+    List<Batch> findByInstructorOrUserId(@PathVariable("id") int id){
+        return batchService.findByUserOrInstructorId(id);
+    }
+
 }
