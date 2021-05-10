@@ -37,8 +37,7 @@ public class CognitoAccessTokenConverter extends JwtAccessTokenConverter {
             String email = cognitoService.getUserEmailFromUserPool((String) claims.get(COGNITO_USERNAME));
             String name = cognitoService.getUserNameFromUserPool((String) claims.get(COGNITO_USERNAME));
             ((Map<String, String>) claims).put(SPRING_USER_NAME, email);
-            ((Map<String, String>) claims).put(SPRING_AUTHORITIES, cognitoService.getAuthorityFromUserPool((String) claims.get(COGNITO_USERNAME)));
-
+            ((Map<String, String>) claims).put(SPRING_AUTHORITIES, cognitoService.getAuthorityFromUserPool((String) claims.get(COGNITO_USERNAME)).authorityName);
 
             //Needs to be replaced once RDS is set up.
             replaceWithLambda(email, name);

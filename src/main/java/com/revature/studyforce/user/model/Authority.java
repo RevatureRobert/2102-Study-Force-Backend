@@ -1,13 +1,12 @@
 package com.revature.studyforce.user.model;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import java.util.function.Function;
+import org.springframework.security.core.GrantedAuthority;
 
 /**
  * Model for Authority enum
  * @author Lok Kan Kung
  */
-public enum Authority {
+public enum Authority implements GrantedAuthority {
 
     USER ("USER"),
     ADMIN ("ADMIN"),
@@ -18,7 +17,10 @@ public enum Authority {
     Authority(String authorityName) {
         this.authorityName = authorityName;
     }
-    public static Function<Authority, SimpleGrantedAuthority> toAuthorities() {
-        return authority -> new SimpleGrantedAuthority(authority.authorityName);
+
+    @Override
+    public String getAuthority() {
+        return authorityName;
     }
+
 }
