@@ -1,6 +1,8 @@
 package com.revature.studyforce.flashcard.service;
 
+import com.revature.studyforce.flashcard.model.Flashcard;
 import com.revature.studyforce.flashcard.model.Topic;
+import com.revature.studyforce.flashcard.repository.FlashcardRepository;
 import com.revature.studyforce.flashcard.repository.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,9 @@ public class TopicService {
 
     @Autowired
     private TopicRepository topicRepository;
+
+    @Autowired
+    FlashcardRepository flashcardRepository;
 
     /**
      * Retrieve all topics from database
@@ -55,6 +60,9 @@ public class TopicService {
         if (topic == null) {
             return null;
         }
+
+        List<Flashcard> flashcardList = flashcardRepository.findAllByTopicId(id);
+        flashcardRepository.deleteAll(flashcardList);
         topicRepository.delete(topic);
         return topic;
     }

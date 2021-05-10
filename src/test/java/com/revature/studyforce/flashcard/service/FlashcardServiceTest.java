@@ -52,7 +52,9 @@ class FlashcardServiceTest {
     private TopicRepository topicRepository;
 
     List<Flashcard> flashcardList = new ArrayList<>();
+    List<FlashcardAllDTO> flashcardAllDTOList = new ArrayList<>();
     Page<Flashcard> flashcardPage;
+    //Page<FlashcardAllDTO> flashcardAllDTOPage;
     FlashcardDTO flashcardDTO;
     Flashcard flashcard;
     Flashcard flashcard2;
@@ -74,7 +76,9 @@ class FlashcardServiceTest {
         flashcard2 = new Flashcard(2, user, topic, "question", 2, 2, now, now, false);
         flashcardList.add(flashcard);
         flashcardList.add(flashcard2);
+        flashcardAllDTOList.add(FlashcardAllDTO.convertToDTO().apply(flashcard));
         flashcardPage = new PageImpl<>(flashcardList);
+        //flashcardAllDTOPage = new PageImpl<>(flashcardAllDTOList);
     }
 
     @Test
@@ -127,6 +131,23 @@ class FlashcardServiceTest {
         Assertions.assertEquals(flashcard.getQuestionDifficultyAverage(), DTO.getDifficulty());
         Assertions.assertEquals(flashcard.isResolved(), DTO.isResolved());
     }
+
+    @Test
+    void givenUserId_whenFindAllByCreatorUserId_shouldReturnFlashcardAllDTOWithMatchingUserId() {
+        Mockito.doReturn(Optional.of(user)).when(userRepository).findById(user.getUserId());
+        Mockito.doReturn(flashcardList).when(flashcardRepository).findAllByCreator_userId(user.getUserId());
+        Page<FlashcardAllDTO> DTO = flashcardService.getByUserId(1);
+        FlashcardAllDTO flashcardAllDTO = DTO.getContent().get(0);
+
+        Assertions.assertNotNull(DTO);
+        Assertions.assertEquals(flashcard.getId(), flashcardAllDTO.getFlashcardId());
+        Assertions.assertEquals(flashcard.getCreator().getUserId(), flashcardAllDTO.getCreatorId());
+        Assertions.assertEquals(flashcard.getTopic().getTopicName(),flashcardAllDTO.getTopicName());
+        Assertions.assertEquals(flashcard.getQuestion(),flashcardAllDTO.getQuestion());
+        Assertions.assertEquals(flashcard.getQuestionDifficultyAverage(), flashcardAllDTO.getDifficulty());
+        Assertions.assertEquals(flashcard.isResolved(), flashcardAllDTO.isResolved());
+    }
+
 
     @Test
     void givenNewFlashcardDTO_whenSave_shouldReturnFlashcardDTO() {
