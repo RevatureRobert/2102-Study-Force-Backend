@@ -71,7 +71,6 @@ class SolutionServiceTest {
         Page<Solution> solutionPage = new PageImpl<>(testSolutionList);
         Mockito.doReturn(solutionPage).when(solutionRepository).findByStackTraceId_stacktraceId(1, PageRequest.of(0,5));
         Page<SolutionDTO> solutionDTOS = solutionPage.map(SolutionDTO.solutionToDTO());
-        assertNotNull(solutionService.getAllSolutionsForStacktrace(1, 0, 5));
         assertEquals(1, solutionDTOS.getContent().size());
         assertEquals(solutionDTOS.getContent().get(0).getSolutionId(), testSolutionDTO.getSolutionId());
         assertEquals(solutionDTOS.getContent().get(0).getStackTraceId(), testSolutionDTO.getStackTraceId());
