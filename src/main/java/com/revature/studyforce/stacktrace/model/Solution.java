@@ -12,6 +12,8 @@ import java.sql.Date;
 import java.util.Set;
 
 import com.revature.studyforce.user.model.User;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 /**
@@ -90,5 +92,6 @@ public class Solution {
      */
     @JsonBackReference
     @OneToMany(mappedBy = "solutionId", cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<SolutionVote> solutionVotes;
 }
