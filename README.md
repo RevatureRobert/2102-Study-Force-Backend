@@ -15,9 +15,6 @@ The backend for the Batch 2102 capstone project, Study Force.
 * Spring Boot
 * Spring Test
 * Spring MVC
-* Angular 10
-* Karma
-* Jasmine
 * Protractor
 * Docker
 * CloudFormation
@@ -32,8 +29,7 @@ The backend for the Batch 2102 capstone project, Study Force.
 * Swagger
 * Git
 * Java
-* TypeScript
-* Bootstrap
+
 ## Features
 
 List of features ready and TODOs for future development
