@@ -75,8 +75,16 @@ public class CognitoService {
                 .filter(attributeType -> attributeType.name().equals(cognitoUserRole))
                 .map(AttributeType::value)
                 .findFirst();
+        if(role.isPresent())
+            try{
+               return Authority.valueOf(role.get());
+            }
+        catch (IllegalArgumentException e)
+        {
+            return Authority.valueOf(updateAuthority(username,Authority.ROLE_USER));
+        }
 
-        return Authority.valueOf(role.orElse(updateAuthority(username,Authority.ROLE_USER)));
+        return Authority.valueOf(updateAuthority(username,Authority.ROLE_USER));
 
     }
     /**
