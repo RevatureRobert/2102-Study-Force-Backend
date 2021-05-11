@@ -66,6 +66,9 @@ public class StacktraceService {
     public Page<StacktraceDTO> getAllStacktracesByTitleOrBodyOrTechnologyId(String title, int technologyId, int page, int pageSize) {
         pageSize = validatePageSize(pageSize);
         page = validatePage(page);
+        if (technologyId < 0) {
+            return stacktraceRepo.findByTitleContainingIgnoreCase(title,PageRequest.of(page,pageSize, Sort.by(Sort.Direction.DESC, "creationTime"))).map(StacktraceDTO.stacktraceToDTO());
+        }
         return stacktraceRepo.findByTitleContainingIgnoreCaseAndTechnologyTechnologyId(title, technologyId,PageRequest.of(page,pageSize, Sort.by(Sort.Direction.DESC, "creationTime"))).map(StacktraceDTO.stacktraceToDTO());
     }
 

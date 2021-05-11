@@ -25,6 +25,8 @@ public interface StacktraceRepository extends JpaRepository<Stacktrace, Integer>
 
     Page<Stacktrace> findByTitleContainingIgnoreCaseAndTechnologyTechnologyId(String title, int technologyId, Pageable pageable);
 
+    Page<Stacktrace> findByTitleContainingIgnoreCase(String title, Pageable pageable);
+
     @Transactional
     @Modifying
     @Query(value = "update stacktrace set chosen_solution = :solutionId where stacktrace_id = :stacktraceId", nativeQuery = true)
