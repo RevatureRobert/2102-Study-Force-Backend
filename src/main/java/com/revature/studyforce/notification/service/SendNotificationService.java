@@ -10,7 +10,6 @@ import org.asynchttpclient.Response;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.google.gson.Gson;
 import com.revature.studyforce.notification.model.Subscription;
 
 
