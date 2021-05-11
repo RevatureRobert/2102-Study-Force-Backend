@@ -39,7 +39,7 @@ class UserServiceTest {
     @Test
     void whenGetAllUsers_callUserRepository_retrieveUserPage(){
         List<User> userList = new ArrayList<>();
-        Authority authority = Authority.USER;
+        Authority authority = Authority.ROLE_USER;
         Instant i = Instant.now();
         long d = Date.from(i).getTime();
         Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(d));
@@ -62,7 +62,7 @@ class UserServiceTest {
     @Test
     void whenGetAllUsers_callUserRepository_retrieveUserPage_testingSortBy(){
         List<User> userList = new ArrayList<>();
-        Authority authority = Authority.USER;
+        Authority authority = Authority.ROLE_USER;
         Instant i = Instant.now();
         long d = Date.from(i).getTime();
         Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(d));
@@ -85,7 +85,7 @@ class UserServiceTest {
     @Test
     void whenGetUserByIdTest_callUserRepository_retrieveUser(){
 
-        Authority authority = Authority.USER;
+        Authority authority = Authority.ROLE_USER;
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(epochMilli));
@@ -105,7 +105,7 @@ class UserServiceTest {
     @Test
     void whenGetUserByEmail_callUserRepository_retrieveUser(){
 
-        Authority authority = Authority.USER;
+        Authority authority = Authority.ROLE_USER;
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(epochMilli));
@@ -126,7 +126,7 @@ class UserServiceTest {
     @Test
     void whenGetALlUsers_callUserRepository_retrieveUserPage(){
         List<User> userList = new ArrayList<>();
-        Authority authority = Authority.USER;
+        Authority authority = Authority.ROLE_USER;
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(epochMilli));
@@ -148,7 +148,7 @@ class UserServiceTest {
     @Test
     void whenGetALlUsers_callUserRepository_retrieveUserPage_testingSortBy(){
         List<User> userList = new ArrayList<>();
-        Authority authority = Authority.USER;
+        Authority authority = Authority.ROLE_USER;
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(epochMilli));
@@ -170,7 +170,7 @@ class UserServiceTest {
     @Test
     void whenGetALlUsersByRegistrationTime_callUserRepository_retrieveUserPage(){
         List<User> userList = new ArrayList<>();
-        Authority authority = Authority.USER;
+        Authority authority = Authority.ROLE_USER;
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(epochMilli));
@@ -191,7 +191,7 @@ class UserServiceTest {
     @Test
     void whenGetALlUsersByRegistrationTime_callUserRepository_retrieveUserPage_testingSortBy(){
         List<User> userList = new ArrayList<>();
-        Authority authority = Authority.USER;
+        Authority authority = Authority.ROLE_USER;
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(epochMilli));

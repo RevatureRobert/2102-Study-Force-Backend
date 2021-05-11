@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -37,12 +38,12 @@ class UserIntegration2Test {
     @Autowired
     private UserController userController;
 
-    @Test
+    @Test @WithMockUser(username = "Test", roles = {"ADMIN"})
     void userInRepo_whenUpdateUserName_thenUpdatedUserDTORetrieved() throws Exception {
         Timestamp timestamp = Timestamp.from(Instant.now());
         User user = new User(0, "cool@gmail.com",
                 "John Doe", true, true, false,
-                Authority.USER, timestamp, timestamp);
+                Authority.ROLE_USER, timestamp, timestamp);
 
         userRepository.save(user);
 
@@ -64,12 +65,12 @@ class UserIntegration2Test {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.subscribedFlashcard").value(true));
     }
 
-    @Test
+    @Test @WithMockUser(username = "Test", roles = {"ADMIN"})
     void userInRepo_whenUpdateUserAuthority_thenUpdatedUserDTORetrieved() throws Exception {
         Timestamp timestamp = Timestamp.from(Instant.now());
         User user = new User(0, "cool@gmail.com",
                 "John Doe", true, true, false,
-                Authority.USER, timestamp, timestamp);
+                Authority.ROLE_USER, timestamp, timestamp);
 
         userRepository.save(user);
 
@@ -91,12 +92,12 @@ class UserIntegration2Test {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.subscribedFlashcard").value(true));
     }
 
-    @Test
+    @Test @WithMockUser(username = "Test", roles = {"ADMIN"})
     void userInRepo_whenUpdateUserIsActive_thenUpdatedUserDTORetrieved() throws Exception {
         Timestamp timestamp = Timestamp.from(Instant.now());
         User user = new User(0, "cool@gmail.com",
                 "John Doe", true, true, false,
-                Authority.USER, timestamp, timestamp);
+                Authority.ROLE_USER, timestamp, timestamp);
 
         userRepository.save(user);
 
@@ -118,12 +119,12 @@ class UserIntegration2Test {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.subscribedFlashcard").value(true));
     }
 
-    @Test
+    @Test @WithMockUser(username = "Test", roles = {"ADMIN"})
     void userInRepo_whenUpdateUserSubscriptionStatus_thenUpdatedUserDTORetrieved() throws Exception {
         Timestamp timestamp = Timestamp.from(Instant.now());
         User user = new User(0, "cool@gmail.com",
                 "John Doe", true, false, false,
-                Authority.USER, timestamp, timestamp);
+                Authority.ROLE_USER, timestamp, timestamp);
 
         userRepository.save(user);
 

@@ -74,6 +74,7 @@ public class SubscriptionController {
      * @return The created subscription
      */
     @PostMapping("/flashcards")
+    @CrossOrigin(origins = {"*"})
     public FlashcardSubscription createFlashcardSubscription(@RequestBody FlashcardSubscriptionDTO subscriptionRequest){
         return flashcardSubscriptionService.createFlashcardSubscription(
                 subscriptionRequest.getFlashcardId(),
@@ -114,6 +115,7 @@ public class SubscriptionController {
      * @return The created subscription
      */
     @PostMapping("/stacktraces")
+    @CrossOrigin(origins = {"*"})
     public StacktraceSubscription createStacktraceSubscription(@RequestBody StacktraceSubscriptionDTO subscriptionRequest){
         return stacktraceSubscriptionService.createStacktraceSubscription(
                 subscriptionRequest.getStacktraceId(),

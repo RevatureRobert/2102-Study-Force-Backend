@@ -36,7 +36,7 @@ class UserService2Test {
         Timestamp timestamp = Timestamp.from(Instant.now());
         User user = new User(1, "cool@gmail.com",
                 "John Doe", true, true, false,
-                Authority.USER, timestamp, timestamp);
+                Authority.ROLE_USER, timestamp, timestamp);
 
         UserNameDTO userNameDTO = new UserNameDTO(1, "New Name");
 
@@ -52,7 +52,7 @@ class UserService2Test {
         Assertions.assertTrue(serviceUserDTO.isActive());
         Assertions.assertTrue(serviceUserDTO.isSubscribedFlashcard());
         Assertions.assertFalse(serviceUserDTO.isSubscribedStacktrace());
-        Assertions.assertEquals(Authority.USER, serviceUserDTO.getAuthority());
+        Assertions.assertEquals(Authority.ROLE_USER, serviceUserDTO.getAuthority());
         Assertions.assertEquals(timestamp, serviceUserDTO.getRegistrationTime());
         Assertions.assertEquals(timestamp, serviceUserDTO.getLastLogin());
     }
@@ -74,9 +74,9 @@ class UserService2Test {
         Timestamp timestamp = Timestamp.from(Instant.now());
         User user = new User(1, "cool@gmail.com",
                 "John Doe", true, true, false,
-                Authority.USER, timestamp, timestamp);
+                Authority.ROLE_USER, timestamp, timestamp);
 
-        UserAuthorityDTO userAuthorityDTO = new UserAuthorityDTO(1, Authority.ADMIN);
+        UserAuthorityDTO userAuthorityDTO = new UserAuthorityDTO(1, Authority.ROLE_ADMIN);
 
         Mockito.when(userRepository.findById(1)).thenReturn(Optional.of(user));
         Mockito.when(userRepository.save(org.mockito.ArgumentMatchers.any(User.class))).thenAnswer(u -> u.getArguments()[0]);
@@ -90,7 +90,7 @@ class UserService2Test {
         Assertions.assertTrue(serviceUserDTO.isActive());
         Assertions.assertTrue(serviceUserDTO.isSubscribedFlashcard());
         Assertions.assertFalse(serviceUserDTO.isSubscribedStacktrace());
-        Assertions.assertEquals(Authority.ADMIN, serviceUserDTO.getAuthority());
+        Assertions.assertEquals(Authority.ROLE_ADMIN, serviceUserDTO.getAuthority());
         Assertions.assertEquals(timestamp, serviceUserDTO.getRegistrationTime());
         Assertions.assertEquals(timestamp, serviceUserDTO.getLastLogin());
     }
@@ -103,7 +103,7 @@ class UserService2Test {
 
     @Test
     void whenUpdateUserAuthorityWithInvalidId_thenThrowResponseStatusException (){
-        UserAuthorityDTO userAuthorityDTO = new UserAuthorityDTO(-1, Authority.ADMIN);
+        UserAuthorityDTO userAuthorityDTO = new UserAuthorityDTO(-1, Authority.ROLE_ADMIN);
         Assertions.assertThrows(ResponseStatusException.class, () -> userService.updateUserAuthority(userAuthorityDTO));
     }
 
@@ -112,7 +112,7 @@ class UserService2Test {
         Timestamp timestamp = Timestamp.from(Instant.now());
         User user = new User(1, "cool@gmail.com",
                 "John Doe", true, true, false,
-                Authority.USER, timestamp, timestamp);
+                Authority.ROLE_USER, timestamp, timestamp);
 
         UserIsActiveDTO userIsActiveDTO = new UserIsActiveDTO(1, false);
 
@@ -128,7 +128,7 @@ class UserService2Test {
         Assertions.assertFalse(serviceUserDTO.isActive());
         Assertions.assertTrue(serviceUserDTO.isSubscribedFlashcard());
         Assertions.assertFalse(serviceUserDTO.isSubscribedStacktrace());
-        Assertions.assertEquals(Authority.USER, serviceUserDTO.getAuthority());
+        Assertions.assertEquals(Authority.ROLE_USER, serviceUserDTO.getAuthority());
         Assertions.assertEquals(timestamp, serviceUserDTO.getRegistrationTime());
         Assertions.assertEquals(timestamp, serviceUserDTO.getLastLogin());
     }
@@ -144,7 +144,7 @@ class UserService2Test {
         Timestamp timestamp = Timestamp.from(Instant.now());
         User user = new User(1, "cool@gmail.com",
                 "John Doe", true, false, false,
-                Authority.USER, timestamp, timestamp);
+                Authority.ROLE_USER, timestamp, timestamp);
 
         UserSubscriptionsDTO userSubscriptionsDTO = new UserSubscriptionsDTO(1, true, true);
 
@@ -160,7 +160,7 @@ class UserService2Test {
         Assertions.assertTrue(serviceUserDTO.isActive());
         Assertions.assertTrue(serviceUserDTO.isSubscribedFlashcard());
         Assertions.assertTrue(serviceUserDTO.isSubscribedStacktrace());
-        Assertions.assertEquals(Authority.USER, serviceUserDTO.getAuthority());
+        Assertions.assertEquals(Authority.ROLE_USER, serviceUserDTO.getAuthority());
         Assertions.assertEquals(timestamp, serviceUserDTO.getRegistrationTime());
         Assertions.assertEquals(timestamp, serviceUserDTO.getLastLogin());
     }

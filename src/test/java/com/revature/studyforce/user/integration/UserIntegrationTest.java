@@ -43,7 +43,7 @@ class UserIntegrationTest {
 
     @Test
     void givenBatch_whenGetAllUsers_theUserRetrieved() throws Exception {
-        Authority authority = Authority.USER;
+        Authority authority = Authority.ROLE_USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
         User user = new User(1 , "dan@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
         userRepository.save(user);
@@ -66,7 +66,7 @@ class UserIntegrationTest {
 
     @Test
     void givenBatch_whenGetUserById_theUserRetrieved() throws Exception {
-        Authority authority = Authority.USER;
+        Authority authority = Authority.ROLE_USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
         User user = new User(1 , "dan@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
         userRepository.save(user);
@@ -89,7 +89,7 @@ class UserIntegrationTest {
 
     @Test
     void givenBatch_whenGetUserByEmail_theUserRetrieved() throws Exception {
-        Authority authority = Authority.USER;
+        Authority authority = Authority.ROLE_USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
         User user = new User(1 , "dan@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
         userRepository.save(user);
@@ -112,7 +112,7 @@ class UserIntegrationTest {
 
     @Test
     void givenBatch_whenGetUserByName_theUserRetrieved() throws Exception {
-        Authority authority = Authority.USER;
+        Authority authority = Authority.ROLE_USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
         User user = new User(0 , "dan@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
         User user2 = new User(0 , "danrey@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
@@ -145,7 +145,7 @@ class UserIntegrationTest {
 
     @Test
     void givenBatch_whenGetUserByTimeStamp_theUserRetrieved() throws Exception {
-        Authority authority = Authority.USER;
+        Authority authority = Authority.ROLE_USER;
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(epochMilli));
