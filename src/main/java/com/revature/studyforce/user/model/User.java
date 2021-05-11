@@ -44,7 +44,7 @@ public class User  implements UserDetails {
     private String name;
 
     @Column(name = "is_active")
-    private boolean isActive;
+    private boolean isActive =true;
 
     @ColumnDefault("true")
     @Column(name = "is_subscribed_flashcard")

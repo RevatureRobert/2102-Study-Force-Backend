@@ -17,7 +17,7 @@ import java.util.List;
  */
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/batches")@Secured("USER")
+@RequestMapping("/batches")
 public class BatchController {
 
     private final BatchService batchService;
@@ -86,7 +86,7 @@ public class BatchController {
      * @param createDTO Data Transfer Object with batchId, name, array of instructors and array of users
      * @return Batch
      */
-    @PostMapping @Secured({"ADMIN", "SUPER_ADMIN"})
+    @PostMapping @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     public @ResponseBody Batch createBatch(@RequestBody CreateUpdateBatchDTO createDTO){
         
         return batchService.createBatch(createDTO);
@@ -98,7 +98,7 @@ public class BatchController {
      * @param updateDTO Data Transfer Object with batchId, name, array of instructors and array of users
      * @return Batch
      */
-    @PutMapping @Secured({"ADMIN", "SUPER_ADMIN"})
+    @PutMapping @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     public @ResponseBody Batch updateBatch(@RequestBody CreateUpdateBatchDTO updateDTO){
         
         return batchService.updateBatch(updateDTO);
@@ -110,7 +110,7 @@ public class BatchController {
      * @param batchId of Batch that needs to be deactivated.
      * @return Batch updated to show deactivated users
      */
-    @PutMapping("/deactivateBatch/{batchId}") @Secured({"ADMIN", "SUPER_ADMIN"})
+    @PutMapping("/deactivateBatch/{batchId}") @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     public @ResponseBody Batch deactivateBatch(@PathVariable("batchId") int batchId){
 
         return batchService.deactivateBatch(batchId);
@@ -122,7 +122,7 @@ public class BatchController {
      * @param batchId of Batch that should be deleted
      * @return Batch that has been deleted.
      */
-    @DeleteMapping("/{batchId}") @Secured({"ADMIN", "SUPER_ADMIN"})
+    @DeleteMapping("/{batchId}") @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     public @ResponseBody Batch deleteBatch(@PathVariable int batchId){
         return batchService.deleteBatch(batchId);
     }

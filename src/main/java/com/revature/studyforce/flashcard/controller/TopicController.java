@@ -5,6 +5,7 @@ import com.revature.studyforce.flashcard.model.Topic;
 import com.revature.studyforce.flashcard.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,7 +17,7 @@ import java.util.List;
  */
 @Controller
 @CrossOrigin
-@RequestMapping("/topics")
+@RequestMapping("/topics") @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
 public class TopicController {
 
 
