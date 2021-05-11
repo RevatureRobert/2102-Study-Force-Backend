@@ -1,5 +1,6 @@
 package com.revature.studyforce.stacktrace.controller;
 
+import com.revature.studyforce.stacktrace.dto.SolutionDTO;
 import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
 import com.revature.studyforce.stacktrace.service.StacktraceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,5 +62,44 @@ public class StackTraceController {
     @PostMapping
     public StacktraceDTO createStacktrace(@RequestBody StacktraceDTO stacktraceDTO) {
         return stacktraceService.submitStackTrace(stacktraceDTO);
+    }
+
+    /**
+     * Gets stacktraces using {@link StacktraceService#getAllStacktracesByTitleOrBodyOrTechnologyId(String, int, int, int)}
+     * whose title contains the given title string or whose body contains the given body string
+     * or who's technology matches the given technology ID, applies pagination and sorting
+     * a title/body/technologyId required to be in url call or nothing will match
+     * @param title Title String to search for
+     * @param techologyIdString technology ID to search for, will be converted to an integer
+     * @param page Page number of {@link StacktraceDTO StacktraceDTOs} to be displayed
+     * @param pageSize Number of {@link StacktraceDTO StacktraceDTOs} to be returned
+     * @return Page of matching {@link StacktraceDTO StacktraceDTOs} according to pagesize
+     */
+    @GetMapping("/search")
+    public Page<StacktraceDTO> getAllStackTracesMatchingTitleOrBodyOrTechnologyId(@RequestParam(value = "title", defaultValue = "_________________________________________________________________", required = false) String title,
+                                                                                  @RequestParam(value = "technologyId", defaultValue = "-1", required = false) String techologyIdString,
+                                                                                  @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                                 @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize) {
+        int technologyId;
+        try {
+            technologyId = Integer.parseInt(techologyIdString);
+        } catch (NumberFormatException e) {
+            technologyId = -1;
+        }
+        return stacktraceService.getAllStacktracesByTitleOrBodyOrTechnologyId(title,technologyId,page, pageSize);
+    }
+
+    /**
+     * This method should return the updated stacktrace that picks a solutionId and assigns it to chosenSolution
+     * using {@link StacktraceService#updateStacktraceChosenSolutionBySolutionAndStacktraceId(int, int)}
+     * @param solutionId The id to be assigned to the stacktrace chosenSolution field
+     * @param stacktraceId the primary key for the stacktrace table
+     * @return should return the updated stacktrace with a solutionId assigned to the chosenSolution column on the
+     * stacktrace table
+     */
+    @GetMapping("/chosen-solution")
+    public StacktraceDTO updateStacktraceChosenSolutionBySolutionIdAndStacktraceId(@RequestParam(value = "solutionId") int solutionId,
+                                                                   @RequestParam(value= "stacktraceId") int stacktraceId){
+        return stacktraceService.updateStacktraceChosenSolutionBySolutionAndStacktraceId(solutionId,stacktraceId);
     }
 }

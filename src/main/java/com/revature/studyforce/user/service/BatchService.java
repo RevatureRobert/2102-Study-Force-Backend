@@ -1,17 +1,22 @@
 package com.revature.studyforce.user.service;
 
+import com.revature.studyforce.user.dto.CreateUpdateBatchDTO;
 import com.revature.studyforce.user.model.Batch;
+import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.BatchRepository;
+import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * Service Layer for Batch using {@link BatchRepository}
@@ -22,10 +27,12 @@ import java.util.Locale;
 public class BatchService {
 
     private final BatchRepository batchRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public BatchService(BatchRepository batchRepository){
+    public BatchService(BatchRepository batchRepository, UserRepository userRepository){
         this.batchRepository = batchRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -91,6 +98,156 @@ public class BatchService {
     }
 
     /**
+     * Creates a batch using {@link BatchRepository}
+     * If array of instructors and users are included, This method will make sure the users exist before adding them to the batch.
+     * @param createBatch Data transfer object with batchId, name, array of instructor emails and array of user emails
+     * @return new batch or exception if batch with that name exist in database
+     */
+    public Batch createBatch(CreateUpdateBatchDTO createBatch){
+       Optional<Batch> checkBatchName = Optional.ofNullable(batchRepository.findByNameContainingIgnoreCase(createBatch.getName()));
+       Timestamp timestamp = Timestamp.from(Instant.now());
+       createBatch.setBatchId(0);
+
+        if(checkBatchName.isPresent()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Batch with that name exist in database. Please enter another name.");
+        }
+
+        Set<User> users = new HashSet<>();
+        Set<User> instructors = new HashSet<>();
+
+        createBatch.getInstructors().forEach(email -> {
+            Optional <User> instructor = userRepository.findByEmail(email);
+            if(!instructor.isPresent() ){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Instructor does not exist or does not have Admin privileges!!");
+            }
+
+            instructors.add(instructor.get());
+
+        });
+
+        createBatch.getUsers().forEach(email -> {
+            Optional <User> user = userRepository.findByEmail(email);
+            if(!user.isPresent()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User does not exist");
+            }
+
+            users.add(user.get());
+
+        });
+
+        Batch batch = new Batch(
+                createBatch.getBatchId(),
+                createBatch.getName(),
+                instructors,
+                users,
+                timestamp
+                );
+
+        batchRepository.save(batch);
+        return batch;
+
+    }
+
+    /**
+     * Updates existing batch using {@link BatchRepository} and {@link UserRepository}
+     * If array of instructors and users are included, This method will make sure the users exist before adding them to the batch.
+     * @param updateBatch Data transfer object with batchId, name, array of instructor emails and array of user emails
+     * @return updated batch or exception if no batch matching batchId exist
+     */
+    public Batch updateBatch(CreateUpdateBatchDTO updateBatch){
+        Optional<Batch> checkBatchId = batchRepository.findById(updateBatch.getBatchId());
+        if(!checkBatchId.isPresent()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Not Batch found");
+        }
+
+        Set<User> users = new HashSet<>();
+        Set<User> instructors = new HashSet<>();
+
+        updateBatch.getInstructors().forEach(email -> {
+            Optional <User> instructor = userRepository.findByEmail(email);
+            if(!instructor.isPresent()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Instructor does not exist");
+            }
+
+            instructors.add(instructor.get());
+
+        });
+
+        updateBatch.getUsers().forEach(email -> {
+            Optional <User> user = userRepository.findByEmail(email);
+            if(!user.isPresent()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User does not exist");
+            }
+
+            users.add(user.get());
+
+        });
+
+        Batch batch = new Batch(
+                updateBatch.getBatchId(),
+                updateBatch.getName(),
+                instructors,
+                users,
+                checkBatchId.get().getCreationTime()
+        );
+
+        batchRepository.save(batch);
+        return batch;
+
+    }
+
+    /**
+     * Deactivate Batch using {@link BatchRepository#findById(Object)}
+     * @param batchId of Batch
+     * @return Batch with updated users.
+     */
+    public Batch deactivateBatch(int batchId){
+        Batch batch = batchRepository.findById(batchId).orElse(null);
+
+        if(batch == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"No Batch found");
+        }
+
+        batch.getUsers().forEach(user ->  {
+            user.setActive(false);
+            userRepository.save(user);
+        });
+        batchRepository.deleteById(batch.getBatchId());
+        return batch;
+    }
+
+    /**
+     * Delete Batch using {@link BatchRepository#deleteById(Object)}
+     * @param batchId of Batch that should be deleted
+     * @return Batch of Batch that was Deleted.
+     */
+    public Batch deleteBatch(int batchId){
+
+        Batch batch = batchRepository.findById(batchId).orElse(null);
+        if(batch == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"No Batch found");
+        }else{
+            batchRepository.deleteById(batchId);
+        }
+        return batch;
+    }
+
+    /**
+     * Gets all Batches that user belongs to using {@link BatchRepository#findAllByInstructors_UserId(int)}
+     * @param userId of user or instructor
+     * @return List of Batches user or instructor belongs to.
+     */
+    public List<Batch> findByUserOrInstructorId(int userId){
+
+        List<Batch> batches = batchRepository.findAllByInstructors_UserId(userId);
+        List<Batch> batches2 = batchRepository.findAllByUsers_UserId(userId);
+        List<Batch> allBatches = batches;
+        allBatches.addAll(batches2);
+        return allBatches;
+    }
+
+
+    /**
      * guarantees a sort field is selected if user provides one, userID as default for invalid inputs
      * @param sort field to sort by
      * @return field to sort by, default userID
@@ -128,6 +285,8 @@ public class BatchService {
         }
         return offset;
     }
+
+
 
 
 }

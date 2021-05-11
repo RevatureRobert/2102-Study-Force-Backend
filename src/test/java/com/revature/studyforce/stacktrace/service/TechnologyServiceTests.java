@@ -24,7 +24,6 @@ import static org.mockito.ArgumentMatchers.any;
 @TestPropertySource(locations = "classpath:test-application.properties")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class TechnologyServiceTests {
-    //TODO: Standardize Tests across project
     List<Technology> technologyArrayList;
 
     @MockBean

@@ -8,6 +8,7 @@ import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -43,7 +44,7 @@ public class SolutionService {
     public Page<SolutionDTO> getAllSolutionsForStacktrace(int stackTraceId, int page, int pageSize){
         page = validatePage(page);
         pageSize = validatePageSize(pageSize);
-        Page<Solution> solutions = solutionRepository.findByStackTraceId_stacktraceId(stackTraceId, PageRequest.of(page, pageSize));
+        Page<Solution> solutions = solutionRepository.findByStackTraceId_stacktraceId(stackTraceId, PageRequest.of(page, pageSize, Sort.by(Sort.Direction.DESC, "totalVote")));
         return solutions.map(SolutionDTO.solutionToDTO());
     }
 
@@ -62,7 +63,6 @@ public class SolutionService {
                 userRepository.findById(solutionDTO.getUserId()).orElse(null),
                 solutionDTO.getBody(),
                 solutionDTO.getAdminSelected(),
-                solutionDTO.getUserSelected(),
                 solutionDTO.getCreationTime(),
                 solutionDTO.getTotalVote(),
                 null);
@@ -92,7 +92,6 @@ public class SolutionService {
                     userRepository.findById(solutionDTO.getUserId()).orElse(null),
                     solutionDTO.getBody(),
                     solutionDTO.getAdminSelected(),
-                    solutionDTO.getUserSelected(),
                     solutionDTO.getCreationTime(),
                     solutionDTO.getTotalVote(),
                     null);
@@ -101,14 +100,14 @@ public class SolutionService {
         }
     }
 
-  /**
-   * Deletes Solution with the given id with {@link SolutionRepository#delete}
-   *
-   * @param solutionId The primary key of a Solution used as a unique identifier
-   * @return returns a data transfer object containing the solutionId, stackTraceId,
-   * StacktraceUserDTO, body, adminSelected, and creationTime.
-   */
-  public SolutionDTO deleteSolution(int solutionId) {
+    /**
+     * Deletes Solution with the given id with {@link SolutionRepository#delete}
+     *
+     * @param solutionId The primary key of a Solution used as a unique identifier
+     * @return returns a data transfer object containing the solutionId, stackTraceId,
+     * StacktraceUserDTO, body, adminSelected, and creationTime.
+     */
+    public SolutionDTO deleteSolution(int solutionId) {
         Solution solution = solutionRepository.findById(solutionId).orElse(null);
         if(solution == null)
             return null;
@@ -120,7 +119,6 @@ public class SolutionService {
                 solution.getUserId().getName(),
                 solution.getBody(),
                 solution.getAdminSelected(),
-                solution.getUserSelected(),
                 solution.getCreationTime(),
                 solution.getTotalVote()
         );
@@ -152,10 +150,23 @@ public class SolutionService {
      * Update total votes for any given solution using
      * {@link SolutionRepository#updateSolutionTotalVotesBySolutionId(int)}
      * @param solutionId The solutionId used to update any given solution total votes
-     * @return will return a solution with updated total votes on solution table
+     * @return will return a solutionDTO with updated total votes on solution table
      */
     public SolutionDTO updateSolutionTotalVotes(int solutionId){
         solutionRepository.updateSolutionTotalVotesBySolutionId(solutionId);
+        Solution solution = solutionRepository.findById(solutionId).orElse(null);
+        return SolutionDTO.solutionToDTO().apply(solution);
+    }
+
+    /**
+     * Update the solution adminSelected to true, which should be displayed above
+     * every other comment.
+     * {@link SolutionRepository#updateSolutionSelectedByAdminBySolutionId(int)}
+     * @param solutionId The solutionId used to update any given solution
+     * @return will return a solutionDTO with updated adminSelected as true
+     */
+    public SolutionDTO updateSolutionSelectedByAdmin(int solutionId){
+        solutionRepository.updateSolutionSelectedByAdminBySolutionId(solutionId);
         Solution solution = solutionRepository.findById(solutionId).orElse(null);
         return SolutionDTO.solutionToDTO().apply(solution);
     }

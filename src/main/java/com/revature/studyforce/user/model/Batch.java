@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
@@ -30,11 +31,11 @@ public class Batch {
     String name;
 
     @NotNull
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "instructors_batches", joinColumns = {@JoinColumn(name = "batch_id")}, inverseJoinColumns = {@JoinColumn(name = "instructor_id")})
     Set<User> instructors;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_batches", joinColumns = {@JoinColumn(name = "batch_id")}, inverseJoinColumns = {@JoinColumn(name = "user_id")})
     Set<User> users;
 

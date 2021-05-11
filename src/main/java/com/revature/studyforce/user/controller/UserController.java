@@ -1,27 +1,38 @@
 package com.revature.studyforce.user.controller;
 
+import com.revature.studyforce.cognito.CognitoService;
 import com.revature.studyforce.user.dto.*;
 import com.revature.studyforce.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.security.RolesAllowed;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * User Controller for Users {@link UserService}
  * @author Daniel Reyes
  * @author Daniel Bernier
+ * @author Nick Wickham
  */
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/users")@Secured("USER")
 public class UserController {
 
     private final UserService userService;
+    private final CognitoService cognitoService;
 
     @Autowired
-    public UserController(UserService userService){
+    public UserController(UserService userService, CognitoService cognitoService){
         this.userService = userService;
+        this.cognitoService = cognitoService;
     }
 
     /**
@@ -29,7 +40,7 @@ public class UserController {
      * @param sortBy field to be sorted by ["id" | "registration" | "email" | "authority" | "active" | "lastlogin"] case insensitive defaults to userId
      * @param order type of order to sort users [asc | desc] case insensitive - defaults to asc
      * @param page page to be displayed [page >= 0] defaults to 0
-     * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 10 if invalid
+     * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 25 if invalid
      * @return page of Users dependent on provided page , offset, sort, and order
      */
     @GetMapping
@@ -56,7 +67,7 @@ public class UserController {
      * @param sortBy field to be sorted by ["id" | "registration" | "email" | "authority" | "active" | "lastlogin"]  case insensitive defaults to userId
      * @param order type of order to sort users [asc | desc] case insensitive - defaults to asc
      * @param page page to be displayed [page >= 0] defaults to 0
-     * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 10 if invalid
+     * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 25 if invalid
      * @return page of Users dependent on provided page , offset, sort, and order
      */
     @GetMapping("/name")
@@ -69,7 +80,7 @@ public class UserController {
     }
 
     /**
-     * GET request for 'getUserByEmail' in {@link UserService#getUserByEmail(String)}
+     * GET request for '/email' using {@link UserService#getUserByEmail(String)}
      * @param email belonging to user
      * @return single user with matching email
      */
@@ -79,12 +90,40 @@ public class UserController {
     }
 
     /**
+     * GET request for '/search' using {@link UserService#getBySearch(String, int, int, String, String)}
+     * @param search string to search name and email by
+     * @param sortBy field to be sorted by ["id" | "registration" | "email" | "authority" | "active" | "lastlogin"]  case insensitive defaults to userId
+     * @param order type of order to sort users [asc | desc] case insensitive - defaults to asc
+     * @param page page to be displayed [page >= 0] defaults to 0
+     * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 25 if invalid
+     * @return A page of data transfer representation of users searched by
+     */
+    @GetMapping("/search")
+    public Page<UserDTO> getBySearch(@RequestParam(name = "search") String search,
+                                     @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+                                     @RequestParam(value = "offset", required = false, defaultValue = "25") int offset,
+                                     @RequestParam(value = "sort", required = false, defaultValue = "userId") String sortBy,
+                                     @RequestParam(value = "order", required = false, defaultValue = "ASC") String order){
+        return userService.getBySearch(search, page, offset, sortBy, order);
+    }
+
+    /**
+     * GET request getting user based on security context {@link com.revature.studyforce.cognito.CognitoAccessTokenConverter}
+     * @param email email found in access token.
+     * @return single user with matching email
+     */
+    @GetMapping("/me")
+    public UserDTO getUserByContext(@AuthenticationPrincipal String email){
+        return userService.getUserByEmail(email);
+    }
+
+    /**
      * GET mapping for '/getUserByCreationTime' in {@link UserService#getUserByCreationTime(long, int, int, String, String)}
      * @param timestamp timestamp to check
      * @param sortBy field to be sorted by ["id" | "registration" | "email" | "authority" | "active" | "lastlogin"]  case insensitive defaults to userId
      * @param order type of order to sort users [asc | desc] case insensitive - defaults to asc
      * @param page page to be displayed [page >= 0] defaults to 0
-     * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 10 if invalid
+     * @param offset number of users displayed per page [5 | 10 | 25 | 50] defaults to 25 if invalid
      * @return page of Users dependent on provided page , offset, sort, and order
      */
     @GetMapping("/time/{epochMilliseconds}")
@@ -94,6 +133,10 @@ public class UserController {
                                         @RequestParam(value = "sort", required = false, defaultValue = "userId") String sortBy,
                                         @RequestParam(value = "order", required = false, defaultValue = "ASC") String order){
         return userService.getUserByCreationTime(timestamp, page,offset,sortBy,order);
+    }
+    @PostMapping("/bulk")@RolesAllowed({"USER", "SUPER-ADMIN"})@ResponseStatus(HttpStatus.CREATED)
+    public String bulkCreateUsers(@RequestBody List<BulkCreateUsersDTO> usersFromCsv) throws IOException, InterruptedException {
+        return cognitoService.bulkCreateUsers(usersFromCsv);
     }
 
     /**
@@ -111,7 +154,7 @@ public class UserController {
      * @param userAuthorityDTO A data transfer object containing the user's id and their new authority
      * @return The data transfer representation of the updated user
      */
-    @PutMapping("/authority")
+    @PutMapping("/authority")@Secured({"ADMIN", "SUPER_ADMIN"})
     public UserDTO updateUserAuthority(@RequestBody UserAuthorityDTO userAuthorityDTO){
         return userService.updateUserAuthority(userAuthorityDTO);
     }
@@ -121,7 +164,7 @@ public class UserController {
      * @param userIsActiveDTO A data transfer object containing the user's id and their new active status
      * @return The data transfer representation of the updated user
      */
-    @PutMapping("/active")
+    @PutMapping("/active")@Secured({"ADMIN", "SUPER_ADMIN"})
     public UserDTO updateUserIsActive(@RequestBody UserIsActiveDTO userIsActiveDTO){
         return userService.updateUserIsActive(userIsActiveDTO);
     }

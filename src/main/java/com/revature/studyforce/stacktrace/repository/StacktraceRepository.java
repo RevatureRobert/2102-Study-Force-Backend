@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -21,4 +22,11 @@ public interface StacktraceRepository extends JpaRepository<Stacktrace, Integer>
     List<Stacktrace> findByTechnologyTechnologyName(String technologyName);
 
     Page<Stacktrace> findAll(Pageable pageable);
+
+    Page<Stacktrace> findByTitleContainingIgnoreCaseAndTechnologyTechnologyId(String title, int technologyId, Pageable pageable);
+
+    @Transactional
+    @Modifying
+    @Query(value = "update stacktrace set chosen_solution = :solutionId where stacktrace_id = :stacktraceId", nativeQuery = true)
+    void updateStacktraceUserSelectedSolution(@Param("solutionId") int solutionId, @Param("stacktraceId") int stacktraceId);
 }

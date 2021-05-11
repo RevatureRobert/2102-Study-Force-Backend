@@ -1,6 +1,8 @@
 package com.revature.studyforce.user.service;
 
+import com.revature.studyforce.cognito.CognitoService;
 import com.revature.studyforce.user.dto.*;
+import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +30,13 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final CognitoService cognitoService;
     private static final String ID_NOT_FOUND_MESSAGE = "User matching provided userId not found, is your JSON malformed?";
 
     @Autowired
-    public UserService(UserRepository userRepository){
+    public UserService(UserRepository userRepository, CognitoService cognitoService){
         this.userRepository = userRepository;
+        this.cognitoService = cognitoService;
     }
 
     /**
@@ -101,6 +105,28 @@ public class UserService {
     }
 
     /**
+     * Retrieves all Users whose name or email contain the search string with pagination from {@link UserRepository#findAllByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(String, String, Pageable)}
+     * @param search The string to search by
+     * @param sortBy field to be sorted by ["id" | "registration" | "email" | "authority" | "active" | "lastlogin"] case insensitive defaults to userId
+     * @param order type of order to sort users [asc | desc] case insensitive - defaults to asc
+     * @param page page to be displayed [page >= 0] defaults to 0
+     * @param offset number of Users displayed per page [5 | 10 | 25 | 50] defaults to 10 if invalid
+     * @return page of search results data transfer representation of Users with pagination
+     */
+    public Page<UserDTO> getBySearch(String search, int page, int offset, String sortBy, String order) {
+        page = pageValidation(page);
+        sortBy = sortByValidation(sortBy);
+        offset = offsetValidation(offset);
+
+        Page<User> users;
+        if(order.equalsIgnoreCase("DESC"))
+            users = userRepository.findAllByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(search, search, PageRequest.of(page, offset, Sort.by(sortBy).descending()));
+        else
+            users = userRepository.findAllByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(search, search, PageRequest.of(page, offset, Sort.by(sortBy).ascending()));
+        return users.map(UserDTO.userToDTO());
+    }
+
+    /**
      * Retrieves all Users with pagination from{@link UserRepository#findByRegistrationTimeAfter(Timestamp, Pageable)}
      * @param epochMilli timestamp to check
      * @param sortBy field to be sorted by ["id" | "registration" | "email" | "authority" | "active" | "lastlogin"] case insensitive defaults to userId
@@ -152,8 +178,8 @@ public class UserService {
      * @return The data transfer representation of the updated user converted with {@link UserDTO#userToDTO()}
      */
     public UserDTO updateUserAuthority(@NotNull UserAuthorityDTO userAuthorityDTO){
-        if(userAuthorityDTO.getAuthority() == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Field authority cannot be null, is your JSON malformed?");
+        if(userAuthorityDTO.getAuthority() != Authority.USER && userAuthorityDTO.getAuthority() != Authority.ADMIN && userAuthorityDTO.getAuthority() != Authority.SUPER_ADMIN){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Field authority could not be understood, is your JSON malformed?");
         }
 
         Optional<User> userOptional = userRepository.findById(userAuthorityDTO.getUserId());
@@ -161,6 +187,13 @@ public class UserService {
 
         if(userOptional.isPresent()){
             user = userOptional.get();
+
+            try {
+                this.cognitoService.updateAuthority(user.getEmail(), userAuthorityDTO.getAuthority());
+            } catch (Exception ignored) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred when trying to update user pool.");
+            }
+
             user.setAuthority(userAuthorityDTO.getAuthority());
             return UserDTO.userToDTO().apply(userRepository.save(user));
 
@@ -208,6 +241,8 @@ public class UserService {
         }
     }
 
+
+
     /**
      * guarantees a sort field is selected if user provides one, userID as default ofr invalid inputs
      * @param sort field to sort by
@@ -221,7 +256,7 @@ public class UserService {
                 return "email";
             case "registration":
                 return "registrationTime";
-            case "lastLogin":
+            case "lastlogin":
                 return "lastLogin";
             case "active":
                 return "isActive";

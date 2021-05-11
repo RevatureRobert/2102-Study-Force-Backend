@@ -2,18 +2,19 @@ package com.revature.studyforce.stacktrace.service;
 
 import com.revature.studyforce.stacktrace.dto.StacktraceDTO;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
+import com.revature.studyforce.stacktrace.repository.SolutionRepository;
 import com.revature.studyforce.stacktrace.repository.StacktraceRepository;
 import com.revature.studyforce.stacktrace.repository.TechnologyRepository;
 import com.revature.studyforce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * The StackService allows for communication with {@link StacktraceRepository}
@@ -48,16 +49,24 @@ public class StacktraceService {
         pageSize = validatePageSize(pageSize);
         page = validatePage(page);
 
-        return stacktraceRepo.findAll(PageRequest.of(page, pageSize)).map(StacktraceDTO.stacktraceToDTO());
+        return stacktraceRepo.findAll(PageRequest.of(page, pageSize, Sort.by(Sort.Direction.DESC, "creationTime"))).map(StacktraceDTO.stacktraceToDTO());
     }
 
     /**
-     * Gets Stacktraces with the given technology name using {@link StacktraceRepository#findById(Object)}
-     * @param name the name of the technology to search for
-     * @return A list of Stacktraces exactly matching the given technology name
+     * Gets all stack traces by {@link StacktraceRepository#findByTitleContainingIgnoreCaseAndTechnologyTechnologyId(String, int, Pageable)}
+     * who's name contains the given name or who's body contains the given body or
+     * who's technology id matches the given technology id
+     * @param title the title substring to search for
+     * @param technologyId the technology id to search for
+     * @param page the page to be displayed
+     * @param pageSize Number of {@link Stacktrace Stacktraces} to be displayed
+     * @return Page of matching {@link Stacktrace Stacktraces} dependent on provided page, pageSize
      */
-    public List<StacktraceDTO> getAllStacktracesOfTechnologyName(String name) {
-        return stacktraceRepo.findByTechnologyTechnologyName(name).stream().map(StacktraceDTO.stacktraceToDTO()).collect(Collectors.toList());
+
+    public Page<StacktraceDTO> getAllStacktracesByTitleOrBodyOrTechnologyId(String title, int technologyId, int page, int pageSize) {
+        pageSize = validatePageSize(pageSize);
+        page = validatePage(page);
+        return stacktraceRepo.findByTitleContainingIgnoreCaseAndTechnologyTechnologyId(title, technologyId,PageRequest.of(page,pageSize, Sort.by(Sort.Direction.DESC, "creationTime"))).map(StacktraceDTO.stacktraceToDTO());
     }
 
     /**
@@ -91,6 +100,7 @@ public class StacktraceService {
                 stacktrace.getBody(),
                 stacktrace.getTechnology().getTechnologyId(),
                 stacktrace.getTechnology().getTechnologyName(),
+                stacktrace.getChosenSolution(),
                 stacktrace.getCreationTime());
     }
 
@@ -108,6 +118,7 @@ public class StacktraceService {
               stacktraceDTO.getBody(),
               technologyRepository.findById(stacktraceDTO.getTechnologyId()).orElse(null),
               stacktraceDTO.getCreationTime(),
+              stacktraceDTO.getChosenSolution(),
               null);
       stacktraceRepo.save(stacktrace);
         return stacktraceDTO;
@@ -133,5 +144,26 @@ public class StacktraceService {
       if(pageSize == 5 || pageSize == 10 || pageSize == 15)
           return pageSize;
       return defaultPageSize;
+    }
+
+    /**
+
+//     * {@link SolutionRepository#updateSolutionSelectedByAdminBySolutionId(int)}
+//     * @param solutionId
+//     * @return will return a solutionDTO with updated adminSelected as true
+//     */
+
+    /**
+     * Update the Stacktrace chosenSolution with targeted SolutionId, which should be displayed above
+     * every other comment unless admin picks a solution.
+     * using {@link StacktraceRepository#updateStacktraceUserSelectedSolution(int, int)}
+     * @param solutionId primary key for the solution table
+     * @param stacktraceId primary key for the stacktrace table
+     * @return will return a updated stacktrace with a chosenSolution solutionId
+     */
+    public StacktraceDTO updateStacktraceChosenSolutionBySolutionAndStacktraceId(int solutionId, int stacktraceId){
+        stacktraceRepo.updateStacktraceUserSelectedSolution(solutionId, stacktraceId);
+        Stacktrace stacktrace = stacktraceRepo.findById(stacktraceId).orElse(null);
+        return StacktraceDTO.stacktraceToDTO().apply(stacktrace);
     }
 }

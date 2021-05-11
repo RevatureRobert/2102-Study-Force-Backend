@@ -1,5 +1,6 @@
 package com.revature.studyforce.user.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,10 +27,10 @@ import java.util.Collections;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
-public class User {
+public class User  implements UserDetails {
 
     @Id
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
     private int userId;
 
@@ -53,14 +54,11 @@ public class User {
     @Column(name = "is_subscribed_stacktrace")
     private boolean isSubscribedStacktrace;
 
-    /*
-    make .STRING AND USER FOR LOCAL DATABASE
-     */
     @Enumerated(EnumType.ORDINAL)
     @ColumnDefault ("1")
     @JoinColumn(name = "authority_id", referencedColumnName = "authority_id")
     @NotNull
-    private Authority authority;
+    private Authority authority= Authority.USER;
 
     @CreationTimestamp
     @Column(name = "registration_time")
@@ -69,4 +67,51 @@ public class User {
     @Column(name = "last_login")
     private Timestamp lastLogin;
 
+    public User(String email, String name){
+        this.email = email;
+        this.name= name;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(authority);
+    }
+
+    @Override
+    @JsonIgnore
+    public String getPassword() {
+        throw new UnsupportedOperationException("StudyForce does not retain password information.");
+
+    }
+
+    /**
+     *
+     * @return true always.
+     * Due to the nature of StudyForce as a stateless authenticated app,
+     * possessing user details implies a non-expired token was received.
+     */
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return isEnabled();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isActive;
+    }
 }

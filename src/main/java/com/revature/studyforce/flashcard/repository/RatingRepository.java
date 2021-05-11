@@ -14,6 +14,6 @@ import java.util.Optional;
  */
 @Repository
 public interface RatingRepository extends JpaRepository<Rating,Integer> {
-    List<Rating> findByFlashcard_id(final int id);
+    List<Rating> findByFlashcardId(final int id);
     Optional<Rating> findByFlashcard_idAndUser_userId(final int fId, final int uId);
 }
