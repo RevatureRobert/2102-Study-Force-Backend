@@ -312,12 +312,4 @@ public class CognitoService {
                         .build()
         ).userImportJob();
     }
-
-
-    private Map<String, String> testUserCredentials() {
-        Map<String,String> result = new HashMap<>();
-        result.put("USERNAME","d327562a-09d3-470a-8c2f-47d57e8f8103");
-        result.put("PASSWORD","Swordfish1!");
-        return result;
-    }
 }
