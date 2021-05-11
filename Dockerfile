@@ -1,5 +1,5 @@
 ARG REPO=967240801169.dkr.ecr.us-east-1.amazonaws.com
-FROM ${REPO}/java8:latest
+FROM ${REPO}/java8:latest AS build  
 COPY src /usr/src/app/src  
 COPY pom.xml /usr/src/app  
 RUN mvn -f /usr/src/app/pom.xml clean package -DskipTests
