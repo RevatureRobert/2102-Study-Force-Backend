@@ -10,24 +10,24 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 
 /**
- * Swagger Configuration Class
- * @author Daniel Reyes
- */
+* Swagger Configuration Class
+* @author Daniel Reyes
+*/
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
 
-    /**
-     * Swagger Configuration to display all entities
-     * @return what is docket?
-     */
-    @Bean
-    public Docket api(){
-        return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("All Repositories")
-                .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any())
-                .build();
-    }
+   /**
+    * Swagger Configuration to display all entities
+    * @return what is docket?
+    */
+   @Bean
+   public Docket api(){
+       return new Docket(DocumentationType.SWAGGER_2)
+               .groupName("All Repositories")
+               .select()
+               .apis(RequestHandlerSelectors.any())
+               .paths(PathSelectors.any())
+               .build();
+   }
 }

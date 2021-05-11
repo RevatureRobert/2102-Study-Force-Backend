@@ -6,9 +6,29 @@ The backend for the Batch 2102 capstone project, Study Force.
 
 ## Technologies Used
 
-* Tech 1 - version 1.0
-* Tech 2 - version 2.0
-* Tech 3 - version 3.0
+* AWS S3
+* AWS CodeBuild
+* AWS CodePipeline
+* AWS API Gateway
+* AWS Cognito
+* Spring Data
+* Spring Boot
+* Spring Test
+* Spring MVC
+* Protractor
+* Docker
+* CloudFormation
+* DevOps
+* REST
+* PostgreSQL
+* Sonarcloud
+* JUnit
+* MockMVC
+* Maven
+* Spring Framework
+* Swagger
+* Git
+* Java
 
 ## Features
 
@@ -23,7 +43,7 @@ To-do list:
 
 ## Getting Started
    
-(include git clone command)
+git clone https://github.com/RevatureRobert/2102-Study-Force-Backend.git
 (include all environment setup steps)
 
 > Be sure to include BOTH Windows and Unix command  
@@ -39,7 +59,3 @@ To-do list:
 ## Contributors
 
 > Here list the people who have contributed to this project. (ignore this section, if its a solo project)
-
-## License
-
-This project uses the following license: [<license_name>](<link>).
