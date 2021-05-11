@@ -21,7 +21,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/users")@Secured({"ROLE_USER", "ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -172,7 +172,7 @@ public class UserController {
      * @param userSubscriptionsDTO A data transfer object containing the user's id and their new subscription statuses
      * @return The data transfer representation of the updated user
      */
-    @PutMapping("/subscription")
+    @PutMapping("/subscription") @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     public UserDTO updateUserSubscriptionStatus (@RequestBody UserSubscriptionsDTO userSubscriptionsDTO){
         return userService.updateUserSubscriptionStatus(userSubscriptionsDTO);
     }

@@ -4,6 +4,7 @@ import com.revature.studyforce.stacktrace.dto.TechnologyDTO;
 import com.revature.studyforce.stacktrace.model.Technology;
 import com.revature.studyforce.stacktrace.service.TechnologyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/stacktrace/technology")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*") @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
 public class TechnologyController {
 
   private final TechnologyService technologyService;
