@@ -1,23 +1,28 @@
 package com.revature.studyforce.user.integration;
 
+import com.revature.studyforce.StudyForceApplication;
+import com.revature.studyforce.configuration.WithMockCustomUser;
 import com.revature.studyforce.user.controller.BatchController;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.Batch;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.BatchRepository;
 import com.revature.studyforce.user.repository.UserRepository;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -25,16 +30,18 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+
 /**
  * tests for integration of Batch Controller {@link BatchController}
  * Include Deactivate, Create, and findByUsersInBatches
  * @author Daniel Reyes
  */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@SpringBootTest
+@SpringBootTest(classes = StudyForceApplication.class)
 @AutoConfigureMockMvc
-@TestPropertySource(locations = "classpath:test-application.properties")
 @Transactional
+@WithMockCustomUser
 class BatchCreateAndUpdateIntegrationTest {
 
     private MockMvc mockMvc;
@@ -43,16 +50,30 @@ class BatchCreateAndUpdateIntegrationTest {
     private BatchRepository batchRepository;
 
     @Autowired
+    private WebApplicationContext context;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private BatchController batchController;
 
+    @Autowired
+    private FilterChainProxy springSecurityFilterChain;
+
+    @BeforeEach
+    void setup() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
+                .addFilter(springSecurityFilterChain).build();
+    }
+
+
     @Test
+    @WithMockCustomUser
     void givenBatch_whenCreate_theReturnCreatedBatch() throws Exception {
 
-        Authority authority = Authority.ADMIN;
-        Authority userAuth = Authority.USER;
+        Authority authority = Authority.ROLE_ADMIN;
+        Authority userAuth = Authority.ROLE_USER;
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(epochMilli));
@@ -66,10 +87,10 @@ class BatchCreateAndUpdateIntegrationTest {
         userRepository.save(student);
         userRepository.save(student2);
 
-        mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
     mockMvc
         .perform(
-            MockMvcRequestBuilders.post("/batches")
+            MockMvcRequestBuilders.post("/batches").secure(false)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                     "{ \"batchId\" : 1, \"name\" : \"2102 Enterprise\", \"instructors\" : [\"admin@gmail.com\"], \"users\" : [\"c@gmail.com\"] }"))
@@ -89,8 +110,8 @@ class BatchCreateAndUpdateIntegrationTest {
       Set<User> AdminList = new HashSet<>();
       Set<User> StudentList = new HashSet<>();
 
-        Authority authority = Authority.ADMIN;
-        Authority userAuth = Authority.USER;
+        Authority authority = Authority.ROLE_ADMIN;
+        Authority userAuth = Authority.ROLE_USER;
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(epochMilli));
@@ -133,8 +154,8 @@ class BatchCreateAndUpdateIntegrationTest {
         Set<User> AdminList = new HashSet<>();
         Set<User> StudentList = new HashSet<>();
 
-        Authority authority = Authority.ADMIN;
-        Authority userAuth = Authority.USER;
+        Authority authority = Authority.ROLE_ADMIN;
+        Authority userAuth = Authority.ROLE_USER;
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(epochMilli));

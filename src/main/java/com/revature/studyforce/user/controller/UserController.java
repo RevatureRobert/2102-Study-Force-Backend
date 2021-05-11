@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.security.RolesAllowed;
 import java.io.IOException;
 import java.util.List;
 
@@ -23,7 +21,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/users")@Secured("USER")
+@RequestMapping("/users")@Secured({"ROLE_USER", "ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
 public class UserController {
 
     private final UserService userService;
@@ -109,12 +107,12 @@ public class UserController {
 
     /**
      * GET request getting user based on security context {@link com.revature.studyforce.cognito.CognitoAccessTokenConverter}
-     * @param email email found in access token.
+     * @param principal user found in access token.
      * @return single user with matching email
      */
     @GetMapping("/me")
-    public UserDTO getUserByContext(@AuthenticationPrincipal String email){
-        return userService.getUserByEmail(email);
+    public UserDTO getUserByContext(Authentication principal){
+        return userService.getUserByEmail(principal.getName());
     }
 
     /**
@@ -134,7 +132,7 @@ public class UserController {
                                         @RequestParam(value = "order", required = false, defaultValue = "ASC") String order){
         return userService.getUserByCreationTime(timestamp, page,offset,sortBy,order);
     }
-    @PostMapping("/bulk")@RolesAllowed({"USER", "SUPER-ADMIN"})@ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/bulk")@Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})@ResponseStatus(HttpStatus.CREATED)
     public String bulkCreateUsers(@RequestBody List<BulkCreateUsersDTO> usersFromCsv) throws IOException, InterruptedException {
         return cognitoService.bulkCreateUsers(usersFromCsv);
     }
@@ -154,7 +152,7 @@ public class UserController {
      * @param userAuthorityDTO A data transfer object containing the user's id and their new authority
      * @return The data transfer representation of the updated user
      */
-    @PutMapping("/authority")@Secured({"ADMIN", "SUPER_ADMIN"})
+    @PutMapping("/authority")@Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     public UserDTO updateUserAuthority(@RequestBody UserAuthorityDTO userAuthorityDTO){
         return userService.updateUserAuthority(userAuthorityDTO);
     }
@@ -164,7 +162,7 @@ public class UserController {
      * @param userIsActiveDTO A data transfer object containing the user's id and their new active status
      * @return The data transfer representation of the updated user
      */
-    @PutMapping("/active")@Secured({"ADMIN", "SUPER_ADMIN"})
+    @PutMapping("/active")@Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     public UserDTO updateUserIsActive(@RequestBody UserIsActiveDTO userIsActiveDTO){
         return userService.updateUserIsActive(userIsActiveDTO);
     }

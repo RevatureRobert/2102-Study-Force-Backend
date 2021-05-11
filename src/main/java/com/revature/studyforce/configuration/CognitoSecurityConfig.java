@@ -25,7 +25,7 @@ import java.util.Collections;
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled=true)
+@EnableGlobalMethodSecurity(securedEnabled=true, jsr250Enabled = true)
 public class CognitoSecurityConfig extends ResourceServerConfigurerAdapter {
 
     private final ResourceServerProperties resource;
@@ -73,7 +73,7 @@ public class CognitoSecurityConfig extends ResourceServerConfigurerAdapter {
     }
 
     /**
-     * Configuration bean used to configure interaction with AWS Cognito Identity Provider.
+     * Bean used to configure interaction with AWS Cognito Identity Provider.
      */
     @Primary
     @Bean

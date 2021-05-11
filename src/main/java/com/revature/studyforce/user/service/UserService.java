@@ -178,7 +178,7 @@ public class UserService {
      * @return The data transfer representation of the updated user converted with {@link UserDTO#userToDTO()}
      */
     public UserDTO updateUserAuthority(@NotNull UserAuthorityDTO userAuthorityDTO){
-        if(userAuthorityDTO.getAuthority() != Authority.USER && userAuthorityDTO.getAuthority() != Authority.ADMIN && userAuthorityDTO.getAuthority() != Authority.SUPER_ADMIN){
+        if(userAuthorityDTO.getAuthority() != Authority.ROLE_USER && userAuthorityDTO.getAuthority() != Authority.ROLE_ADMIN && userAuthorityDTO.getAuthority() != Authority.ROLE_SUPER_ADMIN){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Field authority could not be understood, is your JSON malformed?");
         }
 
