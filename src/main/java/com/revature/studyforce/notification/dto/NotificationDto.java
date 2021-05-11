@@ -46,23 +46,5 @@ public class NotificationDto {
         };
 
     }
-//    public static Function<NotificationDto, Notification> convertFromDto(){
-//
-//        return notificationDto -> {
-//            Assert.notNull(notificationDto, "NotificationDTO is null");
-//
-//            return new Notification(
-//                    notificationDto.getId(),
-//                    notificationDto.getMessage(),
-//                    notificationDto.isRead(),
-//                    notificationDto.getTimeToLive(),
-//                    notificationDto.getCreatedTime(),
-//                    notificationDto.getFeatureArea(),
-//                    notificationDto.getReferenceId(),
-//                    notificationDto.
-//
-//            );
-//
-//        };
-//    }
+
 }
