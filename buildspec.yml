@@ -18,8 +18,8 @@ phases:
       - echo Build started on `date`
       - echo Building the Docker image...
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 967240801169.dkr.ecr.us-east-1.amazonaws.com
-      - docker build -t rsf-ecr-repo .
-      - docker tag rsf-ecr-repo 967240801169.dkr.ecr.us-east-1.amazonaws.com/rsf-ecr-repo:latest
+      - docker build -t rsf-ecr-repo:latest .
+      - docker tag rsf-ecr-repo:latest 967240801169.dkr.ecr.us-east-1.amazonaws.com/rsf-ecr-repo:latest
   post_build:
     commands:
       - echo Build completed on `date`
