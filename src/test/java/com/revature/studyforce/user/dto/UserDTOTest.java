@@ -22,7 +22,7 @@ class UserDTOTest {
 
         Timestamp registrationTime = Timestamp.valueOf ("2021-04-30 10:58:01");
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
-        Authority authority = Authority.USER;
+        Authority authority = Authority.ROLE_USER;
         User user = new User(0,"testing@gmail.com","test",
                 true,true,true,
                 authority,registrationTime,lastLoginTime);
@@ -44,7 +44,7 @@ class UserDTOTest {
     void whenConvertingUserDTOToUser_FieldsMatchOriginalObject(){
         Timestamp registrationTime = Timestamp.valueOf ("2021-04-30 10:58:01");
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
-        Authority authority = Authority.USER;
+        Authority authority = Authority.ROLE_USER;
         UserDTO userDTO = new UserDTO (0,"testing@gmail.com","test",
                 true,true,true,
                 authority,registrationTime,lastLoginTime);

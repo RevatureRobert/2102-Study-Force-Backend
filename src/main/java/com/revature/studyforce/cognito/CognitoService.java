@@ -14,8 +14,7 @@ import software.amazon.awssdk.services.cognitoidentityprovider.model.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static software.amazon.awssdk.services.cognitoidentityprovider.model.UserImportJobStatusType.*;
 
@@ -77,7 +76,7 @@ public class CognitoService {
                 .map(AttributeType::value)
                 .findFirst();
 
-        return Authority.valueOf(role.orElse(updateAuthority(username,Authority.USER)));
+        return Authority.valueOf(role.orElse(updateAuthority(username,Authority.ROLE_USER)));
 
     }
     /**
@@ -230,7 +229,7 @@ public class CognitoService {
      * @param usersFromCsv the list of users to be processed
      * @param fileName output path for completed csv.
      */
-    private void convertStudyForceCsvToCognitoCsv(List<BulkCreateUsersDTO> usersFromCsv, String fileName) {
+    protected void convertStudyForceCsvToCognitoCsv(List<BulkCreateUsersDTO> usersFromCsv, String fileName) {
         try(FileWriter writer = new FileWriter(fileName)){
             writer.append("name,email,email_verified,phone_number_verified,given_name,family_name,profile,picture,website,middle_name,nickname,gender,birthdate,zoneinfo,locale,phone_number,preferred_username,address,updated_at,custom:userId,custom:role,cognito:mfa_enabled,cognito:username\n");
             usersFromCsv.forEach(email -> {
@@ -304,5 +303,13 @@ public class CognitoService {
                         .cloudWatchLogsRoleArn(cognitoLoggingArn)
                         .build()
         ).userImportJob();
+    }
+
+
+    private Map<String, String> testUserCredentials() {
+        Map<String,String> result = new HashMap<>();
+        result.put("USERNAME","d327562a-09d3-470a-8c2f-47d57e8f8103");
+        result.put("PASSWORD","Swordfish1!");
+        return result;
     }
 }

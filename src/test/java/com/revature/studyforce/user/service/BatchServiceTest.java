@@ -40,8 +40,8 @@ class BatchServiceTest {
         Set<User> StudentList = new HashSet<>();
         List<Batch> BatchList = new ArrayList<>();
 
-        Authority authority = Authority.ADMIN;
-        Authority user1 = Authority.USER;
+        Authority authority = Authority.ROLE_ADMIN;
+        Authority user1 = Authority.ROLE_USER;
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(epochMilli));
@@ -71,8 +71,8 @@ class BatchServiceTest {
         Set<User> StudentList = new HashSet<>();
         List<Batch> BatchList = new ArrayList<>();
 
-        Authority authority = Authority.ADMIN;
-        Authority user1 = Authority.USER;
+        Authority authority = Authority.ROLE_ADMIN;
+        Authority user1 = Authority.ROLE_USER;
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(epochMilli));
@@ -100,8 +100,8 @@ class BatchServiceTest {
         Set<User> AdminList = new HashSet<>();
         Set<User> StudentList = new HashSet<>();
 
-        Authority authority = Authority.ADMIN;
-        Authority user1 = Authority.USER;
+        Authority authority = Authority.ROLE_ADMIN;
+        Authority user1 = Authority.ROLE_USER;
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(epochMilli));
@@ -127,8 +127,8 @@ class BatchServiceTest {
         Set<User> AdminList = new HashSet<>();
         Set<User> StudentList = new HashSet<>();
 
-        Authority authority = Authority.ADMIN;
-        Authority user1 = Authority.USER;
+        Authority authority = Authority.ROLE_ADMIN;
+        Authority user1 = Authority.ROLE_USER;
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(epochMilli));
@@ -155,8 +155,8 @@ class BatchServiceTest {
         Set<User> StudentList = new HashSet<>();
         List<Batch> BatchList = new ArrayList<>();
 
-        Authority authority = Authority.ADMIN;
-        Authority user1 = Authority.USER;
+        Authority authority = Authority.ROLE_ADMIN;
+        Authority user1 = Authority.ROLE_USER;
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp t2 = Timestamp.from(Instant.ofEpochMilli(epochMilli));
@@ -188,8 +188,8 @@ class BatchServiceTest {
         Set<User> StudentList = new HashSet<>();
         List<Batch> BatchList = new ArrayList<>();
 
-        Authority authority = Authority.ADMIN;
-        Authority user1 = Authority.USER;
+        Authority authority = Authority.ROLE_ADMIN;
+        Authority user1 = Authority.ROLE_USER;
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
         Timestamp timestamp = Timestamp.from(Instant.ofEpochMilli(epochMilli));

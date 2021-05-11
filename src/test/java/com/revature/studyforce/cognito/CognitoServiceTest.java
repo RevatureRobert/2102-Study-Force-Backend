@@ -15,6 +15,7 @@ import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityPr
 import software.amazon.awssdk.services.cognitoidentityprovider.model.*;
 
 import java.io.IOException;
+import java.util.List;
 
 
 /**
@@ -70,7 +71,7 @@ class CognitoServiceTest {
 
         Authority actual = cognitoService.getAuthorityFromUserPool(username);
         Assertions.assertNotNull(actual);
-        Assertions.assertEquals(Authority.ADMIN,actual);
+        Assertions.assertEquals(Authority.ROLE_ADMIN,actual);
 
 
     }
@@ -85,7 +86,7 @@ class CognitoServiceTest {
         Mockito.when(cognitoClient.adminUpdateUserAttributes(ArgumentMatchers.isA(AdminUpdateUserAttributesRequest.class))).thenReturn(innerResponse);
         Authority actual = cognitoService.getAuthorityFromUserPool(username);
         Assertions.assertNotNull(actual);
-        Assertions.assertEquals(Authority.USER,actual);
+        Assertions.assertEquals(Authority.ROLE_USER,actual);
 
 
     }
@@ -109,20 +110,20 @@ class CognitoServiceTest {
         Assertions.assertEquals("TEST",actual);
 
     }
-//    @Test
-//    void whenBulkCreateUsers_hasInvalidInput_receiveFailedMessage() throws IOException {
-//        String message = "Status: Succeeded\n" +
-//                "Message: Import Job Completed Successfully.";
-//        UserImportJobType testJob = UserImportJobType.builder()
-//                .jobId("1234").cloudWatchLogsRoleArn("ARNie").status("Failed").preSignedUrl("/presignedurl").build();
-//        CreateUserImportJobResponse testJobResponse = CreateUserImportJobResponse.builder().userImportJob(testJob).build();
-//        Mockito.when(cognitoClient.createUserImportJob(ArgumentMatchers.isA(CreateUserImportJobRequest.class))).thenReturn(testJobResponse);
-//        Mockito.when(cognitoService.postCsvToCognito(ArgumentMatchers.isA(String.class),ArgumentMatchers.isA(String.class))).thenReturn(true);
-//
-//
-//
-//
-//    }
+    @Test
+    void whenBulkCreateUsers_hasInvalidInput_receiveFailedMessage() throws IOException {
+        String message = "Status: Succeeded\n" +
+                "Message: Import Job Completed Successfully.";
+        UserImportJobType testJob = UserImportJobType.builder()
+                .jobId("1234").cloudWatchLogsRoleArn("ARNie").status("Failed").preSignedUrl("/presignedurl").build();
+        CreateUserImportJobResponse testJobResponse = CreateUserImportJobResponse.builder().userImportJob(testJob).build();
+        Mockito.when(cognitoClient.createUserImportJob(ArgumentMatchers.isA(CreateUserImportJobRequest.class))).thenReturn(testJobResponse);
+        Mockito.when(cognitoService.postCsvToCognito(ArgumentMatchers.isA(String.class),ArgumentMatchers.isA(String.class))).thenReturn(true);
+        Mockito.doNothing().when(cognitoService.postCsvToCognito(ArgumentMatchers.isA(String.class),ArgumentMatchers.isA(String.class)));
+
+
+
+    }
 
     @Test
     void whenCreateUserImportJob_callsCognitoClient_createUserJob(){

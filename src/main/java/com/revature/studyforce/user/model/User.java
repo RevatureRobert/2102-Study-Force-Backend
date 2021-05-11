@@ -57,7 +57,7 @@ public class User  implements UserDetails {
     @ColumnDefault ("1")
     @JoinColumn(name = "authority_id", referencedColumnName = "authority_id")
     @NotNull
-    private Authority authority= Authority.USER;
+    private Authority authority= Authority.ROLE_USER;
 
     @CreationTimestamp
     @Column(name = "registration_time")

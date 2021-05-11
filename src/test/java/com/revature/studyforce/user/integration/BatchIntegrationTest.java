@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -49,13 +50,13 @@ class BatchIntegrationTest {
     private BatchController batchController;
 
 
-    @Test
+    @Test @WithMockUser(username = "Test",authorities = "ADMIN")
     void givenBatch_whenGetAll_theBatchesRetrieved() throws Exception {
         Set<User> AdminList = new HashSet<>();
         Set<User> StudentList = new HashSet<>();
 
-        Authority authority = Authority.ADMIN;
-        Authority user1 = Authority.USER;
+        Authority authority = Authority.ROLE_ADMIN;
+        Authority user1 = Authority.ROLE_USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
         User Admin = new User(0 , "dan2@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
         User student = new User(0 , "test2@gmail.com", "Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
@@ -78,13 +79,13 @@ class BatchIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].name").value("2102 Enterprise2"));
     }
 
-    @Test
+    @Test @WithMockUser(username = "Test", roles = {"ADMIN"})
     void givenBatch_whenGetById_theBatchRetrieved() throws Exception {
         Set<User> AdminList = new HashSet<>();
         Set<User> StudentList = new HashSet<>();
 
-        Authority authority = Authority.ADMIN;
-        Authority user1 = Authority.USER;
+        Authority authority = Authority.ROLE_ADMIN;
+        Authority user1 = Authority.ROLE_USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
         User Admin = new User(0 , "dan2@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
         User student = new User(0 , "test2@gmail.com", "Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
@@ -108,8 +109,8 @@ class BatchIntegrationTest {
         Set<User> AdminList = new HashSet<>();
         Set<User> StudentList = new HashSet<>();
 
-        Authority authority = Authority.ADMIN;
-        Authority user1 = Authority.USER;
+        Authority authority = Authority.ROLE_ADMIN;
+        Authority user1 = Authority.ROLE_USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
         User Admin = new User(0 , "dan2@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
         User student = new User(0 , "test2@gmail.com", "Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
@@ -135,8 +136,8 @@ class BatchIntegrationTest {
         Set<User> AdminList = new HashSet<>();
         Set<User> StudentList = new HashSet<>();
 
-        Authority authority = Authority.ADMIN;
-        Authority user1 = Authority.USER;
+        Authority authority = Authority.ROLE_ADMIN;
+        Authority user1 = Authority.ROLE_USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
         Instant instant = Instant.now();
         long epochMilli = Date.from(instant).getTime();
