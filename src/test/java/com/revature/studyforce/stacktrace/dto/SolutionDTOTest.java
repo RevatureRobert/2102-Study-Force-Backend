@@ -33,7 +33,7 @@
 //
 //    @BeforeEach
 //    public void setUp(){
-//        testUser = new User(1, "test.test.com", "Test", false, true, true, Authority.USER, null, null);
+//        testUser = new User(1, "test.test.com", "Test", false, true, true, Authority.ROLE_USER, null, null);
 //        testStacktrace = new Stacktrace(1, testUser, "Test Title", "Test Body", null, null, 0, null);
 //        testSolutionDTO = new SolutionDTO(1, 1,1,"Test", "Test Body", false, null, 0);
 //        testSolution = new Solution(1, testStacktrace, testUser, "Test Body", false, null, 0, null);

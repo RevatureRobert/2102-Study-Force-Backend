@@ -2,14 +2,11 @@ package com.revature.studyforce.notification.service;
 
 import nl.martijndwars.webpush.Notification;
 import nl.martijndwars.webpush.PushAsyncService;
-import nl.martijndwars.webpush.PushService;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.http.HttpResponse;
 import org.asynchttpclient.Response;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import com.revature.studyforce.notification.model.Subscription;
 
 

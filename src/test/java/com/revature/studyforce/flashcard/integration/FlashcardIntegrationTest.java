@@ -35,9 +35,9 @@ import java.util.List;
  * Flashcard integration tests {@link FlashcardController}
  * @author Luke Mohr
  */
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
-@TestPropertySource(locations = "classpath:test-application.properties")
+//@TestPropertySource(locations = "classpath:test-application.properties")
 class FlashcardIntegrationTest {
 
     private MockMvc mockMvc;
@@ -68,7 +68,7 @@ class FlashcardIntegrationTest {
     public void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(flashcardController).build();
         flashcardDTO = new FlashcardDTO();
-        user = new User(0,"a@b.c","fn ln",true,false,false, Authority.USER, null,null);
+        user = new User(0,"a@b.c","fn ln",true,false,false, Authority.ROLE_USER, null,null);
         user.setLastLogin(null);
         user.setRegistrationTime(null);
         topic = new Topic();

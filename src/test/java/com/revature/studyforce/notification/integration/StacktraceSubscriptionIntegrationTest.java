@@ -75,7 +75,7 @@
 //
 //    @Test
 //    void givenStacktraceIdAndUserId_whenCreateNewStacktraceSubscription_ShouldReturnStacktraceSubscription() throws Exception {
-//        User user = new User(0,"edson@revature.com","Edson",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+//        User user = new User(0,"edson@revature.com","Edson",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
 //        Technology tech = new Technology(0,"java");
 //        Stacktrace stacktrace = new Stacktrace(0,user,"Title","body", tech,Timestamp.valueOf(LocalDateTime.now()),new HashSet<>());
 //        technologyRepository.save(tech);
@@ -100,7 +100,7 @@
 //
 //    @Test
 //    void givenStacktraceAndUserId_whenGetSubscriptionByStacktraceIdAndUserId_ShouldReturnStacktraceSubscription() throws Exception {
-//        User user = new User(0,"edson@revature.com","Edson",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+//        User user = new User(0,"edson@revature.com","Edson",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
 //        Technology tech = new Technology(0,"java");
 //        Stacktrace stacktrace = new Stacktrace(0,user,"Title","body", tech,Timestamp.valueOf(LocalDateTime.now()),new HashSet<>());
 //        System.out.println(userRepository.save(user));
@@ -125,7 +125,7 @@
 //
 //    @Test
 //    void givenStacktraceIdAndUserId_whenDeleteStacktraceSubscription_ShouldReturnDeletedStacktraceSubscription() throws Exception {
-//        User user = new User(0,"edson@revature.com","Edson",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+//        User user = new User(0,"edson@revature.com","Edson",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
 //        Technology tech = new Technology(0,"java");
 //        Stacktrace stacktrace = new Stacktrace(0,user,"Title","body", tech,Timestamp.valueOf(LocalDateTime.now()),new HashSet<>());
 //        userRepository.save(user);

@@ -14,12 +14,12 @@ import java.time.LocalDateTime;
  * @author Nick Zimmerman
  */
 @SpringBootTest
-@TestPropertySource(locations = "classpath:test-application.properties")
+//@TestPropertySource(locations = "classpath:test-application.properties")
 class VoteDTOTest {
 
     @Test
     void givenVote_whenConvertVoteToDTO_shouldReturnVoteDTO(){
-        User u = new User(0,"jesus.christ@revature.com","Jesus Christ",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User u = new User(0,"jesus.christ@revature.com","Jesus Christ",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,u,null,"how is your day",1,1,null,null,false);
 
         Answer a = new Answer(0,u,flashcard,"check stackoverflow",5,false,false,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));

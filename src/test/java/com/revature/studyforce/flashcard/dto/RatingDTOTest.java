@@ -17,12 +17,12 @@ import java.time.LocalDateTime;
  * @author Edson Rodriguez
  */
 @SpringBootTest
-@TestPropertySource(locations = "classpath:test-application.properties")
+//@TestPropertySource(locations = "classpath:test-application.properties")
 class RatingDTOTest {
 
     @Test
     void whenConvertingToDTO_DTOFieldsMatchOriginalObject(){
-        User edson = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User edson = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.ROLE_USER,Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,edson,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null, false);
         Rating rating = new Rating(0,flashcard,edson, Difficulty.EASY);
         RatingDTO r = RatingDTO.ratingToDTO().apply(rating);

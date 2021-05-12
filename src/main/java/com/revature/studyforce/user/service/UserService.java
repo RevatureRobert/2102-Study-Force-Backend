@@ -5,6 +5,7 @@ import com.revature.studyforce.user.dto.*;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.UserRepository;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.constraints.NotNull;
+
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Locale;
@@ -154,7 +155,7 @@ public class UserService {
      * @param userNameDTO A data transfer object containing the user's id and their new name
      * @return The data transfer representation of the updated user converted with {@link UserDTO#userToDTO()}
      */
-    public UserDTO updateUserName(@NotNull UserNameDTO userNameDTO){
+    public UserDTO updateUserName(@NonNull UserNameDTO userNameDTO){
         if(userNameDTO.getName() == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Field name cannot be null, is your JSON malformed?");
         }
@@ -177,7 +178,7 @@ public class UserService {
      * @param userAuthorityDTO A data transfer object containing the user's id and their new authority
      * @return The data transfer representation of the updated user converted with {@link UserDTO#userToDTO()}
      */
-    public UserDTO updateUserAuthority(@NotNull UserAuthorityDTO userAuthorityDTO){
+    public UserDTO updateUserAuthority(@NonNull UserAuthorityDTO userAuthorityDTO){
         if(userAuthorityDTO.getAuthority() != Authority.ROLE_USER && userAuthorityDTO.getAuthority() != Authority.ROLE_ADMIN && userAuthorityDTO.getAuthority() != Authority.ROLE_SUPER_ADMIN){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Field authority could not be understood, is your JSON malformed?");
         }
@@ -207,7 +208,7 @@ public class UserService {
      * @param userIsActiveDTO A data transfer object containing the user's id and their new active status
      * @return The data transfer representation of the updated user converted with {@link UserDTO#userToDTO()}
      */
-    public UserDTO updateUserIsActive(@NotNull UserIsActiveDTO userIsActiveDTO){
+    public UserDTO updateUserIsActive(@NonNull UserIsActiveDTO userIsActiveDTO){
         Optional<User> userOptional = userRepository.findById(userIsActiveDTO.getUserId());
         User user;
 

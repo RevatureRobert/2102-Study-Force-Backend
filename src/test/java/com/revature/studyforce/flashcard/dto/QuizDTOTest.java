@@ -19,12 +19,12 @@ import java.util.List;
  * @author Nick Zimmerman
  */
 @SpringBootTest
-@TestPropertySource(locations = "classpath:test-application.properties")
+//@TestPropertySource(locations = "classpath:test-application.properties")
 class QuizDTOTest {
 
     @Test
     void givenQuiz_whenQuizToDTO_shouldReturnQuizDTO(){
-        User user = new User(0, "mscott@dunder.com","Michael Scott",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0, "mscott@dunder.com","Michael Scott",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Topic topic = new Topic(0,"java");
         Flashcard flashcard1 = new Flashcard(0,user,topic,"Whats my favorite color?",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
         Flashcard flashcard2 = new Flashcard(0,user,topic,"Can I go to the bathroom?",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);

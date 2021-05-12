@@ -23,9 +23,9 @@ import java.util.Collections;
  * Spring boot programmatic configuration of OAuth2 resource server security
  * @author Nick Wickham
  */
-@Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled=true, jsr250Enabled = true)
+//@Configuration
+//@EnableWebSecurity
+//@EnableGlobalMethodSecurity(securedEnabled=true, jsr250Enabled = true)
 public class CognitoSecurityConfig extends ResourceServerConfigurerAdapter {
 
     private final ResourceServerProperties resource;

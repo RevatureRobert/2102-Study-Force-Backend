@@ -62,7 +62,7 @@ class QuizIntegrationTest {
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(quizController).build();
-        User mscott = new User(0,"mscott@dunder.com","Michael Scott",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User mscott = new User(0,"mscott@dunder.com","Michael Scott",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(mscott);
 
         Topic t = new Topic(0,"java");
@@ -102,7 +102,7 @@ class QuizIntegrationTest {
 
     @Test
     void givenQuiz_whenCreateQuiz_NewQuizIsRetrieved() throws Exception {
-        User dwight = new User(0,"dshrute@dunder.com","Dwight Schrute",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User dwight = new User(0,"dshrute@dunder.com","Dwight Schrute",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(dwight);
 
         Topic t = new Topic(0,"farming");
@@ -156,7 +156,7 @@ class QuizIntegrationTest {
 
     @Test
     void givenQuizId_DeleteQuiz() throws Exception {
-        User dwight = new User(0,"dshrute@dunder.com","Dwight Schrute",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User dwight = new User(0,"dshrute@dunder.com","Dwight Schrute",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(dwight);
 
         Topic t = new Topic(0,"farming");

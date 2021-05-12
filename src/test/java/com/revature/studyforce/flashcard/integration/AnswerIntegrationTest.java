@@ -50,8 +50,8 @@ class AnswerIntegrationTest {
 
     @Test
     void givenFlashcardId_whenGetAllAnswersByFlashcardId_shouldReturnAnswerWithPagination() throws Exception {
-        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
-        User user2 = new User(0,"edson2@revature.com","Edson2 Rodriguez2",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user2 = new User(0,"edson2@revature.com","Edson2 Rodriguez2",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         user = userRepository.save(user);
         user2 = userRepository.save(user2);
 
@@ -94,7 +94,7 @@ class AnswerIntegrationTest {
 
     @Test
     void givenAnswerId_whenDeleteAnswerById_shouldReturnString() throws Exception {
-        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
 
         userRepository.save(user);
@@ -122,7 +122,7 @@ class AnswerIntegrationTest {
 
     @Test
     void givenAnswerDTO_whenCreateNewAnswer_ShouldReturnAnswer() throws Exception {
-        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
 
         user = userRepository.save(user);
@@ -150,7 +150,7 @@ class AnswerIntegrationTest {
 
     @Test
     void givenPut_AnswerId_Should_ReturnUpdatedAnswer_404IfNotFindId() throws Exception {
-        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
 
         userRepository.save(user);

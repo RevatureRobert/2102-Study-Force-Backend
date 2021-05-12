@@ -57,7 +57,7 @@ class VoteIntegrationTest {
             true,
             false,
             false,
-            Authority.USER,
+            Authority.ROLE_USER,
             Timestamp.valueOf(LocalDateTime.now()),
             Timestamp.valueOf(LocalDateTime.now()));
     userRepository.save(u);
@@ -103,7 +103,7 @@ class VoteIntegrationTest {
             true,
             false,
             false,
-            Authority.USER,
+            Authority.ROLE_USER,
             Timestamp.valueOf(LocalDateTime.now()),
             Timestamp.valueOf(LocalDateTime.now()));
     userRepository.save(u);
@@ -150,7 +150,7 @@ class VoteIntegrationTest {
             true,
             false,
             false,
-            Authority.USER,
+            Authority.ROLE_USER,
             Timestamp.valueOf(LocalDateTime.now()),
             Timestamp.valueOf(LocalDateTime.now()));
     userRepository.save(u);
@@ -197,7 +197,7 @@ class VoteIntegrationTest {
             true,
             false,
             false,
-            Authority.USER,
+            Authority.ROLE_USER,
             Timestamp.valueOf(LocalDateTime.now()),
             Timestamp.valueOf(LocalDateTime.now()));
     userRepository.save(u);
@@ -244,7 +244,7 @@ class VoteIntegrationTest {
                       true,
                       false,
                       false,
-                      Authority.USER,
+                      Authority.ROLE_USER,
                       Timestamp.valueOf(LocalDateTime.now()),
                       Timestamp.valueOf(LocalDateTime.now()));
       userRepository.save(u);
@@ -288,7 +288,7 @@ class VoteIntegrationTest {
                     true,
                     false,
                     false,
-                    Authority.USER,
+                    Authority.ROLE_USER,
                     Timestamp.valueOf(LocalDateTime.now()),
                     Timestamp.valueOf(LocalDateTime.now()));
     userRepository.save(u);
@@ -327,7 +327,7 @@ class VoteIntegrationTest {
                     true,
                     false,
                     false,
-                    Authority.USER,
+                    Authority.ROLE_USER,
                     Timestamp.valueOf(LocalDateTime.now()),
                     Timestamp.valueOf(LocalDateTime.now()));
     userRepository.save(u);

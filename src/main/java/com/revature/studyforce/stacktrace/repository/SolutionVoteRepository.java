@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
+//import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -20,7 +20,7 @@ public interface SolutionVoteRepository extends JpaRepository<SolutionVote, Inte
     @Query(value = "select * from solution_vote where solution_id = :solutionId ;", nativeQuery = true)
     List<SolutionVote> findBySolutionId(@Param("solutionId") int solutionId);
 
-    @Transactional
+    //@Transactional
     @Modifying
     @Query("delete from SolutionVote where solution_id = :solutionId")
     void deleteBySolutionId(@Param("solutionId") int solutionId);

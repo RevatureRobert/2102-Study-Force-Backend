@@ -48,7 +48,7 @@ class RatingIntegrationTest {
 
     @Test
     void givenRating_whenCreateRating_shouldReturnRatingResponseDTO() throws Exception {
-        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,null,null,false);
 
         userRepository.save(user);
@@ -69,7 +69,7 @@ class RatingIntegrationTest {
 
     @Test
     void givenFlashcardIdAndUserId_whenGetAll_shouldReturnRatingDTOWithMatchingIds() throws Exception {
-        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,null,null,false);
 
         userRepository.save(user);
