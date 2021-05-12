@@ -19,7 +19,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/stacktrace/technology")
-@CrossOrigin(origins = "*") @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
+@CrossOrigin(origins = "*")
 public class TechnologyController {
 
   private final TechnologyService technologyService;
@@ -49,7 +49,7 @@ public class TechnologyController {
    * @param technologyDTO The Technology to be added as a data transfer object
    * @return The data transfer representation of the newly added Technology object
    */
-  @PostMapping
+  @PostMapping @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
   public TechnologyDTO addNewTechnology(@RequestBody TechnologyDTO technologyDTO){
     return technologyService.createNewTechnology(technologyDTO);
   }
@@ -60,7 +60,7 @@ public class TechnologyController {
    * @param technologyId The ID of the Technology to be deleted
    * @return The deleted Technology object, now no longer persisted. May be null.
    */
-  @DeleteMapping("/{technologyId}")
+  @DeleteMapping("/{technologyId}") @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
   public Technology deleteTechnology(@PathVariable int technologyId){
     return technologyService.deleteTechnology(technologyId);
   }
@@ -71,7 +71,7 @@ public class TechnologyController {
    * @param technologyDTO The Technology to be updated as DTO
    * @return The data transfer representation of the newly updated Technology object
    */
-  @PutMapping
+  @PutMapping @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
   public TechnologyDTO updateTechnology(@RequestBody TechnologyDTO technologyDTO){
     return technologyService.updateTechnology(technologyDTO);
   }

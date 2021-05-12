@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Controller
 @CrossOrigin(origins = "*")
-@RequestMapping("/topics") @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
+@RequestMapping("/topics")
 public class TopicController {
 
 
@@ -60,7 +60,7 @@ public class TopicController {
      * @return The topic object to be stored
      */
     @PostMapping
-    @ResponseBody
+    @ResponseBody @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     public Topic createTopic(@RequestBody TopicDTO topicDTO) {
         return topicService.addTopic(topicDTO.getTopic());
     }
@@ -72,7 +72,7 @@ public class TopicController {
      * @exception ResponseStatusException if topic not found
      */
     @DeleteMapping("/{id}")
-    @ResponseBody
+    @ResponseBody @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
     public Topic deleteTopic(@PathVariable int id) {
         Topic topic = topicService.deleteTopic(id);
         if (topic == null) {
