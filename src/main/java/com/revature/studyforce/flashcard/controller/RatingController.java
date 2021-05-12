@@ -2,9 +2,7 @@ package com.revature.studyforce.flashcard.controller;
 
 import com.revature.studyforce.flashcard.dto.RatingDTO;
 import com.revature.studyforce.flashcard.dto.RatingResponseDTO;
-import com.revature.studyforce.flashcard.dto.VoteDTO;
 import com.revature.studyforce.flashcard.model.Rating;
-import com.revature.studyforce.flashcard.service.FlashcardService;
 import com.revature.studyforce.flashcard.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -58,16 +56,5 @@ public class RatingController {
         return ratingService.getAllRatings(flashcardId);
     }
 
-    // (may use in the future)
-//    /**
-//     * Deletes existing rating with given id {@link RatingService#delete(int)}
-//     * @param id - Rating to be deleted from the database
-//     * @return - returns deletion success boolean
-//     */
-//    @DeleteMapping("/{id}")
-//    public @ResponseBody Boolean delete(@PathVariable("id") Integer id) {
-//        ratingService.delete(id);
-//        return true;
-//    }
 
 }
