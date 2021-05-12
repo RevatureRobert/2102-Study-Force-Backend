@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  * @author Luke Mohr
  */
 @Controller
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RequestMapping("/flashcards")
 public class FlashcardController {
 
