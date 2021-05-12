@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/subscriptions")
+@CrossOrigin(origins="*")
 public class SubscriptionController {
     private final SubscriptionService subscriptionService;
     private final FlashcardSubscriptionService flashcardSubscriptionService;
