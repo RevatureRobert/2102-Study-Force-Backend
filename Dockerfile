@@ -7,5 +7,5 @@ RUN mvn -f /usr/src/app/pom.xml clean package -DskipTests
 FROM gcr.io/distroless/java  
 COPY --from=build /usr/src/app/target/StudyForce-0.0.1-SNAPSHOT.jar /usr/app/StudyForce-0.0.1-SNAPSHOT.jar 
 EXPOSE 8080  
-EXPOSE 443
+EXPOSE 443 
 ENTRYPOINT ["java","-jar","/usr/app/StudyForce-0.0.1-SNAPSHOT.jar"]  
