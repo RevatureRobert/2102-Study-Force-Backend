@@ -13,7 +13,7 @@ import java.util.List;
  * @author Elizabeth Ye
  */
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RequestMapping("/flashcards/votes")
 public class VoteController {
 

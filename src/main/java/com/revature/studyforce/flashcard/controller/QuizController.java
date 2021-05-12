@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  * @author Nick Zimmerman
  */
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RequestMapping("/flashcards/quiz")
 public class QuizController {
 

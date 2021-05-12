@@ -15,7 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
  * @author Edson Rodriguez
  */
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RequestMapping("/answers")
 public class AnswerController {
 

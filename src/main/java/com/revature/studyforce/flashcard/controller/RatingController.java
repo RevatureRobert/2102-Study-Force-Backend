@@ -16,7 +16,7 @@ import java.util.List;
  * @author Edson Rodriguez
  */
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RequestMapping("/flashcards/ratings")
 public class RatingController {
 

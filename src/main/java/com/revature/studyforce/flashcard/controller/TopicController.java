@@ -16,7 +16,7 @@ import java.util.List;
  * @author Kevin Wang
  */
 @Controller
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RequestMapping("/topics") @Secured({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
 public class TopicController {
 
