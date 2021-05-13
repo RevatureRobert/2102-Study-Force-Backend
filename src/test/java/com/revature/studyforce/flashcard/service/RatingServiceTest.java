@@ -2,7 +2,6 @@ package com.revature.studyforce.flashcard.service;
 
 import com.revature.studyforce.flashcard.dto.RatingDTO;
 import com.revature.studyforce.flashcard.dto.RatingResponseDTO;
-import com.revature.studyforce.flashcard.dto.VoteDTO;
 import com.revature.studyforce.flashcard.model.*;
 import com.revature.studyforce.flashcard.repository.FlashcardRepository;
 import com.revature.studyforce.flashcard.repository.RatingRepository;
@@ -29,7 +28,7 @@ import java.util.Optional;
  */
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@TestPropertySource(locations = "classpath:test-application.properties")
+@TestPropertySource(locations = "classpath:application-test.properties")
 class RatingServiceTest {
 
     @MockBean
@@ -45,7 +44,7 @@ class RatingServiceTest {
     @Test
     void givenRatingDTO_whenCreateRating_shouldReturnRatingResponseDTO(){
         List<Rating> rList = new ArrayList<>();
-        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
         Rating rating = new Rating(0,flashcard,user, Difficulty.EASY);
         rList.add(rating);
@@ -64,7 +63,7 @@ class RatingServiceTest {
 
     @Test
     void givenFlashcardIdAndUserId_whenGetRating_shouldReturnRating(){
-        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
         Rating rating = new Rating(0,flashcard,user, Difficulty.EASY);
 
@@ -83,7 +82,7 @@ class RatingServiceTest {
     @Test
     void givenFlashcardId_whenGetAllRatings_shouldReturnListOfRatingDTO() {
         List<Rating> ratings = new ArrayList<>();
-        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
         Rating rating = new Rating(0,flashcard,user, Difficulty.EASY);
         ratings.add(rating);

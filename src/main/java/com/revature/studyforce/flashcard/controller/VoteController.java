@@ -14,7 +14,7 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/flashcards/votes")
+@RequestMapping(value = "/flashcards/votes", produces = "application/json")
 public class VoteController {
 
     @Autowired

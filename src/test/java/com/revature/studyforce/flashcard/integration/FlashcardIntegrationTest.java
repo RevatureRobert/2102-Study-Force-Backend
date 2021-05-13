@@ -1,7 +1,5 @@
 package com.revature.studyforce.flashcard.integration;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.studyforce.flashcard.controller.FlashcardController;
 import com.revature.studyforce.flashcard.dto.FlashcardDTO;
 import com.revature.studyforce.flashcard.dto.NewFlashcardDTO;
@@ -15,10 +13,12 @@ import com.revature.studyforce.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -35,9 +35,11 @@ import java.util.List;
  * Flashcard integration tests {@link FlashcardController}
  * @author Luke Mohr
  */
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@AutoConfigureMockMvc
 @SpringBootTest
-@TestPropertySource(locations = "classpath:test-application.properties")
+@TestPropertySource(locations = "classpath:application-test.properties")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@WithMockUser(username = "test@test.test",authorities = "ROLE_USER")
 class FlashcardIntegrationTest {
 
     private MockMvc mockMvc;
@@ -68,7 +70,7 @@ class FlashcardIntegrationTest {
     public void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(flashcardController).build();
         flashcardDTO = new FlashcardDTO();
-        user = new User(0,"a@b.c","fn ln",true,false,false, Authority.USER, null,null);
+        user = new User(0,"a@b.c","fn ln",true,false,false, Authority.ROLE_USER, null,null);
         user.setLastLogin(null);
         user.setRegistrationTime(null);
         topic = new Topic();
@@ -173,8 +175,6 @@ class FlashcardIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"userId\":1,\"topicId\":2,\"question\":\"question\",\"difficulty\":2}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.creator").hasJsonPath())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.topic.topicName").isString())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.question").isString())
@@ -193,8 +193,6 @@ class FlashcardIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"id\":3,\"creator\":{\"userId\":1},\"topic\":{\"id\":2},\"question\":\"question\",\"questionDifficultyTotal\":2,\"questionDifficultyAverage\":2,\"createdTime\":null,\"resolutionTime\":null,\"resolved\":false}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.creator").hasJsonPath())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.topic.topicName").isString())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.question").isString())

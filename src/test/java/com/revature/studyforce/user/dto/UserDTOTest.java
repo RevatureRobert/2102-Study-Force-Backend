@@ -5,6 +5,10 @@ import com.revature.studyforce.user.model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
+
 import java.sql.Timestamp;
 import java.util.function.Function;
 
@@ -15,6 +19,9 @@ import java.util.function.Function;
  */
 
 @SpringBootTest
+@TestPropertySource(locations = "classpath:application-test.properties")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@WithMockUser(username = "test@test.test",authorities = "ROLE_USER")
 class UserDTOTest {
 
     @Test

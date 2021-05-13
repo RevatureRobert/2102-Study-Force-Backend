@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,10 +29,11 @@ import java.time.LocalDateTime;
  * Test class for RatingController {@link RatingController}
  * @author Edson Rodriguez
  */
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(locations = "classpath:test-application.properties")
+@SpringBootTest
+@TestPropertySource(locations = "classpath:application-test.properties")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@WithMockUser(username = "test@test.test",authorities = "ROLE_USER")
 class RatingIntegrationTest {
 
     @Autowired
@@ -48,7 +50,7 @@ class RatingIntegrationTest {
 
     @Test
     void givenRating_whenCreateRating_shouldReturnRatingResponseDTO() throws Exception {
-        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,null,null,false);
 
         userRepository.save(user);
@@ -59,8 +61,6 @@ class RatingIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"flashcardId\":\"2\",\"userId\":\"1\",\"ratingScore\":\"2\"}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.totalRatings").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.rating").isNumber())
                 .andReturn();
@@ -69,7 +69,7 @@ class RatingIntegrationTest {
 
     @Test
     void givenFlashcardIdAndUserId_whenGetAll_shouldReturnRatingDTOWithMatchingIds() throws Exception {
-        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,null,null,false);
 
         userRepository.save(user);

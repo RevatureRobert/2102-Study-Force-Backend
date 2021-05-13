@@ -8,15 +8,17 @@ import com.revature.studyforce.user.model.Batch;
 import com.revature.studyforce.user.model.User;
 import com.revature.studyforce.user.repository.BatchRepository;
 import com.revature.studyforce.user.repository.UserRepository;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.event.annotation.BeforeTestExecution;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -37,11 +39,12 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
  * Include Deactivate, Create, and findByUsersInBatches
  * @author Daniel Reyes
  */
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@SpringBootTest(classes = StudyForceApplication.class)
+
 @AutoConfigureMockMvc
-@Transactional
-@WithMockCustomUser
+@SpringBootTest
+@TestPropertySource(locations = "classpath:application-test.properties")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@WithMockUser(username = "test@test.test",authorities = "ROLE_ADMIN")
 class BatchCreateAndUpdateIntegrationTest {
 
     private MockMvc mockMvc;
@@ -58,13 +61,13 @@ class BatchCreateAndUpdateIntegrationTest {
     @Autowired
     private BatchController batchController;
 
-    @Autowired
-    private FilterChainProxy springSecurityFilterChain;
 
-    @BeforeEach
-    void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
-                .addFilter(springSecurityFilterChain).build();
+    @BeforeTestExecution
+    public void setup() {
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(context)
+                .apply(springSecurity())
+                .build();
     }
 
 
@@ -87,7 +90,7 @@ class BatchCreateAndUpdateIntegrationTest {
         userRepository.save(student);
         userRepository.save(student2);
 
-        mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(batchController).build();
     mockMvc
         .perform(
             MockMvcRequestBuilders.post("/batches").secure(false)
@@ -95,8 +98,6 @@ class BatchCreateAndUpdateIntegrationTest {
                 .content(
                     "{ \"batchId\" : 1, \"name\" : \"2102 Enterprise\", \"instructors\" : [\"admin@gmail.com\"], \"users\" : [\"c@gmail.com\"] }"))
         .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(
-            MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
         .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
         .andExpect(MockMvcResultMatchers.jsonPath("$.batchId").value(5))
         .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("2102 Enterprise"))
@@ -139,7 +140,6 @@ class BatchCreateAndUpdateIntegrationTest {
         mockMvc.perform(MockMvcRequestBuilders.put("/batches/deactivateBatch/5")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.users[0].active").value(false))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.instructors[0].active").value(true))

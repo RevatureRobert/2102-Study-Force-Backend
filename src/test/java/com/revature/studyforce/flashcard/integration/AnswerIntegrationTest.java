@@ -1,5 +1,6 @@
 package com.revature.studyforce.flashcard.integration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.studyforce.flashcard.controller.AnswerController;
 import com.revature.studyforce.flashcard.dto.AnswerDTO;
 import com.revature.studyforce.flashcard.model.Answer;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,10 +30,11 @@ import java.time.LocalDateTime;
  * Test class for the AnswerController {@link AnswerController}
  * @author Edson Rodriguez, Kevin Wang
  */
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(locations = "classpath:test-application.properties")
+@SpringBootTest
+@TestPropertySource(locations = "classpath:application-test.properties")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@WithMockUser(username = "test@test.test",authorities = "ROLE_USER")
 class AnswerIntegrationTest {
 
     private MockMvc mockMvc;
@@ -50,8 +53,8 @@ class AnswerIntegrationTest {
 
     @Test
     void givenFlashcardId_whenGetAllAnswersByFlashcardId_shouldReturnAnswerWithPagination() throws Exception {
-        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
-        User user2 = new User(0,"edson2@revature.com","Edson2 Rodriguez2",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user2 = new User(0,"edson2@revature.com","Edson2 Rodriguez2",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         user = userRepository.save(user);
         user2 = userRepository.save(user2);
 
@@ -94,7 +97,7 @@ class AnswerIntegrationTest {
 
     @Test
     void givenAnswerId_whenDeleteAnswerById_shouldReturnString() throws Exception {
-        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
 
         userRepository.save(user);
@@ -122,19 +125,22 @@ class AnswerIntegrationTest {
 
     @Test
     void givenAnswerDTO_whenCreateNewAnswer_ShouldReturnAnswer() throws Exception {
-        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
 
         user = userRepository.save(user);
         flashcard = flashcardRepo.save(flashcard);
+        AnswerDTO mockDTO = new AnswerDTO(user.getUserId(), flashcard.getId(), "tcs filename");
 
+        System.out.println(new ObjectMapper().writeValueAsString(answerService.createAnswer(mockDTO)));
+
+
+        AnswerDTO aDTO = new AnswerDTO(0,0,"tcs filename");
         mockMvc = MockMvcBuilders.standaloneSetup(answerController).build();
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/answers")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"userId\":\"1\",\"flashcardId\":\"2\",\"answer\":\"tcs filename\"}"))
+                .content(new ObjectMapper().writeValueAsString(mockDTO)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.answerId").value(3))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.creator.userId").value(user.getUserId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.flashcard.id").value(flashcard.getId()))
@@ -150,7 +156,7 @@ class AnswerIntegrationTest {
 
     @Test
     void givenPut_AnswerId_Should_ReturnUpdatedAnswer_404IfNotFindId() throws Exception {
-        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson Rodriguez",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
 
         userRepository.save(user);
@@ -160,7 +166,7 @@ class AnswerIntegrationTest {
         Answer answer = answerService.createAnswer(aDTO);
 
         mockMvc = MockMvcBuilders.standaloneSetup(answerController).build();
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/answers/3"))
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/answers/" + answer.getAnswerId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.selectedAnswer").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.trainerSelected").value(true))

@@ -23,7 +23,7 @@ import java.util.List;
  * @author Nick Wickham
  */
 @SpringBootTest
-@TestPropertySource(locations = "classpath:test-application.properties")
+@TestPropertySource(locations = "classpath:application-test.properties")
 class CognitoServiceTest {
 
     @MockBean
@@ -58,7 +58,7 @@ class CognitoServiceTest {
     @Test
     void whenGetAuthorityFromUserPool_callCognitoClient_retrieveUserRole() {
         String username = "test";
-        String role = "ADMIN";
+        String role = "ROLE_ADMIN";
         AttributeType roleAttribute = AttributeType.builder()
                 .name("custom:role")
                 .value(role)
@@ -108,20 +108,6 @@ class CognitoServiceTest {
         String actual = cognitoService.getUserNameFromUserPool(username);
         Assertions.assertNotNull(actual);
         Assertions.assertEquals("TEST",actual);
-
-    }
-    @Test
-    void whenBulkCreateUsers_hasInvalidInput_receiveFailedMessage() throws IOException {
-        String message = "Status: Succeeded\n" +
-                "Message: Import Job Completed Successfully.";
-        UserImportJobType testJob = UserImportJobType.builder()
-                .jobId("1234").cloudWatchLogsRoleArn("ARNie").status("Failed").preSignedUrl("/presignedurl").build();
-        CreateUserImportJobResponse testJobResponse = CreateUserImportJobResponse.builder().userImportJob(testJob).build();
-        Mockito.when(cognitoClient.createUserImportJob(ArgumentMatchers.isA(CreateUserImportJobRequest.class))).thenReturn(testJobResponse);
-        Mockito.when(cognitoService.postCsvToCognito(ArgumentMatchers.isA(String.class),ArgumentMatchers.isA(String.class))).thenReturn(true);
-        Mockito.doNothing().when(cognitoService.postCsvToCognito(ArgumentMatchers.isA(String.class),ArgumentMatchers.isA(String.class)));
-
-
 
     }
 

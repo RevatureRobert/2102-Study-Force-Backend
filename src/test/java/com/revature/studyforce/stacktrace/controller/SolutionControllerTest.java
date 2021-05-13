@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -34,9 +35,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Joshua Swanson
  */
 @SpringBootTest
+@TestPropertySource(locations = "classpath:application-test.properties")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@TestPropertySource(locations = "classpath:test-application.properties")
-
+@WithMockUser(username = "test@test.test",authorities = "ROLE_USER")
 @AutoConfigureMockMvc
 class SolutionControllerTest {
 
@@ -45,43 +46,43 @@ class SolutionControllerTest {
     @MockBean
     private SolutionService solutionService;
 
-//    private final SolutionController solutionController;
-//
-//    @Autowired
-//    SolutionControllerTest(SolutionController solutionController){
-//        this.solutionController = solutionController;
-//    }
-//
-//    List<SolutionDTO> testSolutionDTOList;
-//    SolutionDTO testSolutionDTO;
-//    ObjectMapper objectMapper;
-//
-//    @BeforeEach
-//    void setUp(){
-//        mockMvc = MockMvcBuilders.standaloneSetup(solutionController).build();
-//        testSolutionDTO = new SolutionDTO(1, 1,1, "Test", "Test Body", false, null, 0);
-//        testSolutionDTOList = new ArrayList<>();
-//        testSolutionDTOList.add(testSolutionDTO);
-//        objectMapper = new ObjectMapper();
-//    }
-//
-//    @Test
-//    void whenAPostIsCalled_CallSubmitFirstSolution() throws Exception{
-//        Mockito.doReturn(testSolutionDTO).when(solutionService).submitFirstSolution(testSolutionDTO);
-//        mockMvc.perform(MockMvcRequestBuilders.post("/stacktrace/solution")
-//                .content(objectMapper.writeValueAsString(testSolutionDTO))
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk());
-//    }
-//
-//    @Test
-//    void WhenAValidSolutionExistsWithinDatabase() throws Exception{
-//        Mockito.doReturn(testSolutionDTO).when(solutionService).updateSolution(testSolutionDTO);
-//        mockMvc.perform(MockMvcRequestBuilders.put("/stacktrace/solution")
-//                .content(objectMapper.writeValueAsString(testSolutionDTO))
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk());
-//    }
+    private final SolutionController solutionController;
+
+    @Autowired
+    SolutionControllerTest(SolutionController solutionController){
+        this.solutionController = solutionController;
+    }
+
+    List<SolutionDTO> testSolutionDTOList;
+    SolutionDTO testSolutionDTO;
+    ObjectMapper objectMapper;
+
+    @BeforeEach
+    void setUp(){
+        mockMvc = MockMvcBuilders.standaloneSetup(solutionController).build();
+        testSolutionDTO = new SolutionDTO(1, 1,1, "Test", "Test Body", false, null, 0);
+        testSolutionDTOList = new ArrayList<>();
+        testSolutionDTOList.add(testSolutionDTO);
+        objectMapper = new ObjectMapper();
+    }
+
+    @Test
+    void whenAPostIsCalled_CallSubmitFirstSolution() throws Exception{
+        Mockito.doReturn(testSolutionDTO).when(solutionService).submitFirstSolution(testSolutionDTO);
+        mockMvc.perform(MockMvcRequestBuilders.post("/stacktrace/solution")
+                .content(objectMapper.writeValueAsString(testSolutionDTO))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void WhenAValidSolutionExistsWithinDatabase() throws Exception{
+        Mockito.doReturn(testSolutionDTO).when(solutionService).updateSolution(testSolutionDTO);
+        mockMvc.perform(MockMvcRequestBuilders.put("/stacktrace/solution")
+                .content(objectMapper.writeValueAsString(testSolutionDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
 
 }

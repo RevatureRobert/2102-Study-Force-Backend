@@ -30,11 +30,11 @@ import java.util.Set;
  * @author Daniel Reyes
  * @author Daniel Bernier
  */
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
+@TestPropertySource(locations = "classpath:application-test.properties")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@WithMockUser(username = "test@test.test",authorities = "ROLE_USER")
 @AutoConfigureMockMvc
-@TestPropertySource(locations = "classpath:test-application.properties")
-@Transactional
 class BatchIntegrationTest {
 
 
@@ -50,7 +50,7 @@ class BatchIntegrationTest {
     private BatchController batchController;
 
 
-    @Test @WithMockUser(username = "Test",authorities = "ADMIN")
+    @Test
     void givenBatch_whenGetAll_theBatchesRetrieved() throws Exception {
         Set<User> AdminList = new HashSet<>();
         Set<User> StudentList = new HashSet<>();
@@ -58,8 +58,8 @@ class BatchIntegrationTest {
         Authority authority = Authority.ROLE_ADMIN;
         Authority user1 = Authority.ROLE_USER;
         Timestamp lastLoginTime = Timestamp.valueOf ("2021-04-30 11:00:01");
-        User Admin = new User(0 , "dan2@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime);
-        User student = new User(0 , "test2@gmail.com", "Danny", true, true, true, user1, lastLoginTime, lastLoginTime);
+        User Admin = userRepository.save(new User(0 , "dan2@gmail.com", "Daniel", true, true, true, authority, lastLoginTime, lastLoginTime));
+        User student = userRepository.save( new User(0 , "test2@gmail.com", "Danny", true, true, true, user1, lastLoginTime, lastLoginTime));
         AdminList.add(Admin);
         StudentList.add(student);
         Batch batch = new Batch(0, "2102 Enterprise2", AdminList, StudentList, lastLoginTime);
@@ -75,11 +75,11 @@ class BatchIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].batchId").value(4))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].name").value("2103 Enterprise3"))
 
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].batchId").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].batchId").value(3))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[1].name").value("2102 Enterprise2"));
     }
 
-    @Test @WithMockUser(username = "Test", roles = {"ADMIN"})
+    @Test
     void givenBatch_whenGetById_theBatchRetrieved() throws Exception {
         Set<User> AdminList = new HashSet<>();
         Set<User> StudentList = new HashSet<>();

@@ -31,7 +31,7 @@ import java.util.Optional;
  */
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
-@TestPropertySource(locations = "classpath:test-application.properties")
+@TestPropertySource(locations = "classpath:application-test.properties")
 class StacktraceSubscriptionServiceTest {
     @Autowired
     private StacktraceSubscriptionService stacktraceSubscriptionService;

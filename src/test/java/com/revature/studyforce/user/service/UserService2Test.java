@@ -8,8 +8,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.server.ResponseStatusException;
 import java.sql.Timestamp;
@@ -21,8 +24,10 @@ import java.util.Optional;
  *
  * @author Daniel Bernier
  */
-@TestPropertySource(locations = "classpath:test-application.properties")
 @SpringBootTest
+@TestPropertySource(locations = "classpath:application-test.properties")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@WithMockUser(username = "test@test.test",authorities = "ROLE_USER")
 class UserService2Test {
 
     @MockBean
@@ -67,32 +72,6 @@ class UserService2Test {
     void whenUpdateUserNameWithInvalidId_thenThrowResponseStatusException (){
         UserNameDTO userNameDTO = new UserNameDTO(-1, "New Name");
         Assertions.assertThrows(ResponseStatusException.class, () -> userService.updateUserName(userNameDTO));
-    }
-
-    @Test
-    void whenUpdateUserAuthority_thenReturnUpdatedUserDTO (){
-        Timestamp timestamp = Timestamp.from(Instant.now());
-        User user = new User(1, "cool@gmail.com",
-                "John Doe", true, true, false,
-                Authority.ROLE_USER, timestamp, timestamp);
-
-        UserAuthorityDTO userAuthorityDTO = new UserAuthorityDTO(1, Authority.ROLE_ADMIN);
-
-        Mockito.when(userRepository.findById(1)).thenReturn(Optional.of(user));
-        Mockito.when(userRepository.save(org.mockito.ArgumentMatchers.any(User.class))).thenAnswer(u -> u.getArguments()[0]);
-
-        UserDTO serviceUserDTO = userService.updateUserAuthority(userAuthorityDTO);
-
-        Assertions.assertNotNull(serviceUserDTO);
-        Assertions.assertEquals(1, serviceUserDTO.getUserId());
-        Assertions.assertEquals("cool@gmail.com",serviceUserDTO.getEmail());
-        Assertions.assertEquals("John Doe", serviceUserDTO.getName());
-        Assertions.assertTrue(serviceUserDTO.isActive());
-        Assertions.assertTrue(serviceUserDTO.isSubscribedFlashcard());
-        Assertions.assertFalse(serviceUserDTO.isSubscribedStacktrace());
-        Assertions.assertEquals(Authority.ROLE_ADMIN, serviceUserDTO.getAuthority());
-        Assertions.assertEquals(timestamp, serviceUserDTO.getRegistrationTime());
-        Assertions.assertEquals(timestamp, serviceUserDTO.getLastLogin());
     }
 
     @Test

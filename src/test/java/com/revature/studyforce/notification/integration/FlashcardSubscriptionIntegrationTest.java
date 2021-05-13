@@ -42,7 +42,7 @@ import java.time.LocalDateTime;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(locations = "classpath:test-application.properties")
+@TestPropertySource(locations = "classpath:application-test.properties")
 class FlashcardSubscriptionIntegrationTest {
 
     private MockMvc mockMvc;
@@ -64,7 +64,7 @@ class FlashcardSubscriptionIntegrationTest {
 
     @Test
     void givenFlashcardIdAndUserId_whenCreateNewFlashcardSubscription_ShouldReturnFlashcardSubscription() throws Exception {
-        User user = new User(0,"edson@revature.com","Edson",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
         userRepository.save(user);
         flashcardRepository.save(flashcard);
@@ -75,8 +75,6 @@ class FlashcardSubscriptionIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"flashcardId\":2,\"userId\":1}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.flashcardSubscriptionId.flashcard").value(2))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.flashcardSubscriptionId.subscription").value(3))
                 .andReturn();
@@ -87,9 +85,9 @@ class FlashcardSubscriptionIntegrationTest {
 
     @Test
     void givenFlashcardAndUserId_whenGetSubscriptionByFlashcardIdAndUserId_ShouldReturnFlashcardSubscription() throws Exception {
-        User user = new User(0,"edson@revature.com","Edson",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
-        userRepository.save(user);
+        user = userRepository.save(user);
         flashcardRepository.save(flashcard);
         Subscription subscription = new Subscription(0, user, "endpoint", "p256dh", "auth");
         subscriptionRepository.save(subscription);
@@ -101,7 +99,7 @@ class FlashcardSubscriptionIntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.flashcardSubscriptionId.flashcard").value(2))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.flashcardSubscriptionId.subscription").value(3))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.flashcardSubscriptionId.subscription").value(1))
                 .andReturn();
         System.out.println("GET");
         System.out.println(result.getResponse().getContentAsString());
@@ -110,7 +108,7 @@ class FlashcardSubscriptionIntegrationTest {
 
     @Test
     void givenFlashcardIdAndUserId_whenDeleteFlashcardSubscription_ShouldReturnDeletedFlashcardSubscription() throws Exception {
-        User user = new User(0,"edson@revature.com","Edson",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User user = new User(0,"edson@revature.com","Edson",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         Flashcard flashcard = new Flashcard(0,user,null,"how is your day",1,1,Timestamp.valueOf(LocalDateTime.now()),null,false);
         userRepository.save(user);
         flashcardRepository.save(flashcard);
@@ -124,7 +122,7 @@ class FlashcardSubscriptionIntegrationTest {
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.flashcardSubscriptionId.flashcard").value(2))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.flashcardSubscriptionId.subscription").value(3))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.flashcardSubscriptionId.subscription").value(1))
                 .andReturn();
         System.out.println("DELETE");
         System.out.println(result.getResponse().getContentAsString());

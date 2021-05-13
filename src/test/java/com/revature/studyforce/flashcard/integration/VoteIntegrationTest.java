@@ -2,7 +2,6 @@ package com.revature.studyforce.flashcard.integration;
 
 import com.revature.studyforce.flashcard.controller.VoteController;
 import com.revature.studyforce.flashcard.model.Answer;
-import com.revature.studyforce.flashcard.model.Difficulty;
 import com.revature.studyforce.flashcard.model.Flashcard;
 import com.revature.studyforce.flashcard.model.Vote;
 import com.revature.studyforce.flashcard.repository.AnswerRepository;
@@ -18,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -34,10 +34,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Nick Zimmerman
  */
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(locations = "classpath:test-application.properties")
+@SpringBootTest
+@TestPropertySource(locations = "classpath:application-test.properties")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@WithMockUser(username = "test@test.test",authorities = "ROLE_USER")
 class VoteIntegrationTest {
 
   @Autowired private VoteRepository voteRepository;
@@ -57,7 +58,7 @@ class VoteIntegrationTest {
             true,
             false,
             false,
-            Authority.USER,
+            Authority.ROLE_USER,
             Timestamp.valueOf(LocalDateTime.now()),
             Timestamp.valueOf(LocalDateTime.now()));
     userRepository.save(u);
@@ -86,9 +87,6 @@ class VoteIntegrationTest {
                 MockMvcRequestBuilders.post("/flashcards/votes/")
                     .content(string)
                     .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(
-                MockMvcResultMatchers.content()
-                    .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andReturn();
   }
@@ -103,7 +101,7 @@ class VoteIntegrationTest {
             true,
             false,
             false,
-            Authority.USER,
+            Authority.ROLE_USER,
             Timestamp.valueOf(LocalDateTime.now()),
             Timestamp.valueOf(LocalDateTime.now()));
     userRepository.save(u);
@@ -150,7 +148,7 @@ class VoteIntegrationTest {
             true,
             false,
             false,
-            Authority.USER,
+            Authority.ROLE_USER,
             Timestamp.valueOf(LocalDateTime.now()),
             Timestamp.valueOf(LocalDateTime.now()));
     userRepository.save(u);
@@ -197,7 +195,7 @@ class VoteIntegrationTest {
             true,
             false,
             false,
-            Authority.USER,
+            Authority.ROLE_USER,
             Timestamp.valueOf(LocalDateTime.now()),
             Timestamp.valueOf(LocalDateTime.now()));
     userRepository.save(u);
@@ -244,7 +242,7 @@ class VoteIntegrationTest {
                       true,
                       false,
                       false,
-                      Authority.USER,
+                      Authority.ROLE_USER,
                       Timestamp.valueOf(LocalDateTime.now()),
                       Timestamp.valueOf(LocalDateTime.now()));
       userRepository.save(u);
@@ -288,7 +286,7 @@ class VoteIntegrationTest {
                     true,
                     false,
                     false,
-                    Authority.USER,
+                    Authority.ROLE_USER,
                     Timestamp.valueOf(LocalDateTime.now()),
                     Timestamp.valueOf(LocalDateTime.now()));
     userRepository.save(u);
@@ -327,7 +325,7 @@ class VoteIntegrationTest {
                     true,
                     false,
                     false,
-                    Authority.USER,
+                    Authority.ROLE_USER,
                     Timestamp.valueOf(LocalDateTime.now()),
                     Timestamp.valueOf(LocalDateTime.now()));
     userRepository.save(u);

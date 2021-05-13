@@ -8,6 +8,7 @@ import com.revature.studyforce.notification.model.Notification;
 import com.revature.studyforce.notification.repository.NotificationRepository;
 import com.revature.studyforce.notification.service.NotificationService;
 import com.revature.studyforce.user.model.User;
+import com.revature.studyforce.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ import java.time.LocalDateTime;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(locations = "classpath:test-application.properties")
+@TestPropertySource(locations = "classpath:application-test.properties")
 class NotificationIntegrationTest{
 
     private MockMvc mockMvc;
@@ -41,6 +42,8 @@ class NotificationIntegrationTest{
     private NotificationService notificationService;
     @Autowired
     private NotificationRepository notificationRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     LocalDateTime now = LocalDateTime.now();
     FeatureArea featureArea = FeatureArea.FLASHCARD;
@@ -52,7 +55,9 @@ class NotificationIntegrationTest{
     public void setup(){
         User user = new User("patrick@revature.net", "Patrick");
         user.setActive(true);
-        user.setUserId(1);
+
+        user = userRepository.save(user);
+
         notification = new Notification(0, "Message", false,
                 Timestamp.valueOf(now.plusDays(3)), Timestamp.valueOf(now), featureArea, 0,user);
 
@@ -82,7 +87,7 @@ class NotificationIntegrationTest{
 
     @Test
     void getAllNotificationsByUserIdTest() throws Exception{
-        mockMvc.perform(MockMvcRequestBuilders.get("/notifications/1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/notifications/users/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content").isNotEmpty())
@@ -100,9 +105,7 @@ class NotificationIntegrationTest{
         mockMvc.perform(MockMvcRequestBuilders.post("/notifications")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(notificationDto)))
-                .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").isString())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.read").isBoolean())
@@ -122,8 +125,6 @@ class NotificationIntegrationTest{
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(notificationDto)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").isString())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.read").isBoolean())

@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -34,10 +35,11 @@ import java.util.*;
  * Test class for QuizController {@link QuizController}
  * @author Nick Zimmerman
  */
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(locations = "classpath:test-application.properties")
+@SpringBootTest
+@TestPropertySource(locations = "classpath:application-test.properties")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@WithMockUser(username = "test@test.test",authorities = "ROLE_USER")
 class QuizIntegrationTest {
 
     private MockMvc mockMvc;
@@ -62,7 +64,7 @@ class QuizIntegrationTest {
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(quizController).build();
-        User mscott = new User(0,"mscott@dunder.com","Michael Scott",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User mscott = new User(0,"mscott@dunder.com","Michael Scott",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(mscott);
 
         Topic t = new Topic(0,"java");
@@ -102,7 +104,7 @@ class QuizIntegrationTest {
 
     @Test
     void givenQuiz_whenCreateQuiz_NewQuizIsRetrieved() throws Exception {
-        User dwight = new User(0,"dshrute@dunder.com","Dwight Schrute",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User dwight = new User(0,"dshrute@dunder.com","Dwight Schrute",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(dwight);
 
         Topic t = new Topic(0,"farming");
@@ -156,7 +158,7 @@ class QuizIntegrationTest {
 
     @Test
     void givenQuizId_DeleteQuiz() throws Exception {
-        User dwight = new User(0,"dshrute@dunder.com","Dwight Schrute",true,false,false, Authority.USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
+        User dwight = new User(0,"dshrute@dunder.com","Dwight Schrute",true,false,false, Authority.ROLE_USER, Timestamp.valueOf(LocalDateTime.now()),Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(dwight);
 
         Topic t = new Topic(0,"farming");

@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
  */
 
 @SpringBootTest
-@TestPropertySource(locations = "classpath:test-application.properties")
+@TestPropertySource(locations = "classpath:application-test.properties")
 class NotificationDtoTest {
 
     @Test

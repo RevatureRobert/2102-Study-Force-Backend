@@ -4,19 +4,19 @@ import com.revature.studyforce.stacktrace.dto.SolutionDTO;
 import com.revature.studyforce.stacktrace.model.Solution;
 import com.revature.studyforce.stacktrace.model.Stacktrace;
 import com.revature.studyforce.stacktrace.repository.SolutionRepository;
-import com.revature.studyforce.user.dto.UserNameDTO;
 import com.revature.studyforce.user.model.Authority;
 import com.revature.studyforce.user.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 
@@ -34,8 +34,9 @@ import static org.mockito.ArgumentMatchers.any;
  * @author Joshua Swanson
  */
 @SpringBootTest
-@TestPropertySource(locations = "classpath:test-application.properties")
+@WithMockUser(username = "test@test.test",authorities = "ROLE_USER")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@TestPropertySource(locations = "classpath:application-test.properties")
 class SolutionServiceTest {
 
     @MockBean
@@ -55,7 +56,7 @@ class SolutionServiceTest {
     @BeforeEach
     public void setUp(){
 
-        testUser = new User(1, "test.test.com", "TestName", false, true, true, Authority.USER, null, null);
+        testUser = new User(1, "test.test.com", "TestName", false, true, true, Authority.ROLE_USER, null, null);
         testStacktrace = new Stacktrace(1, testUser, "Test Title", "Test Body", null, null, 0,null);
         testSolutionDTO = new SolutionDTO(1, 1,1, "TestName", "Test Body", false, null, 0);
         testSolution = new Solution(1, testStacktrace, testUser, "Test Body", false, null, 0, null);
