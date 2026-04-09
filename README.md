@@ -1,61 +1,71 @@
-# 2102-Study-Force-Backend
+# StudyForce — Developer Learning & Debugging Platform (Backend)
 
 ## Project Description
 
-The backend for the Batch 2102 capstone project, Study Force.
+StudyForce is a full-stack learning platform designed to help developers study technical concepts and debug applications during training. The system provides a flashcard-based learning experience combined with tools to assist in understanding errors and stack traces.
 
-## Technologies Used
+This repository contains the backend services built using Spring Boot, exposing RESTful APIs to support user authentication, study content management, and application functionality.
 
-* AWS S3
-* AWS CodeBuild
-* AWS CodePipeline
-* AWS API Gateway
-* AWS Cognito
-* Spring Data
-* Spring Boot
-* Spring Test
-* Spring MVC
-* Protractor
-* Docker
-* CloudFormation
-* DevOps
-* REST
-* PostgreSQL
-* Sonarcloud
-* JUnit
-* MockMVC
-* Maven
-* Spring Framework
-* Swagger
-* Git
-* Java
+---
 
 ## Features
 
-List of features ready and TODOs for future development
-* Awesome feature 1
-* Awesome feature 2
-* Awesome feature 3
+- Flashcard-based study system with question/answer functionality  
+- Difficulty rating system for learning content  
+- Answer tracking and response management  
+- RESTful API design for frontend-backend communication  
+- AWS-based authentication using Cognito  
+- API routing through AWS API Gateway  
+- CI/CD pipeline integration using AWS CodeBuild and CodePipeline  
+- Unit and integration testing using JUnit and MockMVC  
 
-To-do list:
-* Wow improvement to be done 1
-* Wow improvement to be done 2
+---
+
+## Tech Stack
+
+### Backend
+- Java  
+- Spring Boot  
+- Spring MVC  
+- Spring Data JPA  
+
+### Database
+- PostgreSQL  
+
+### Cloud & DevOps
+- AWS Cognito (authentication)  
+- AWS API Gateway (routing)  
+- AWS S3  
+- AWS CodeBuild & CodePipeline (CI/CD)  
+- AWS CloudFormation (infrastructure as code)  
+- Docker  
+
+### Testing & Tools
+- JUnit  
+- MockMVC  
+- Swagger  
+- Maven  
+- Git  
+
+---
+
+## Architecture Overview
+
+The application follows a layered architecture:
+
+- Controllers — Handle HTTP requests and responses  
+- Services — Contain business logic  
+- Repositories — Manage database interactions using JPA  
+- DTOs — Handle request/response data transfer  
+
+The backend communicates with the frontend via REST APIs and integrates AWS services for authentication and deployment.
+
+---
 
 ## Getting Started
-   
+
+```bash
 git clone https://github.com/RevatureRobert/2102-Study-Force-Backend.git
-(include all environment setup steps)
-
-> Be sure to include BOTH Windows and Unix command  
-> Be sure to mention if the commands only work on a specific platform (eg. AWS, GCP)
-
-- All the `code` required to get started
-- Images of what it should look like
-
-## Usage
-
-> Here, you instruct other people on how to use your project after they’ve installed it. This would also be a good place to include screenshots of your project in action.
-
-## Contributors
-
-> Here list the people who have contributed to this project. (ignore this section, if its a solo project)
+cd 2102-Study-Force-Backend
+mvn clean install
+mvn spring-boot:run
